@@ -1,0 +1,213 @@
+---
+/**
+ * Opener repair & replacement — diagnostic intent.
+ * Text-led (the only opener photo was rejected for third-party branding).
+ * Repair-vs-replace table, common problems, brand chips.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import CallButton from "../components/CallButton.astro";
+import MicroTrustBar from "../components/MicroTrustBar.astro";
+import RepairIssueGrid from "../components/RepairIssueGrid.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import CTASection from "../components/CTASection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import PhotoUploadCTA from "../components/PhotoUploadCTA.astro";
+
+const issues = [
+  { symptom: "Opener hums but door doesn't move", meaning: "Often a stripped gear, broken trolley — or a broken spring making the door too heavy." },
+  { symptom: "Remote works sometimes, or not at all", meaning: "Battery, antenna, or logic board. Sometimes just re-pairing the remote." },
+  { symptom: "Sensor lights blinking", meaning: "Misaligned or blocked safety sensors — the #1 reason doors refuse to close." },
+  { symptom: "Door reverses on its own", meaning: "Travel and force settings need adjustment, or something is binding in the track." },
+  { symptom: "Chain hangs loose or slaps", meaning: "Drive needs tensioning — cheap now, expensive if the trolley wears out." },
+  { symptom: "Keypad won't accept the code", meaning: "Reprogramming or replacement — quick either way." },
+];
+
+const service = {
+  name: "Garage Door Opener Repair & Replacement",
+  description: "Diagnosis, repair, and replacement of garage door openers, remotes, keypads, and safety sensors.",
+  url: "/garage-door-opener-repair/",
+};
+
+const faqs = [
+  {
+    question: "Should I repair my garage door opener or replace it?",
+    answer: "It depends on age and the failed part. Sensor alignment, remotes, and adjustments are quick repairs. If the motor or logic board has failed on an opener that is 12–15+ years old, replacement usually costs less over time — and adds current safety features. We explain both numbers in a written quote before any work.",
+  },
+  {
+    question: "Why won't my garage door close when the opener runs?",
+    answer: "Most often the safety sensors near the floor are blocked, dirty, or misaligned — the opener light usually blinks when this happens. If the sensors are fine, the travel settings or a binding door may be the cause.",
+  },
+  {
+    question: "Can you replace just the remote or keypad?",
+    answer: "Yes. Remotes, wall buttons, and keypads can be re-paired or replaced on their own — no need for a new opener if the drive itself is healthy.",
+  },
+];
+---
+
+<SiteLayout
+  title="Garage Door Opener Repair & Replacement in Connecticut | EZ Garage Doors"
+  description="Opener humming, remote dead, sensors blinking, or door reversing? Garage door opener repair and replacement in Connecticut with repair-vs-replace explained clearly."
+  service={service}
+  faqs={faqs}
+>
+  <section class="opener-hero">
+    <div class="wrap wrap--narrow opener-hero__inner">
+      <h1>Garage Door Opener Repair &amp; Replacement</h1>
+      <p class="opener-hero__sub">
+        Opener humming, remote not working, chain loose, sensors blinking, or door reversing?
+        We diagnose the issue and explain repair vs. replacement clearly — in writing.
+      </p>
+      <div class="opener-hero__actions">
+        <CallButton label="Call for Opener Service" size="lg" />
+        <PhotoUploadCTA label="Text a Photo of Your Opener" />
+      </div>
+      <div class="opener-hero__trust">
+        <MicroTrustBar />
+      </div>
+    </div>
+  </section>
+
+  <RepairIssueGrid heading="What is your opener doing?" issues={issues} alt />
+
+  <TrustLogoStrip variant="opener-brands" />
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading eyebrow="The honest math" title="Repair or replace?" />
+      <div class="rvr-table-wrap">
+        <table class="rvr-table">
+          <caption class="visually-hidden">When repair makes sense versus replacement</caption>
+          <thead>
+            <tr>
+              <th scope="col">Situation</th>
+              <th scope="col">Usually repair</th>
+              <th scope="col">Usually replace</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Sensors blinking / door won't close</th>
+              <td>✓ Realign or replace sensors</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">Remote / keypad dead</th>
+              <td>✓ Re-pair or replace accessory</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">Chain loose, noisy drive</th>
+              <td>✓ Tension and service the drive</td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">Stripped gear on an older unit</th>
+              <td>Sometimes</td>
+              <td>✓ If parts cost approaches a new unit</td>
+            </tr>
+            <tr>
+              <th scope="row">Motor or logic board failed, 12–15+ years old</th>
+              <td></td>
+              <td>✓ New opener with current safety features</td>
+            </tr>
+            <tr>
+              <th scope="row">No safety sensors at all (very old unit)</th>
+              <td></td>
+              <td>✓ Replace — modern safety standards</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted rvr-note">
+        Either way you get both numbers in a written quote — repair cost vs. replacement cost —
+        and you decide.
+      </p>
+    </div>
+  </section>
+
+  <ProcessSteps
+    heading="How an opener visit works"
+    steps={[
+      { title: "Describe the symptom", detail: "What it does, what it did last, and how old the opener is if you know." },
+      { title: "Send a photo of the unit", detail: "The label on the motor housing tells us a lot before we arrive." },
+      { title: "On-site diagnosis", detail: "We test the drive, sensors, and door balance — openers often get blamed for spring problems." },
+      { title: "Written quote, then work", detail: "Repair vs. replace, both priced in writing. You choose, we do it." },
+    ]}
+  />
+
+  <CTASection
+    heading="Opener acting up?"
+    sub="Call EZ Garage Doors — we'll tell you if it's a fix or a replacement, in writing."
+    callLabel="Call for Opener Service"
+  />
+</SiteLayout>
+
+<style>
+  .opener-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .opener-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+
+  .opener-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  .opener-hero__trust {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ez-border);
+  }
+
+  .rvr-table-wrap {
+    overflow-x: auto;
+  }
+
+  .rvr-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    min-width: 34rem;
+  }
+
+  .rvr-table th,
+  .rvr-table td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .rvr-table thead th {
+    font-family: var(--font-display);
+    background: var(--ez-charcoal);
+    color: #fff;
+  }
+
+  .rvr-table tbody th {
+    font-weight: 600;
+    color: var(--ez-charcoal);
+  }
+
+  .rvr-table td {
+    color: var(--color-text-muted);
+  }
+
+  .rvr-note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+  }
+</style>

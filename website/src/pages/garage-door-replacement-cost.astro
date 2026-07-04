@@ -1,0 +1,242 @@
+---
+/**
+ * Cost guide — price-research intent. Content-led, honest, softer CTA.
+ * NO invented price tables: the ownerRanges structure below stays empty
+ * (needs-owner-input) until the owner approves real ranges. Until then
+ * the page explains cost FACTORS truthfully without fake numbers.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CTASection from "../components/CTASection.astro";
+import LeadForm from "../components/LeadForm.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+
+/**
+ * needs-owner-input: approved price ranges. When the owner provides real,
+ * current ranges, fill these in and the table renders automatically.
+ * Example shape: { label: "Single non-insulated steel", low: 0, high: 0 }
+ */
+const ownerRanges: { label: string; low: number; high: number }[] = [];
+
+const factors = [
+  {
+    name: "Door size",
+    detail: "A single-car door (typically 8–9 ft wide) costs less than a double (16 ft). Non-standard heights and openings add fabrication and labor.",
+  },
+  {
+    name: "Insulation",
+    detail: "Three tiers: single-layer (no insulation), vinyl-backed, and full sandwich-panel construction. Insulation adds cost up front and pays back in comfort, quietness, and rigidity.",
+  },
+  {
+    name: "Windows",
+    detail: "A row of plain glass is the entry point; insulated glass, decorative inserts, and specialty shapes raise the price per section.",
+  },
+  {
+    name: "Design & style",
+    detail: "Standard raised panels are the baseline. Carriage house detailing, flush modern designs, wood-look finishes, and custom colors sit above it.",
+  },
+  {
+    name: "Hardware",
+    detail: "Springs matched to the new door's weight, track condition, decorative handles and hinges. Heavier insulated doors need heavier-duty springs.",
+  },
+  {
+    name: "Removal & disposal",
+    detail: "Taking out the old door, tracks, and springs and disposing of them properly is part of the job — check that any quote you get includes it. Ours does.",
+  },
+  {
+    name: "Opener compatibility",
+    detail: "If your current opener is healthy and rated for the new door's weight, we reuse it. If not, you'll see the opener as its own line item — never a surprise.",
+  },
+];
+
+const faqs = [
+  {
+    question: "Why don't you publish exact garage door prices online?",
+    answer: "Because two identical-looking doors can differ by size, insulation, windows, and the spring system they need. Publishing one teaser number and raising it at the door is exactly the bait-and-switch we refuse to do. We measure, then give you an itemized written estimate — and that number is the price.",
+  },
+  {
+    question: "Does the estimate cost anything?",
+    answer: "No. The written estimate is free and itemized: door, hardware, removal and disposal, and opener work if any. It's yours to keep and compare.",
+  },
+  {
+    question: "What's the cheapest way to replace a garage door?",
+    answer: "A standard-size, single-layer steel door in a stock color with no windows, reusing a healthy opener. We'll tell you honestly if that fits your garage — and where one upgrade (usually insulation) is worth it.",
+  },
+];
+---
+
+<SiteLayout
+  title="What Does a New Garage Door Cost in Connecticut? | EZ Garage Doors"
+  description="An honest guide to garage door replacement pricing in Connecticut: how size, insulation, windows, design, hardware, disposal, and opener condition set the price."
+  faqs={faqs}
+>
+  <section class="cost-hero">
+    <div class="wrap wrap--narrow">
+      <h1>What Does a New Garage Door Cost in Connecticut?</h1>
+      <p class="cost-hero__sub">
+        See what affects garage door replacement pricing before you book an estimate — size,
+        insulation, windows, design, opener condition, and hardware.
+      </p>
+      <div class="cost-hero__actions">
+        <a href="#request" class="btn btn--call btn--lg" data-track="estimate_click">
+          Get My Written Estimate
+        </a>
+        <a href="#factors" class="btn btn--outline btn--lg">See Cost Factors</a>
+      </div>
+      <p class="cta-note">Free, itemized, and yours to keep. No pressure.</p>
+    </div>
+  </section>
+
+  <section class="section" id="factors">
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="The honest breakdown" title="Seven things that set the price" />
+      <ol class="cost-factors">
+        {
+          factors.map((f, i) => (
+            <li class="cost-factors__item">
+              <span class="cost-factors__num" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3>{f.name}</h3>
+                <p>{f.detail}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {
+    ownerRanges.length > 0 && (
+      <section class="section section--alt">
+        <div class="wrap wrap--narrow">
+          <SectionHeading eyebrow="Typical ranges" title="Approved price ranges" />
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th scope="col">Configuration</th>
+                <th scope="col">Typical range</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ownerRanges.map((r) => (
+                <tr>
+                  <th scope="row">{r.label}</th>
+                  <td>
+                    ${r.low.toLocaleString()} – ${r.high.toLocaleString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )
+  }
+
+  <TrustLogoStrip variant="door-brands" />
+
+  <section class="section section--alt">
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="Why written matters" title="The estimate is the price" />
+      <p>
+        The garage door industry has a bait-pricing problem: a low number on the phone, then
+        "extra" springs, "required" track kits, and disposal fees at the door. Our answer is
+        boring on purpose — we measure the opening, itemize every line, and hand you the total
+        <strong>in writing before anything is ordered</strong>. If you compare quotes, compare
+        the written ones.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <LeadForm
+        heading="Get Your Written Replacement Estimate"
+        submitLabel="Get My Written Estimate"
+        context="cost-guide"
+      />
+    </div>
+  </section>
+
+  <CTASection
+    heading="Want your actual number?"
+    sub="A written estimate for your door, your size, your options — free."
+    secondaryLabel="Get My Written Estimate"
+  />
+</SiteLayout>
+
+<style>
+  .cost-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .cost-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+
+  .cost-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .cost-factors {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: factor;
+  }
+
+  .cost-factors__item {
+    display: flex;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-bottom: 1px dashed var(--ez-border);
+  }
+
+  .cost-factors__num {
+    font-family: ui-monospace, "Cascadia Mono", monospace;
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--ez-orange);
+    min-width: 2.5rem;
+  }
+
+  .cost-factors__item h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .cost-factors__item p {
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    font-size: var(--text-sm);
+  }
+
+  .cost-table th,
+  .cost-table td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .cost-table thead th {
+    font-family: var(--font-display);
+    background: var(--ez-charcoal);
+    color: #fff;
+  }
+</style>

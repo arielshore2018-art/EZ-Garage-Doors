@@ -1,0 +1,57 @@
+---
+/**
+ * Above-the-fold micro-trust strip. Only owner-approved claims —
+ * see APPROVED_CLAIMS in src/config/business.ts. "Licensed & Insured"
+ * and review counts are intentionally absent until verified.
+ */
+import { APPROVED_CLAIMS } from "../config/business";
+
+interface Props {
+  items?: string[];
+  tone?: "light" | "dark";
+}
+
+const {
+  items = [APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote],
+  tone = "light",
+} = Astro.props;
+---
+
+<ul class={`trust-bar trust-bar--${tone}`} aria-label="Why homeowners call EZ Garage Doors">
+  {
+    items.map((item) => (
+      <li>
+        <span class="speed-tick" aria-hidden="true" />
+        {item}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .trust-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    letter-spacing: 0.015em;
+  }
+
+  .trust-bar li {
+    display: flex;
+    align-items: center;
+  }
+
+  .trust-bar--light {
+    color: var(--ez-charcoal);
+  }
+
+  .trust-bar--dark {
+    color: #e6eaef;
+  }
+</style>

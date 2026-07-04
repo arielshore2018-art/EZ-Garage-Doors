@@ -1,0 +1,84 @@
+---
+/**
+ * Gallery — finished doors + before/after. Captions describe door
+ * styles only; no invented town/customer attributions.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import FinishedDoorGallery from "../components/FinishedDoorGallery.astro";
+import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
+import CTASection from "../components/CTASection.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+
+import doorCharcoal from "../assets/photos/ez-garage-door-charcoal-recessed-panel.png";
+import doorCarriage from "../assets/photos/ez-garage-door-carriage-house-cream.png";
+import doorSteel from "../assets/photos/ez-garage-door-white-flush-steel.png";
+import doorBlackWin from "../assets/photos/ez-garage-door-black-flush-windows.png";
+import doorWhiteCarriage from "../assets/photos/ez-garage-door-white-carriage-windows.png";
+import doorWood from "../assets/photos/ez-garage-door-wood-look-walnut.png";
+
+import baBefore1 from "../assets/photos/ez-before-old-white-wood-door.png";
+import baAfter1 from "../assets/photos/ez-after-white-long-panel-windows.png";
+import baBefore2 from "../assets/photos/ez-before-faded-beige-door.png";
+import baAfter2 from "../assets/photos/ez-after-black-long-panel-windows.png";
+import baBefore3 from "../assets/photos/ez-before-worn-single-door.png";
+import baAfter3 from "../assets/photos/ez-after-white-raised-panel.png";
+import baBefore4 from "../assets/photos/ez-before-dirty-beige-door.png";
+import baAfter4 from "../assets/photos/ez-after-dark-bronze-panel.png";
+
+const doors = [
+  { image: doorSteel, style: "Insulated steel flush panel", detail: "Clean modern face, quiet and warm." },
+  { image: doorCharcoal, style: "Charcoal recessed panel", detail: "Modern color, classic panel lines." },
+  { image: doorBlackWin, style: "Black modern with windows", detail: "Vertical glass stack for daylight." },
+  { image: doorCarriage, style: "Carriage house", detail: "Cream finish, X-brace, black hardware." },
+  { image: doorWhiteCarriage, style: "White carriage with windows", detail: "Grille windows, classic look." },
+  { image: doorWood, style: "Wood-look walnut", detail: "Wood warmth, steel durability." },
+];
+---
+
+<SiteLayout
+  title="Garage Door Gallery | Finished Work by EZ Garage Doors"
+  description="Finished garage door installations and before-and-after transformations: insulated steel, carriage house, black modern, wood-look, and more."
+>
+  <section class="gallery-hero">
+    <div class="wrap wrap--narrow">
+      <h1>Finished Work</h1>
+      <p class="gallery-hero__sub">
+        Door styles we install and the difference a replacement makes. See something close to
+        what you want? Mention it when you request your estimate.
+      </p>
+    </div>
+  </section>
+
+  <FinishedDoorGallery doors={doors} />
+
+  <TrustLogoStrip variant="door-brands" />
+
+  <BeforeAfterGallery
+    pairs={[
+      { before: baBefore1, after: baAfter1, caption: "Aged wood door → white long-panel with windows" },
+      { before: baBefore2, after: baAfter2, caption: "Faded panel door → black long-panel with windows" },
+      { before: baBefore3, after: baAfter3, caption: "Worn single door → white raised panel" },
+      { before: baBefore4, after: baAfter4, caption: "Dirty beige door → dark bronze panel" },
+    ]}
+  />
+
+  <CTASection
+    heading="Picture your garage here"
+    sub="Request a written installation estimate with the style you have in mind."
+    secondaryLabel="Request Installation Estimate"
+  />
+</SiteLayout>
+
+<style>
+  .gallery-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .gallery-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+</style>

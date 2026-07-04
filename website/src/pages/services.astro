@@ -1,0 +1,47 @@
+---
+/**
+ * Services overview — a router page, not a brochure.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import ServiceRouter from "../components/ServiceRouter.astro";
+import EmergencyCallBar from "../components/EmergencyCallBar.astro";
+import PricingLogicBlock from "../components/PricingLogicBlock.astro";
+import CTASection from "../components/CTASection.astro";
+---
+
+<SiteLayout
+  title="Garage Door Services in Connecticut | EZ Garage Doors"
+  description="All EZ Garage Doors services: garage door repair, broken spring replacement, opener repair, new door installation, replacement, and commercial door service."
+>
+  <section class="services-hero">
+    <div class="wrap wrap--narrow">
+      <h1>Garage Door Services</h1>
+      <p class="services-hero__sub">
+        Repair, springs, openers, new installations, and commercial doors — every job starts with
+        a written quote.
+      </p>
+    </div>
+  </section>
+
+  <EmergencyCallBar />
+
+  <ServiceRouter />
+
+  <PricingLogicBlock />
+
+  <CTASection />
+</SiteLayout>
+
+<style>
+  .services-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .services-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+</style>

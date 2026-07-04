@@ -1,0 +1,243 @@
+---
+/**
+ * Replacement / upgrade page — planned project, "is it time?" intent.
+ * Bridges repair vs. replace, then routes to installation or cost guide.
+ */
+import { Image } from "astro:assets";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import MicroTrustBar from "../components/MicroTrustBar.astro";
+import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
+import CTASection from "../components/CTASection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+
+import heroAfter from "../assets/photos/ez-after-white-raised-panel.png";
+import baBefore3 from "../assets/photos/ez-before-worn-single-door.png";
+import baAfter3 from "../assets/photos/ez-after-white-raised-panel.png";
+import baBefore4 from "../assets/photos/ez-before-dirty-beige-door.png";
+import baAfter4 from "../assets/photos/ez-after-dark-bronze-panel.png";
+
+const replaceSigns = [
+  { sign: "Repairs are stacking up", detail: "A spring this year, cables last year, panels rusting — the math starts favoring a new door." },
+  { sign: "Panels are cracked, rotted, or rusted", detail: "Cosmetic damage becomes structural. Single panels can sometimes be replaced; widespread damage can't." },
+  { sign: "The door pre-dates safety sensors", detail: "Very old systems lack today's safety hardware. Replacement brings the whole system current." },
+  { sign: "It's loud, slow, and drafty", detail: "A modern insulated door runs quieter and keeps an attached garage noticeably warmer." },
+  { sign: "You're selling or refreshing the house", detail: "The garage door is a huge share of street-facing facade — one of the most visible upgrades a house can get." },
+];
+
+const service = {
+  name: "Garage Door Replacement",
+  description: "Full garage door replacement: removal of the old door and professional installation of a new one, with a written estimate first.",
+  url: "/garage-door-replacement/",
+};
+---
+
+<SiteLayout
+  title="Garage Door Replacement in Connecticut | EZ Garage Doors"
+  description="Is it time to replace your garage door? Honest repair-vs-replace guidance, replacement signs, and a written estimate before any work. Local Connecticut company."
+  service={service}
+>
+  <section class="replace-hero">
+    <div class="wrap replace-hero__grid">
+      <div>
+        <h1>Garage Door Replacement in Connecticut</h1>
+        <p class="replace-hero__sub">
+          Old door out, new door in — sizing, style, insulation, and hardware handled by one local
+          team, with the full price in writing before anything is ordered.
+        </p>
+        <div class="replace-hero__actions">
+          <a href="/contact/#request" class="btn btn--call btn--lg" data-track="estimate_click">
+            Get My Written Estimate
+          </a>
+          <a href="/garage-door-replacement-cost/" class="btn btn--outline btn--lg">
+            See What Affects Cost
+          </a>
+        </div>
+        <p class="cta-note">No pressure. One quote, in writing.</p>
+        <div class="replace-hero__trust">
+          <MicroTrustBar />
+        </div>
+      </div>
+      <div class="replace-hero__media">
+        <Image
+          src={heroAfter}
+          alt="New white raised-panel garage door after replacement"
+          width={880}
+          widths={[480, 720, 880]}
+          sizes="(max-width: 62rem) 92vw, 540px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <SectionHeading eyebrow="Repair or replace?" title="Signs it's time to replace the door" />
+      <ul class="replace-signs">
+        {
+          replaceSigns.map((item) => (
+            <li class="replace-signs__card">
+              <h3>
+                <span class="speed-tick" aria-hidden="true" />
+                {item.sign}
+              </h3>
+              <p>{item.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="replace-signs__honesty">
+        <strong>And when it's not time:</strong> if one spring broke on an otherwise healthy door,
+        that's a repair, not a replacement. We'll tell you which one you actually need —
+        see <a href="/garage-door-repair/">garage door repair</a>.
+      </p>
+    </div>
+  </section>
+
+  <TrustLogoStrip variant="door-brands" />
+
+  <BeforeAfterGallery
+    heading="Recent replacements, before and after"
+    pairs={[
+      { before: baBefore3, after: baAfter3, caption: "Worn single door replaced with a white raised-panel door" },
+      { before: baBefore4, after: baAfter4, caption: "Dirty beige door replaced with a dark bronze panel door" },
+    ]}
+  />
+
+  <section class="section">
+    <div class="wrap wrap--narrow replace-next">
+      <SectionHeading eyebrow="Next step" title="Two ways to move forward" center />
+      <div class="replace-next__cols">
+        <a href="/garage-door-installation/" class="replace-next__card" data-track="router_installation">
+          <h3>Browse door styles</h3>
+          <p>See insulated steel, carriage house, modern, and wood-look options with photos.</p>
+        </a>
+        <a href="/garage-door-replacement-cost/" class="replace-next__card" data-track="router_cost-guide">
+          <h3>Understand the cost</h3>
+          <p>What drives replacement pricing — size, insulation, windows, design, and hardware.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    heading="Ready to see the number?"
+    sub="Get a written replacement estimate — itemized, honest, and yours to keep."
+    secondaryLabel="Get My Written Estimate"
+  />
+</SiteLayout>
+
+<style>
+  .replace-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .replace-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .replace-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    max-width: 34rem;
+  }
+
+  .replace-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .replace-hero__trust {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ez-border);
+  }
+
+  .replace-hero__media img {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    height: auto;
+  }
+
+  .replace-signs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .replace-signs__card {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .replace-signs__card h3 {
+    display: flex;
+    align-items: center;
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .replace-signs__card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .replace-signs__honesty {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    background: #fff;
+    border-left: 4px solid var(--ez-orange);
+    border-radius: var(--radius-sm);
+  }
+
+  .replace-next__cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .replace-next__card {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-top: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+  }
+
+  .replace-next__card h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .replace-next__card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 62rem) {
+    .replace-hero__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+  }
+</style>

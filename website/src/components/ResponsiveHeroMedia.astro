@@ -1,0 +1,99 @@
+---
+/**
+ * Art-directed hero media: separate mobile and desktop crops,
+ * responsive srcsets, no layout shift, hero-priority loading.
+ */
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  desktopSrc: ImageMetadata;
+  mobileSrc: ImageMetadata;
+  alt: string;
+  focalPointDesktop?: string; // CSS object-position
+  focalPointMobile?: string;
+  overlayMode?: "none" | "bottom-gradient";
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  desktopSrc,
+  mobileSrc,
+  alt,
+  focalPointDesktop = "center",
+  focalPointMobile = "center",
+  overlayMode = "none",
+  priority = true,
+  class: className = "",
+} = Astro.props;
+
+const desktop = await getImage({
+  src: desktopSrc,
+  format: "webp",
+  widths: [820, 1100, 1450],
+  sizes: "(min-width: 62rem) 62vw, 100vw",
+});
+
+const mobile = await getImage({
+  src: mobileSrc,
+  format: "webp",
+  widths: [480, 780, 990],
+  sizes: "100vw",
+});
+
+const mobileRatio = mobileSrc.height / mobileSrc.width;
+const desktopRatio = desktopSrc.height / desktopSrc.width;
+---
+
+<div
+  class:list={["hero-media", className, { "hero-media--gradient": overlayMode === "bottom-gradient" }]}
+  style={`--ratio-mobile: ${mobileRatio}; --ratio-desktop: ${desktopRatio}; --focal-mobile: ${focalPointMobile}; --focal-desktop: ${focalPointDesktop};`}
+>
+  <picture>
+    <source media="(min-width: 62rem)" srcset={desktop.srcSet.attribute} sizes={desktop.attributes.sizes} />
+    <img
+      src={mobile.src}
+      srcset={mobile.srcSet.attribute}
+      sizes={mobile.attributes.sizes}
+      alt={alt}
+      width={mobileSrc.width}
+      height={mobileSrc.height}
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : "auto"}
+      decoding={priority ? "sync" : "async"}
+    />
+  </picture>
+</div>
+
+<style>
+  .hero-media {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focal-mobile);
+    aspect-ratio: calc(1 / var(--ratio-mobile));
+  }
+
+  .hero-media--gradient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgb(20 28 38 / 0.65) 100%);
+    pointer-events: none;
+  }
+
+  @media (min-width: 62rem) {
+    .hero-media img {
+      object-position: var(--focal-desktop);
+      aspect-ratio: calc(1 / var(--ratio-desktop));
+    }
+  }
+</style>

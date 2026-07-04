@@ -1,0 +1,183 @@
+---
+/**
+ * Footer: legal identity, service area, contact, legal links.
+ * License / insurance lines appear ONLY when confirmed values are
+ * added to this component — no placeholder numbers are rendered.
+ */
+import { Image } from "astro:assets";
+import logoWhite from "../assets/brand/ez-logo-white.svg";
+import { BUSINESS, APPROVED_CLAIMS, hasPhone } from "../config/business";
+import { services } from "../config/services";
+
+const year = new Date().getFullYear();
+
+/* needs-owner-confirmation: CT HIC / license number and insurance statement.
+   When confirmed, add them to the identity column below. */
+---
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div class="footer__identity">
+      <Image src={logoWhite} alt="EZ Garage Doors" width={190} loading="lazy" />
+      <p class="footer__tagline">{APPROVED_CLAIMS.tagline}</p>
+      <p>
+        {BUSINESS.legalName} — a local {BUSINESS.state} garage door company.
+        {APPROVED_CLAIMS.years}.
+      </p>
+      <p>
+        {
+          hasPhone() ? (
+            <a href={`tel:${BUSINESS.PRIMARY_PHONE_TEL}`} data-track="call_click">
+              {BUSINESS.PRIMARY_PHONE}
+            </a>
+          ) : (
+            <span class="footer__phone-soon">{BUSINESS.PRIMARY_PHONE}</span>
+          )
+        }
+      </p>
+    </div>
+
+    <nav class="footer__col" aria-label="Services">
+      <h3>Services</h3>
+      <ul>
+        {
+          services.map((s) => (
+            <li>
+              <a href={`/${s.slug}/`}>{s.title}</a>
+            </li>
+          ))
+        }
+        <li><a href="/emergency-garage-door-repair/">Emergency Repair</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Company">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="/about/">About EZ Garage Doors</a></li>
+        <li><a href="/reviews/">Reviews</a></li>
+        <li><a href="/gallery/">Finished Work</a></li>
+        <li><a href="/service-areas/">Service Areas</a></li>
+        <li><a href="/garage-door-replacement-cost/">Cost Guide</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <h3>Our promise</h3>
+      <ul class="footer__promises">
+        <li>{APPROVED_CLAIMS.writtenQuote}</li>
+        <li>No bait pricing</li>
+        <li>{APPROVED_CLAIMS.reviewsShort}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__legal">
+    <div class="wrap footer__legal-inner">
+      <p>© {year} {BUSINESS.legalName}. Serving central {BUSINESS.state}.</p>
+      <ul>
+        <li><a href="/privacy-policy/">Privacy Policy</a></li>
+        <li><a href="/terms/">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ez-charcoal-deep);
+    color: #b8c1cc;
+    font-size: var(--text-sm);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-6);
+    padding-block: var(--space-7);
+  }
+
+  .footer__identity img {
+    width: 170px;
+    height: auto;
+    margin-bottom: var(--space-3);
+  }
+
+  .footer__tagline {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ez-orange);
+    text-transform: uppercase;
+    font-size: var(--text-xs);
+    margin-bottom: var(--space-3);
+  }
+
+  .footer__identity p {
+    margin-bottom: var(--space-2);
+  }
+
+  .footer__phone-soon {
+    color: #8b95a1;
+    font-style: italic;
+  }
+
+  .footer h3 {
+    color: #fff;
+    font-size: var(--text-base);
+    margin-bottom: var(--space-3);
+  }
+
+  .footer__col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .footer a {
+    color: #b8c1cc;
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    color: var(--ez-orange);
+  }
+
+  .footer__promises li {
+    display: flex;
+    align-items: center;
+  }
+
+  .footer__promises li::before {
+    content: "";
+    width: 0.9rem;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--ez-orange);
+    margin-right: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .footer__legal {
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    padding-block: var(--space-4);
+  }
+
+  .footer__legal-inner {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .footer__legal ul {
+    display: flex;
+    gap: var(--space-4);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+</style>

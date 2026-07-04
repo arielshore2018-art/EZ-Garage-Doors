@@ -1,0 +1,70 @@
+---
+/**
+ * Symptom/issue grid — meets urgent visitors at their actual problem.
+ */
+import SectionHeading from "./SectionHeading.astro";
+
+interface Issue {
+  symptom: string;
+  meaning: string;
+}
+
+interface Props {
+  heading?: string;
+  eyebrow?: string;
+  issues: Issue[];
+  alt?: boolean;
+}
+
+const { heading = "What is your door doing?", eyebrow = "Common problems", issues, alt = false } = Astro.props;
+---
+
+<section class:list={["section", { "section--alt": alt }]} aria-labelledby="issues-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <ul class="issues">
+      {
+        issues.map((issue) => (
+          <li class="issues__card">
+            <h3>{issue.symptom}</h3>
+            <p>{issue.meaning}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .issues {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .issues__card {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .issues__card h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 3px solid transparent;
+    border-image: var(--speed-line-gradient) 1;
+    border-image-width: 0 0 3px 0;
+    display: inline-block;
+  }
+
+  .issues__card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+</style>

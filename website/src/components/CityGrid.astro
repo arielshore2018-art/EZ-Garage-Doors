@@ -1,0 +1,82 @@
+---
+/**
+ * Service-area town grid. Towns link to a dedicated page ONLY when
+ * that page is published with real local substance (cities.ts).
+ * Unpublished towns render as plain text — no thin doorway pages.
+ */
+import { cities } from "../config/cities";
+import { BUSINESS } from "../config/business";
+import SectionHeading from "./SectionHeading.astro";
+
+interface Props {
+  heading?: string;
+  compact?: boolean;
+}
+
+const { heading = `Where we work in ${BUSINESS.state}`, compact = false } = Astro.props;
+---
+
+<section class:list={["section", { "section--alt": !compact }]} aria-labelledby="areas-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow="Service area" title={heading} />
+    <ul class="city-grid">
+      {
+        cities.map((city) => (
+          <li>
+            {city.published ? (
+              <a href={`/service-areas/${city.slug}/`} class="city-grid__item city-grid__item--link">
+                {city.name}, CT
+              </a>
+            ) : (
+              <span class="city-grid__item">{city.name}, CT</span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="muted city-grid__note">
+      Not on the list? <a href="/contact/">Ask us</a> — we cover nearby towns across central
+      {BUSINESS.state}.
+    </p>
+  </div>
+</section>
+
+<style>
+  .city-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: var(--space-2) var(--space-4);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .city-grid__item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-2) 0;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  .city-grid__item::before {
+    content: "";
+    display: inline-block;
+    width: 0.9rem;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--speed-line-gradient);
+    margin-right: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .city-grid__item--link {
+    text-decoration: underline;
+    text-decoration-color: var(--ez-orange);
+  }
+
+  .city-grid__note {
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+  }
+</style>

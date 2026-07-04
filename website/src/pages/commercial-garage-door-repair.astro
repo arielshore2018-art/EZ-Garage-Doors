@@ -1,0 +1,215 @@
+---
+/**
+ * Commercial repair — B2B / facilities intent. Industrial tone,
+ * downtime framing, no residential family copy. Text-led (the only
+ * commercial photo was rejected for third-party branding).
+ * COI / emergency-response claims intentionally absent until confirmed.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import CallButton from "../components/CallButton.astro";
+import CTASection from "../components/CTASection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import LeadForm from "../components/LeadForm.astro";
+import { APPROVED_CLAIMS } from "../config/business";
+
+const doorTypes = [
+  { type: "Sectional overhead doors", detail: "Warehouse and loading dock doors — panels, tracks, springs, and operators." },
+  { type: "Rolling steel doors", detail: "Coiling service doors and counter shutters — slats, guides, and motor operators." },
+  { type: "High-cycle spring systems", detail: "Commercial doors cycle far more than residential — springs rated for the duty they actually see." },
+  { type: "Commercial operators", detail: "Trolley, jackshaft, and hoist operators, with controls, edges, and photo eyes." },
+];
+
+const service = {
+  name: "Commercial Garage Door Repair",
+  description: "Repair and service of commercial overhead doors, rolling steel doors, and door operators for business properties.",
+  url: "/commercial-garage-door-repair/",
+};
+---
+
+<SiteLayout
+  title="Commercial Garage Door Repair in Connecticut | EZ Garage Doors"
+  description="Commercial overhead door and rolling door repair in Connecticut for warehouses, loading docks, firehouses, and business properties where downtime matters."
+  service={service}
+>
+  <section class="comm-hero">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow">Commercial &amp; industrial</p>
+      <h1>Commercial Garage Door Repair in Connecticut</h1>
+      <p class="comm-hero__sub">
+        Service for commercial overhead doors, rolling doors, loading areas, and business
+        properties where downtime matters.
+      </p>
+      <div class="comm-hero__actions">
+        <a href="#request" class="btn btn--call btn--lg" data-track="estimate_click">
+          Request Commercial Service
+        </a>
+        <CallButton label="Call Now" variant="inverse-outline" size="lg" />
+      </div>
+      <ul class="comm-hero__facts" aria-label="Commercial service facts">
+        <li>{APPROVED_CLAIMS.years}</li>
+        <li>Written quote before work begins</li>
+        <li>Local {`Connecticut`} company — not a dispatch broker</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading eyebrow="Downtime is the real cost" title="A stuck door stops the business" />
+      <p class="comm-downtime">
+        A failed dock door doesn't just need a part — it blocks trucks, reroutes staff, and burns
+        schedule. Commercial calls are scoped by phone first (door type, size, what failed), so
+        the visit fixes the door instead of discovering it.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <SectionHeading eyebrow="Equipment we service" title="Commercial door types" />
+      <ul class="comm-types">
+        {
+          doorTypes.map((d) => (
+            <li class="comm-types__card">
+              <h3>{d.type}</h3>
+              <p>{d.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap comm-agreement">
+      <div>
+        <SectionHeading eyebrow="For facilities & property managers" title="Planned maintenance beats emergency calls" />
+        <p>
+          High-cycle doors fail on schedule — springs and cables have a duty life. If you manage
+          multiple doors or properties, ask about a recurring service arrangement: inspection,
+          lubrication, spring and cable checks, and operator safety tests, documented per door.
+        </p>
+        <p class="muted">
+          Documentation for vendor onboarding available on request — ask when you call.
+        </p>
+      </div>
+      <div class="wrap--narrow comm-form">
+        <LeadForm
+          heading="Request Commercial Service"
+          submitLabel="Request Commercial Service"
+          context="commercial"
+        />
+      </div>
+    </div>
+  </section>
+
+  <CTASection
+    heading="Door down at your facility?"
+    sub="Call EZ Garage Doors with the door type and what failed — we'll scope it by phone."
+    callLabel="Call for Commercial Service"
+    secondaryLabel="Request Commercial Service"
+    secondaryHref="#request"
+    note="A commercial door specialist will follow up."
+  />
+</SiteLayout>
+
+<style>
+  .comm-hero {
+    background: var(--ez-charcoal);
+    color: #cfd6de;
+    padding-block: var(--space-8);
+    border-bottom: 4px solid var(--ez-orange);
+  }
+
+  .comm-hero h1 {
+    color: #fff;
+  }
+
+  .comm-hero__sub {
+    font-size: var(--text-lg);
+    margin-top: var(--space-4);
+    color: #b8c1cc;
+  }
+
+  .comm-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .comm-hero__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    list-style: none;
+    padding: var(--space-4) 0 0;
+    margin: var(--space-4) 0 0;
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: var(--text-sm);
+    color: #e6eaef;
+  }
+
+  .comm-hero__facts li::before {
+    content: "";
+    display: inline-block;
+    width: 0.9rem;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--ez-orange);
+    margin-right: var(--space-2);
+    vertical-align: middle;
+  }
+
+  .comm-downtime {
+    max-width: 46rem;
+    font-size: var(--text-lg);
+  }
+
+  .comm-types {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .comm-types__card {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-left: 4px solid var(--ez-charcoal);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .comm-types__card h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  .comm-types__card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .comm-agreement {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .comm-agreement p {
+    margin-bottom: var(--space-4);
+  }
+
+  @media (max-width: 62rem) {
+    .comm-agreement {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

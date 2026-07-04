@@ -1,0 +1,50 @@
+---
+/**
+ * Stripped header for PPC landing pages: logo + call CTA only.
+ * No navigation — one goal per page.
+ */
+import { Image } from "astro:assets";
+import logo from "../assets/brand/ez-logo-primary-horizontal.svg";
+import CallButton from "./CallButton.astro";
+
+interface Props {
+  callLabel?: string;
+}
+
+const { callLabel = "Call Now" } = Astro.props;
+---
+
+<header class="lp-header">
+  <div class="wrap lp-header__inner">
+    <a href="/" class="lp-header__logo" aria-label="EZ Garage Doors — home">
+      <Image src={logo} alt="EZ Garage Doors — Fast. Reliable. Local." width={190} loading="eager" />
+    </a>
+    <CallButton label={callLabel} />
+  </div>
+</header>
+
+<style>
+  .lp-header {
+    background: #fff;
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .lp-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    min-height: 4rem;
+  }
+
+  .lp-header__logo img {
+    width: clamp(140px, 20vw, 190px);
+    height: auto;
+  }
+
+  @media (max-width: 26rem) {
+    .lp-header__logo img {
+      width: 130px;
+    }
+  }
+</style>

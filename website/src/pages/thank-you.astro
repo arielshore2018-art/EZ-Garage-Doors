@@ -1,0 +1,50 @@
+---
+/**
+ * Thank-you / conversion confirmation page. Also the conversion
+ * event target for form-submit tracking.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import CallButton from "../components/CallButton.astro";
+---
+
+<SiteLayout
+  title="Request Received | EZ Garage Doors"
+  description="Your request has been received. A local garage door specialist from EZ Garage Doors will follow up."
+  noindex
+>
+  <section class="thanks">
+    <div class="wrap wrap--narrow thanks__inner">
+      <h1>Request received</h1>
+      <span class="speed-rail" aria-hidden="true"></span>
+      <p class="thanks__sub">
+        A local garage door specialist will follow up. If the door situation gets worse in the
+        meantime — stuck open, off track, spring snapped — call instead of waiting.
+      </p>
+      <CallButton label="Call EZ Garage Doors" size="lg" />
+      <p class="cta-note">No pressure. One quote, in writing.</p>
+      <p class="thanks__back"><a href="/">Back to the homepage</a></p>
+    </div>
+  </section>
+
+  <script>
+    // Conversion event for the thank-you state.
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "lead_thank_you", page: location.pathname });
+  </script>
+</SiteLayout>
+
+<style>
+  .thanks {
+    padding-block: var(--space-8);
+  }
+
+  .thanks__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-block: var(--space-4) var(--space-5);
+  }
+
+  .thanks__back {
+    margin-top: var(--space-5);
+  }
+</style>

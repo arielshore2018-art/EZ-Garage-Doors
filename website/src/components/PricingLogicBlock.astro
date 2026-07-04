@@ -1,0 +1,112 @@
+---
+/**
+ * Pricing honesty module, styled like a clean service ticket.
+ * Shows HOW pricing works — never fake exact prices. Any real price
+ * ranges must come from the owner (see /garage-door-replacement-cost).
+ */
+import SectionHeading from "./SectionHeading.astro";
+
+interface Props {
+  heading?: string;
+  intro?: string;
+  factors?: { label: string; detail: string }[];
+}
+
+const {
+  heading = "How pricing works",
+  intro = "No teaser prices, no surprise line items. The price depends on the actual door and parts — and you approve it in writing before work begins.",
+  factors = [
+    { label: "Repairs", detail: "Parts needed, door size and weight, spring system, opener condition" },
+    { label: "Installations", detail: "Door size, insulation, windows, design, and hardware" },
+    { label: "Every job", detail: "Written quote before work begins — you approve the price first" },
+  ],
+} = Astro.props;
+---
+
+<section class="section" aria-labelledby="pricing-heading">
+  <div class="wrap pricing">
+    <div class="pricing__copy">
+      <SectionHeading eyebrow="Pricing honesty" title={heading} />
+      <p>{intro}</p>
+      <p class="muted">
+        Wondering what a new door costs? See the
+        <a href="/garage-door-replacement-cost/">garage door replacement cost guide</a>.
+      </p>
+    </div>
+    <div class="pricing__ticket" role="img" aria-label="What determines your quote">
+      <p class="pricing__ticket-head">SERVICE TICKET — WHAT SETS THE PRICE</p>
+      <dl>
+        {
+          factors.map((f) => (
+            <div class="pricing__row">
+              <dt>{f.label}</dt>
+              <dd>{f.detail}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="pricing__ticket-foot">One quote. In writing. Before work begins.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .pricing__copy p {
+    margin-bottom: var(--space-4);
+  }
+
+  .pricing__ticket {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-top: 5px solid var(--ez-orange);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-5) var(--space-6);
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+    font-size: var(--text-sm);
+  }
+
+  .pricing__ticket-head {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ez-steel);
+    border-bottom: 1px dashed var(--ez-border);
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .pricing__ticket dl {
+    margin: 0;
+  }
+
+  .pricing__row {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-bottom: 1px dashed var(--ez-border);
+  }
+
+  .pricing__row dt {
+    font-weight: 700;
+    color: var(--ez-charcoal);
+  }
+
+  .pricing__row dd {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .pricing__ticket-foot {
+    margin-top: var(--space-3);
+    font-weight: 700;
+    color: var(--ez-orange-deep);
+  }
+</style>

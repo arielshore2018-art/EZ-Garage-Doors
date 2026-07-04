@@ -1,0 +1,89 @@
+---
+/**
+ * Grid of finished door styles. Captions name the style — not a
+ * customer, town, or job claim.
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import SectionHeading from "./SectionHeading.astro";
+
+interface Door {
+  image: ImageMetadata;
+  style: string;
+  detail: string;
+}
+
+interface Props {
+  doors: Door[];
+  heading?: string;
+  eyebrow?: string;
+}
+
+const { doors, heading = "Door styles we install", eyebrow = "Finished work" } = Astro.props;
+---
+
+<section class="section" aria-labelledby="doors-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <ul class="door-grid">
+      {
+        doors.map((door) => (
+          <li class="door-grid__card">
+            <Image
+              src={door.image}
+              alt={`${door.style} garage door installed by EZ Garage Doors`}
+              width={720}
+              widths={[420, 720]}
+              sizes="(max-width: 48rem) 92vw, 360px"
+              loading="lazy"
+            />
+            <div class="door-grid__caption">
+              <h3>{door.style}</h3>
+              <p>{door.detail}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .door-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-5);
+  }
+
+  .door-grid__card {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+
+  .door-grid__card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .door-grid__caption {
+    padding: var(--space-4) var(--space-5);
+    border-top: 3px solid var(--ez-orange);
+  }
+
+  .door-grid__caption h3 {
+    font-size: var(--text-lg);
+  }
+
+  .door-grid__caption p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: var(--space-1) 0 0;
+  }
+</style>

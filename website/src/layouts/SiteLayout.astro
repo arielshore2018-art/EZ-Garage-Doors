@@ -1,0 +1,28 @@
+---
+/**
+ * Full website layout: header with nav, footer trust zone,
+ * sticky mobile call bar.
+ */
+import BaseLayout from "./BaseLayout.astro";
+import LogoHeader from "../components/LogoHeader.astro";
+import FooterTrustZone from "../components/FooterTrustZone.astro";
+import StickyMobileCTA from "../components/StickyMobileCTA.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  service?: { name: string; description: string; url: string };
+  faqs?: { question: string; answer: string }[];
+}
+
+const props = Astro.props;
+---
+
+<BaseLayout {...props}>
+  <LogoHeader />
+  <main id="main">
+    <slot />
+  </main>
+  <FooterTrustZone />
+  <StickyMobileCTA />
+</BaseLayout>

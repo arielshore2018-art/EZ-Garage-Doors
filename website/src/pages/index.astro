@@ -1,0 +1,53 @@
+---
+/**
+ * Homepage v3 — senior build directive.
+ * ONE PROBLEM. ONE PROMISE. ONE ACTION.
+ * Section order:
+ *   1. HomeRepairHero      (light, repair-first, service-note card)
+ *   2. RepairProblemCards  (4 cards max)
+ *   3. WrittenQuoteBlock   (3 steps, thin orange accent)
+ *   4. CompactProofBand    (stats + platform ratings + reviews + work images)
+ *   5. SecondaryInstallPath (calm, clearly secondary)
+ *   + service area grid and final CTA.
+ * Installation is secondary by design. Phone stays a placeholder
+ * variable (see business.ts) — no fake number anywhere.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import HomeRepairHero from "../components/home/HomeRepairHero.astro";
+import ContinuousBrandRail from "../components/ContinuousBrandRail.astro";
+import StatsBand from "../components/home/StatsBand.astro";
+import RepairVisualGrid from "../components/home/RepairVisualGrid.astro";
+import WrittenQuoteBlock from "../components/home/WrittenQuoteBlock.astro";
+import CompactProofBand from "../components/home/CompactProofBand.astro";
+import SecondaryInstallPath from "../components/home/SecondaryInstallPath.astro";
+import CityGrid from "../components/CityGrid.astro";
+import CTASection from "../components/CTASection.astro";
+---
+
+<SiteLayout
+  title="EZ Garage Doors | Garage Door Repair in Connecticut — Springs, Openers, Stuck Doors"
+  description="Garage door won't close? EZ Garage Doors fixes stuck doors, broken springs, opener issues, cables, and off-track doors across Connecticut — written quote before work begins."
+>
+  <HomeRepairHero />
+
+  <ContinuousBrandRail />
+
+  <StatsBand />
+
+  <RepairVisualGrid />
+
+  <WrittenQuoteBlock />
+
+  <CompactProofBand />
+
+  <SecondaryInstallPath />
+
+  <CityGrid compact />
+
+  <CTASection
+    heading="Door acting up today?"
+    sub="Call EZ Garage Doors for repair service — written quote before work begins."
+    callLabel="Call for Repair Service"
+    note="Clear answer. Written quote. No pressure."
+  />
+</SiteLayout>

@@ -1,0 +1,80 @@
+---
+/**
+ * Terms of service. Working draft — needs-owner-confirmation before
+ * launch; not legal advice.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { BUSINESS } from "../config/business";
+
+const effectiveDate = "July 3, 2026";
+---
+
+<SiteLayout
+  title="Terms of Service | EZ Garage Doors"
+  description="Terms of use for the EZ Garage Doors website, including estimates, quotes, and site content."
+>
+  <section class="legal">
+    <div class="wrap wrap--narrow">
+      <h1>Terms of Service</h1>
+      <p class="muted">Effective date: {effectiveDate}</p>
+
+      <h2>Using this website</h2>
+      <p>
+        This website is operated by {BUSINESS.legalName}. By using it, you agree to these terms.
+        The site's content is for general information about our services in {BUSINESS.state}.
+      </p>
+
+      <h2>Estimates and quotes</h2>
+      <p>
+        Information on this site — including descriptions of cost factors — is general guidance,
+        not a quote. Binding prices are provided only as written quotes for a specific door and
+        job, and each written quote states its own validity period.
+      </p>
+
+      <h2>Service requests</h2>
+      <p>
+        Submitting a request does not create an appointment by itself; appointments are confirmed
+        when we contact you. If a door is dangerous (broken spring, off track), keep people and
+        vehicles away from it until it is serviced.
+      </p>
+
+      <h2>Content and trademarks</h2>
+      <p>
+        Site content and the EZ Garage Doors name and logo belong to {BUSINESS.legalName}.
+        Manufacturer and brand names mentioned on this site belong to their respective owners;
+        mentioning them means we service those products, not that we are affiliated with or
+        endorsed by those companies.
+      </p>
+
+      <h2>Liability</h2>
+      <p>
+        We work to keep the site's information accurate, but we provide the website "as is"
+        without warranties. Nothing on this page limits rights you have under applicable consumer
+        protection law.
+      </p>
+
+      <h2>Changes</h2>
+      <p>Updated terms will be posted here with a new effective date.</p>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .legal {
+    padding-block: var(--space-7);
+  }
+
+  .legal h1 {
+    margin-bottom: var(--space-2);
+  }
+
+  .legal h2 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
+  }
+
+  .legal p {
+    margin-bottom: var(--space-3);
+  }
+</style>

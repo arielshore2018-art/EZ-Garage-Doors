@@ -1,0 +1,104 @@
+---
+/**
+ * "What happens when you call" — numbered operational steps.
+ * Styled like a dispatch sequence, not marketing fluff.
+ */
+interface Step {
+  title: string;
+  detail: string;
+}
+
+interface Props {
+  steps?: Step[];
+  heading?: string;
+  eyebrow?: string;
+}
+
+const {
+  heading = "What happens when you call",
+  eyebrow = "The process",
+  steps = [
+    {
+      title: "Describe the issue",
+      detail: "Tell us what the door is doing — stuck, loud bang, won't close, opener dead.",
+    },
+    {
+      title: "Send a photo if useful",
+      detail: "A quick photo of the door, spring, or opener often speeds up the diagnosis.",
+    },
+    {
+      title: "Get your arrival window",
+      detail: "We confirm the appointment and the time window before anyone drives out.",
+    },
+    {
+      title: "Written quote before work begins",
+      detail: "You see the price in writing and approve it first. Then we do the repair.",
+    },
+  ],
+} = Astro.props;
+
+import SectionHeading from "./SectionHeading.astro";
+---
+
+<section class="section section--alt" aria-labelledby="process-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <ol class="steps">
+      {
+        steps.map((step, i) => (
+          <li class="steps__item">
+            <span class="steps__num" aria-hidden="true">
+              {i + 1}
+            </span>
+            <div>
+              <h3 class="steps__title">{step.title}</h3>
+              <p class="steps__detail">{step.detail}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-5);
+    counter-reset: step;
+  }
+
+  .steps__item {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .steps__num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-2xl);
+    line-height: 1;
+    color: var(--ez-orange);
+    min-width: 2rem;
+  }
+
+  .steps__title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .steps__detail {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+</style>

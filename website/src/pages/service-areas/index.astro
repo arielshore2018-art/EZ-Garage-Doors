@@ -1,0 +1,47 @@
+---
+/**
+ * Service-area hub. Towns render as a grid; only cities with
+ * published: true (real local proof) get dedicated pages —
+ * no token-swap doorway pages.
+ */
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import CityGrid from "../../components/CityGrid.astro";
+import CTASection from "../../components/CTASection.astro";
+import { BUSINESS } from "../../config/business";
+---
+
+<SiteLayout
+  title="Service Areas | EZ Garage Doors — Central Connecticut"
+  description="EZ Garage Doors serves central Connecticut towns including Middletown, Cromwell, Glastonbury, West Hartford, Southington, and surrounding communities."
+>
+  <section class="areas-hero">
+    <div class="wrap wrap--narrow">
+      <h1>Garage Door Service Across Central {BUSINESS.state}</h1>
+      <p class="areas-hero__sub">
+        One local team covering the towns below for repair, springs, openers, and new door
+        installations. If your town borders this area, call — we can usually help.
+      </p>
+    </div>
+  </section>
+
+  <CityGrid heading="Towns we serve" compact />
+
+  <CTASection
+    heading="In our area and need a hand?"
+    sub="Call EZ Garage Doors or request a written estimate — we'll confirm coverage on the spot."
+  />
+</SiteLayout>
+
+<style>
+  .areas-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .areas-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+</style>

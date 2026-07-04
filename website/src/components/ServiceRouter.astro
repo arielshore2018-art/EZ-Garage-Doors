@@ -1,0 +1,122 @@
+---
+/**
+ * Repair vs. Installation router — sends each visitor mode to the
+ * right page instead of one generic services blob.
+ */
+import { services } from "../config/services";
+import SectionHeading from "./SectionHeading.astro";
+
+const repairServices = services.filter((s) => s.urgency === "repair");
+const projectServices = services.filter((s) => s.urgency === "project");
+const commercial = services.find((s) => s.urgency === "commercial");
+---
+
+<section class="section" aria-labelledby="router-heading">
+  <div class="wrap">
+    <SectionHeading
+      eyebrow="What do you need?"
+      title="Something broken — or planning a new door?"
+    />
+    <div class="router">
+      <div class="router__col">
+        <h3>Fix my door</h3>
+        <p class="muted">Broken today, needs a diagnosis, or acting up.</p>
+        <ul>
+          {
+            repairServices.map((s) => (
+              <li>
+                <a href={`/${s.slug}/`} class="router__card" data-track={`router_${s.slug}`}>
+                  <span class="router__title">{s.title}</span>
+                  <span class="router__blurb">{s.blurb}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="router__col">
+        <h3>Replace or install</h3>
+        <p class="muted">A planned upgrade with a written estimate first.</p>
+        <ul>
+          {
+            projectServices.map((s) => (
+              <li>
+                <a href={`/${s.slug}/`} class="router__card" data-track={`router_${s.slug}`}>
+                  <span class="router__title">{s.title}</span>
+                  <span class="router__blurb">{s.blurb}</span>
+                </a>
+              </li>
+            ))
+          }
+          {
+            commercial && (
+              <li>
+                <a href={`/${commercial.slug}/`} class="router__card" data-track={`router_${commercial.slug}`}>
+                  <span class="router__title">{commercial.title}</span>
+                  <span class="router__blurb">{commercial.blurb}</span>
+                </a>
+              </li>
+            )
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .router {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: var(--space-6);
+  }
+
+  .router__col > h3 {
+    margin-bottom: var(--space-1);
+  }
+
+  .router__col > p {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-sm);
+  }
+
+  .router__col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .router__card {
+    display: block;
+    padding: var(--space-4) var(--space-5);
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-left: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+
+  .router__card:hover {
+    border-color: var(--ez-orange);
+    transform: translateX(3px);
+  }
+
+  .router__title {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-lg);
+    color: var(--ez-charcoal);
+  }
+
+  .router__blurb {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: 0.2rem;
+  }
+</style>

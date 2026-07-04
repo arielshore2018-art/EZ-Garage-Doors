@@ -1,0 +1,60 @@
+---
+/**
+ * Final call-to-action section. Concrete labels + expectation line.
+ */
+import CallButton from "./CallButton.astro";
+
+interface Props {
+  heading?: string;
+  sub?: string;
+  callLabel?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  note?: string;
+}
+
+const {
+  heading = "Need garage door service today?",
+  sub = "Call EZ Garage Doors or request a written estimate.",
+  callLabel = "Call EZ Garage Doors",
+  secondaryLabel = "Get a Written Estimate",
+  secondaryHref = "/contact/#request",
+  note = "No pressure. One quote, in writing.",
+} = Astro.props;
+---
+
+<section class="section section--dark cta-final" aria-labelledby="final-cta-heading">
+  <div class="wrap cta-final__inner">
+    <h2 id="final-cta-heading">{heading}</h2>
+    <span class="speed-rail speed-rail--center" aria-hidden="true"></span>
+    <p class="cta-final__sub">{sub}</p>
+    <div class="cta-final__actions">
+      <CallButton label={callLabel} size="lg" />
+      <a href={secondaryHref} class="btn btn--inverse-outline btn--lg" data-track="estimate_click">
+        {secondaryLabel}
+      </a>
+    </div>
+    <p class="cta-note">{note}</p>
+  </div>
+</section>
+
+<style>
+  .cta-final__inner {
+    text-align: center;
+    max-width: 46rem;
+  }
+
+  .cta-final__sub {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+    color: #c9d2dc;
+  }
+
+  .cta-final__actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+</style>

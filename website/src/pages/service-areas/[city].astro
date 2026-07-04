@@ -1,0 +1,97 @@
+---
+/**
+ * City page template. Pages are generated ONLY for cities with
+ * published: true in src/config/cities.ts — which requires real local
+ * substance (job photos from that town, real reviews, drive-time notes).
+ * Right now no city is published: this template exists so that adding
+ * local proof + flipping the flag is the entire publish workflow.
+ * This is deliberate anti-doorway-page design: no thin town pages that
+ * only swap the city name.
+ */
+import type { GetStaticPaths } from "astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import CallButton from "../../components/CallButton.astro";
+import MicroTrustBar from "../../components/MicroTrustBar.astro";
+import ServiceRouter from "../../components/ServiceRouter.astro";
+import CTASection from "../../components/CTASection.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { publishedCities } from "../../config/cities";
+import { BUSINESS } from "../../config/business";
+
+export const getStaticPaths = (() => {
+  return publishedCities.map((city) => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}) satisfies GetStaticPaths;
+
+const { city } = Astro.props;
+---
+
+<SiteLayout
+  title={`Garage Door Repair & Installation in ${city.name}, CT | EZ Garage Doors`}
+  description={`Garage door repair, spring replacement, opener service, and new door installation in ${city.name}, Connecticut. Local company, written quote before work begins.`}
+>
+  <section class="city-hero">
+    <div class="wrap wrap--narrow">
+      <h1>Garage Door Service in {city.name}, {BUSINESS.stateAbbr}</h1>
+      <p class="city-hero__sub">
+        Repairs, springs, openers, and new doors for {city.name} homeowners — from a local team,
+        with a written quote before work begins.
+      </p>
+      <div class="city-hero__actions">
+        <CallButton label="Call EZ Garage Doors" size="lg" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">
+          Get a Written Estimate
+        </a>
+      </div>
+      <div class="city-hero__trust"><MicroTrustBar /></div>
+    </div>
+  </section>
+
+  {
+    city.localProof.driveTimeNote && (
+      <section class="section">
+        <div class="wrap wrap--narrow">
+          <SectionHeading eyebrow="Local coverage" title={`Serving ${city.name}`} />
+          <p>{city.localProof.driveTimeNote}</p>
+          {city.localProof.localNotes && <p>{city.localProof.localNotes}</p>}
+        </div>
+      </section>
+    )
+  }
+
+  <ServiceRouter />
+
+  <CTASection
+    heading={`Need garage door service in ${city.name}?`}
+    sub="Call EZ Garage Doors or request a written estimate."
+  />
+</SiteLayout>
+
+<style>
+  .city-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .city-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+
+  .city-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .city-hero__trust {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ez-border);
+  }
+</style>

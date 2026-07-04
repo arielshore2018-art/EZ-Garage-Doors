@@ -1,0 +1,171 @@
+---
+/**
+ * Short cold-traffic lead form: name, phone, town, issue.
+ * TCPA-conscious consent line, hidden UTM fields (filled by the
+ * tracking script), posts to FORM_ENDPOINT.
+ *
+ * TODO: Set BUSINESS.FORM_ENDPOINT before launch. While it is empty the
+ * form redirects to /thank-you/ so UX and conversion tracking are testable,
+ * but no lead is delivered — this is a launch blocker, not a live form.
+ */
+import { BUSINESS } from "../config/business";
+
+interface Props {
+  heading?: string;
+  submitLabel?: string;
+  showPhotoField?: boolean;
+  context?: string;
+}
+
+const {
+  heading = "Request a Written Estimate",
+  submitLabel = "Get My Written Estimate",
+  showPhotoField = true,
+  context = "general",
+} = Astro.props;
+---
+
+<div class="lead-form" id="request">
+  <h3>{heading}</h3>
+  <p class="lead-form__note">No spam. No pressure. One quote, in writing.</p>
+  <form
+    method="POST"
+    action={BUSINESS.FORM_ENDPOINT || "/thank-you/"}
+    data-lead-form
+    data-form-context={context}
+  >
+    <input type="hidden" name="form_context" value={context} />
+    <input type="hidden" name="utm_source" data-utm="utm_source" />
+    <input type="hidden" name="utm_medium" data-utm="utm_medium" />
+    <input type="hidden" name="utm_campaign" data-utm="utm_campaign" />
+    <input type="hidden" name="utm_term" data-utm="utm_term" />
+    <input type="hidden" name="utm_content" data-utm="utm_content" />
+
+    <div class="lead-form__row">
+      <label>
+        Name
+        <input type="text" name="name" autocomplete="name" required />
+      </label>
+      <label>
+        Phone
+        <input type="tel" name="phone" autocomplete="tel" inputmode="tel" required />
+      </label>
+    </div>
+
+    <div class="lead-form__row">
+      <label>
+        Town or ZIP
+        <input type="text" name="town" autocomplete="postal-code" required />
+      </label>
+      <label>
+        Preferred callback time <span class="lead-form__optional">(optional)</span>
+        <input type="text" name="callback_time" placeholder="e.g. after 4pm" />
+      </label>
+    </div>
+
+    <label>
+      What do you need help with?
+      <textarea
+        name="issue"
+        rows="3"
+        required
+        placeholder="e.g. Door won't close / loud bang, door feels heavy / want a new door"></textarea>
+    </label>
+
+    {
+      showPhotoField && (
+        <label>
+          Photo of the door or opener <span class="lead-form__optional">(optional, speeds up your quote)</span>
+          <input type="file" name="photo" accept="image/*" />
+        </label>
+      )
+    }
+
+    <button type="submit" class="btn btn--call btn--lg lead-form__submit" data-track="form_submit_click">
+      {submitLabel}
+    </button>
+
+    <p class="lead-form__consent">
+      By submitting, you agree that {BUSINESS.name} may contact you about your request.
+      Message/data rates may apply. Consent is not required to purchase. See our
+      <a href="/privacy-policy/">Privacy Policy</a>.
+    </p>
+  </form>
+</div>
+
+<style>
+  .lead-form {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-top: 5px solid var(--ez-orange);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-6);
+    scroll-margin-top: var(--space-6);
+  }
+
+  .lead-form h3 {
+    margin-bottom: var(--space-1);
+  }
+
+  .lead-form__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .lead-form__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  label {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: var(--text-sm);
+    color: var(--ez-charcoal);
+    margin-bottom: var(--space-3);
+  }
+
+  .lead-form__optional {
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+
+  input,
+  textarea {
+    display: block;
+    width: 100%;
+    margin-top: var(--space-1);
+    padding: 0.65rem 0.75rem;
+    font: inherit;
+    font-family: var(--font-body);
+    border: 1.5px solid var(--ez-border);
+    border-radius: var(--radius-sm);
+    background: var(--ez-white);
+    min-height: 44px;
+  }
+
+  input[type="file"] {
+    padding: 0.5rem;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--ez-orange);
+  }
+
+  .lead-form__submit {
+    width: 100%;
+    margin-top: var(--space-2);
+  }
+
+  .lead-form__consent {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin-top: var(--space-3);
+  }
+</style>

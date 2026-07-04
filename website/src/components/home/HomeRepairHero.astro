@@ -1,0 +1,173 @@
+---
+/**
+ * Image-led repair hero (v5). Visual: a real Connecticut home with a
+ * worn, sagging garage door — reads as a repair problem, not an
+ * installation ad. Door dominant; no van; no AI-technician staging.
+ * Mobile: header → full-bleed problem image → short copy → one dominant
+ * CTA → five-star rating proof. Desktop: photographic field with the
+ * copy panel overlapping the porch side (negative space), door fully
+ * visible on the left.
+ */
+import CallButton from "../CallButton.astro";
+import ResponsiveHeroMedia from "../ResponsiveHeroMedia.astro";
+import HeroRatingProof from "../HeroRatingProof.astro";
+import heroDesktop from "../../assets/photos/hero-problem-door-desktop.jpg";
+import heroMobile from "../../assets/photos/hero-problem-door-mobile.jpg";
+---
+
+<section class="heroV5">
+  <div class="heroV5__grid">
+    <ResponsiveHeroMedia
+      desktopSrc={heroDesktop}
+      mobileSrc={heroMobile}
+      alt="Worn residential garage door with an uneven bottom edge at a Connecticut home — a common repair call"
+      focalPointDesktop="28% 55%"
+      focalPointMobile="40% 60%"
+      priority
+      class="heroV5__media"
+    />
+
+    <div class="heroV5__panel">
+      <p class="heroV5__eyebrow">
+        <span class="speed-tick" aria-hidden="true"></span>
+        Connecticut Garage Door Repair
+      </p>
+      <h1>Door Stuck or Won't Close?</h1>
+      <p class="heroV5__sub">
+        Fast local repair for broken springs, openers, cables, tracks, and doors that won't
+        close.
+      </p>
+      <div class="heroV5__actions">
+        <CallButton label="Call for Repair" size="lg" track="hero_call_click" />
+        <a href="/contact/#request" class="heroV5__photo-link" data-track="photo_cta_click">
+          <svg
+            aria-hidden="true"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+            <circle cx="12" cy="13" r="3"></circle>
+          </svg>
+          Send a Photo
+        </a>
+      </div>
+      <p class="heroV5__micro">Written quote before work begins.</p>
+      <div class="heroV5__rating">
+        <HeroRatingProof />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .heroV5__grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .heroV5__panel {
+    background: var(--ez-white);
+    padding: var(--space-5) clamp(1rem, 4vw, 2rem) var(--space-5);
+  }
+
+  .heroV5__eyebrow {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-display);
+    font-weight: 750;
+    font-size: var(--text-xs);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ez-orange-deep);
+    margin-bottom: var(--space-2);
+  }
+
+  .heroV5__panel h1 {
+    font-size: clamp(2rem, 1.4rem + 2.8vw, 3.1rem);
+  }
+
+  .heroV5__sub {
+    margin-top: var(--space-3);
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    max-width: 30rem;
+  }
+
+  .heroV5__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+
+  .heroV5__photo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--ez-charcoal);
+    text-decoration-color: var(--ez-orange);
+    min-height: 44px;
+  }
+
+  .heroV5__photo-link:hover {
+    color: var(--ez-orange-deep);
+  }
+
+  .heroV5__micro {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .heroV5__rating {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--ez-border);
+  }
+
+  /* ---- Desktop: door visible left, panel over the porch side ---- */
+  @media (min-width: 62rem) {
+    .heroV5 {
+      background: linear-gradient(150deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+      padding-block: var(--space-7);
+    }
+
+    .heroV5__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.95fr);
+      align-items: center;
+      max-width: var(--content-max);
+      margin-inline: auto;
+      padding-inline: clamp(1rem, 4vw, 2rem);
+    }
+
+    .heroV5__media {
+      grid-column: 1;
+      grid-row: 1;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+    }
+
+    .heroV5__panel {
+      grid-column: 2;
+      grid-row: 1;
+      z-index: 2;
+      margin-left: -5.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--ez-border);
+      border-left: 5px solid var(--ez-orange);
+      box-shadow: var(--shadow-card);
+      padding: var(--space-6) var(--space-6);
+    }
+  }
+</style>

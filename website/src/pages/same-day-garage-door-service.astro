@@ -1,0 +1,189 @@
+---
+/**
+ * Fast-service PPC landing page.
+ * "Same-day" is NOT yet confirmed by the owner, so per the brief the
+ * copy promises fast LOCAL service and "call for today's availability"
+ * — no unconditional same-day claim, no false after-hours promises.
+ * needs-owner-confirmation: if same-day capacity is confirmed, the H1
+ * may be upgraded to "Same-Day Garage Door Service in Connecticut".
+ */
+import LandingLayout from "../layouts/LandingLayout.astro";
+import CallButton from "../components/CallButton.astro";
+import MicroTrustBar from "../components/MicroTrustBar.astro";
+import { APPROVED_CLAIMS } from "../config/business";
+
+const fastFixes = [
+  "Stuck or jammed doors",
+  "Broken torsion and extension springs",
+  "Snapped cables and off-track doors",
+  "Opener failures, remotes, and sensors",
+  "Doors that won't close or lock",
+];
+
+const service = {
+  name: "Fast Local Garage Door Service",
+  description: "Fast local garage door repair in Connecticut — call for today's availability.",
+  url: "/same-day-garage-door-service/",
+};
+---
+
+<LandingLayout
+  title="Fast Local Garage Door Service in Connecticut | EZ Garage Doors"
+  description="Stuck door, broken spring, or opener failure? Call EZ Garage Doors for fast local garage door service in Connecticut — ask about today's availability."
+  callLabel="Call for Availability"
+  service={service}
+>
+  <section class="fast-hero">
+    <div class="wrap fast-hero__inner">
+      <h1>Fast Local Garage Door Service in Connecticut</h1>
+      <p class="fast-hero__sub">
+        For stuck doors, broken springs, opener issues, and urgent repairs, call EZ Garage Doors
+        and ask about today's availability.
+      </p>
+      <div class="fast-hero__actions">
+        <CallButton label="Call for Availability" size="lg" track="fast_call_click" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">
+          Request Service
+        </a>
+      </div>
+      <p class="fast-hero__after-hours">
+        Calling after hours? Request service now — first callback when dispatch opens.
+      </p>
+      <div class="fast-hero__trust">
+        <MicroTrustBar
+          items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="fast-list">
+    <div class="wrap">
+      <h2>What we can usually fix on the first visit</h2>
+      <span class="speed-rail" aria-hidden="true"></span>
+      <ul class="fast-list__grid">
+        {
+          fastFixes.map((fix) => (
+            <li>
+              <span class="speed-tick" aria-hidden="true" />
+              {fix}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="muted fast-list__note">
+        Vans are stocked for the common failures — springs, cables, rollers, and opener parts —
+        so most repairs finish in one trip.
+      </p>
+    </div>
+  </section>
+
+  <section class="fast-quote">
+    <div class="wrap wrap--narrow">
+      <h2>Fast doesn't mean loose with pricing</h2>
+      <span class="speed-rail" aria-hidden="true"></span>
+      <p>
+        However quickly we get there, the rule holds: <strong>written quote before work
+        begins</strong>. You approve the number, then we fix the door.
+      </p>
+    </div>
+  </section>
+
+  <section class="fast-final">
+    <div class="wrap fast-final__inner">
+      <h2>Need it handled today?</h2>
+      <p>Call now and ask about today's availability in your town.</p>
+      <CallButton label="Call for Availability" size="lg" track="fast_call_click" />
+    </div>
+  </section>
+</LandingLayout>
+
+<style>
+  .fast-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 4px solid var(--ez-orange);
+  }
+
+  .fast-hero h1 {
+    max-width: 40rem;
+  }
+
+  .fast-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    max-width: 38rem;
+  }
+
+  .fast-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .fast-hero__after-hours {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .fast-hero__trust {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ez-border);
+  }
+
+  .fast-list {
+    padding-block: var(--space-7);
+  }
+
+  .fast-list__grid {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: var(--space-3);
+    font-weight: 500;
+  }
+
+  .fast-list__grid li {
+    display: flex;
+    align-items: center;
+    background: var(--ez-concrete);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .fast-list__note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
+  }
+
+  .fast-quote {
+    background: var(--ez-concrete);
+    padding-block: var(--space-7);
+  }
+
+  .fast-quote p {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+  }
+
+  .fast-final {
+    background: var(--ez-charcoal);
+    color: #cfd6de;
+    padding-block: var(--space-7);
+    text-align: center;
+  }
+
+  .fast-final h2 {
+    color: #fff;
+  }
+
+  .fast-final p {
+    margin-block: var(--space-3) var(--space-5);
+  }
+</style>

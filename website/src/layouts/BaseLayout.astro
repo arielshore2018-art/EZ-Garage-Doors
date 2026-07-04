@@ -1,0 +1,109 @@
+---
+/**
+ * Base document: head, SEO tags, fonts, design tokens, schema,
+ * and the conversion-tracking script. Site and landing layouts
+ * both build on this.
+ */
+import "@fontsource-variable/archivo";
+import "@fontsource-variable/public-sans";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import Schema from "../components/Schema.astro";
+import { BUSINESS } from "../config/business";
+
+interface Props {
+  title: string;
+  description: string;
+  service?: { name: string; description: string; url: string };
+  faqs?: { question: string; answer: string }[];
+  noindex?: boolean;
+}
+
+const { title, description, service, faqs, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" type="image/png" sizes="32x32" href="/ez-favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/ez-favicon-180x180.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={BUSINESS.name} />
+    <Schema service={service} faqs={faqs} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <slot />
+
+    <script>
+      /**
+       * Conversion tracking hooks.
+       * Pushes events to window.dataLayer so GTM / GA4 / call-tracking
+       * can consume them without editing page code.
+       *
+       * Events:
+       *  - cta_click { cta: <data-track value>, page }
+       *  - form_submit { context, page }
+       * UTM parameters are persisted for the session and injected into
+       * every lead form's hidden fields.
+       */
+      declare global {
+        interface Window {
+          dataLayer: Record<string, unknown>[];
+        }
+      }
+
+      window.dataLayer = window.dataLayer || [];
+
+      const push = (event: string, detail: Record<string, unknown> = {}) => {
+        window.dataLayer.push({ event, page: location.pathname, ...detail });
+      };
+
+      // --- UTM capture & persistence ---
+      const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+      try {
+        const params = new URLSearchParams(location.search);
+        for (const key of UTM_KEYS) {
+          const val = params.get(key);
+          if (val) sessionStorage.setItem(key, val);
+        }
+        document.querySelectorAll<HTMLInputElement>("input[data-utm]").forEach((input) => {
+          const key = input.dataset.utm;
+          if (key) input.value = sessionStorage.getItem(key) ?? "";
+        });
+      } catch {
+        /* storage unavailable — tracking degrades gracefully */
+      }
+
+      // --- CTA click tracking ---
+      document.addEventListener("click", (e) => {
+        const target = (e.target as HTMLElement).closest<HTMLElement>("[data-track]");
+        if (target) push("cta_click", { cta: target.dataset.track });
+      });
+
+      // --- Lead form tracking + demo-mode fallback ---
+      document.querySelectorAll<HTMLFormElement>("form[data-lead-form]").forEach((form) => {
+        form.addEventListener("submit", (e) => {
+          push("form_submit", { context: form.dataset.formContext });
+          // TODO: remove this fallback once BUSINESS.FORM_ENDPOINT is set.
+          // Without an endpoint the form must not pretend to deliver leads.
+          if (form.action.endsWith("/thank-you/")) {
+            e.preventDefault();
+            console.warn("EZ Garage Doors: FORM_ENDPOINT not configured — lead NOT delivered.");
+            location.assign("/thank-you/");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

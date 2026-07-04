@@ -1,0 +1,103 @@
+---
+/**
+ * Privacy policy. Practical draft covering the lead form, phone/SMS
+ * consent, and analytics. needs-owner-confirmation: have this reviewed
+ * before launch — it is a working draft, not legal advice.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { BUSINESS } from "../config/business";
+
+const effectiveDate = "July 3, 2026";
+---
+
+<SiteLayout
+  title="Privacy Policy | EZ Garage Doors"
+  description="How EZ Garage Doors collects, uses, and protects the information you share when requesting service or an estimate."
+>
+  <section class="legal">
+    <div class="wrap wrap--narrow">
+      <h1>Privacy Policy</h1>
+      <p class="muted">Effective date: {effectiveDate}</p>
+
+      <h2>Who we are</h2>
+      <p>
+        {BUSINESS.legalName} ("we", "us") is a garage door service company operating in
+        {BUSINESS.state}. This policy describes what we collect through this website and how we
+        use it.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li>
+          <strong>Information you submit:</strong> name, phone number, town or ZIP code, a
+          description of your garage door issue, optional photos, and optional preferred callback
+          time.
+        </li>
+        <li>
+          <strong>Technical information:</strong> standard analytics data such as pages visited,
+          device type, and how you reached the site (including advertising campaign parameters).
+        </li>
+      </ul>
+
+      <h2>How we use it</h2>
+      <ul>
+        <li>To respond to your service request and prepare your estimate.</li>
+        <li>To contact you about your request by phone or text message.</li>
+        <li>To measure which pages and campaigns lead to service requests.</li>
+      </ul>
+
+      <h2>Text messages and calls</h2>
+      <p>
+        By submitting a form, you agree that we may contact you about your request.
+        Message/data rates may apply. Consent is not required to purchase services. Reply STOP
+        to any text message from us to opt out.
+      </p>
+
+      <h2>What we don't do</h2>
+      <ul>
+        <li>We do not sell your personal information.</li>
+        <li>We do not share your information with third parties for their own marketing.</li>
+        <li>We do not send marketing messages unrelated to your request without separate consent.</li>
+      </ul>
+
+      <h2>Data retention</h2>
+      <p>
+        We keep service-request information as long as needed to serve you and to meet
+        bookkeeping and warranty obligations, then delete or anonymize it.
+      </p>
+
+      <h2>Your choices</h2>
+      <p>
+        You can ask us to correct or delete your contact information at any time by contacting
+        us through the <a href="/contact/">contact page</a>.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If this policy changes, the new version will be posted here with an updated effective
+        date.
+      </p>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .legal {
+    padding-block: var(--space-7);
+  }
+
+  .legal h1 {
+    margin-bottom: var(--space-2);
+  }
+
+  .legal h2 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
+  }
+
+  .legal p,
+  .legal ul {
+    margin-bottom: var(--space-3);
+  }
+</style>

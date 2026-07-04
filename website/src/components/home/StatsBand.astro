@@ -1,0 +1,80 @@
+---
+/**
+ * Compact horizontal proof band below the logo rail:
+ * 15 Years | 850+ 5-Star Reviews | 4,000+ Repairs.
+ * One line on desktop, three tight columns on mobile.
+ */
+import { BUSINESS, STATS } from "../../config/business";
+
+const stats = [
+  { value: `${BUSINESS.yearsInBusiness}`, label: "Years in Business" },
+  { value: STATS.fiveStarReviews, label: "5-Star Reviews" },
+  { value: STATS.repairs, label: "Repairs Completed" },
+];
+---
+
+<div class="stats-band">
+  <ul class="wrap stats-band__list" aria-label="EZ Garage Doors track record">
+    {
+      stats.map((s) => (
+        <li>
+          <span class="stats-band__value">{s.value}</span>
+          <span class="stats-band__label">{s.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style>
+  .stats-band {
+    background: var(--ez-concrete);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .stats-band__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding-block: var(--space-4);
+  }
+
+  .stats-band__list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    justify-content: center;
+    border-left: 3px solid var(--ez-orange);
+    padding-left: var(--space-3);
+  }
+
+  .stats-band__value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-xl);
+    color: var(--ez-charcoal);
+    line-height: 1;
+  }
+
+  .stats-band__label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 30rem) {
+    .stats-band__list li {
+      flex-direction: column;
+      gap: 0.1rem;
+      text-align: left;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+    .stats-band__label {
+      white-space: normal;
+    }
+  }
+</style>

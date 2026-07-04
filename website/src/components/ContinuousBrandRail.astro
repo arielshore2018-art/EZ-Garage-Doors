@@ -1,0 +1,176 @@
+---
+/**
+ * Continuous right-to-left industry-brand rail.
+ * Content comes from the brand-logos manifest — opener/door/hardware
+ * brands ONLY (review/directory platforms live in static proof blocks).
+ *
+ * Speed is defined in pixels-per-second, not a fixed duration:
+ * a script measures one full set's width and derives
+ * --brand-rail-duration = width / targetSpeed (12 px/s mobile,
+ * 18 px/s tablet, 24 px/s desktop). The keyframe translates exactly
+ * one measured set width, so adding logos lengthens the loop instead
+ * of speeding it up, and the seam never jumps.
+ */
+import { Image } from "astro:assets";
+import { railLogos } from "../config/brand-logos";
+
+const openers = railLogos.filter((l) => l.category === "opener-brand");
+const doors = railLogos.filter((l) => l.category === "door-brand" || l.category === "hardware-brand");
+
+const dims = (img: { width: number; height: number }, h: number) => ({
+  height: h,
+  width: Math.round(img.width * (h / img.height)),
+});
+---
+
+<div class="brand-rail" aria-label="Garage door and opener brands we service">
+  <div class="brand-track" data-rail-track>
+    {
+      [false, true].map((duplicate) => (
+        <ul class="brand-set" data-rail-set={!duplicate ? "true" : undefined} aria-hidden={duplicate ? "true" : undefined}>
+          <li class="brand-set__label">Openers</li>
+          {openers.map((l) => {
+            const d = dims(l.src, l.railHeight);
+            return (
+              <li>
+                <Image src={l.src} alt={duplicate ? "" : l.alt} width={d.width} height={d.height} loading="eager" />
+              </li>
+            );
+          })}
+          <li class="brand-set__label">Doors</li>
+          {doors.map((l) => {
+            const d = dims(l.src, l.railHeight);
+            return (
+              <li>
+                <Image src={l.src} alt={duplicate ? "" : l.alt} width={d.width} height={d.height} loading="eager" />
+              </li>
+            );
+          })}
+        </ul>
+      ))
+    }
+  </div>
+  <p class="visually-hidden">We service major garage door and opener brands.</p>
+</div>
+
+<script>
+  /**
+   * Pixels-per-second rail speed. Recalculates on resize and when the
+   * set's size changes (fonts, images). Values land in CSS custom
+   * properties consumed by the keyframe animation.
+   */
+  const rail = document.querySelector<HTMLElement>(".brand-rail");
+  const set = document.querySelector<HTMLElement>("[data-rail-set]");
+
+  if (rail && set) {
+    const targetSpeed = () => {
+      const w = window.innerWidth;
+      if (w < 640) return 12;
+      if (w < 1024) return 18;
+      return 24;
+    };
+
+    const apply = () => {
+      const width = set.getBoundingClientRect().width;
+      if (width === 0) return;
+      rail.style.setProperty("--single-set-width", `${width}px`);
+      rail.style.setProperty("--brand-rail-duration", `${(width / targetSpeed()).toFixed(2)}s`);
+    };
+
+    apply();
+    new ResizeObserver(apply).observe(set);
+    window.addEventListener("resize", apply, { passive: true });
+  }
+</script>
+
+<style>
+  .brand-rail {
+    /* fallbacks until the measuring script runs */
+    --single-set-width: 50%;
+    --brand-rail-duration: 80s;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 16px 0;
+    border-block: 1px solid var(--ez-border);
+    background: #fff;
+    mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
+  }
+
+  .brand-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: ez-brand-scroll var(--brand-rail-duration) linear infinite;
+    will-change: transform;
+  }
+
+  .brand-set {
+    display: flex;
+    align-items: center;
+    gap: clamp(38px, 4.5vw, 56px);
+    padding-inline-end: clamp(38px, 4.5vw, 56px);
+    list-style: none;
+    margin: 0;
+    padding-block: 0;
+    padding-inline-start: 0;
+  }
+
+  .brand-set li {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .brand-set :global(img) {
+    width: auto;
+    display: block;
+  }
+
+  .brand-set__label {
+    font-family: var(--font-display);
+    font-weight: 750;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ez-orange-deep);
+    border-left: 3px solid var(--ez-orange);
+    padding-left: 0.6rem;
+  }
+
+  @keyframes ez-brand-scroll {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      /* translate exactly one measured set width — seamless regardless of content */
+      transform: translate3d(calc(-1 * var(--single-set-width)), 0, 0);
+    }
+  }
+
+  .brand-rail:hover .brand-track,
+  .brand-rail:focus-within .brand-track {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-track {
+      animation: none;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .brand-set[aria-hidden="true"] {
+      display: none;
+    }
+
+    .brand-set {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: var(--space-3) var(--space-5);
+      padding-inline-end: 0;
+    }
+  }
+</style>

@@ -1,0 +1,61 @@
+---
+/**
+ * Secondary installation path — visual but calm, clearly subordinate
+ * to repair. No showroom language above it, no competition with repair.
+ */
+import { Image } from "astro:assets";
+import doorWood from "../../assets/photos/ez-garage-door-wood-look-walnut.png";
+---
+
+<section class="install-path section">
+  <div class="wrap install-path__inner">
+    <div class="install-path__copy">
+      <h2>Need a New Door Instead?</h2>
+      <span class="speed-rail" aria-hidden="true"></span>
+      <p>
+        If repair is not the right move, EZ Garage Doors also installs and replaces garage doors.
+      </p>
+      <a href="/garage-door-installation/" class="btn btn--outline" data-track="install_path_click">
+        Get an Installation Estimate
+      </a>
+    </div>
+    <div class="install-path__media">
+      <Image
+        src={doorWood}
+        alt="Wood-look walnut garage door installed by EZ Garage Doors"
+        width={720}
+        widths={[420, 720]}
+        sizes="(max-width: 62rem) 92vw, 440px"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .install-path__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(var(--space-6), 5vw, var(--space-8));
+    align-items: center;
+  }
+
+  .install-path__copy p {
+    margin-block: var(--space-4) var(--space-5);
+    color: var(--color-text-muted);
+    max-width: 30rem;
+  }
+
+  .install-path__media img {
+    border-radius: var(--radius-md);
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 62rem) {
+    .install-path__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+  }
+</style>

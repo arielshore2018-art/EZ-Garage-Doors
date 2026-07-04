@@ -1,0 +1,244 @@
+---
+/**
+ * Emergency PPC landing page. Goal: a phone call in under 30 seconds.
+ * Stripped layout, phone dominant, short page, no storytelling,
+ * no large form above the fold. "24/7" intentionally absent (unconfirmed).
+ */
+import LandingLayout from "../layouts/LandingLayout.astro";
+import CallButton from "../components/CallButton.astro";
+import MicroTrustBar from "../components/MicroTrustBar.astro";
+import PhotoUploadCTA from "../components/PhotoUploadCTA.astro";
+import HeroRatingProof from "../components/HeroRatingProof.astro";
+import { APPROVED_CLAIMS } from "../config/business";
+
+const commonEmergencies = [
+  "Door stuck wide open and won't close",
+  "Loud bang — spring snapped, door too heavy",
+  "Door off its track or hanging crooked",
+  "Cable snapped, door slammed down",
+  "Car trapped inside before work",
+  "Door won't lock or secure",
+];
+
+const service = {
+  name: "Emergency Garage Door Repair",
+  description: "Urgent garage door repair in Connecticut: stuck doors, snapped springs, off-track doors, and doors that won't close.",
+  url: "/emergency-garage-door-repair/",
+};
+---
+
+<LandingLayout
+  title="Emergency Garage Door Repair in Connecticut | EZ Garage Doors"
+  description="Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local emergency garage door repair with a written quote before work begins."
+  callLabel="Call Now"
+  service={service}
+>
+  <section class="em-hero">
+    <div class="wrap em-hero__inner">
+      <h1>Emergency Garage Door Repair in Connecticut</h1>
+      <p class="em-hero__sub">
+        Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local service
+        and a written quote before work begins.
+      </p>
+      <div class="em-hero__actions">
+        <CallButton label="Call Now" size="lg" track="emergency_call_click" />
+        <PhotoUploadCTA label="Text a Photo" variant="inverse-outline" />
+      </div>
+      <div class="em-hero__trust">
+        <MicroTrustBar
+          tone="dark"
+          items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="em-steps">
+    <div class="wrap">
+      <ol class="em-steps__list">
+        <li><strong>Call.</strong> Tell us what the door is doing.</li>
+        <li><strong>Diagnose.</strong> We confirm the problem — a photo helps.</li>
+        <li><strong>Written quote.</strong> You approve the price first.</li>
+        <li><strong>Repair.</strong> Door working and secured before we leave.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="em-issues">
+    <div class="wrap">
+      <h2>Common garage door emergencies</h2>
+      <span class="speed-rail" aria-hidden="true"></span>
+      <ul class="em-issues__grid">
+        {
+          commonEmergencies.map((issue) => (
+            <li>
+              <span class="speed-tick" aria-hidden="true" />
+              {issue}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="em-issues__safety">
+        <strong>If the spring snapped or the door is off track:</strong> don't lift, force, or run
+        the opener. The door is heavier than it looks and under tension.
+      </p>
+    </div>
+  </section>
+
+  <section class="em-pricing">
+    <div class="wrap wrap--narrow">
+      <h2>No bait pricing — even in an emergency</h2>
+      <span class="speed-rail" aria-hidden="true"></span>
+      <p>
+        Urgency is how bait-and-switch outfits make their money. Our rule doesn't change after
+        hours: you get the price <strong>in writing before work begins</strong>, and the quote is
+        the price.
+      </p>
+      <p class="em-pricing__brands">
+        We work on LiftMaster, Chamberlain, Genie, and most major opener and door brands.
+      </p>
+    </div>
+  </section>
+
+  <HeroRatingProof band />
+
+  <section class="em-final">
+    <div class="wrap em-final__inner">
+      <h2>Stuck right now?</h2>
+      <p>Call EZ Garage Doors — fast, local help with a written quote first.</p>
+      <CallButton label="Call Now" size="lg" track="emergency_call_click" />
+    </div>
+  </section>
+</LandingLayout>
+
+<style>
+  .em-hero {
+    background: var(--ez-charcoal);
+    color: #cfd6de;
+    padding-block: var(--space-7);
+    border-bottom: 4px solid var(--ez-orange);
+  }
+
+  .em-hero h1 {
+    color: #fff;
+    max-width: 40rem;
+  }
+
+  .em-hero__sub {
+    font-size: var(--text-lg);
+    margin-top: var(--space-4);
+    max-width: 38rem;
+    color: #b8c1cc;
+  }
+
+  .em-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  .em-hero__trust {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid rgb(255 255 255 / 0.15);
+  }
+
+  .em-steps {
+    background: var(--ez-orange);
+    padding-block: var(--space-5);
+  }
+
+  .em-steps__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--space-3) var(--space-5);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+    font-size: var(--text-sm);
+    counter-reset: emstep;
+  }
+
+  .em-steps__list li {
+    counter-increment: emstep;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .em-steps__list li::before {
+    content: counter(emstep);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-xl);
+    line-height: 1;
+  }
+
+  .em-steps__list strong {
+    font-family: var(--font-display);
+  }
+
+  .em-issues {
+    padding-block: var(--space-7);
+  }
+
+  .em-issues__grid {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: var(--space-3);
+    font-weight: 500;
+  }
+
+  .em-issues__grid li {
+    display: flex;
+    align-items: center;
+    background: var(--ez-concrete);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .em-issues__safety {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    background: var(--ez-orange-tint);
+    border-left: 4px solid var(--ez-orange);
+    border-radius: var(--radius-sm);
+    max-width: 44rem;
+  }
+
+  .em-pricing {
+    background: var(--ez-concrete);
+    padding-block: var(--space-7);
+  }
+
+  .em-pricing p {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+  }
+
+  .em-pricing p.em-pricing__brands {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .em-final {
+    background: var(--ez-charcoal);
+    color: #cfd6de;
+    padding-block: var(--space-7);
+    text-align: center;
+  }
+
+  .em-final h2 {
+    color: #fff;
+  }
+
+  .em-final p {
+    margin-block: var(--space-3) var(--space-5);
+  }
+</style>

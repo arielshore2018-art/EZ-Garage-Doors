@@ -1,0 +1,61 @@
+---
+/**
+ * Reviews page. Uses only the approved aggregate claim. Exact
+ * counts/ratings and profile links render automatically once verified
+ * numbers are added to src/config/reviews.ts. No fake quotes.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import ReviewProof from "../components/ReviewProof.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CTASection from "../components/CTASection.astro";
+import { APPROVED_CLAIMS } from "../config/business";
+---
+
+<SiteLayout
+  title="Reviews | EZ Garage Doors — Connecticut"
+  description="EZ Garage Doors has hundreds of 5-star reviews across Google, Yelp, Angi, and other platforms. Read what Connecticut homeowners say — on the live platforms."
+>
+  <section class="reviews-hero">
+    <div class="wrap wrap--narrow">
+      <h1>Reviews</h1>
+      <p class="reviews-hero__sub">{APPROVED_CLAIMS.reviews}.</p>
+    </div>
+  </section>
+
+  <ReviewProof />
+
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="Read them at the source" title="Why we point you to the platforms" />
+      <p>
+        Anyone can paste five glowing quotes on their own website. Reviews are only proof when you
+        can see them live, with dates and reviewer histories, on platforms we can't edit. That's
+        where ours live — ask us for the direct links, or search "EZ Garage Doors" on Google,
+        Yelp, or Angi.
+      </p>
+      <p class="muted">
+        Had us out recently? A review on the platform of your choice genuinely helps a local
+        business — and keeps us honest.
+      </p>
+    </div>
+  </section>
+
+  <CTASection
+    heading="Judge us by the next job — yours"
+    sub="Call EZ Garage Doors or request a written estimate."
+  />
+</SiteLayout>
+
+<style>
+  .reviews-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .reviews-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+  }
+</style>

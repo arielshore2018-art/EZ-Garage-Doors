@@ -1,0 +1,82 @@
+---
+/**
+ * Contact page — short form, call CTA, TCPA consent (in LeadForm).
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import CallButton from "../components/CallButton.astro";
+import LeadForm from "../components/LeadForm.astro";
+import MicroTrustBar from "../components/MicroTrustBar.astro";
+import { BUSINESS, hasPhone } from "../config/business";
+---
+
+<SiteLayout
+  title="Contact EZ Garage Doors | Written Estimates in Connecticut"
+  description="Contact EZ Garage Doors for garage door repair, springs, openers, or a new door installation in Connecticut. Request a written estimate — no spam, no pressure."
+>
+  <section class="contact-hero">
+    <div class="wrap contact-hero__grid">
+      <div>
+        <h1>Contact EZ Garage Doors</h1>
+        <p class="contact-hero__sub">
+          Fastest for urgent doors: call. For estimates and everything else, the short form works
+          — a local garage door specialist will follow up.
+        </p>
+        <div class="contact-hero__call">
+          <CallButton label="Call EZ Garage Doors" size="lg" />
+          {
+            !hasPhone() && (
+              <p class="cta-note">
+                {/* TODO: remove once PRIMARY_PHONE is final */}
+                Phone line being finalized — use the request form and we'll call you back.
+              </p>
+            )
+          }
+        </div>
+        <div class="contact-hero__trust">
+          <MicroTrustBar />
+        </div>
+      </div>
+      <div>
+        <LeadForm heading="Request a Written Estimate" context="contact" />
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .contact-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+  }
+
+  .contact-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .contact-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    max-width: 30rem;
+  }
+
+  .contact-hero__call {
+    margin-top: var(--space-5);
+  }
+
+  .contact-hero__trust {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ez-border);
+  }
+
+  @media (max-width: 62rem) {
+    .contact-hero__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+  }
+</style>

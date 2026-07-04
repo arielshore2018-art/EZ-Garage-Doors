@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /thank-you/
+
+# TODO: Replace with the final production domain before launch.
+Sitemap: https://REPLACE-WITH-FINAL-DOMAIN.example/sitemap-index.xml

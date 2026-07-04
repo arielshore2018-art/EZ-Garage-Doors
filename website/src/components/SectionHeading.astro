@@ -1,0 +1,37 @@
+---
+/**
+ * Section heading with the EZ Speed Line rail — the one signature
+ * element, applied consistently instead of ad-hoc decoration.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  center?: boolean;
+  level?: "h2" | "h3";
+}
+
+const { eyebrow, title, center = false, level = "h2" } = Astro.props;
+const Tag = level;
+---
+
+<div class:list={["section-heading", { "section-heading--center": center }]}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <Tag>{title}</Tag>
+  <span class:list={["speed-rail", { "speed-rail--center": center }]} aria-hidden="true"></span>
+</div>
+
+<style>
+  .section-heading {
+    margin-bottom: var(--space-6);
+    max-width: 44rem;
+  }
+
+  .section-heading--center {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .eyebrow {
+    margin-bottom: var(--space-2);
+  }
+</style>

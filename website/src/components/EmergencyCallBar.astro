@@ -1,0 +1,67 @@
+---
+/**
+ * Thin emergency strip: short, direct, mobile-friendly.
+ * Links to the emergency landing page + call CTA.
+ */
+import CallButton from "./CallButton.astro";
+
+interface Props {
+  question?: string;
+  cta?: string;
+}
+
+const {
+  question = "Door stuck open, off track, or spring broken?",
+  cta = "Call for Fast Local Service",
+} = Astro.props;
+---
+
+<aside class="emergency-bar">
+  <div class="wrap emergency-bar__inner">
+    <p class="emergency-bar__q">
+      <span class="speed-tick" aria-hidden="true"></span>
+      {question}
+      <a href="/emergency-garage-door-repair/" class="emergency-bar__link">Emergency repair info</a>
+    </p>
+    <CallButton label={cta} fallbackHref="/emergency-garage-door-repair/" track="emergency_call_click" />
+  </div>
+</aside>
+
+<style>
+  .emergency-bar {
+    background: var(--ez-charcoal);
+    color: #fff;
+    padding-block: var(--space-4);
+  }
+
+  .emergency-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .emergency-bar__q {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin: 0;
+  }
+
+  .emergency-bar__link {
+    color: #c9d2dc;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: var(--text-sm);
+    margin-left: var(--space-2);
+  }
+
+  .emergency-bar__link:hover {
+    color: var(--ez-orange);
+  }
+</style>

@@ -1,0 +1,127 @@
+---
+/**
+ * Review proof module. Renders ONLY verified claims:
+ * - The owner-approved aggregate line ("hundreds of 5-star reviews").
+ * - Exact ratings/counts appear automatically once filled into
+ *   src/config/reviews.ts (needs-verification-before-launch).
+ * - Real testimonials render once added to reviews.ts — no fake quotes, ever.
+ */
+import { APPROVED_CLAIMS } from "../config/business";
+import { reviews, testimonials } from "../config/reviews";
+import SectionHeading from "./SectionHeading.astro";
+
+const platforms = [
+  { key: "google", label: "Google" },
+  { key: "yelp", label: "Yelp" },
+  { key: "angi", label: "Angi" },
+] as const;
+---
+
+<section class="section section--alt" aria-labelledby="reviews-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow="What customers say" title={APPROVED_CLAIMS.reviewsShort} />
+    <p class="review-claim">
+      {APPROVED_CLAIMS.reviews}. Ask us for links to our live profiles — read the reviews
+      yourself before you book.
+    </p>
+
+    <ul class="platforms" aria-label="Review platforms">
+      {
+        platforms.map(({ key, label }) => {
+          const p = reviews[key];
+          return (
+            <li class="platforms__chip">
+              <span class="speed-tick" aria-hidden="true" />
+              {p.url ? <a href={p.url} rel="noopener">{label}</a> : label}
+              {p.rating && p.count ? (
+                <span class="platforms__stat">
+                  {p.rating}★ · {p.count} reviews
+                </span>
+              ) : (
+                <span class="platforms__stat">5-star reviews</span>
+              )}
+            </li>
+          );
+        })
+      }
+      <li class="platforms__chip">
+        <span class="speed-tick" aria-hidden="true"></span>
+        More platforms
+      </li>
+    </ul>
+
+    {
+      testimonials.length > 0 && (
+        <ul class="quotes">
+          {testimonials.map((t) => (
+            <li class="quotes__card">
+              <blockquote>
+                <p>“{t.quote}”</p>
+                <footer>
+                  {t.name}, {t.town} — <a href={t.url} rel="noopener">{t.platform}</a>
+                </footer>
+              </blockquote>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .review-claim {
+    max-width: 44rem;
+    margin-bottom: var(--space-5);
+  }
+
+  .platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .platforms__chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: var(--text-sm);
+  }
+
+  .platforms__stat {
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-weight: 400;
+  }
+
+  .quotes {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .quotes__card {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .quotes__card footer {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

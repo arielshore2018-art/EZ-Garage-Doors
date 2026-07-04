@@ -1,0 +1,277 @@
+---
+/**
+ * New installation — planned-project intent. Finished-work visual hero,
+ * style gallery, before/after, process, price factors, FAQ.
+ * Estimate-first (not phone-first) per intent.
+ */
+import { Image } from "astro:assets";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import MicroTrustBar from "../components/MicroTrustBar.astro";
+import FinishedDoorGallery from "../components/FinishedDoorGallery.astro";
+import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import ReviewProof from "../components/ReviewProof.astro";
+import CTASection from "../components/CTASection.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import LeadForm from "../components/LeadForm.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+
+import heroDoor from "../assets/photos/ez-garage-door-black-flush-windows.png";
+import doorCharcoal from "../assets/photos/ez-garage-door-charcoal-recessed-panel.png";
+import doorCarriage from "../assets/photos/ez-garage-door-carriage-house-cream.png";
+import doorSteel from "../assets/photos/ez-garage-door-white-flush-steel.png";
+import doorWhiteCarriage from "../assets/photos/ez-garage-door-white-carriage-windows.png";
+import doorWood from "../assets/photos/ez-garage-door-wood-look-walnut.png";
+import carryPanel from "../assets/photos/ez-garage-door-installation-carrying-panel.jpg";
+
+import baBefore1 from "../assets/photos/ez-before-old-white-wood-door.png";
+import baAfter1 from "../assets/photos/ez-after-white-long-panel-windows.png";
+import baBefore2 from "../assets/photos/ez-before-faded-beige-door.png";
+import baAfter2 from "../assets/photos/ez-after-black-long-panel-windows.png";
+
+const doors = [
+  { image: doorSteel, style: "Insulated steel flush panel", detail: "Clean look, warmer garage, quieter operation." },
+  { image: doorCharcoal, style: "Charcoal recessed panel", detail: "Modern color on classic panel lines." },
+  { image: heroDoor, style: "Black modern with windows", detail: "Flush black door with a vertical window stack." },
+  { image: doorCarriage, style: "Carriage house", detail: "Cream finish, X-brace, black hardware." },
+  { image: doorWhiteCarriage, style: "White carriage with windows", detail: "Grille windows bring in daylight." },
+  { image: doorWood, style: "Wood-look walnut", detail: "Wood warmth without wood maintenance." },
+];
+
+const priceFactors = [
+  { label: "Size", detail: "Single vs. double, height, and headroom" },
+  { label: "Insulation", detail: "Non-insulated, vinyl-backed, or full sandwich panel" },
+  { label: "Windows", detail: "Row of glass, decorative inserts, or none" },
+  { label: "Design", detail: "Panel style, color, and finish" },
+  { label: "Hardware", detail: "Tracks, springs, and decorative handles/hinges" },
+];
+
+const service = {
+  name: "New Garage Door Installation",
+  description: "Professional installation of new residential garage doors: insulated steel, carriage house, modern, and wood-look styles.",
+  url: "/garage-door-installation/",
+};
+
+const faqs = [
+  {
+    question: "How long does a garage door installation take?",
+    answer: "Most single-door replacements are completed in a day, including removal of the old door. Doors with custom sizes or special-order finishes need lead time for the door itself — we confirm the schedule with your written estimate.",
+  },
+  {
+    question: "What affects the price of a new garage door?",
+    answer: "Door size, insulation level, windows, panel design and finish, and hardware. Whether your opener can be reused also matters. Every factor is itemized in the written estimate before you commit.",
+  },
+  {
+    question: "Do I need to replace my opener when I replace the door?",
+    answer: "Not always. If the opener is healthy and matched to the new door's weight, we reuse it. If the new door is heavier or the opener is near end of life, we'll show you the numbers for both options.",
+  },
+  {
+    question: "Should I pick an insulated garage door?",
+    answer: "If the garage is attached, used as a workspace, or has living space above it, insulation usually pays for itself in comfort and quieter operation. For detached, unheated garages it's optional.",
+  },
+];
+---
+
+<SiteLayout
+  title="New Garage Door Installation in Connecticut | EZ Garage Doors"
+  description="New garage door installation in Connecticut: insulated steel, carriage house, black modern, and wood-look styles. Written installation estimate before any work."
+  service={service}
+  faqs={faqs}
+>
+  <section class="install-hero">
+    <div class="wrap install-hero__grid">
+      <div>
+        <h1>New Garage Door Installation in Connecticut</h1>
+        <p class="install-hero__sub">
+          Upgrade curb appeal, insulation, security, and daily reliability with a professionally
+          installed garage door from EZ Garage Doors.
+        </p>
+        <div class="install-hero__actions">
+          <a href="#request" class="btn btn--call btn--lg" data-track="estimate_click">
+            Get a Written Installation Estimate
+          </a>
+          <a href="#styles" class="btn btn--outline btn--lg">See Door Styles</a>
+        </div>
+        <p class="cta-note">One estimate, in writing. No pressure.</p>
+        <div class="install-hero__trust">
+          <MicroTrustBar />
+        </div>
+      </div>
+      <div class="install-hero__media">
+        <Image
+          src={heroDoor}
+          alt="Black modern garage door with vertical windows on a Connecticut home"
+          width={880}
+          widths={[480, 720, 880]}
+          sizes="(max-width: 62rem) 92vw, 540px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <div id="styles">
+    <FinishedDoorGallery doors={doors} heading="Door styles we install" />
+  </div>
+
+  <BeforeAfterGallery
+    pairs={[
+      { before: baBefore1, after: baAfter1, caption: "Aged wood door replaced with a white long-panel door with windows" },
+      { before: baBefore2, after: baAfter2, caption: "Faded panel door replaced with a black long-panel door with windows" },
+    ]}
+  />
+
+  <TrustLogoStrip variant="door-brands" />
+
+  <ProcessSteps
+    heading="How installation works"
+    eyebrow="From estimate to install"
+    steps={[
+      { title: "Measure & written estimate", detail: "We measure the opening, review styles and insulation options, and put the full price in writing." },
+      { title: "Door ordered to spec", detail: "Size, panel style, color, windows, and hardware — ordered exactly as quoted." },
+      { title: "Old door removed", detail: "The existing door and tracks come out and leave with us." },
+      { title: "Install, balance, test", detail: "New door installed, springs balanced, opener tested, and the workspace left clean." },
+    ]}
+  />
+
+  <section class="section section--alt">
+    <div class="wrap install-price">
+      <div>
+        <SectionHeading eyebrow="Budget honestly" title="What affects installation price" />
+        <dl class="install-price__list">
+          {
+            priceFactors.map((f) => (
+              <div class="install-price__row">
+                <dt>{f.label}</dt>
+                <dd>{f.detail}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p>
+          Want the full breakdown? Read the
+          <a href="/garage-door-replacement-cost/">garage door replacement cost guide</a>.
+        </p>
+      </div>
+      <div class="install-price__media">
+        <Image
+          src={carryPanel}
+          alt="Technician carrying a new garage door section during installation"
+          width={640}
+          widths={[420, 640]}
+          sizes="(max-width: 62rem) 92vw, 400px"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+  <ReviewProof />
+
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <LeadForm
+        heading="Request Your Installation Estimate"
+        submitLabel="Request Installation Estimate"
+        context="installation"
+        showPhotoField
+      />
+    </div>
+  </section>
+
+  <CTASection
+    heading="Thinking about a new door?"
+    sub="Get a written installation estimate — size, style, insulation, and hardware, all itemized."
+    callLabel="Call EZ Garage Doors"
+    secondaryLabel="Request Installation Estimate"
+    secondaryHref="#request"
+  />
+</SiteLayout>
+
+<style>
+  .install-hero {
+    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--ez-border);
+  }
+
+  .install-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .install-hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    max-width: 34rem;
+  }
+
+  .install-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .install-hero__trust {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ez-border);
+  }
+
+  .install-hero__media img {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    height: auto;
+  }
+
+  .install-price {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .install-price__list {
+    margin: 0 0 var(--space-4);
+  }
+
+  .install-price__row {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+    border-bottom: 1px dashed var(--ez-border);
+  }
+
+  .install-price__row dt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ez-charcoal);
+  }
+
+  .install-price__row dd {
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .install-price__media img {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 62rem) {
+    .install-hero__grid,
+    .install-price {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+  }
+</style>

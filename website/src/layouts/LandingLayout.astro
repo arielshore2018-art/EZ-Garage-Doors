@@ -1,0 +1,73 @@
+---
+/**
+ * Stripped PPC landing layout: minimal header (logo + call), no nav,
+ * one goal per page, compact trust footer, sticky mobile call bar.
+ */
+import BaseLayout from "./BaseLayout.astro";
+import LandingHeader from "../components/LandingHeader.astro";
+import StickyMobileCTA from "../components/StickyMobileCTA.astro";
+import { BUSINESS, APPROVED_CLAIMS } from "../config/business";
+
+interface Props {
+  title: string;
+  description: string;
+  callLabel?: string;
+  service?: { name: string; description: string; url: string };
+}
+
+const { callLabel, ...props } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<BaseLayout {...props}>
+  <LandingHeader callLabel={callLabel} />
+  <main id="main">
+    <slot />
+  </main>
+  <footer class="lp-footer">
+    <div class="wrap lp-footer__inner">
+      <p>
+        © {year}
+        {BUSINESS.legalName} — {APPROVED_CLAIMS.local}. {APPROVED_CLAIMS.years}.
+      </p>
+      <ul>
+        <li><a href="/privacy-policy/">Privacy Policy</a></li>
+        <li><a href="/terms/">Terms</a></li>
+        <li><a href="/">Full website</a></li>
+      </ul>
+    </div>
+  </footer>
+  <StickyMobileCTA />
+</BaseLayout>
+
+<style>
+  .lp-footer {
+    background: var(--ez-charcoal-deep);
+    color: #b8c1cc;
+    font-size: var(--text-sm);
+    padding-block: var(--space-5);
+  }
+
+  .lp-footer__inner {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .lp-footer ul {
+    display: flex;
+    gap: var(--space-4);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lp-footer a {
+    color: #b8c1cc;
+  }
+
+  .lp-footer a:hover {
+    color: var(--ez-orange);
+  }
+</style>

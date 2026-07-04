@@ -1,0 +1,55 @@
+---
+/**
+ * Compact stats row. Numbers come from owner-supplied STATS
+ * (verify-against-live-data-before-launch).
+ */
+import { STATS } from "../../config/business";
+
+const stats = [
+  { value: STATS.repairs, label: "Repairs Completed" },
+  { value: STATS.springRepairs, label: "Spring Repairs" },
+  { value: STATS.openerServices, label: "Opener Services" },
+  { value: STATS.fiveStarReviews, label: "5-Star Reviews" },
+];
+---
+
+<ul class="stats" aria-label="EZ Garage Doors track record">
+  {
+    stats.map((s) => (
+      <li>
+        <span class="stats__value">{s.value}</span>
+        <span class="stats__label">{s.label}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .stats {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .stats li {
+    border-left: 3px solid var(--ez-orange);
+    padding-left: var(--space-3);
+  }
+
+  .stats__value {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--text-2xl);
+    color: var(--ez-charcoal);
+    line-height: 1.1;
+  }
+
+  .stats__label {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

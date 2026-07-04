@@ -1,0 +1,64 @@
+---
+/**
+ * Sticky bottom CTA on mobile. Appears after the first scroll so it
+ * never covers the hero CTA; guarantees the phone action is always
+ * one tap away on every page.
+ */
+import CallButton from "./CallButton.astro";
+---
+
+<div class="sticky-cta" role="region" aria-label="Quick contact" data-sticky-cta>
+  <CallButton label="Call EZ Garage Doors" class="sticky-cta__btn" />
+  <a href="/contact/#request" class="btn btn--outline sticky-cta__btn" data-track="estimate_click">
+    Request Service
+  </a>
+</div>
+
+<script>
+  const bar = document.querySelector("[data-sticky-cta]");
+  if (bar) {
+    const toggle = () => bar.classList.toggle("is-visible", window.scrollY > 160);
+    window.addEventListener("scroll", toggle, { passive: true });
+    toggle();
+  }
+</script>
+
+<style>
+  .sticky-cta {
+    display: none;
+  }
+
+  @media (max-width: 48rem) {
+    .sticky-cta {
+      display: flex;
+      gap: var(--space-2);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0.6rem calc(0.75rem + env(safe-area-inset-left)) calc(0.6rem + env(safe-area-inset-bottom));
+      background: rgb(255 255 255 / 0.97);
+      backdrop-filter: blur(6px);
+      border-top: 1px solid var(--ez-border);
+      z-index: 40;
+      transform: translateY(110%);
+      transition: transform 160ms ease;
+    }
+
+    .sticky-cta.is-visible {
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sticky-cta {
+        transition: none;
+      }
+    }
+
+    .sticky-cta :global(.sticky-cta__btn) {
+      flex: 1;
+      font-size: var(--text-sm);
+      padding-inline: 0.75rem;
+    }
+  }
+</style>
