@@ -1,102 +1,170 @@
 ---
 /**
- * Integrated photographic hero (v6). One composition: a full-bleed
- * active-repair image with a charcoal gradient from the left and the
- * headline/CTA/rating rendered directly over the darker side.
- * No floating white card, no detached panels.
- * Mobile keeps the proven order: image → copy → rating, as one block.
+ * Full-bleed overlay hero (v7). ONE integrated composition on every
+ * breakpoint: the repair image fills the hero, copy/CTA/rating sit
+ * directly on layered gradients — no detached panels, no seams.
+ * Mobile: portrait crop, text near the bottom over a bottom gradient,
+ * door visible in the upper/middle. Desktop: wide crop, text lower-left
+ * over a left gradient.
  */
-import { Image } from "astro:assets";
+import { getImage, Image } from "astro:assets";
 import CallButton from "../CallButton.astro";
-import HeroRatingProof from "../HeroRatingProof.astro";
-import heroDesktop from "../../assets/photos/hero-active-repair-desktop.jpg";
-import heroMobile from "../../assets/photos/hero-repair-mobile.jpg";
+import heroDesktopSrc from "../../assets/photos/hero-active-repair-desktop.jpg";
+import heroMobileSrc from "../../assets/photos/hero-active-repair-mobile-portrait.jpg";
+import googleWhite from "../../assets/trust-logos/review-platforms/google-logo-white.png";
+import yelpWhite from "../../assets/trust-logos/review-platforms/yelp-logo-white.png";
+import angiWhite from "../../assets/trust-logos/review-platforms/angi-logo-white.png";
+import { STATS } from "../../config/business";
+
+const desktop = await getImage({
+  src: heroDesktopSrc,
+  format: "webp",
+  widths: [1000, 1440, 1920],
+  sizes: "100vw",
+});
+
+const mobile = await getImage({
+  src: heroMobileSrc,
+  format: "webp",
+  widths: [480, 690],
+  sizes: "100vw",
+});
+
+const platformLogos = [
+  { img: googleWhite, alt: "Google reviews platform logo", h: 20 },
+  { img: yelpWhite, alt: "Yelp reviews platform logo", h: 22 },
+  { img: angiWhite, alt: "Angi reviews platform logo", h: 22 },
+];
+
+const dims = (img: { width: number; height: number }, h: number) => ({
+  height: h,
+  width: Math.round(img.width * (h / img.height)),
+});
+
+const STAR_PATH = "M12 1.8l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.6 5.8 20.9 7 14 2 9.1l6.9-1z";
 ---
 
-<section class="hero6">
-  <!-- Mobile image band (desktop uses the background composition below) -->
-  <div class="hero6__mobile-media">
-    <Image
-      src={heroMobile}
-      alt="EZ Garage Doors technician repairing the torsion system of a residential garage door"
-      width={990}
-      widths={[480, 780, 990]}
+<section class="hero7">
+  <picture class="hero7__bg" aria-hidden="true">
+    <source media="(min-width: 62rem)" srcset={desktop.srcSet.attribute} sizes="100vw" />
+    <img
+      src={mobile.src}
+      srcset={mobile.srcSet.attribute}
       sizes="100vw"
+      alt=""
+      width={heroMobileSrc.width}
+      height={heroMobileSrc.height}
       loading="eager"
       fetchpriority="high"
+      decoding="sync"
     />
-  </div>
+  </picture>
+  <span class="hero7__overlay" aria-hidden="true"></span>
 
-  <div class="hero6__stage">
-    <div class="hero6__bg" aria-hidden="true">
-      <Image
-        src={heroDesktop}
-        alt=""
-        width={1440}
-        widths={[1000, 1440, 1920]}
-        sizes="100vw"
-        loading="eager"
-        fetchpriority="high"
-      />
+  <div class="hero7__content">
+    <p class="hero7__eyebrow">
+      <span class="speed-tick" aria-hidden="true"></span>
+      Connecticut Garage Door Repair
+    </p>
+    <h1>Door Stuck or Won't Close?</h1>
+    <p class="hero7__sub">
+      Fast local repair for broken springs, openers, cables, tracks, and doors that won't close.
+    </p>
+    <div class="hero7__actions">
+      <CallButton label="Call for Repair" size="lg" track="hero_call_click" />
+      <a href="/contact/#request" class="hero7__photo-link" data-track="photo_cta_click">
+        <svg
+          aria-hidden="true"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+          <circle cx="12" cy="13" r="3"></circle>
+        </svg>
+        Send a Photo
+      </a>
     </div>
+    <p class="hero7__micro">Written quote before work begins.</p>
 
-    <div class="hero6__content">
-      <p class="hero6__eyebrow">
-        <span class="speed-tick" aria-hidden="true"></span>
-        Connecticut Garage Door Repair
+    <div class="hero7__proof" role="img" aria-label="Rated 4.9 out of 5 based on more than 850 reviews">
+      <p class="hero7__rating" aria-hidden="true">
+        <span class="hero7__stars">
+          {
+            [0, 1, 2, 3, 4].map(() => (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#f0a828">
+                <path d={STAR_PATH} />
+              </svg>
+            ))
+          }
+        </span>
+        <span class="hero7__score">4.9 · {STATS.fiveStarReviews} reviews</span>
       </p>
-      <h1>Door Stuck or Won't Close?</h1>
-      <p class="hero6__sub">
-        Fast local repair for broken springs, openers, cables, tracks, and doors that won't
-        close.
+      <p class="hero7__platforms" aria-hidden="true">
+        {
+          platformLogos.map((p) => {
+            const d = dims(p.img, p.h);
+            return <Image src={p.img} alt="" width={d.width} height={d.height} loading="eager" />;
+          })
+        }
       </p>
-      <div class="hero6__actions">
-        <CallButton label="Call for Repair" size="lg" track="hero_call_click" />
-        <a href="/contact/#request" class="hero6__photo-link" data-track="photo_cta_click">
-          <svg
-            aria-hidden="true"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
-            <circle cx="12" cy="13" r="3"></circle>
-          </svg>
-          Send a Photo
-        </a>
-      </div>
-      <p class="hero6__micro">Written quote before work begins.</p>
-      <div class="hero6__rating">
-        <HeroRatingProof tone="dark" />
-      </div>
     </div>
   </div>
 </section>
 
 <style>
-  /* ---------- Mobile: image band → copy block (one flowing unit) ---------- */
-  .hero6__mobile-media :global(img) {
+  .hero7 {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    min-height: clamp(640px, 92vh, 720px);
+    align-items: flex-end;
+  }
+
+  .hero7__bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero7__bg img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: 24% 20%;
     display: block;
   }
 
-  .hero6__bg {
-    display: none;
+  /* Mobile: bottom gradient — door stays visible up top */
+  .hero7__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgb(13 21 31 / 0.05) 0%,
+      rgb(13 21 31 / 0.16) 26%,
+      rgb(13 21 31 / 0.55) 44%,
+      rgb(13 21 31 / 0.88) 62%,
+      rgb(13 21 31 / 0.97) 100%
+    );
   }
 
-  .hero6__content {
-    background: var(--ez-charcoal);
-    color: #c3ccd6;
-    padding: var(--space-5) clamp(1rem, 4vw, 2rem) var(--space-6);
+  .hero7__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding: var(--space-6) clamp(1rem, 4vw, 2rem) var(--space-6);
+    color: #c9d2dc;
   }
 
-  .hero6__eyebrow {
+  .hero7__eyebrow {
     display: flex;
     align-items: center;
     font-family: var(--font-display);
@@ -108,19 +176,20 @@ import heroMobile from "../../assets/photos/hero-repair-mobile.jpg";
     margin-bottom: var(--space-2);
   }
 
-  .hero6__content h1 {
+  .hero7__content h1 {
     color: #fff;
-    font-size: clamp(2rem, 1.4rem + 2.8vw, 3rem);
+    font-size: clamp(2.1rem, 1.5rem + 2.8vw, 3.3rem);
+    max-width: 14ch;
   }
 
-  .hero6__sub {
+  .hero7__sub {
     margin-top: var(--space-3);
     font-size: var(--text-base);
-    color: #c3ccd6;
-    max-width: 33rem;
+    max-width: 32rem;
+    color: #d6dce3;
   }
 
-  .hero6__actions {
+  .hero7__actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -128,11 +197,12 @@ import heroMobile from "../../assets/photos/hero-repair-mobile.jpg";
     margin-top: var(--space-4);
   }
 
-  .hero6__actions :global(.btn) {
+  .hero7__actions :global(.btn) {
     white-space: nowrap;
+    min-height: 56px;
   }
 
-  .hero6__photo-link {
+  .hero7__photo-link {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -145,88 +215,87 @@ import heroMobile from "../../assets/photos/hero-repair-mobile.jpg";
     white-space: nowrap;
   }
 
-  .hero6__photo-link:hover {
+  .hero7__photo-link:hover {
     color: var(--ez-orange);
   }
 
-  .hero6__micro {
+  .hero7__micro {
     margin-top: var(--space-2);
     font-size: var(--text-sm);
-    color: #8d98a5;
+    color: #9aa5b1;
   }
 
-  .hero6__rating {
+  .hero7__proof {
     margin-top: var(--space-4);
-    padding-top: var(--space-4);
-    border-top: 1px solid rgb(255 255 255 / 0.14);
   }
 
-  /* ---------- Desktop: one integrated photographic composition ---------- */
+  .hero7__rating {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .hero7__stars {
+    display: inline-flex;
+    gap: 4px;
+    line-height: 0;
+  }
+
+  .hero7__score {
+    font-family: var(--font-display);
+    font-weight: 750;
+    font-size: var(--text-base);
+    color: #fff;
+  }
+
+  .hero7__platforms {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin: var(--space-3) 0 0;
+    opacity: 0.92;
+  }
+
+  .hero7__platforms :global(img) {
+    width: auto;
+    display: block;
+  }
+
+  /* ---- Desktop: text lower-left over layered left gradient ---- */
   @media (min-width: 62rem) {
-    .hero6__mobile-media {
-      display: none;
-    }
-
-    .hero6__stage {
-      position: relative;
-      min-height: 600px;
-      display: flex;
+    .hero7 {
+      min-height: 660px;
       align-items: center;
-      overflow: hidden;
     }
 
-    .hero6__bg {
-      display: block;
-      position: absolute;
-      inset: 0;
-    }
-
-    .hero6__bg :global(img) {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .hero7__bg img {
       object-position: 72% 30%;
     }
 
-    /* Controlled charcoal gradient over the left half for white type */
-    .hero6__bg::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        90deg,
-        rgb(20 28 38 / 0.94) 0%,
-        rgb(20 28 38 / 0.86) 30%,
-        rgb(20 28 38 / 0.55) 48%,
-        rgb(20 28 38 / 0) 68%
-      );
+    .hero7__overlay {
+      background:
+        linear-gradient(
+          90deg,
+          rgb(13 21 31 / 0.92) 0%,
+          rgb(13 21 31 / 0.72) 36%,
+          rgb(13 21 31 / 0.18) 68%,
+          rgb(13 21 31 / 0) 100%
+        ),
+        linear-gradient(0deg, rgb(13 21 31 / 0.35) 0%, rgb(13 21 31 / 0) 30%);
     }
 
-    .hero6__content {
-      position: relative;
-      z-index: 1;
-      background: none;
-      max-width: var(--content-max);
-      width: 100%;
-      margin-inline: auto;
-      padding: var(--space-7) clamp(1rem, 4vw, 2rem);
+    .hero7__content {
+      padding-block: var(--space-8);
     }
 
-    .hero6__content > * {
-      max-width: 540px;
+    .hero7__content > * {
+      max-width: 560px;
     }
 
-    .hero6__content h1 {
-      font-size: clamp(2.6rem, 2rem + 1.8vw, 3.4rem);
-    }
-
-    .hero6__sub {
-      font-size: var(--text-lg);
-      margin-top: var(--space-4);
-    }
-
-    .hero6__actions {
-      margin-top: var(--space-5);
+    .hero7__stars svg {
+      width: 22px;
+      height: 22px;
     }
   }
 </style>

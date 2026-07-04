@@ -9,6 +9,17 @@ Build status: **21 pages build clean, zero errors.**
 > links). AI van/technician photos removed from the first viewport — only spring/repair
 > detail imagery on the homepage. Two new phone-first urgency LPs added.
 >
+> **Rev. 7 changes (integrated hero composition):** desktop hero is now ONE full-bleed
+> photographic composition — active-repair scene (technician at the torsion system,
+> homeowner cropped out) with a controlled left charcoal gradient and the headline/CTA/
+> rating rendered directly over it; the floating white card is gone. Rating proof has a
+> dark tone (white text, platform logos on a compact light chip). The separate stats
+> banner was removed — numbers moved to a clean 3-column proof section after the rail.
+> Rail: moving category labels removed, static "BRANDS WE SERVICE" heading added,
+> 48–64px logo gaps, measured speeds now 22 px/s desktop / 11 px/s mobile (verified).
+> Header: larger logo, one-line nav (nowrap), non-wrapping "Call for Repair" CTA.
+> Deployed to production (https://ez-garage-doors.vercel.app) and pushed to GitHub.
+>
 > **Rev. 6 changes (targeted hero + rail revision):** hero image replaced — the
 > maintenance-looking technician scene is out of the hero; the new hero is a REAL photo of
 > a worn, sagging garage door at a CT home (full opening dominant, reads as a repair
