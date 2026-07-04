@@ -2,5 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /thank-you/
 
-# TODO: Replace with the final production domain before launch.
-Sitemap: https://REPLACE-WITH-FINAL-DOMAIN.example/sitemap-index.xml
+# TODO: update host when the final custom domain replaces the Vercel URL.
+Sitemap: https://ez-garage-doors.vercel.app/sitemap-index.xml

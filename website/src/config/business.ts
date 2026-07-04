@@ -25,8 +25,8 @@ export const BUSINESS = {
   /** Lead form backend endpoint. Empty = form falls back to thank-you redirect (not live). */
   FORM_ENDPOINT: "",
 
-  /** Final production domain. Placeholder on purpose — do not invent a real-looking domain. */
-  SITE_URL: "https://REPLACE-WITH-FINAL-DOMAIN.example",
+  /** Vercel production URL. TODO: replace with the final custom domain when it exists. */
+  SITE_URL: "https://ez-garage-doors.vercel.app",
 } as const;
 
 export const hasPhone = (): boolean =>

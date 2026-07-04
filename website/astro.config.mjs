@@ -2,10 +2,9 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
-// TODO: Replace with the final production domain before launch.
-// Kept as an obvious placeholder on purpose — do not ship canonical/sitemap
-// URLs pointing at this value.
-const SITE_URL = "https://REPLACE-WITH-FINAL-DOMAIN.example";
+// TODO: Replace with the final custom domain when it exists.
+// Currently the Vercel production URL so canonicals/sitemap are valid.
+const SITE_URL = "https://ez-garage-doors.vercel.app";
 
 export default defineConfig({
   site: SITE_URL,
