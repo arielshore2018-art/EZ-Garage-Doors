@@ -1,45 +1,58 @@
 ---
 /**
- * Image-led repair hero (v5). Visual: a real Connecticut home with a
- * worn, sagging garage door — reads as a repair problem, not an
- * installation ad. Door dominant; no van; no AI-technician staging.
- * Mobile: header → full-bleed problem image → short copy → one dominant
- * CTA → five-star rating proof. Desktop: photographic field with the
- * copy panel overlapping the porch side (negative space), door fully
- * visible on the left.
+ * Integrated photographic hero (v6). One composition: a full-bleed
+ * active-repair image with a charcoal gradient from the left and the
+ * headline/CTA/rating rendered directly over the darker side.
+ * No floating white card, no detached panels.
+ * Mobile keeps the proven order: image → copy → rating, as one block.
  */
+import { Image } from "astro:assets";
 import CallButton from "../CallButton.astro";
-import ResponsiveHeroMedia from "../ResponsiveHeroMedia.astro";
 import HeroRatingProof from "../HeroRatingProof.astro";
-import heroDesktop from "../../assets/photos/hero-problem-door-desktop.jpg";
-import heroMobile from "../../assets/photos/hero-problem-door-mobile.jpg";
+import heroDesktop from "../../assets/photos/hero-active-repair-desktop.jpg";
+import heroMobile from "../../assets/photos/hero-repair-mobile.jpg";
 ---
 
-<section class="heroV5">
-  <div class="heroV5__grid">
-    <ResponsiveHeroMedia
-      desktopSrc={heroDesktop}
-      mobileSrc={heroMobile}
-      alt="Worn residential garage door with an uneven bottom edge at a Connecticut home — a common repair call"
-      focalPointDesktop="28% 55%"
-      focalPointMobile="40% 60%"
-      priority
-      class="heroV5__media"
+<section class="hero6">
+  <!-- Mobile image band (desktop uses the background composition below) -->
+  <div class="hero6__mobile-media">
+    <Image
+      src={heroMobile}
+      alt="EZ Garage Doors technician repairing the torsion system of a residential garage door"
+      width={990}
+      widths={[480, 780, 990]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
     />
+  </div>
 
-    <div class="heroV5__panel">
-      <p class="heroV5__eyebrow">
+  <div class="hero6__stage">
+    <div class="hero6__bg" aria-hidden="true">
+      <Image
+        src={heroDesktop}
+        alt=""
+        width={1440}
+        widths={[1000, 1440, 1920]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <div class="hero6__content">
+      <p class="hero6__eyebrow">
         <span class="speed-tick" aria-hidden="true"></span>
         Connecticut Garage Door Repair
       </p>
       <h1>Door Stuck or Won't Close?</h1>
-      <p class="heroV5__sub">
+      <p class="hero6__sub">
         Fast local repair for broken springs, openers, cables, tracks, and doors that won't
         close.
       </p>
-      <div class="heroV5__actions">
+      <div class="hero6__actions">
         <CallButton label="Call for Repair" size="lg" track="hero_call_click" />
-        <a href="/contact/#request" class="heroV5__photo-link" data-track="photo_cta_click">
+        <a href="/contact/#request" class="hero6__photo-link" data-track="photo_cta_click">
           <svg
             aria-hidden="true"
             width="16"
@@ -57,26 +70,33 @@ import heroMobile from "../../assets/photos/hero-problem-door-mobile.jpg";
           Send a Photo
         </a>
       </div>
-      <p class="heroV5__micro">Written quote before work begins.</p>
-      <div class="heroV5__rating">
-        <HeroRatingProof />
+      <p class="hero6__micro">Written quote before work begins.</p>
+      <div class="hero6__rating">
+        <HeroRatingProof tone="dark" />
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .heroV5__grid {
-    display: flex;
-    flex-direction: column;
+  /* ---------- Mobile: image band → copy block (one flowing unit) ---------- */
+  .hero6__mobile-media :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
-  .heroV5__panel {
-    background: var(--ez-white);
-    padding: var(--space-5) clamp(1rem, 4vw, 2rem) var(--space-5);
+  .hero6__bg {
+    display: none;
   }
 
-  .heroV5__eyebrow {
+  .hero6__content {
+    background: var(--ez-charcoal);
+    color: #c3ccd6;
+    padding: var(--space-5) clamp(1rem, 4vw, 2rem) var(--space-6);
+  }
+
+  .hero6__eyebrow {
     display: flex;
     align-items: center;
     font-family: var(--font-display);
@@ -84,22 +104,23 @@ import heroMobile from "../../assets/photos/hero-problem-door-mobile.jpg";
     font-size: var(--text-xs);
     letter-spacing: 0.13em;
     text-transform: uppercase;
-    color: var(--ez-orange-deep);
+    color: var(--ez-orange);
     margin-bottom: var(--space-2);
   }
 
-  .heroV5__panel h1 {
-    font-size: clamp(2rem, 1.4rem + 2.8vw, 3.1rem);
+  .hero6__content h1 {
+    color: #fff;
+    font-size: clamp(2rem, 1.4rem + 2.8vw, 3rem);
   }
 
-  .heroV5__sub {
+  .hero6__sub {
     margin-top: var(--space-3);
     font-size: var(--text-base);
-    color: var(--color-text-muted);
-    max-width: 30rem;
+    color: #c3ccd6;
+    max-width: 33rem;
   }
 
-  .heroV5__actions {
+  .hero6__actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -107,67 +128,105 @@ import heroMobile from "../../assets/photos/hero-problem-door-mobile.jpg";
     margin-top: var(--space-4);
   }
 
-  .heroV5__photo-link {
+  .hero6__actions :global(.btn) {
+    white-space: nowrap;
+  }
+
+  .hero6__photo-link {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--text-sm);
-    color: var(--ez-charcoal);
+    color: #fff;
     text-decoration-color: var(--ez-orange);
     min-height: 44px;
+    white-space: nowrap;
   }
 
-  .heroV5__photo-link:hover {
-    color: var(--ez-orange-deep);
+  .hero6__photo-link:hover {
+    color: var(--ez-orange);
   }
 
-  .heroV5__micro {
+  .hero6__micro {
     margin-top: var(--space-2);
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: #8d98a5;
   }
 
-  .heroV5__rating {
+  .hero6__rating {
     margin-top: var(--space-4);
     padding-top: var(--space-4);
-    border-top: 1px dashed var(--ez-border);
+    border-top: 1px solid rgb(255 255 255 / 0.14);
   }
 
-  /* ---- Desktop: door visible left, panel over the porch side ---- */
+  /* ---------- Desktop: one integrated photographic composition ---------- */
   @media (min-width: 62rem) {
-    .heroV5 {
-      background: linear-gradient(150deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
-      padding-block: var(--space-7);
+    .hero6__mobile-media {
+      display: none;
     }
 
-    .heroV5__grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.95fr);
+    .hero6__stage {
+      position: relative;
+      min-height: 600px;
+      display: flex;
       align-items: center;
+      overflow: hidden;
+    }
+
+    .hero6__bg {
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero6__bg :global(img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 72% 30%;
+    }
+
+    /* Controlled charcoal gradient over the left half for white type */
+    .hero6__bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgb(20 28 38 / 0.94) 0%,
+        rgb(20 28 38 / 0.86) 30%,
+        rgb(20 28 38 / 0.55) 48%,
+        rgb(20 28 38 / 0) 68%
+      );
+    }
+
+    .hero6__content {
+      position: relative;
+      z-index: 1;
+      background: none;
       max-width: var(--content-max);
+      width: 100%;
       margin-inline: auto;
-      padding-inline: clamp(1rem, 4vw, 2rem);
+      padding: var(--space-7) clamp(1rem, 4vw, 2rem);
     }
 
-    .heroV5__media {
-      grid-column: 1;
-      grid-row: 1;
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-card);
+    .hero6__content > * {
+      max-width: 540px;
     }
 
-    .heroV5__panel {
-      grid-column: 2;
-      grid-row: 1;
-      z-index: 2;
-      margin-left: -5.5rem;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--ez-border);
-      border-left: 5px solid var(--ez-orange);
-      box-shadow: var(--shadow-card);
-      padding: var(--space-6) var(--space-6);
+    .hero6__content h1 {
+      font-size: clamp(2.6rem, 2rem + 1.8vw, 3.4rem);
+    }
+
+    .hero6__sub {
+      font-size: var(--text-lg);
+      margin-top: var(--space-4);
+    }
+
+    .hero6__actions {
+      margin-top: var(--space-5);
     }
   }
 </style>

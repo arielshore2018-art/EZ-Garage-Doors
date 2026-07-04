@@ -41,7 +41,7 @@ const current = Astro.url.pathname;
     </nav>
 
     <div class="site-header__cta">
-      <CallButton label="Call EZ Garage Doors" />
+      <CallButton label="Call for Repair" />
     </div>
 
     <details class="site-header__mobile">
@@ -81,7 +81,7 @@ const current = Astro.url.pathname;
   }
 
   .site-header__logo img {
-    width: clamp(140px, 18vw, 210px);
+    width: clamp(150px, 17vw, 225px);
     height: auto;
   }
 
@@ -91,7 +91,7 @@ const current = Astro.url.pathname;
 
   .site-header__nav ul {
     display: flex;
-    gap: var(--space-4);
+    gap: var(--space-3);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -105,6 +105,12 @@ const current = Astro.url.pathname;
     color: var(--ez-charcoal);
     padding: 0.4rem 0.15rem;
     border-bottom: 3px solid transparent;
+    white-space: nowrap;
+  }
+
+  .site-header__cta :global(.btn) {
+    white-space: nowrap;
+    padding-inline: 1.1rem;
   }
 
   .site-header__nav a:hover,

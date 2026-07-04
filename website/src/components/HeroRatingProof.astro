@@ -13,9 +13,11 @@ import { STATS } from "../config/business";
 interface Props {
   /** Wrap in a full-width band (for placement between page sections). */
   band?: boolean;
+  /** "dark" renders white text + a light backdrop chip behind platform logos. */
+  tone?: "light" | "dark";
 }
 
-const { band = false } = Astro.props;
+const { band = false, tone = "light" } = Astro.props;
 
 const platforms = reviewPlatformLogos.filter((l) => ["google", "yelp", "angi"].includes(l.id));
 
@@ -29,7 +31,7 @@ const STAR_PATH =
 ---
 
 <div class:list={[{ "rating-band": band }]}>
-  <div class:list={["rating", { "wrap": band }]} role="img" aria-label={`Rated 4.9 out of 5 based on more than 850 reviews`}>
+  <div class:list={["rating", { "wrap": band, "rating--dark": tone === "dark" }]} role="img" aria-label={`Rated 4.9 out of 5 based on more than 850 reviews`}>
     <span class="rating__stars" aria-hidden="true">
       {
         [0, 1, 2, 3, 4].map(() => (
@@ -100,5 +102,21 @@ const STAR_PATH =
       width: 23px;
       height: 23px;
     }
+  }
+
+  /* Dark tone: white text over the hero gradient; platform logos keep
+     their brand colors on a compact light backdrop. */
+  .rating--dark .rating__score {
+    color: #fff;
+  }
+
+  .rating--dark .rating__count {
+    color: #cfd6de;
+  }
+
+  .rating--dark .rating__platforms {
+    background: rgb(255 255 255 / 0.94);
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.6rem;
   }
 </style>

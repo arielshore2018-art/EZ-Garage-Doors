@@ -23,34 +23,27 @@ const dims = (img: { width: number; height: number }, h: number) => ({
 });
 ---
 
-<div class="brand-rail" aria-label="Garage door and opener brands we service">
-  <div class="brand-track" data-rail-track>
-    {
-      [false, true].map((duplicate) => (
-        <ul class="brand-set" data-rail-set={!duplicate ? "true" : undefined} aria-hidden={duplicate ? "true" : undefined}>
-          <li class="brand-set__label">Openers</li>
-          {openers.map((l) => {
-            const d = dims(l.src, l.railHeight);
-            return (
-              <li>
-                <Image src={l.src} alt={duplicate ? "" : l.alt} width={d.width} height={d.height} loading="eager" />
-              </li>
-            );
-          })}
-          <li class="brand-set__label">Doors</li>
-          {doors.map((l) => {
-            const d = dims(l.src, l.railHeight);
-            return (
-              <li>
-                <Image src={l.src} alt={duplicate ? "" : l.alt} width={d.width} height={d.height} loading="eager" />
-              </li>
-            );
-          })}
-        </ul>
-      ))
-    }
+<div class="brand-rail-block">
+  <p class="brand-rail-block__label">Brands We Service</p>
+  <div class="brand-rail" aria-label="Garage door and opener brands we service">
+    <div class="brand-track" data-rail-track>
+      {
+        [false, true].map((duplicate) => (
+          <ul class="brand-set" data-rail-set={!duplicate ? "true" : undefined} aria-hidden={duplicate ? "true" : undefined}>
+            {[...openers, ...doors].map((l) => {
+              const d = dims(l.src, l.railHeight);
+              return (
+                <li>
+                  <Image src={l.src} alt={duplicate ? "" : l.alt} width={d.width} height={d.height} loading="eager" />
+                </li>
+              );
+            })}
+          </ul>
+        ))
+      }
+    </div>
+    <p class="visually-hidden">We service major garage door and opener brands.</p>
   </div>
-  <p class="visually-hidden">We service major garage door and opener brands.</p>
 </div>
 
 <script>
@@ -65,9 +58,9 @@ const dims = (img: { width: number; height: number }, h: number) => ({
   if (rail && set) {
     const targetSpeed = () => {
       const w = window.innerWidth;
-      if (w < 640) return 12;
-      if (w < 1024) return 18;
-      return 24;
+      if (w < 640) return 11;
+      if (w < 1024) return 17;
+      return 22;
     };
 
     const apply = () => {
@@ -84,6 +77,23 @@ const dims = (img: { width: number; height: number }, h: number) => ({
 </script>
 
 <style>
+  .brand-rail-block {
+    background: var(--ez-white);
+    border-block: 1px solid var(--ez-border);
+  }
+
+  .brand-rail-block__label {
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 750;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ez-steel);
+    margin: 0;
+    padding-top: var(--space-4);
+  }
+
   .brand-rail {
     /* fallbacks until the measuring script runs */
     --single-set-width: 50%;
@@ -91,9 +101,7 @@ const dims = (img: { width: number; height: number }, h: number) => ({
     width: 100%;
     overflow: hidden;
     position: relative;
-    padding: 16px 0;
-    border-block: 1px solid var(--ez-border);
-    background: #fff;
+    padding: 20px 0;
     mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 7%, black 93%, transparent);
   }
@@ -109,8 +117,8 @@ const dims = (img: { width: number; height: number }, h: number) => ({
   .brand-set {
     display: flex;
     align-items: center;
-    gap: clamp(38px, 4.5vw, 56px);
-    padding-inline-end: clamp(38px, 4.5vw, 56px);
+    gap: clamp(48px, 5vw, 64px);
+    padding-inline-end: clamp(48px, 5vw, 64px);
     list-style: none;
     margin: 0;
     padding-block: 0;
@@ -126,17 +134,6 @@ const dims = (img: { width: number; height: number }, h: number) => ({
   .brand-set :global(img) {
     width: auto;
     display: block;
-  }
-
-  .brand-set__label {
-    font-family: var(--font-display);
-    font-weight: 750;
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ez-orange-deep);
-    border-left: 3px solid var(--ez-orange);
-    padding-left: 0.6rem;
   }
 
   @keyframes ez-brand-scroll {
