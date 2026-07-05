@@ -9,6 +9,17 @@ Build status: **21 pages build clean, zero errors.**
 > links). AI van/technician photos removed from the first viewport — only spring/repair
 > detail imagery on the homepage. Two new phone-first urgency LPs added.
 >
+> **Rev. 9 changes (page expansion + PPC):** 37 pages. Rail speeds +13% (41/34/26 px/s,
+> measured 26 on mobile / config-verified desktop). New typed image manifest
+> (`src/config/site-images.ts`) — pages consume imagery by id; every service page has a
+> UNIQUE full-bleed hero (ServiceHero + OverlayRating). All 11 service/company pages
+> expanded: proof columns, image-led symptom sections, causes, process, brand strips,
+> asymmetric WorkGallery, review cards, FaqList (with FAQPage schema where layout
+> supports). 16 local PPC pages at /ppc/garage-door-repair/[city]-ct driven by
+> `src/config/ppc.ts` (single renderer, real nearby-town data, per-city campaignId
+> tracking, NO invented local proof) — noindex + excluded from sitemap + no navigation,
+> verified live. Deployed; commit c149f1c.
+>
 > **Rev. 8 changes (full-bleed overlay hero):** the hero is now ONE image composition on
 > every breakpoint — mobile uses a portrait crop (~720px hero) with the directive's bottom
 > gradient and copy near the bottom (door/spring visible up top); desktop (660px) uses the
