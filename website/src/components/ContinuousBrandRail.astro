@@ -58,9 +58,9 @@ const dims = (img: { width: number; height: number }, h: number) => ({
   if (rail && set) {
     const targetSpeed = () => {
       const w = window.innerWidth;
-      if (w < 640) return 22;
-      if (w < 1024) return 29;
-      return 35;
+      if (w < 640) return 26;
+      if (w < 1024) return 34;
+      return 41;
     };
 
     const apply = () => {

@@ -6,10 +6,9 @@
  */
 import LandingLayout from "../layouts/LandingLayout.astro";
 import CallButton from "../components/CallButton.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
-import PhotoUploadCTA from "../components/PhotoUploadCTA.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import HeroRatingProof from "../components/HeroRatingProof.astro";
-import { APPROVED_CLAIMS } from "../config/business";
 
 const commonEmergencies = [
   "Door stuck wide open and won't close",
@@ -33,25 +32,17 @@ const service = {
   callLabel="Call Now"
   service={service}
 >
-  <section class="em-hero">
-    <div class="wrap em-hero__inner">
-      <h1>Emergency Garage Door Repair in Connecticut</h1>
-      <p class="em-hero__sub">
-        Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local service
-        and a written quote before work begins.
-      </p>
-      <div class="em-hero__actions">
-        <CallButton label="Call Now" size="lg" track="emergency_call_click" />
-        <PhotoUploadCTA label="Text a Photo" variant="inverse-outline" />
-      </div>
-      <div class="em-hero__trust">
-        <MicroTrustBar
-          tone="dark"
-          items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]}
-        />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="spring-safety"
+    eyebrow="Emergency Dispatch"
+    heading="Emergency Garage Door Repair in Connecticut"
+    sub="Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local service and a written quote before work begins."
+    callLabel="Call Now"
+    callTrack="emergency_call_click"
+    secondaryLabel="Text a Photo"
+  />
+
+  <ProofColumns />
 
   <section class="em-steps">
     <div class="wrap">

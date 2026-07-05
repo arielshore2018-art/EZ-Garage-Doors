@@ -1,0 +1,82 @@
+---
+/**
+ * Compact rating proof for dark image overlays: five gold stars,
+ * "4.9 · 850+ reviews", white knockout Google/Yelp/Angi logos.
+ */
+import { Image } from "astro:assets";
+import googleWhite from "../assets/trust-logos/review-platforms/google-logo-white.png";
+import yelpWhite from "../assets/trust-logos/review-platforms/yelp-logo-white.png";
+import angiWhite from "../assets/trust-logos/review-platforms/angi-logo-white.png";
+import { STATS } from "../config/business";
+
+const platforms = [
+  { img: googleWhite, h: 18 },
+  { img: yelpWhite, h: 20 },
+  { img: angiWhite, h: 20 },
+];
+
+const dims = (img: { width: number; height: number }, h: number) => ({
+  height: h,
+  width: Math.round(img.width * (h / img.height)),
+});
+
+const STAR_PATH = "M12 1.8l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.6 5.8 20.9 7 14 2 9.1l6.9-1z";
+---
+
+<div class="ovr" role="img" aria-label="Rated 4.9 out of 5 based on more than 850 reviews">
+  <p class="ovr__line" aria-hidden="true">
+    <span class="ovr__stars">
+      {
+        [0, 1, 2, 3, 4].map(() => (
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="#f0a828">
+            <path d={STAR_PATH} />
+          </svg>
+        ))
+      }
+    </span>
+    <span class="ovr__score">4.9 · {STATS.fiveStarReviews} reviews</span>
+  </p>
+  <p class="ovr__platforms" aria-hidden="true">
+    {
+      platforms.map((p) => {
+        const d = dims(p.img, p.h);
+        return <Image src={p.img} alt="" width={d.width} height={d.height} loading="eager" />;
+      })
+    }
+  </p>
+</div>
+
+<style>
+  .ovr__line {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+  }
+
+  .ovr__stars {
+    display: inline-flex;
+    gap: 4px;
+    line-height: 0;
+  }
+
+  .ovr__score {
+    font-family: var(--font-display);
+    font-weight: 750;
+    font-size: var(--text-sm);
+    color: #fff;
+  }
+
+  .ovr__platforms {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin: var(--space-3) 0 0;
+    opacity: 0.92;
+  }
+
+  .ovr__platforms :global(img) {
+    width: auto;
+    display: block;
+  }
+</style>

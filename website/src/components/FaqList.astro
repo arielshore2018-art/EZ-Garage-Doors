@@ -1,0 +1,82 @@
+---
+/**
+ * FAQ accordion — native <details>, no JS. Pass the same array to the
+ * layout's `faqs` prop when FAQPage schema is wanted.
+ */
+import SectionHeading from "./SectionHeading.astro";
+
+interface Props {
+  faqs: { question: string; answer: string }[];
+  heading?: string;
+}
+
+const { faqs, heading = "Common questions" } = Astro.props;
+---
+
+<section class="faq section">
+  <div class="wrap wrap--narrow">
+    <SectionHeading eyebrow="Straight answers" title={heading} />
+    <div class="faq__list">
+      {
+        faqs.map((f) => (
+          <details class="faq__item">
+            <summary>{f.question}</summary>
+            <p>{f.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__list {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .faq__item {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-radius: var(--radius-md);
+    padding: 0;
+  }
+
+  .faq__item summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ez-charcoal);
+    min-height: 48px;
+  }
+
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__item summary::before {
+    content: "";
+    width: 0.9rem;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--speed-line-gradient);
+    flex-shrink: 0;
+    transition: transform 120ms ease;
+  }
+
+  .faq__item[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .faq__item p {
+    padding: 0 var(--space-5) var(--space-4) calc(var(--space-5) + 0.9rem + var(--space-3));
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

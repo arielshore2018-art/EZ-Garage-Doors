@@ -5,6 +5,8 @@
  * no token-swap doorway pages.
  */
 import SiteLayout from "../../layouts/SiteLayout.astro";
+import ServiceHero from "../../components/ServiceHero.astro";
+import ProofColumns from "../../components/home/ProofColumns.astro";
 import CityGrid from "../../components/CityGrid.astro";
 import CTASection from "../../components/CTASection.astro";
 import { BUSINESS } from "../../config/business";
@@ -14,15 +16,18 @@ import { BUSINESS } from "../../config/business";
   title="Service Areas | EZ Garage Doors — Central Connecticut"
   description="EZ Garage Doors serves central Connecticut towns including Middletown, Cromwell, Glastonbury, West Hartford, Southington, and surrounding communities."
 >
-  <section class="areas-hero">
-    <div class="wrap wrap--narrow">
-      <h1>Garage Door Service Across Central {BUSINESS.state}</h1>
-      <p class="areas-hero__sub">
-        One local team covering the towns below for repair, springs, openers, and new door
-        installations. If your town borders this area, call — we can usually help.
-      </p>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="van-arrival"
+    eyebrow="Service Area"
+    heading={`Garage Door Service Across Central ${BUSINESS.state}`}
+    sub="One local team covering the towns below for repair, springs, openers, and new door installations. If your town borders this area, call — we can usually help."
+    callLabel="Call EZ Garage Doors"
+    callTrack="areas_call_click"
+    secondaryLabel="Get a Written Estimate"
+    secondaryHref="/contact/#request"
+  />
+
+  <ProofColumns />
 
   <CityGrid heading="Towns we serve" compact />
 

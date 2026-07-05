@@ -1,42 +1,26 @@
 ---
 /**
- * Main repair service page — urgent-general intent.
- * Problem/solution hero, symptoms, common repairs, pricing logic,
- * trust, service area, CTA.
+ * Main repair page — expanded architecture: full-bleed hero, proof bar,
+ * image-led symptoms, causes, process, brands, work gallery, reviews, FAQ.
  */
-import { Image } from "astro:assets";
 import SiteLayout from "../layouts/SiteLayout.astro";
-import CallButton from "../components/CallButton.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import RepairIssueGrid from "../components/RepairIssueGrid.astro";
-import PricingLogicBlock from "../components/PricingLogicBlock.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
-import ReviewProof from "../components/ReviewProof.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+import WorkGallery from "../components/WorkGallery.astro";
+import ReviewCards from "../components/home/ReviewCards.astro";
+import FaqList from "../components/FaqList.astro";
 import CityGrid from "../components/CityGrid.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import PhotoUploadCTA from "../components/PhotoUploadCTA.astro";
-import TrustLogoStrip from "../components/TrustLogoStrip.astro";
-import HeroRatingProof from "../components/HeroRatingProof.astro";
-
-import repairTech from "../assets/photos/ez-garage-door-repair-technician-van.jpg";
 
 const issues = [
   { symptom: "Door won't open or close", meaning: "Often a spring, opener, or track problem — stop forcing it and have it diagnosed." },
   { symptom: "Loud bang from the garage", meaning: "The classic sign of a snapped torsion spring. The door will feel very heavy." },
   { symptom: "Door is off its track", meaning: "Rollers or cables have failed or slipped. Keep the door still until it's secured." },
-  { symptom: "Door reverses before closing", meaning: "Usually safety sensors or opener travel settings — a quick diagnostic fix." },
-  { symptom: "Grinding or squealing", meaning: "Worn rollers, dry hinges, or a failing opener drive. Cheap to fix early." },
-  { symptom: "Sagging or crooked door", meaning: "A cable or spring on one side has let go. The door needs rebalancing." },
-];
-
-const repairs = [
-  "Torsion and extension springs",
-  "Lift cables and drums",
-  "Rollers, hinges, and tracks",
-  "Opener drives, remotes, and sensors",
-  "Door sections and panels",
-  "Weather seals and bottom rubber",
+  { symptom: "Grinding, squealing, or shaking", meaning: "Worn rollers, dry hinges, or a failing opener drive. Cheap to fix early." },
 ];
 
 const service = {
@@ -44,169 +28,78 @@ const service = {
   description: "Diagnosis and repair of residential garage doors: springs, cables, rollers, tracks, openers, and stuck doors.",
   url: "/garage-door-repair/",
 };
+
+const faqs = [
+  { question: "How fast can you get to my door?", answer: "Call and tell us your town and what the door is doing — we dispatch locally across central Connecticut and confirm your arrival window on the phone before anyone drives out." },
+  { question: "Do you charge to come out and look?", answer: "You get the diagnosis explained and the repair price in writing before any work begins — ask about the current service-visit policy when you call, and the quote you approve is the price you pay." },
+  { question: "Can I use the door until you arrive?", answer: "If you heard a bang, the door is crooked, or it's off track — no. The door is heavier than it looks and under spring tension. Leave it where it is and keep people and cars clear." },
+  { question: "Do you repair doors you didn't install?", answer: "Yes. We service most major door and opener brands regardless of who installed them — see the brands strip on this page." },
+  { question: "Repair or replace — how do you decide?", answer: "By the math, in writing. One failed spring on a healthy door is a repair. Rotting panels plus repeated failures usually favor replacement — we show you both numbers and you choose." },
+];
 ---
 
 <SiteLayout
   title="Garage Door Repair in Connecticut | EZ Garage Doors"
   description="Garage door repair in Connecticut: springs, cables, rollers, tracks, openers, and stuck doors. Local company, written quote before work begins."
   service={service}
+  faqs={faqs}
 >
-  <section class="repair-hero">
-    <div class="wrap repair-hero__grid">
-      <div>
-        <h1>Garage Door Repair in Connecticut</h1>
-        <p class="repair-hero__sub">
-          Springs, cables, rollers, tracks, openers, and stuck doors repaired by a local garage
-          door company built for fast response.
-        </p>
-        <div class="repair-hero__actions">
-          <CallButton label="Call for Garage Door Repair" size="lg" />
-          <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">
-            Request Service
-          </a>
-        </div>
-        <p class="cta-note">A local garage door specialist will follow up.</p>
-        <div class="repair-hero__trust">
-          <MicroTrustBar />
-        </div>
-      </div>
-      <div class="repair-hero__media">
-        <Image
-          src={repairTech}
-          alt="Garage door repair technician with tool bag beside an EZ Garage Doors van"
-          width={760}
-          widths={[480, 760]}
-          sizes="(max-width: 62rem) 92vw, 480px"
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
+  <ServiceHero
+    imageId="hero-problem-door"
+    eyebrow="Connecticut Garage Door Repair"
+    heading="Garage Door Repair in Connecticut"
+    sub="Springs, cables, rollers, tracks, openers, and stuck doors — repaired by a local team built for fast response."
+    callLabel="Call for Repair"
+    callTrack="repair_call_click"
+  />
+
+  <ProofColumns />
+
+  <RepairIssueGrid heading="What is your door doing?" issues={issues} alt />
+
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="Why it happens" title="What usually causes it" />
+      <p>
+        Garage doors fail at their moving parts: springs lose cycles and snap, cables fray at
+        the bottom brackets, rollers wear flat, and tracks bend when a door runs against
+        resistance. Openers usually get the blame — but half of "opener problems" are really a
+        door that's too heavy or binding. That's why we inspect the whole system before quoting.
+      </p>
     </div>
   </section>
 
-  <RepairIssueGrid issues={issues} alt />
+  <ProcessSteps
+    heading="How a repair visit works"
+    steps={[
+      { title: "Inspect", detail: "We check springs, cables, rollers, tracks, and opener balance — not just the loud symptom." },
+      { title: "Explain", detail: "You see what failed and why, in plain language." },
+      { title: "Written quote", detail: "The full price on paper before any work." },
+      { title: "Approval, then repair", detail: "Work starts only after you approve. Door tested through full travel before we leave." },
+    ]}
+  />
 
-  <HeroRatingProof band />
+  <TrustLogoStrip variant="combined" />
+
+  <WorkGallery
+    heading="Repair work, up close"
+    imageIds={["stuck-repair", "broken-spring", "new-springs"]}
+  />
 
   <section class="section">
     <div class="wrap">
-      <SectionHeading eyebrow="What we repair" title="Common garage door repairs" />
-      <ul class="repair-list">
-        {
-          repairs.map((r) => (
-            <li>
-              <span class="speed-tick" aria-hidden="true" />
-              {r}
-            </li>
-          ))
-        }
-      </ul>
-      <div class="repair-photo-cta">
-        <p>Not sure what's wrong? Skip the guessing.</p>
-        <PhotoUploadCTA label="Send a Photo of Your Door" />
-      </div>
+      <SectionHeading eyebrow="What customers say" title="Repairs, reviewed" />
+      <ReviewCards limit={3} />
     </div>
   </section>
 
-  <PricingLogicBlock
-    heading="Repair pricing, explained before we start"
-    intro="A repair quote depends on which parts failed, the door's size and weight, the spring system, and the opener's condition. You get the number in writing before we touch the door."
-  />
-
-  <ProcessSteps />
-
-  <ReviewProof />
-
-  <TrustLogoStrip variant="combined" />
+  <FaqList faqs={faqs} heading="Garage door repair questions" />
 
   <CityGrid compact />
 
   <CTASection
     heading="Door acting up today?"
     sub="Call EZ Garage Doors — get a written quote before work begins."
-    callLabel="Call for Garage Door Repair"
+    callLabel="Call for Repair"
   />
 </SiteLayout>
-
-<style>
-  .repair-hero {
-    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
-    padding-block: var(--space-7);
-    border-bottom: 1px solid var(--ez-border);
-  }
-
-  .repair-hero__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    gap: var(--space-7);
-    align-items: center;
-  }
-
-  .repair-hero__sub {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    margin-top: var(--space-4);
-    max-width: 34rem;
-  }
-
-  .repair-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
-
-  .repair-hero__trust {
-    margin-top: var(--space-5);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--ez-border);
-  }
-
-  .repair-hero__media img {
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-card);
-    width: 100%;
-    height: auto;
-  }
-
-  .repair-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: var(--space-3);
-    font-family: var(--font-display);
-    font-weight: 650;
-  }
-
-  .repair-list li {
-    display: flex;
-    align-items: center;
-  }
-
-  .repair-photo-cta {
-    margin-top: var(--space-6);
-    padding-top: var(--space-5);
-    border-top: 1px solid var(--ez-border);
-    display: flex;
-    align-items: center;
-    gap: var(--space-5);
-    flex-wrap: wrap;
-  }
-
-  .repair-photo-cta p {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--text-lg);
-    color: var(--ez-charcoal);
-    margin: 0;
-  }
-
-  @media (max-width: 62rem) {
-    .repair-hero__grid {
-      grid-template-columns: 1fr;
-      gap: var(--space-5);
-    }
-  }
-</style>

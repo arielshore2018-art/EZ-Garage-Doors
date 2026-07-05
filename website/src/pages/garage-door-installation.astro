@@ -6,7 +6,8 @@
  */
 import { Image } from "astro:assets";
 import SiteLayout from "../layouts/SiteLayout.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import FinishedDoorGallery from "../components/FinishedDoorGallery.astro";
 import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
@@ -78,38 +79,20 @@ const faqs = [
   service={service}
   faqs={faqs}
 >
-  <section class="install-hero">
-    <div class="wrap install-hero__grid">
-      <div>
-        <h1>New Garage Door Installation in Connecticut</h1>
-        <p class="install-hero__sub">
-          Upgrade curb appeal, insulation, security, and daily reliability with a professionally
-          installed garage door from EZ Garage Doors.
-        </p>
-        <div class="install-hero__actions">
-          <a href="#request" class="btn btn--call btn--lg" data-track="estimate_click">
-            Get a Written Installation Estimate
-          </a>
-          <a href="#styles" class="btn btn--outline btn--lg">See Door Styles</a>
-        </div>
-        <p class="cta-note">One estimate, in writing. No pressure.</p>
-        <div class="install-hero__trust">
-          <MicroTrustBar />
-        </div>
-      </div>
-      <div class="install-hero__media">
-        <Image
-          src={heroDoor}
-          alt="Black modern garage door with vertical windows on a Connecticut home"
-          width={880}
-          widths={[480, 720, 880]}
-          sizes="(max-width: 62rem) 92vw, 540px"
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="door-black-windows"
+    eyebrow="New Door Installation"
+    heading="New Garage Door Installation in Connecticut"
+    sub="Upgrade curb appeal, insulation, security, and daily reliability with a professionally installed garage door from EZ Garage Doors."
+    callLabel="Get a Written Installation Estimate"
+    callTrack="estimate_click"
+    primaryMode="estimate"
+    secondaryLabel="See Door Styles"
+    secondaryHref="#styles"
+    micro="One estimate, in writing. No pressure."
+  />
+
+  <ProofColumns />
 
   <div id="styles">
     <FinishedDoorGallery doors={doors} heading="Door styles we install" />

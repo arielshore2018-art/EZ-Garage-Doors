@@ -4,8 +4,9 @@
  * story, no fake team bios, no stock "our values" filler. States what
  * is verified: 15 years, local CT, how the company works.
  */
-import { Image } from "astro:assets";
 import SiteLayout from "../layouts/SiteLayout.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ReviewProof from "../components/ReviewProof.astro";
 import CityGrid from "../components/CityGrid.astro";
@@ -19,27 +20,19 @@ import vanFront from "../assets/photos/ez-garage-door-service-van-front.jpg";
   title="About EZ Garage Doors | Local Connecticut Garage Door Company"
   description="EZ Garage Doors is a local Connecticut garage door company with 15 years in business. Written quotes before work, no bait pricing, repair and installation expertise."
 >
-  <section class="about-hero">
-    <div class="wrap about-hero__grid">
-      <div>
-        <h1>About EZ Garage Doors</h1>
-        <p class="about-hero__sub">
-          A local {BUSINESS.state} garage door company. {APPROVED_CLAIMS.years}.
-          {APPROVED_CLAIMS.tagline}
-        </p>
-      </div>
-      <div class="about-hero__media">
-        <Image
-          src={vanFront}
-          alt="EZ Garage Doors service van with ladder racks"
-          width={760}
-          widths={[480, 760]}
-          sizes="(max-width: 62rem) 92vw, 480px"
-          loading="eager"
-        />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="team-van"
+    eyebrow="Fast. Reliable. Local."
+    heading="About EZ Garage Doors"
+    sub={`A local ${BUSINESS.state} garage door company. 15 years in business, built on written quotes and straight answers.`}
+    callLabel="Call EZ Garage Doors"
+    callTrack="about_call_click"
+    secondaryLabel="Get a Written Estimate"
+    secondaryHref="/contact/#request"
+    micro="No pressure. One quote, in writing."
+  />
+
+  <ProofColumns />
 
   <section class="section">
     <div class="wrap wrap--narrow">

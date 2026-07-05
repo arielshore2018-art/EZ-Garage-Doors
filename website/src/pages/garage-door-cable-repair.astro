@@ -1,12 +1,15 @@
 ---
 /**
- * Cable / roller / track repair — phone-first urgency landing page.
- * Stripped layout, short, no install upsell above the fold.
+ * Cable / roller / track repair — expanded phone-first urgency page:
+ * full-bleed hero, proof bar, signs, causes, written-quote, gallery, FAQ.
  */
 import LandingLayout from "../layouts/LandingLayout.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
+import WorkGallery from "../components/WorkGallery.astro";
+import FaqList from "../components/FaqList.astro";
 import CallButton from "../components/CallButton.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
-import { APPROVED_CLAIMS } from "../config/business";
+import SectionHeading from "../components/SectionHeading.astro";
 
 const signs = [
   "Cable hanging loose or coiled on the floor",
@@ -22,6 +25,13 @@ const service = {
   description: "Snapped cables, worn rollers, and bent tracks repaired — door realigned and balanced with a written quote before work.",
   url: "/garage-door-cable-repair/",
 };
+
+const faqs = [
+  { question: "The cable came off but the door still moves — is that OK?", answer: "No. A slipped cable puts the door's full weight on one side; every cycle bends tracks and wears the good cable. Stop running the opener and call." },
+  { question: "Why did the cable snap?", answer: "Cables fray where they meet the bottom bracket — moisture, age, and an out-of-balance door speed it up. We check the spring balance behind it, because a cable that 'just slipped' usually slipped for a reason." },
+  { question: "Do you replace both cables?", answer: "Usually yes — both cables have the same age and wear. Replacing the pair keeps the door lifting evenly and saves a second visit." },
+  { question: "Can bent track be repaired, or does it need replacing?", answer: "Minor bends can often be trued; kinked or crushed sections get replaced. You'll see which one your door needs — with the price — in the written quote before any work." },
+];
 ---
 
 <LandingLayout
@@ -30,36 +40,22 @@ const service = {
   callLabel="Call for Cable Repair"
   service={service}
 >
-  <section class="cable-hero">
-    <div class="wrap cable-hero__inner">
-      <h1>Garage Door Cable &amp; Track Repair</h1>
-      <p class="cable-hero__sub">
-        Cable came off the drum, rollers worn out, or the door pulling crooked? Stop running the
-        opener and call — a loose cable gets worse with every cycle.
-      </p>
-      <div class="cable-hero__actions">
-        <CallButton label="Call for Cable Repair" size="lg" track="cable_call_click" />
-        <a href="/contact/#request" class="btn btn--inverse-outline btn--lg" data-track="photo_cta_click">
-          Text a Photo of the Cable
-        </a>
-      </div>
-      <p class="cable-hero__note">
-        Not sure it's the cable? Send a photo — we'll tell you the next step.
-      </p>
-      <div class="cable-hero__trust">
-        <MicroTrustBar
-          tone="dark"
-          items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]}
-        />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="stuck-repair"
+    eyebrow="Cable · Roller · Track"
+    heading="Garage Door Cable & Track Repair"
+    sub="Cable came off the drum, rollers worn out, or the door pulling crooked? Stop running the opener — a loose cable gets worse with every cycle."
+    callLabel="Call for Cable Repair"
+    callTrack="cable_call_click"
+    secondaryLabel="Text a Photo of the Cable"
+  />
 
-  <section class="cable-signs">
+  <ProofColumns />
+
+  <section class="section">
     <div class="wrap">
-      <h2>What a failing cable or track looks like</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
-      <ul class="cable-signs__grid">
+      <SectionHeading eyebrow="Diagnosis" title="What a failing cable or track looks like" />
+      <ul class="cable-signs">
         {
           signs.map((sign) => (
             <li>
@@ -69,24 +65,29 @@ const service = {
           ))
         }
       </ul>
-      <p class="cable-signs__safety">
+      <p class="cable-safety">
         <strong>Careful:</strong> cables are under the same tension as the springs. Don't pull,
         rewind, or unbolt anything — keep the door still until it's serviced.
       </p>
     </div>
   </section>
 
-  <section class="cable-quote">
+  <section class="section section--alt">
     <div class="wrap wrap--narrow">
-      <h2>Written quote before the repair</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
+      <SectionHeading eyebrow="Why written matters" title="Written quote before the repair" />
       <p>
-        We check the cables, drums, rollers, tracks, and the spring balance behind them — a cable
-        that "just slipped" usually slipped for a reason. You get what failed, what it costs, and
-        the price <strong>in writing before work begins</strong>.
+        We check the cables, drums, rollers, tracks, and the spring balance behind them. You get
+        what failed, why, and the price <strong>in writing before work begins</strong>.
       </p>
     </div>
   </section>
+
+  <WorkGallery
+    heading="Track and hardware work"
+    imageIds={["walkthrough", "new-springs", "broken-spring"]}
+  />
+
+  <FaqList faqs={faqs} heading="Cable & track questions" />
 
   <section class="cable-final">
     <div class="wrap cable-final__inner">
@@ -98,59 +99,17 @@ const service = {
 </LandingLayout>
 
 <style>
-  .cable-hero {
-    background: var(--ez-charcoal);
-    color: #c3ccd6;
-    padding-block: var(--space-7);
-    border-bottom: 4px solid var(--ez-orange);
-  }
-
-  .cable-hero h1 {
-    color: #fff;
-    max-width: 40rem;
-  }
-
-  .cable-hero__sub {
-    font-size: var(--text-lg);
-    margin-top: var(--space-4);
-    max-width: 38rem;
-    color: #b8c1cc;
-  }
-
-  .cable-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
-
-  .cable-hero__note {
-    margin-top: var(--space-3);
-    font-size: var(--text-sm);
-    color: #8d98a5;
-  }
-
-  .cable-hero__trust {
-    margin-top: var(--space-5);
-    padding-top: var(--space-4);
-    border-top: 1px solid rgb(255 255 255 / 0.15);
-  }
-
   .cable-signs {
-    padding-block: var(--space-7);
-  }
-
-  .cable-signs__grid {
     list-style: none;
     padding: 0;
-    margin: var(--space-5) 0 0;
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     gap: var(--space-3);
     font-weight: 500;
   }
 
-  .cable-signs__grid li {
+  .cable-signs li {
     display: flex;
     align-items: center;
     background: var(--ez-concrete);
@@ -158,23 +117,13 @@ const service = {
     padding: var(--space-3) var(--space-4);
   }
 
-  .cable-signs__safety {
+  .cable-safety {
     margin-top: var(--space-5);
     padding: var(--space-4) var(--space-5);
     background: var(--ez-orange-tint);
     border-left: 4px solid var(--ez-orange);
     border-radius: var(--radius-sm);
     max-width: 44rem;
-  }
-
-  .cable-quote {
-    background: var(--ez-concrete);
-    padding-block: var(--space-7);
-  }
-
-  .cable-quote p {
-    margin-top: var(--space-4);
-    font-size: var(--text-lg);
   }
 
   .cable-final {

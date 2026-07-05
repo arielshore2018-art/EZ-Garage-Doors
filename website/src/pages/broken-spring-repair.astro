@@ -1,21 +1,20 @@
 ---
 /**
- * Broken spring repair — component-diagnosed intent.
- * Safety-first hero, signs, torsion vs extension, process, CTA.
+ * Broken spring repair — expanded: full-bleed torsion-work hero with
+ * safety alert, proof bar, spring imagery, torsion vs extension,
+ * process, gallery, reviews, FAQ.
  */
 import { Image } from "astro:assets";
 import SiteLayout from "../layouts/SiteLayout.astro";
-import CallButton from "../components/CallButton.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
-import ReviewProof from "../components/ReviewProof.astro";
+import WorkGallery from "../components/WorkGallery.astro";
+import ReviewCards from "../components/home/ReviewCards.astro";
+import FaqList from "../components/FaqList.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import HeroRatingProof from "../components/HeroRatingProof.astro";
-
-import brokenSpring from "../assets/photos/ez-garage-door-broken-torsion-spring.png";
-import springRepair from "../assets/photos/ez-garage-door-spring-winding-repair.jpg";
-import newSprings from "../assets/photos/ez-garage-door-new-torsion-springs.png";
+import { img } from "../config/site-images";
 
 const signs = [
   "A loud bang from the garage — like something snapped",
@@ -26,117 +25,87 @@ const signs = [
   "The door slams shut faster than normal",
 ];
 
+const brokenSpringImg = img("broken-spring");
+
 const service = {
   name: "Broken Garage Door Spring Repair",
   description: "Torsion and extension spring replacement for residential garage doors, with a written quote before work begins.",
   url: "/broken-spring-repair/",
 };
+
+const faqs = [
+  { question: "Can I open the door with a broken spring?", answer: "Don't. The spring carries the door's weight — without it the opener strains and the door can drop. Leave it down, keep people and cars clear, and call." },
+  { question: "My car is trapped inside — can you help today?", answer: "That's one of the most common calls we get. Call with your town and we'll tell you honestly what today's availability looks like." },
+  { question: "Why replace both springs on a two-spring door?", answer: "Both springs have the same cycle life. When one snaps, the other is at the end of its life too — replacing both keeps the door balanced and saves you a second visit." },
+  { question: "How long does a spring replacement take?", answer: "Most residential spring replacements are done in a single visit — vans are stocked with common spring sizes. We confirm on the phone after you describe the door." },
+  { question: "Will the new springs last longer?", answer: "Springs are rated in cycles, not years. We match the spring to your door's weight and can quote higher-cycle springs if you use the door heavily." },
+];
 ---
 
 <SiteLayout
   title="Broken Garage Door Spring Repair in Connecticut | EZ Garage Doors"
   description="Heard a loud bang? Door too heavy to lift? Broken garage door spring repair in Connecticut — torsion and extension springs replaced with a written quote first."
   service={service}
+  faqs={faqs}
 >
-  <section class="spring-hero">
-    <div class="wrap spring-hero__grid">
-      <div>
-        <h1>Broken Garage Door Spring Repair</h1>
-        <p class="spring-hero__sub">
-          If you heard a loud bang or your door suddenly feels too heavy, stop using it and call
-          EZ Garage Doors for spring service.
-        </p>
-        <div class="spring-hero__safety" role="alert">
-          <strong>Safety first:</strong> Do not try to lift or force the door. Garage door springs
-          are under high tension and can be dangerous.
-        </div>
-        <div class="spring-hero__actions">
-          <CallButton label="Call for Spring Repair" size="lg" />
-        </div>
-        <p class="cta-note">A local garage door specialist will follow up.</p>
-        <div class="spring-hero__trust">
-          <MicroTrustBar />
-        </div>
-      </div>
-      <div class="spring-hero__media">
-        <Image
-          src={brokenSpring}
-          alt="Snapped garage door torsion spring with a visible gap in the coil"
-          width={760}
-          widths={[480, 760]}
-          sizes="(max-width: 62rem) 92vw, 480px"
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="spring-winding"
+    eyebrow="Spring Service"
+    heading="Broken Garage Door Spring Repair"
+    sub="If you heard a loud bang or your door suddenly feels too heavy, stop using it and call EZ Garage Doors for spring service."
+    callLabel="Call for Spring Repair"
+    callTrack="spring_call_click"
+    alert="Do not try to lift or force the door. Garage door springs are under high tension and can be dangerous."
+  />
+
+  <ProofColumns />
 
   <section class="section section--alt">
-    <div class="wrap">
-      <SectionHeading eyebrow="Diagnosis" title="Signs your spring is broken" />
-      <ul class="signs">
-        {
-          signs.map((sign) => (
-            <li>
-              <span class="speed-tick" aria-hidden="true" />
-              {sign}
-            </li>
-          ))
-        }
-      </ul>
+    <div class="wrap signs">
+      <div>
+        <SectionHeading eyebrow="Diagnosis" title="Signs your spring is broken" />
+        <ul class="signs__list">
+          {
+            signs.map((sign) => (
+              <li>
+                <span class="speed-tick" aria-hidden="true" />
+                {sign}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <figure class="signs__media">
+        <Image
+          src={brokenSpringImg.src}
+          alt={brokenSpringImg.alt}
+          width={720}
+          widths={[480, 720]}
+          sizes="(max-width: 62rem) 92vw, 440px"
+          loading="lazy"
+        />
+        <figcaption>
+          <span class="speed-tick" aria-hidden="true"></span>
+          The tell: a visible gap in the coil above the door.
+        </figcaption>
+      </figure>
     </div>
   </section>
 
-  <HeroRatingProof band />
-
   <section class="section">
-    <div class="wrap spring-types">
-      <div>
-        <SectionHeading eyebrow="Two spring systems" title="Torsion vs. extension springs" />
-        <div class="spring-types__cols">
-          <div class="spring-types__card">
-            <h3>Torsion springs</h3>
-            <p>
-              Mounted on a shaft above the door. They twist to lift the door's weight and fail
-              with a loud bang. Most modern doors use one or two torsion springs — when one
-              breaks on a two-spring door, both are usually replaced so the door stays balanced.
-            </p>
-          </div>
-          <div class="spring-types__card">
-            <h3>Extension springs</h3>
-            <p>
-              Stretched along the horizontal tracks on each side. They should always have safety
-              cables running through them; if yours don't, that's worth fixing during the same
-              visit. Replaced in pairs to keep the door even.
-            </p>
-          </div>
-        </div>
-        <p class="spring-types__quote-note">
-          <strong>Why the written quote matters here:</strong> spring jobs are the classic
-          bait-and-switch trap in this industry — a cheap teaser price by phone, then "surprises"
-          at the door. We quote the spring system your door actually has, in writing, before work
-          begins.
-        </p>
-      </div>
-      <div class="spring-types__media">
-        <Image
-          src={springRepair}
-          alt="Technician winding a garage door torsion spring with winding bars"
-          width={640}
-          widths={[420, 640]}
-          sizes="(max-width: 62rem) 92vw, 400px"
-          loading="lazy"
-        />
-        <Image
-          src={newSprings}
-          alt="New torsion springs installed above a garage door"
-          width={640}
-          widths={[420, 640]}
-          sizes="(max-width: 62rem) 92vw, 400px"
-          loading="lazy"
-        />
-      </div>
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="Two spring systems" title="Torsion vs. extension springs" />
+      <p>
+        <strong>Torsion springs</strong> sit on a shaft above the door and fail with a loud bang —
+        most modern doors use one or two, replaced in pairs to keep the door balanced.
+        <strong> Extension springs</strong> stretch along the side tracks and should always have
+        safety cables through them; if yours don't, we fix that in the same visit.
+      </p>
+      <p class="muted">
+        Spring jobs are the classic bait-and-switch trap in this industry — a cheap teaser price
+        by phone, then "surprises" at the door. We quote the spring system your door actually
+        has, in writing, before work begins.
+      </p>
     </div>
   </section>
 
@@ -144,13 +113,25 @@ const service = {
     heading="How a spring repair visit works"
     steps={[
       { title: "Stop using the door", detail: "A broken spring means the opener is lifting weight it was never built for." },
-      { title: "Call and describe it", detail: "Tell us the door size and what happened — a photo of the spring helps." },
+      { title: "Call and describe it", detail: "Door size and what happened — a photo of the spring helps." },
       { title: "Written quote on site", detail: "We confirm the spring system and hand you the price in writing first." },
-      { title: "Spring replaced & tested", detail: "New springs installed, door balanced, opener travel checked before we leave." },
+      { title: "Replaced, balanced, tested", detail: "New springs installed, door balanced, opener travel checked before we leave." },
     ]}
   />
 
-  <ReviewProof />
+  <WorkGallery
+    heading="Spring work, up close"
+    imageIds={["spring-safety", "new-springs", "walkthrough"]}
+  />
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading eyebrow="What customers say" title="Spring repairs, reviewed" />
+      <ReviewCards limit={3} />
+    </div>
+  </section>
+
+  <FaqList faqs={faqs} heading="Broken spring questions" />
 
   <CTASection
     heading="Broken spring? Don't force the door."
@@ -160,66 +141,23 @@ const service = {
 </SiteLayout>
 
 <style>
-  .spring-hero {
-    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
-    padding-block: var(--space-7);
-    border-bottom: 1px solid var(--ez-border);
-  }
-
-  .spring-hero__grid {
+  .signs {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: var(--space-7);
     align-items: center;
   }
 
-  .spring-hero__sub {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    margin-top: var(--space-4);
-    max-width: 34rem;
-  }
-
-  .spring-hero__safety {
-    margin-top: var(--space-4);
-    padding: var(--space-4) var(--space-5);
-    background: var(--ez-orange-tint);
-    border-left: 4px solid var(--ez-orange);
-    border-radius: var(--radius-sm);
-    max-width: 34rem;
-  }
-
-  .spring-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
-
-  .spring-hero__trust {
-    margin-top: var(--space-5);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--ez-border);
-  }
-
-  .spring-hero__media img {
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-card);
-    width: 100%;
-    height: auto;
-  }
-
-  .signs {
+  .signs__list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
     gap: var(--space-3);
     font-weight: 500;
   }
 
-  .signs li {
+  .signs__list li {
     display: flex;
     align-items: center;
     background: #fff;
@@ -228,57 +166,27 @@ const service = {
     padding: var(--space-3) var(--space-4);
   }
 
-  .spring-types {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    gap: var(--space-7);
-    align-items: start;
-  }
-
-  .spring-types__cols {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    gap: var(--space-4);
-  }
-
-  .spring-types__card {
-    background: var(--ez-concrete);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
-  }
-
-  .spring-types__card h3 {
-    margin-bottom: var(--space-2);
-  }
-
-  .spring-types__card p {
-    font-size: var(--text-sm);
+  .signs__media {
     margin: 0;
   }
 
-  .spring-types__quote-note {
-    margin-top: var(--space-5);
-    padding: var(--space-4) var(--space-5);
-    border-left: 4px solid var(--ez-orange);
-    background: #fff;
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-card);
-  }
-
-  .spring-types__media {
-    display: grid;
-    gap: var(--space-4);
-  }
-
-  .spring-types__media img {
+  .signs__media img {
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
     width: 100%;
     height: auto;
   }
 
+  .signs__media figcaption {
+    display: flex;
+    align-items: center;
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
   @media (max-width: 62rem) {
-    .spring-hero__grid,
-    .spring-types {
+    .signs {
       grid-template-columns: 1fr;
       gap: var(--space-5);
     }

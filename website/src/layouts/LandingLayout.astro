@@ -13,6 +13,7 @@ interface Props {
   description: string;
   callLabel?: string;
   service?: { name: string; description: string; url: string };
+  noindex?: boolean;
 }
 
 const { callLabel, ...props } = Astro.props;

@@ -1,0 +1,79 @@
+---
+/**
+ * Asymmetric work-image strip: first image large, rest stacked.
+ * Consumes the site-images manifest by id — no scattered paths.
+ */
+import { Image } from "astro:assets";
+import SectionHeading from "./SectionHeading.astro";
+import { img } from "../config/site-images";
+
+interface Props {
+  imageIds: string[];
+  heading?: string;
+  eyebrow?: string;
+}
+
+const { imageIds, heading = "On the job", eyebrow = "Real work" } = Astro.props;
+const images = imageIds.map((id) => img(id));
+---
+
+<section class="wg section section--alt">
+  <div class="wrap">
+    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <div class="wg__grid">
+      {
+        images.map((image, i) => (
+          <figure class:list={["wg__item", { "wg__item--large": i === 0 }]}>
+            <Image
+              src={image.src}
+              alt={image.alt}
+              width={i === 0 ? 980 : 640}
+              widths={i === 0 ? [520, 760, 980] : [420, 640]}
+              sizes={i === 0 ? "(max-width: 62rem) 92vw, 640px" : "(max-width: 62rem) 92vw, 420px"}
+              loading="lazy"
+            />
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .wg__grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+
+  .wg__item {
+    margin: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .wg__item--large {
+    grid-row: 1 / span 2;
+  }
+
+  .wg__item :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 62rem) {
+    .wg__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .wg__item--large {
+      grid-row: auto;
+    }
+
+    .wg__item :global(img) {
+      aspect-ratio: 16 / 9;
+    }
+  }
+</style>

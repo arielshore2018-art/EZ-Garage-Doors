@@ -5,8 +5,8 @@
  * Repair-vs-replace table, common problems, brand chips.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
-import CallButton from "../components/CallButton.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import RepairIssueGrid from "../components/RepairIssueGrid.astro";
 import TrustLogoStrip from "../components/TrustLogoStrip.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
@@ -51,22 +51,17 @@ const faqs = [
   service={service}
   faqs={faqs}
 >
-  <section class="opener-hero">
-    <div class="wrap wrap--narrow opener-hero__inner">
-      <h1>Garage Door Opener Repair &amp; Replacement</h1>
-      <p class="opener-hero__sub">
-        Opener humming, remote not working, chain loose, sensors blinking, or door reversing?
-        We diagnose the issue and explain repair vs. replacement clearly — in writing.
-      </p>
-      <div class="opener-hero__actions">
-        <CallButton label="Call for Opener Service" size="lg" />
-        <PhotoUploadCTA label="Text a Photo of Your Opener" />
-      </div>
-      <div class="opener-hero__trust">
-        <MicroTrustBar />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="opener-rail"
+    eyebrow="Opener Service"
+    heading="Garage Door Opener Repair & Replacement"
+    sub="Opener humming, remote not working, chain loose, sensors blinking, or door reversing? We diagnose the issue and explain repair vs. replacement clearly — in writing."
+    callLabel="Call for Opener Service"
+    callTrack="opener_call_click"
+    secondaryLabel="Text a Photo of Your Opener"
+  />
+
+  <ProofColumns />
 
   <RepairIssueGrid heading="What is your opener doing?" issues={issues} alt />
 

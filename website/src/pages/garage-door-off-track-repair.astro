@@ -1,12 +1,15 @@
 ---
 /**
- * Off-track door repair — phone-first urgency landing page.
- * Security/safety framing, stripped layout, short.
+ * Off-track repair — expanded urgency page: full-bleed hero with
+ * safety alert, proof bar, causes, quote promise, gallery, FAQ.
  */
 import LandingLayout from "../layouts/LandingLayout.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
+import WorkGallery from "../components/WorkGallery.astro";
+import FaqList from "../components/FaqList.astro";
 import CallButton from "../components/CallButton.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
-import { APPROVED_CLAIMS } from "../config/business";
+import SectionHeading from "../components/SectionHeading.astro";
 
 const causes = [
   "A snapped or slipped lift cable on one side",
@@ -21,6 +24,13 @@ const service = {
   description: "Garage door off its track secured, realigned, and rolling straight — with a written quote before work begins.",
   url: "/garage-door-off-track-repair/",
 };
+
+const faqs = [
+  { question: "The door is hanging crooked — will it fall?", answer: "It can. An off-track door is held by whatever hardware hasn't failed yet. Keep people, pets, and cars away and don't run the opener again." },
+  { question: "Can I push the rollers back into the track myself?", answer: "Please don't — the door's weight and spring tension make that dangerous, and forcing rollers back without fixing the cause puts it right back off track." },
+  { question: "What does the repair involve?", answer: "We secure the door, find what pulled it off (cable, roller, or track), correct that, realign the door, and test full travel. The price is in writing before any of it starts." },
+  { question: "My car is stuck behind the crooked door — what now?", answer: "Don't force the door. Call with your town — trapped-car calls are exactly what fast local dispatch is for." },
+];
 ---
 
 <LandingLayout
@@ -29,37 +39,23 @@ const service = {
   callLabel="Call Now"
   service={service}
 >
-  <section class="ot-hero">
-    <div class="wrap ot-hero__inner">
-      <h1>Garage Door Off Its Track?</h1>
-      <p class="ot-hero__sub">
-        Stop using the opener right now — every cycle bends the tracks further and can drop the
-        door. Call EZ Garage Doors to secure it, realign it, and get it rolling straight.
-      </p>
-      <div class="ot-hero__safety" role="alert">
-        <strong>Safety first:</strong> keep people, pets, and cars away from an off-track door.
-        It can shift or fall without warning.
-      </div>
-      <div class="ot-hero__actions">
-        <CallButton label="Call Now" size="lg" track="offtrack_call_click" />
-        <a href="/contact/#request" class="btn btn--inverse-outline btn--lg" data-track="photo_cta_click">
-          Text a Photo of the Door
-        </a>
-      </div>
-      <div class="ot-hero__trust">
-        <MicroTrustBar
-          tone="dark"
-          items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]}
-        />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="before-old-wood"
+    eyebrow="Off-Track Door Service"
+    heading="Garage Door Off Its Track?"
+    sub="Stop using the opener right now — every cycle bends the tracks further and can drop the door. We secure it, realign it, and get it rolling straight."
+    callLabel="Call Now"
+    callTrack="offtrack_call_click"
+    secondaryLabel="Text a Photo of the Door"
+    alert="Keep people, pets, and cars away from an off-track door. It can shift or fall without warning."
+  />
 
-  <section class="ot-causes">
+  <ProofColumns />
+
+  <section class="section">
     <div class="wrap">
-      <h2>Why doors come off the track</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
-      <ul class="ot-causes__grid">
+      <SectionHeading eyebrow="Root cause" title="Why doors come off the track" />
+      <ul class="ot-causes">
         {
           causes.map((cause) => (
             <li>
@@ -69,17 +65,16 @@ const service = {
           ))
         }
       </ul>
-      <p class="ot-causes__note">
-        The fix is rarely just "push it back in" — whatever pulled it off (cable, roller, track)
-        has to be corrected too, or it happens again next week. That's what we inspect for.
+      <p class="ot-note">
+        The fix is rarely just "push it back in" — whatever pulled it off has to be corrected
+        too, or it happens again next week. That's what we inspect for.
       </p>
     </div>
   </section>
 
-  <section class="ot-quote">
+  <section class="section section--alt">
     <div class="wrap wrap--narrow">
-      <h2>Secured, diagnosed, quoted in writing</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
+      <SectionHeading eyebrow="The process" title="Secured, diagnosed, quoted in writing" />
       <p>
         We secure the door so it can't fall, find what pulled it off the track, and hand you the
         repair price <strong>in writing before work begins</strong>. You approve it — then we fix
@@ -87,6 +82,13 @@ const service = {
       </p>
     </div>
   </section>
+
+  <WorkGallery
+    heading="Track realignment work"
+    imageIds={["stuck-repair", "walkthrough", "new-springs"]}
+  />
+
+  <FaqList faqs={faqs} heading="Off-track door questions" />
 
   <section class="ot-final">
     <div class="wrap ot-final__inner">
@@ -98,63 +100,17 @@ const service = {
 </LandingLayout>
 
 <style>
-  .ot-hero {
-    background: var(--ez-charcoal);
-    color: #c3ccd6;
-    padding-block: var(--space-7);
-    border-bottom: 4px solid var(--ez-orange);
-  }
-
-  .ot-hero h1 {
-    color: #fff;
-    max-width: 40rem;
-  }
-
-  .ot-hero__sub {
-    font-size: var(--text-lg);
-    margin-top: var(--space-4);
-    max-width: 38rem;
-    color: #b8c1cc;
-  }
-
-  .ot-hero__safety {
-    margin-top: var(--space-4);
-    padding: var(--space-4) var(--space-5);
-    background: rgb(242 106 27 / 0.14);
-    border-left: 4px solid var(--ez-orange);
-    border-radius: var(--radius-sm);
-    max-width: 38rem;
-    color: #e6eaef;
-  }
-
-  .ot-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
-
-  .ot-hero__trust {
-    margin-top: var(--space-5);
-    padding-top: var(--space-4);
-    border-top: 1px solid rgb(255 255 255 / 0.15);
-  }
-
   .ot-causes {
-    padding-block: var(--space-7);
-  }
-
-  .ot-causes__grid {
     list-style: none;
     padding: 0;
-    margin: var(--space-5) 0 0;
+    margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     gap: var(--space-3);
     font-weight: 500;
   }
 
-  .ot-causes__grid li {
+  .ot-causes li {
     display: flex;
     align-items: center;
     background: var(--ez-concrete);
@@ -162,19 +118,9 @@ const service = {
     padding: var(--space-3) var(--space-4);
   }
 
-  .ot-causes__note {
+  .ot-note {
     margin-top: var(--space-5);
     max-width: 44rem;
-  }
-
-  .ot-quote {
-    background: var(--ez-concrete);
-    padding-block: var(--space-7);
-  }
-
-  .ot-quote p {
-    margin-top: var(--space-4);
-    font-size: var(--text-lg);
   }
 
   .ot-final {

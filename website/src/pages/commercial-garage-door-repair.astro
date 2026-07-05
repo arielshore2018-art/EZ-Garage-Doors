@@ -6,7 +6,8 @@
  * COI / emergency-response claims intentionally absent until confirmed.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
-import CallButton from "../components/CallButton.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import LeadForm from "../components/LeadForm.astro";
@@ -31,27 +32,18 @@ const service = {
   description="Commercial overhead door and rolling door repair in Connecticut for warehouses, loading docks, firehouses, and business properties where downtime matters."
   service={service}
 >
-  <section class="comm-hero">
-    <div class="wrap wrap--narrow">
-      <p class="eyebrow">Commercial &amp; industrial</p>
-      <h1>Commercial Garage Door Repair in Connecticut</h1>
-      <p class="comm-hero__sub">
-        Service for commercial overhead doors, rolling doors, loading areas, and business
-        properties where downtime matters.
-      </p>
-      <div class="comm-hero__actions">
-        <a href="#request" class="btn btn--call btn--lg" data-track="estimate_click">
-          Request Commercial Service
-        </a>
-        <CallButton label="Call Now" variant="inverse-outline" size="lg" />
-      </div>
-      <ul class="comm-hero__facts" aria-label="Commercial service facts">
-        <li>{APPROVED_CLAIMS.years}</li>
-        <li>Written quote before work begins</li>
-        <li>Local {`Connecticut`} company — not a dispatch broker</li>
-      </ul>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="van-front"
+    eyebrow="Commercial & Industrial"
+    heading="Commercial Garage Door Repair in Connecticut"
+    sub="Service for commercial overhead doors, rolling doors, loading areas, and business properties where downtime matters."
+    callLabel="Call for Commercial Service"
+    callTrack="commercial_call_click"
+    secondaryLabel="Request Commercial Service"
+    secondaryHref="#request"
+  />
+
+  <ProofColumns />
 
   <section class="section">
     <div class="wrap">

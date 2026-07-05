@@ -1,0 +1,204 @@
+---
+/**
+ * Local PPC landing page renderer — one component for every city,
+ * driven by src/config/ppc.ts. Campaign-only pages: noindex, excluded
+ * from the sitemap (astro.config), no site navigation, one goal.
+ */
+import type { GetStaticPaths } from "astro";
+import LandingLayout from "../../../layouts/LandingLayout.astro";
+import ServiceHero from "../../../components/ServiceHero.astro";
+import ProofColumns from "../../../components/home/ProofColumns.astro";
+import LeadForm from "../../../components/LeadForm.astro";
+import CallButton from "../../../components/CallButton.astro";
+import SectionHeading from "../../../components/SectionHeading.astro";
+import { enabledPpcCities } from "../../../config/ppc";
+
+export const getStaticPaths = (() => {
+  return enabledPpcCities.map((c) => ({ params: { city: c.slug }, props: { c } }));
+}) satisfies GetStaticPaths;
+
+const { c } = Astro.props;
+
+const problems = [
+  { title: "Broken Spring", detail: "Loud bang, heavy door, door won't lift." },
+  { title: "Door Won't Close", detail: "Stuck open, reversing, or off its track." },
+  { title: "Opener Problem", detail: "Motor hums, remote fails, sensors blink." },
+];
+
+const steps = ["Inspect", "Explain", "Written quote", "Your approval — then the repair"];
+---
+
+<LandingLayout
+  title={`${c.headline} | EZ Garage Doors`}
+  description={`${c.headline}. ${c.subheadline} Written quote before work begins.`}
+  callLabel="Call for Repair"
+  noindex
+>
+  <ServiceHero
+    imageId={c.heroImageId}
+    eyebrow={`${c.city}, ${c.state} · Local Dispatch`}
+    heading={c.headline}
+    sub={c.subheadline}
+    callLabel="Call for Repair"
+    callTrack={`${c.campaignId}_call`}
+    secondaryLabel="Request Service"
+    secondaryHref="#request"
+  />
+
+  <ProofColumns />
+
+  <section class="section ppc-local">
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="Local coverage" title={`Serving ${c.city} and nearby towns`} />
+      <p>{c.localProofLine}</p>
+      <ul class="ppc-local__nearby" aria-label="Nearby areas we also serve">
+        {
+          c.nearbyAreas.map((area) => (
+            <li>
+              <span class="speed-tick" aria-hidden="true" />
+              {area}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <SectionHeading eyebrow="The usual suspects" title="The three calls we get most" />
+      <ul class="ppc-problems">
+        {
+          problems.map((p) => (
+            <li>
+              <h3>{p.title}</h3>
+              <p>{p.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="No bait pricing" title="You approve the price before work begins" />
+      <ol class="ppc-steps">
+        {
+          steps.map((s, i) => (
+            <li>
+              <span class="ppc-steps__num" aria-hidden="true">
+                {i + 1}
+              </span>
+              {s}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap wrap--narrow">
+      <LeadForm
+        heading={`Request Repair Service in ${c.city}`}
+        submitLabel="Request Repair Service"
+        context={c.campaignId}
+        showPhotoField
+      />
+    </div>
+  </section>
+
+  <section class="ppc-final">
+    <div class="wrap ppc-final__inner">
+      <h2>Need the door fixed today in {c.city}?</h2>
+      <p>Call EZ Garage Doors — clear answer, written quote, no pressure.</p>
+      <CallButton label="Call for Repair" size="lg" track={`${c.campaignId}_call`} />
+    </div>
+  </section>
+</LandingLayout>
+
+<style>
+  .ppc-local__nearby {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    font-family: var(--font-display);
+    font-weight: 650;
+    font-size: var(--text-sm);
+  }
+
+  .ppc-local__nearby li {
+    display: flex;
+    align-items: center;
+  }
+
+  .ppc-problems {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .ppc-problems li {
+    background: #fff;
+    border: 1px solid var(--ez-border);
+    border-top: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+
+  .ppc-problems h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .ppc-problems p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .ppc-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: var(--space-4);
+    font-family: var(--font-display);
+    font-weight: 650;
+  }
+
+  .ppc-steps li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .ppc-steps__num {
+    font-weight: 800;
+    font-size: var(--text-xl);
+    color: var(--ez-orange);
+  }
+
+  .ppc-final {
+    background: var(--ez-charcoal);
+    color: #c3ccd6;
+    padding-block: var(--space-7);
+    text-align: center;
+  }
+
+  .ppc-final h2 {
+    color: #fff;
+  }
+
+  .ppc-final p {
+    margin-block: var(--space-3) var(--space-5);
+  }
+</style>

@@ -9,6 +9,15 @@ Build status: **21 pages build clean, zero errors.**
 > links). AI van/technician photos removed from the first viewport — only spring/repair
 > detail imagery on the homepage. Two new phone-first urgency LPs added.
 >
+> **Rev. 8 changes (full-bleed overlay hero):** the hero is now ONE image composition on
+> every breakpoint — mobile uses a portrait crop (~720px hero) with the directive's bottom
+> gradient and copy near the bottom (door/spring visible up top); desktop (660px) uses the
+> layered left gradient with copy lower-left. The separate mobile charcoal block is gone.
+> Rating is one compact line (5 gold stars · "4.9 · 850+ reviews") with WHITE KNOCKOUT
+> Google/Yelp/Angi logos generated from the owner assets (no white proof box) — fixed a
+> broken alpha pipeline that left Google/Angi fully transparent. Rail speeds raised and
+> measured: 35 px/s desktop / 22 px/s mobile. Deployed to production; commit 21495c5.
+>
 > **Rev. 7 changes (integrated hero composition):** desktop hero is now ONE full-bleed
 > photographic composition — active-repair scene (technician at the torsion system,
 > homeowner cropped out) with a controlled left charcoal gradient and the headline/CTA/

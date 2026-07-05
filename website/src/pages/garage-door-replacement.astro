@@ -5,7 +5,8 @@
  */
 import { Image } from "astro:assets";
 import SiteLayout from "../layouts/SiteLayout.astro";
-import MicroTrustBar from "../components/MicroTrustBar.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
 import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
@@ -37,40 +38,21 @@ const service = {
   description="Is it time to replace your garage door? Honest repair-vs-replace guidance, replacement signs, and a written estimate before any work. Local Connecticut company."
   service={service}
 >
-  <section class="replace-hero">
-    <div class="wrap replace-hero__grid">
-      <div>
-        <h1>Garage Door Replacement in Connecticut</h1>
-        <p class="replace-hero__sub">
-          Old door out, new door in — sizing, style, insulation, and hardware handled by one local
-          team, with the full price in writing before anything is ordered.
-        </p>
-        <div class="replace-hero__actions">
-          <a href="/contact/#request" class="btn btn--call btn--lg" data-track="estimate_click">
-            Get My Written Estimate
-          </a>
-          <a href="/garage-door-replacement-cost/" class="btn btn--outline btn--lg">
-            See What Affects Cost
-          </a>
-        </div>
-        <p class="cta-note">No pressure. One quote, in writing.</p>
-        <div class="replace-hero__trust">
-          <MicroTrustBar />
-        </div>
-      </div>
-      <div class="replace-hero__media">
-        <Image
-          src={heroAfter}
-          alt="New white raised-panel garage door after replacement"
-          width={880}
-          widths={[480, 720, 880]}
-          sizes="(max-width: 62rem) 92vw, 540px"
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
-    </div>
-  </section>
+  <ServiceHero
+    imageId="after-white-raised"
+    eyebrow="Door Replacement"
+    heading="Garage Door Replacement in Connecticut"
+    sub="Old door out, new door in — sizing, style, insulation, and hardware handled by one local team, with the full price in writing before anything is ordered."
+    callLabel="Get My Written Estimate"
+    callTrack="estimate_click"
+    primaryMode="estimate"
+    primaryHref="/contact/#request"
+    secondaryLabel="See What Affects Cost"
+    secondaryHref="/garage-door-replacement-cost/"
+    micro="No pressure. One quote, in writing."
+  />
+
+  <ProofColumns />
 
   <section class="section section--alt">
     <div class="wrap">

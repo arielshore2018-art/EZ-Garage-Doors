@@ -1,0 +1,245 @@
+---
+/**
+ * Full-bleed service hero: page-specific image from the site-images
+ * manifest, layered gradient, overlaid copy + one dominant repair CTA
+ * + rating proof. No detached text cards. Each service page passes a
+ * UNIQUE imageId (enforced by review, not code).
+ */
+import { getImage } from "astro:assets";
+import CallButton from "./CallButton.astro";
+import OverlayRating from "./OverlayRating.astro";
+import { img } from "../config/site-images";
+
+interface Props {
+  imageId: string;
+  eyebrow: string;
+  heading: string;
+  sub: string;
+  callLabel?: string;
+  callTrack?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+  /** Optional alert line (e.g. spring safety warning). */
+  alert?: string;
+  micro?: string;
+  showRating?: boolean;
+  /** "estimate" renders the primary CTA as an estimate link instead of a call button. */
+  primaryMode?: "call" | "estimate";
+  primaryHref?: string;
+}
+
+const {
+  imageId,
+  eyebrow,
+  heading,
+  sub,
+  callLabel = "Call for Repair",
+  callTrack = "hero_call_click",
+  secondaryLabel = "Send a Photo",
+  secondaryHref = "/contact/#request",
+  alert,
+  micro = "Written quote before work begins.",
+  showRating = true,
+  primaryMode = "call",
+  primaryHref = "#request",
+} = Astro.props;
+
+const image = img(imageId);
+const picture = await getImage({
+  src: image.src,
+  format: "webp",
+  widths: [780, 1200, 1680],
+  sizes: "100vw",
+});
+---
+
+<section class="shero">
+  <img
+    class="shero__bg"
+    src={picture.src}
+    srcset={picture.srcSet.attribute}
+    sizes="100vw"
+    alt=""
+    width={image.src.width}
+    height={image.src.height}
+    loading="eager"
+    fetchpriority="high"
+    style={`object-position: ${image.focalPointDesktop ?? "center"};`}
+    aria-hidden="true"
+  />
+  <span class="shero__overlay" aria-hidden="true"></span>
+
+  <div class="shero__content">
+    <p class="shero__eyebrow">
+      <span class="speed-tick" aria-hidden="true"></span>
+      {eyebrow}
+    </p>
+    <h1>{heading}</h1>
+    <p class="shero__sub">{sub}</p>
+    {alert && <p class="shero__alert" role="alert"><strong>Safety first:</strong> {alert}</p>}
+    <div class="shero__actions">
+      {
+        primaryMode === "call" ? (
+          <CallButton label={callLabel} size="lg" track={callTrack} />
+        ) : (
+          <a href={primaryHref} class="btn btn--call btn--lg" data-track={callTrack}>
+            {callLabel}
+          </a>
+        )
+      }
+      <a href={secondaryHref} class="shero__secondary" data-track="photo_cta_click">
+        {secondaryLabel}
+      </a>
+    </div>
+    <p class="shero__micro">{micro}</p>
+    {
+      showRating && (
+        <div class="shero__rating">
+          <OverlayRating />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .shero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: clamp(520px, 78vh, 620px);
+    overflow: hidden;
+  }
+
+  .shero__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .shero__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgb(13 21 31 / 0.12) 0%,
+      rgb(13 21 31 / 0.3) 30%,
+      rgb(13 21 31 / 0.86) 62%,
+      rgb(13 21 31 / 0.97) 100%
+    );
+  }
+
+  .shero__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--content-max);
+    margin-inline: auto;
+    padding: var(--space-6) clamp(1rem, 4vw, 2rem);
+    color: #c9d2dc;
+  }
+
+  .shero__eyebrow {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-display);
+    font-weight: 750;
+    font-size: var(--text-xs);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ez-orange);
+    margin-bottom: var(--space-2);
+  }
+
+  .shero__content h1 {
+    color: #fff;
+    font-size: clamp(1.9rem, 1.4rem + 2.4vw, 3rem);
+    max-width: 18ch;
+  }
+
+  .shero__sub {
+    margin-top: var(--space-3);
+    font-size: var(--text-base);
+    max-width: 34rem;
+    color: #d6dce3;
+  }
+
+  .shero__alert {
+    margin-top: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: rgb(242 106 27 / 0.16);
+    border-left: 4px solid var(--ez-orange);
+    border-radius: var(--radius-sm);
+    max-width: 34rem;
+    color: #f0f3f6;
+    font-size: var(--text-sm);
+  }
+
+  .shero__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+
+  .shero__actions :global(.btn) {
+    white-space: nowrap;
+  }
+
+  .shero__secondary {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: #fff;
+    text-decoration-color: var(--ez-orange);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .shero__secondary:hover {
+    color: var(--ez-orange);
+  }
+
+  .shero__micro {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: #9aa5b1;
+  }
+
+  .shero__rating {
+    margin-top: var(--space-4);
+  }
+
+  @media (min-width: 62rem) {
+    .shero {
+      align-items: center;
+      min-height: 560px;
+    }
+
+    .shero__overlay {
+      background:
+        linear-gradient(
+          90deg,
+          rgb(13 21 31 / 0.92) 0%,
+          rgb(13 21 31 / 0.72) 36%,
+          rgb(13 21 31 / 0.18) 68%,
+          rgb(13 21 31 / 0) 100%
+        ),
+        linear-gradient(0deg, rgb(13 21 31 / 0.35) 0%, rgb(13 21 31 / 0) 30%);
+    }
+
+    .shero__content {
+      padding-block: var(--space-7);
+    }
+
+    .shero__content > * {
+      max-width: 560px;
+    }
+  }
+</style>
