@@ -1,0 +1,250 @@
+---
+/**
+ * The routing junction: repair vs. new door, split off one EZ Track.
+ * Repair is deliberately dominant (repair-first strategy). The two
+ * panels get unequal visual weight — an ink work-order panel vs. a
+ * quiet photographic panel.
+ */
+import { Image } from "astro:assets";
+import CallButton from "../CallButton.astro";
+import { img } from "../../config/site-images";
+
+const doorPhoto = img("door-black-windows");
+
+const repairLinks = [
+  { href: "/garage-door-repair/", label: "Garage door repair" },
+  { href: "/broken-spring-repair/", label: "Broken spring" },
+  { href: "/garage-door-opener-repair/", label: "Opener problems" },
+  { href: "/garage-door-off-track-repair/", label: "Door off its track" },
+  { href: "/emergency-garage-door-repair/", label: "Urgent — can't secure the garage" },
+];
+---
+
+<section class="junction section--tight" aria-labelledby="junction-heading">
+  <div class="wrap">
+    <h2 id="junction-heading" class="visually-hidden">Repair or replace?</h2>
+
+    <!-- The track splits: one branch to each path -->
+    <svg class="junction__switch" viewBox="0 0 1160 90" aria-hidden="true" preserveAspectRatio="none">
+      <path class="junction__ghost" d="M 0 18 H 560" pathLength="100"></path>
+      <path class="junction__run" d="M 0 8 H 580" pathLength="100"></path>
+      <path class="junction__run" d="M 380 8 A 40 40 0 0 1 420 48 V 90" pathLength="100"></path>
+      <path class="junction__run junction__run--thin" d="M 580 8 A 40 40 0 0 1 620 48 V 90" pathLength="100"></path>
+    </svg>
+
+    <div class="junction__grid">
+      <div class="junction__repair side-rail">
+        <p class="eyebrow">Most calls start here</p>
+        <h3>It's broken. Fix it today.</h3>
+        <p class="junction__lede">
+          Tell us what the door is doing — we'll tell you what it usually
+          means, what we check, and the price in writing before work begins.
+        </p>
+        <ul class="junction__list">
+          {
+            repairLinks.map((l) => (
+              <li>
+                <a href={l.href} data-track={`home_route_${l.href.replaceAll("/", "").replaceAll("-", "_")}`}>
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <CallButton label="Call for Repair" track="home_route_call" />
+      </div>
+
+      <a
+        class="junction__install"
+        href="/garage-door-installation/"
+        data-track="home_route_installation"
+      >
+        <div class="junction__install-media">
+          <Image
+            src={doorPhoto.src}
+            alt={doorPhoto.alt}
+            widths={[420, 720, 980]}
+            sizes="(max-width: 56rem) 100vw, 34vw"
+            loading="lazy"
+          />
+        </div>
+        <div class="junction__install-copy">
+          <p class="eyebrow">Planning ahead</p>
+          <h3>It's old. Replace it.</h3>
+          <p>
+            Insulated steel, carriage house, black modern, wood-look — browse
+            installed doors and get a written installation estimate.
+          </p>
+          <span class="junction__install-cta">See new doors</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .junction {
+    background: var(--ez-paper);
+  }
+
+  .junction__switch {
+    display: block;
+    width: 100%;
+    height: clamp(2.5rem, 6vw, 5.5rem);
+  }
+
+  .junction__switch path {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .junction__run {
+    stroke: var(--ez-orange);
+    stroke-width: var(--track-stroke);
+  }
+
+  .junction__run--thin {
+    stroke-width: 3px;
+  }
+
+  .junction__ghost {
+    stroke: var(--ez-line);
+    stroke-width: var(--track-ghost);
+  }
+
+  .junction__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: stretch;
+  }
+
+  .junction__repair {
+    background: var(--ez-ink);
+    color: #c9cdd2;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1.25rem, 3.5vw, 2.75rem)
+      clamp(1.5rem, 4vw, 3rem) calc(clamp(1.25rem, 3.5vw, 2.75rem) + var(--track-stroke) + var(--track-gap));
+  }
+
+  .junction__repair h3 {
+    color: var(--ez-white);
+    font-size: var(--text-2xl);
+    margin-block: var(--space-2) var(--space-3);
+  }
+
+  .junction__lede {
+    max-width: 34rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .junction__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-5);
+    display: grid;
+    gap: 0;
+  }
+
+  .junction__list li + li {
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .junction__list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: 0.65rem 0;
+    color: var(--ez-white);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .junction__list a::after {
+    content: "→";
+    color: var(--ez-orange);
+    flex-shrink: 0;
+  }
+
+  .junction__list a:hover {
+    color: var(--ez-orange);
+  }
+
+  .junction__install {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .junction__install-media {
+    position: relative;
+    min-height: 12rem;
+    overflow: hidden;
+  }
+
+  .junction__install-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 300ms ease;
+  }
+
+  .junction__install:hover .junction__install-media img {
+    transform: scale(1.02);
+  }
+
+  .junction__install-copy {
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .junction__install-copy h3 {
+    font-size: var(--text-xl);
+    margin-block: var(--space-2) var(--space-2);
+  }
+
+  .junction__install-copy p {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+  }
+
+  .junction__install-cta {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ez-orange-deep);
+  }
+
+  .junction__install-cta::after {
+    content: " →";
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .junction__install-media img {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 56rem) {
+    .junction__switch {
+      display: none;
+    }
+
+    .junction__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .junction__install {
+      grid-template-rows: 14rem auto;
+    }
+  }
+</style>

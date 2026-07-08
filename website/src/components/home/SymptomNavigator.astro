@@ -1,0 +1,136 @@
+---
+/**
+ * Symptom-led service navigator: "What's your door doing?"
+ * Editorial numbered rows, not cards. Each symptom routes to the
+ * service page that solves it. Homeowner language first, the part
+ * name second — that pairing is the expertise signal.
+ */
+const symptoms = [
+  {
+    n: "01",
+    symptom: "Loud bang from the garage, door too heavy to lift",
+    meaning: "Usually a snapped torsion spring",
+    href: "/broken-spring-repair/",
+  },
+  {
+    n: "02",
+    symptom: "Opener hums or clicks, door doesn't move",
+    meaning: "Stripped gear, capacitor, or a spring problem",
+    href: "/garage-door-opener-repair/",
+  },
+  {
+    n: "03",
+    symptom: "Door hangs crooked or jumped the rails",
+    meaning: "Off-track rollers — stop using the opener",
+    href: "/garage-door-off-track-repair/",
+  },
+  {
+    n: "04",
+    symptom: "Cable hanging loose or wound off its drum",
+    meaning: "Cable, drum, or roller wear",
+    href: "/garage-door-cable-repair/",
+  },
+  {
+    n: "05",
+    symptom: "Door reverses before it closes",
+    meaning: "Safety sensors or travel limits",
+    href: "/garage-door-opener-repair/",
+  },
+  {
+    n: "06",
+    symptom: "Stuck open and the house won't lock up",
+    meaning: "Urgent visit — call first, we'll walk you through it",
+    href: "/emergency-garage-door-repair/",
+  },
+];
+---
+
+<section class="nav-sec section" aria-labelledby="symptom-heading">
+  <div class="wrap">
+    <p class="eyebrow">Symptom checker</p>
+    <h2 id="symptom-heading">What's your door doing?</h2>
+    <span class="track-run" aria-hidden="true"></span>
+
+    <ol class="symptoms">
+      {
+        symptoms.map((s) => (
+          <li>
+            <a href={s.href} data-track={`home_symptom_${s.n}`}>
+              <span class="symptoms__num display-num" aria-hidden="true">
+                {s.n}
+              </span>
+              <span class="symptoms__body">
+                <span class="symptoms__symptom">{s.symptom}</span>
+                <span class="symptoms__meaning">{s.meaning}</span>
+              </span>
+              <span class="symptoms__arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .nav-sec {
+    background: var(--ez-white);
+  }
+
+  .symptoms {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-6) 0 0;
+    border-top: 1px solid var(--ez-line);
+  }
+
+  .symptoms li {
+    border-bottom: 1px solid var(--ez-line);
+  }
+
+  .symptoms a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding: clamp(0.9rem, 2vw, 1.4rem) var(--space-2);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 140ms ease;
+  }
+
+  .symptoms a:hover {
+    background: var(--ez-orange-pale);
+  }
+
+  .symptoms__num {
+    font-size: var(--text-2xl);
+    color: var(--ez-orange);
+    min-width: 2.2ch;
+  }
+
+  .symptoms__body {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .symptoms__symptom {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.2rem, 1rem + 1.2vw, 1.7rem);
+    line-height: 1.15;
+    color: var(--ez-ink);
+  }
+
+  .symptoms__meaning {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .symptoms__arrow {
+    font-size: var(--text-xl);
+    color: var(--ez-orange);
+  }
+</style>

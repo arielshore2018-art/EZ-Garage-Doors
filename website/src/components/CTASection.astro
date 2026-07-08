@@ -1,6 +1,9 @@
 ---
 /**
  * Final call-to-action section. Concrete labels + expectation line.
+ * variant="dark"  — ink field (default)
+ * variant="orange" — full orange brand field; CTAs flip to ink/white
+ *                    so no orange-on-orange ever renders.
  */
 import CallButton from "./CallButton.astro";
 
@@ -11,6 +14,7 @@ interface Props {
   secondaryLabel?: string;
   secondaryHref?: string;
   note?: string;
+  variant?: "dark" | "orange";
 }
 
 const {
@@ -20,16 +24,20 @@ const {
   secondaryLabel = "Get a Written Estimate",
   secondaryHref = "/contact/#request",
   note = "No pressure. One quote, in writing.",
+  variant = "dark",
 } = Astro.props;
 ---
 
-<section class="section section--dark cta-final" aria-labelledby="final-cta-heading">
+<section
+  class:list={["section", "cta-final", variant === "orange" ? "section--orange" : "section--dark"]}
+  aria-labelledby="final-cta-heading"
+>
   <div class="wrap cta-final__inner">
     <h2 id="final-cta-heading">{heading}</h2>
-    <span class="speed-rail speed-rail--center" aria-hidden="true"></span>
+    <span class="track-run track-run--center" aria-hidden="true"></span>
     <p class="cta-final__sub">{sub}</p>
     <div class="cta-final__actions">
-      <CallButton label={callLabel} size="lg" />
+      <CallButton label={callLabel} size="lg" variant={variant === "orange" ? "ink" : "call"} />
       <a href={secondaryHref} class="btn btn--inverse-outline btn--lg" data-track="estimate_click">
         {secondaryLabel}
       </a>
@@ -47,7 +55,14 @@ const {
   .cta-final__sub {
     margin-top: var(--space-4);
     font-size: var(--text-lg);
-    color: #c9d2dc;
+  }
+
+  .section--dark .cta-final__sub {
+    color: #c9cdd2;
+  }
+
+  .section--orange .cta-final__sub {
+    color: var(--ez-white);
   }
 
   .cta-final__actions {

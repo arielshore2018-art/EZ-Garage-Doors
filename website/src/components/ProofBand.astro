@@ -1,0 +1,149 @@
+---
+/**
+ * Verified proof band: live platform ratings + counts.
+ * Deliberately NO on-site quote cards — until verbatim reviews with
+ * live links are supplied (launch blocker list), quotes stay off the
+ * site. Platform chips become outbound links when profile URLs exist.
+ */
+import { Image } from "astro:assets";
+import { reviews, REVIEWS_TOTAL_LINE } from "../config/reviews";
+import googleLogo from "../assets/trust-logos/review-platforms/google-logo.webp";
+import yelpLogo from "../assets/trust-logos/review-platforms/yelp-logo.webp";
+import angiLogo from "../assets/trust-logos/review-platforms/angi-logo.webp";
+
+interface Props {
+  heading?: string;
+  note?: string;
+}
+
+const {
+  heading = "Rated by the homeowners we've dug out of stuck-door mornings",
+  note = "Counts change as new reviews come in — read them on the live platforms.",
+} = Astro.props;
+
+const platforms = [
+  { key: "google", name: "Google", logo: googleLogo, data: reviews.google },
+  { key: "yelp", name: "Yelp", logo: yelpLogo, data: reviews.yelp },
+  { key: "angi", name: "Angi", logo: angiLogo, data: reviews.angi },
+];
+---
+
+<section class="proof section--tight" aria-labelledby="proof-heading">
+  <div class="wrap">
+    <div class="proof__head">
+      <div>
+        <p class="eyebrow">Verified on live platforms</p>
+        <h2 id="proof-heading">{heading}</h2>
+        <span class="track-run" aria-hidden="true"></span>
+      </div>
+      <p class="proof__total display-num">{REVIEWS_TOTAL_LINE}</p>
+    </div>
+
+    <ul class="proof__platforms">
+      {
+        platforms.map((p) => (
+          <li class="proof__chip">
+            {p.data.url ? (
+              <a href={p.data.url} rel="noopener" target="_blank" data-track={`review_platform_${p.key}`}>
+                <Image src={p.logo} alt={`${p.name} reviews`} height={24} loading="lazy" />
+                <span class="proof__rating display-num">{p.data.rating}</span>
+                <span class="proof__count">{p.data.count}+ reviews</span>
+              </a>
+            ) : (
+              <span class="proof__static">
+                <Image src={p.logo} alt={`${p.name} reviews`} height={24} loading="lazy" />
+                <span class="proof__rating display-num">{p.data.rating}</span>
+                <span class="proof__count">{p.data.count}+ reviews</span>
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="proof__note muted">{note}</p>
+  </div>
+</section>
+
+<style>
+  .proof {
+    background: var(--ez-paper);
+  }
+
+  .proof__head {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--space-5);
+    align-items: end;
+    margin-bottom: var(--space-5);
+  }
+
+  .proof__head h2 {
+    max-width: 26ch;
+  }
+
+  .proof__total {
+    font-size: var(--text-lg);
+    color: var(--ez-ink);
+    text-align: right;
+    margin: 0;
+  }
+
+  .proof__platforms {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .proof__chip a,
+  .proof__static {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 3px solid var(--ez-orange);
+    padding: var(--space-4);
+    text-decoration: none;
+    color: inherit;
+    min-height: 64px;
+  }
+
+  .proof__chip img {
+    height: 24px;
+    width: auto;
+  }
+
+  .proof__rating {
+    font-size: var(--text-2xl);
+    color: var(--ez-ink);
+  }
+
+  .proof__count {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .proof__note {
+    font-size: var(--text-sm);
+    margin-top: var(--space-3);
+  }
+
+  @media (max-width: 56rem) {
+    .proof__head {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .proof__total {
+      text-align: left;
+    }
+
+    .proof__platforms {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

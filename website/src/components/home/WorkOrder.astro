@@ -1,0 +1,160 @@
+---
+/**
+ * "How the price works" — the written-quote promise rendered as a
+ * work order: numbered steps hanging off a vertical EZ Track rail.
+ * Typographic on purpose: this is policy, not staged proof.
+ */
+import { APPROVED_CLAIMS } from "../../config/business";
+
+const steps = [
+  {
+    title: "Call, or send a photo of the problem",
+    detail:
+      "A stuck door or a snapped spring is usually visible. A quick photo often means the van arrives with the right parts on board.",
+  },
+  {
+    title: "We diagnose it at your door",
+    detail:
+      "The technician checks the springs, cables, rollers, track, and opener — and shows you what actually failed, in plain language.",
+  },
+  {
+    title: "You get one quote, in writing",
+    detail:
+      "Parts, labor, total. Before any work begins. If you say no, you say no — the door stays exactly as we found it.",
+  },
+  {
+    title: "Approved work gets done and tested",
+    detail:
+      "Balance, travel limits, and the opener's safety reverse are checked before the technician leaves.",
+  },
+];
+---
+
+<section class="workorder section" aria-labelledby="workorder-heading">
+  <div class="wrap workorder__grid">
+    <header class="workorder__head">
+      <p class="eyebrow">No bait pricing</p>
+      <h2 id="workorder-heading">You'll know the price before work begins.</h2>
+      <span class="track-run" aria-hidden="true"></span>
+      <p class="workorder__lede">
+        "{APPROVED_CLAIMS.writtenQuote}" isn't a slogan here — it's the order
+        of operations on every single visit.
+      </p>
+    </header>
+
+    <ol class="workorder__steps">
+      {
+        steps.map((step, i) => (
+          <li class="workorder__step">
+            <span class="workorder__num display-num" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3>{step.title}</h3>
+            <p>{step.detail}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .workorder {
+    background: var(--ez-paper);
+  }
+
+  .workorder__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .workorder__head {
+    position: sticky;
+    top: var(--space-5);
+  }
+
+  .workorder__lede {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+    max-width: 28rem;
+  }
+
+  .workorder__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + 1.25rem);
+    position: relative;
+  }
+
+  /* the vertical track rail the steps hang off */
+  .workorder__steps::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: var(--track-stroke);
+    background: var(--ez-orange);
+  }
+
+  .workorder__steps::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--track-stroke) + var(--track-gap));
+    top: 0.4rem;
+    bottom: 0.4rem;
+    width: var(--track-ghost);
+    background: var(--ez-line);
+  }
+
+  .workorder__step {
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    padding: clamp(1.1rem, 2.5vw, 1.75rem);
+    position: relative;
+  }
+
+  .workorder__step + .workorder__step {
+    margin-top: var(--space-4);
+  }
+
+  /* the roller: connects each step to the rail */
+  .workorder__step::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.25rem - var(--track-gap) - var(--track-ghost));
+    top: 1.6rem;
+    width: 1.05rem;
+    height: 3px;
+    background: var(--ez-orange);
+  }
+
+  .workorder__num {
+    font-size: var(--text-2xl);
+    color: var(--ez-orange);
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+
+  .workorder__step h3 {
+    margin-bottom: var(--space-2);
+  }
+
+  .workorder__step p {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin: 0;
+  }
+
+  @media (max-width: 56rem) {
+    .workorder__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .workorder__head {
+      position: static;
+    }
+  }
+</style>

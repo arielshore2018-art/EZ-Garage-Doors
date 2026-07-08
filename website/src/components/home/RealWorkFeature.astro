@@ -1,0 +1,142 @@
+---
+/**
+ * Real-work feature: one real before/after transformation, asymmetric,
+ * with EZ Track corner brackets. Captions describe the door style only —
+ * never invented towns or customers.
+ */
+import { Image } from "astro:assets";
+import { img } from "../../config/site-images";
+
+const before = img("before-dirty-beige");
+const after = img("after-dark-bronze");
+---
+
+<section class="realwork section section--alt" aria-labelledby="realwork-heading">
+  <div class="wrap">
+    <div class="realwork__head">
+      <div>
+        <p class="eyebrow">Real jobs</p>
+        <h2 id="realwork-heading">Same opening. Different house.</h2>
+        <span class="track-run" aria-hidden="true"></span>
+      </div>
+      <a href="/gallery/" class="realwork__more" data-track="home_gallery_link">
+        See more finished work
+      </a>
+    </div>
+
+    <figure class="realwork__pair">
+      <div class="realwork__shot">
+        <span class="realwork__tag realwork__tag--before">Before</span>
+        <Image
+          src={before.src}
+          alt={before.alt}
+          widths={[480, 800, 1100]}
+          sizes="(max-width: 56rem) 100vw, 40vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="realwork__shot realwork__shot--after track-frame track-frame--br">
+        <span class="realwork__tag realwork__tag--after">After</span>
+        <Image
+          src={after.src}
+          alt={after.alt}
+          widths={[480, 800, 1400]}
+          sizes="(max-width: 56rem) 100vw, 55vw"
+          loading="lazy"
+        />
+      </div>
+      <figcaption class="realwork__caption muted">
+        Worn beige door replaced with an insulated dark bronze panel door.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .realwork__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .realwork__more {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ez-orange-deep);
+    text-decoration: none;
+  }
+
+  .realwork__more::after {
+    content: " →";
+  }
+
+  .realwork__more:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+  }
+
+  .realwork__pair {
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: end;
+  }
+
+  .realwork__shot {
+    position: relative;
+  }
+
+  .realwork__shot--after {
+    margin-top: clamp(1.5rem, 4vw, 3rem); /* editorial offset */
+  }
+
+  .realwork__shot img {
+    width: 100%;
+    height: auto;
+  }
+
+  .realwork__tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .realwork__tag--before {
+    background: var(--ez-ink);
+    color: var(--ez-white);
+  }
+
+  .realwork__tag--after {
+    background: var(--ez-orange);
+    color: var(--ez-white);
+  }
+
+  .realwork__caption {
+    grid-column: 1 / -1;
+    font-size: var(--text-sm);
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 56rem) {
+    .realwork__pair {
+      grid-template-columns: 1fr;
+    }
+
+    .realwork__shot--after {
+      margin-top: 0;
+    }
+  }
+</style>

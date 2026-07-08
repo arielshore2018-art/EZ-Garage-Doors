@@ -1,0 +1,229 @@
+---
+/**
+ * Homepage hero — "Orange Editorial Utility".
+ * Asymmetric 40/60 composition: type panel on warm paper, full-bleed
+ * real photo (branded van arriving at a CT driveway) framed by the
+ * EZ Track. The track draws in once after paint; static under
+ * prefers-reduced-motion. Phone CTA and H1 render before the image.
+ */
+import { Image } from "astro:assets";
+import CallButton from "../CallButton.astro";
+import { img } from "../../config/site-images";
+import { APPROVED_CLAIMS, STATS, BUSINESS } from "../../config/business";
+
+const photo = img("van-arrival");
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow">Garage door repair &amp; new doors</p>
+      <h1 id="hero-heading">
+        Your garage door, <span class="hero__accent">working again</span> — across central Connecticut.
+      </h1>
+      <p class="hero__sub">
+        Stuck door, snapped spring, opener that hums and quits — a local crew
+        diagnoses it and hands you a written quote before any work begins.
+      </p>
+
+      <div class="hero__actions">
+        <CallButton label="Call EZ Garage Doors" size="lg" track="home_hero_call" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="home_hero_estimate">
+          Get a Written Estimate
+        </a>
+      </div>
+
+      <ul class="hero__trust" aria-label="Company facts">
+        <li>{APPROVED_CLAIMS.years}</li>
+        <li>{STATS.fiveStarReviews} 5-star reviews</li>
+        <li>{APPROVED_CLAIMS.writtenQuote.toLowerCase().replace(/^w/, "W")}</li>
+        <li>{STATS.townsServed} {BUSINESS.stateAbbr} towns</li>
+      </ul>
+    </div>
+
+    <div class="hero__media">
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(max-width: 56rem) 100vw, 60vw"
+        loading="eager"
+        fetchpriority="high"
+        class="hero__img"
+      />
+      <!-- EZ Track frame: run along the top, radius, drop down the seam -->
+      <svg
+        class="hero__track"
+        viewBox="0 0 1000 620"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          class="hero__track-ghost"
+          d="M 1000 44 H 60 A 28 28 0 0 0 32 72 V 620"
+          pathLength="1000"
+        ></path>
+        <path
+          class="hero__track-run"
+          d="M 1000 30 H 46 A 28 28 0 0 0 18 58 V 620"
+          pathLength="1000"
+        ></path>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--ez-paper);
+    overflow: hidden;
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    max-width: var(--content-max);
+    margin-inline: auto;
+    align-items: center;
+  }
+
+  .hero__copy {
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 5vw, 4.5rem)
+      clamp(1rem, 4vw, 2rem);
+    max-width: 36rem;
+  }
+
+  h1 {
+    margin-block: var(--space-3) var(--space-4);
+  }
+
+  .hero__accent {
+    color: var(--ez-orange-deep);
+  }
+
+  .hero__sub {
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    max-width: 30rem;
+    margin-bottom: var(--space-5);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+
+  .hero__trust {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    border-top: 1px solid var(--ez-line);
+    padding-top: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .hero__trust li {
+    display: flex;
+    align-items: center;
+  }
+
+  .hero__trust li::before {
+    content: "";
+    width: 0.9rem;
+    height: 3px;
+    background: var(--ez-orange);
+    margin-right: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .hero__media {
+    position: relative;
+    min-height: clamp(20rem, 44vw, 40rem);
+    align-self: stretch;
+  }
+
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 40% 55%;
+  }
+
+  .hero__track {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .hero__track path {
+    fill: none;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .hero__track-ghost {
+    stroke: rgb(255 255 255 / 0.55);
+    stroke-width: var(--track-ghost);
+  }
+
+  .hero__track-run {
+    stroke: var(--ez-orange);
+    stroke-width: var(--track-stroke);
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: hero-track-open 700ms ease-out 150ms forwards;
+  }
+
+  @keyframes hero-track-open {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__track-run {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (max-width: 56rem) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__copy {
+      padding-block: clamp(1.5rem, 6vw, 2.5rem) var(--space-5);
+    }
+
+    .hero__sub {
+      font-size: var(--text-base);
+    }
+
+    .hero__actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+
+    .hero__trust {
+      gap: var(--space-2) var(--space-4);
+    }
+
+    .hero__media {
+      min-height: clamp(14rem, 60vw, 22rem);
+      margin-inline: 0;
+    }
+
+    .hero__img {
+      object-position: 40% 60%;
+    }
+  }
+</style>
