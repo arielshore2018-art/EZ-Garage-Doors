@@ -89,24 +89,24 @@ const service = {
     </div>
   </section>
 
-  <section class="fast-final">
+  <section class="fast-final section--orange">
     <div class="wrap fast-final__inner">
       <h2>Need it handled today?</h2>
       <p>Call now and ask about today's availability in your town.</p>
-      <CallButton label="Call for Availability" size="lg" track="fast_call_click" />
+      <CallButton label="Call for Availability" size="lg" variant="ink" track="fast_call_click" />
     </div>
   </section>
 </LandingLayout>
 
 <style>
   .fast-hero {
-    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
+    background: var(--ez-paper);
     padding-block: var(--space-7);
-    border-bottom: 4px solid var(--ez-orange);
+    border-bottom: var(--track-stroke) solid var(--ez-orange);
   }
 
   .fast-hero h1 {
-    max-width: 40rem;
+    max-width: 44rem;
   }
 
   .fast-hero__sub {
@@ -152,8 +152,8 @@ const service = {
   .fast-list__grid li {
     display: flex;
     align-items: center;
-    background: var(--ez-concrete);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
     padding: var(--space-3) var(--space-4);
   }
 
@@ -163,7 +163,8 @@ const service = {
   }
 
   .fast-quote {
-    background: var(--ez-concrete);
+    background: var(--ez-white);
+    border-block: 1px solid var(--ez-line);
     padding-block: var(--space-7);
   }
 
@@ -173,17 +174,16 @@ const service = {
   }
 
   .fast-final {
-    background: var(--ez-charcoal);
-    color: #cfd6de;
     padding-block: var(--space-7);
     text-align: center;
   }
 
   .fast-final h2 {
-    color: #fff;
+    color: var(--ez-white);
   }
 
   .fast-final p {
     margin-block: var(--space-3) var(--space-5);
+    color: var(--ez-white);
   }
 </style>

@@ -9,6 +9,7 @@
  * only swap the city name.
  */
 import type { GetStaticPaths } from "astro";
+import { Image } from "astro:assets";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import CallButton from "../../components/CallButton.astro";
 import MicroTrustBar from "../../components/MicroTrustBar.astro";
@@ -17,6 +18,7 @@ import CTASection from "../../components/CTASection.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import { publishedCities } from "../../config/cities";
 import { BUSINESS } from "../../config/business";
+import { img } from "../../config/site-images";
 
 export const getStaticPaths = (() => {
   return publishedCities.map((city) => ({
@@ -26,6 +28,10 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths;
 
 const { city } = Astro.props;
+
+/* Local job photos are site-image ids added to cities.ts when real
+   town-specific work photos exist. Never reuse another town's photos. */
+const jobPhotos = (city.localProof.jobPhotos ?? []).map((id: string) => img(id));
 ---
 
 <SiteLayout
@@ -34,7 +40,9 @@ const { city } = Astro.props;
 >
   <section class="city-hero">
     <div class="wrap wrap--narrow">
+      <p class="eyebrow">Local service</p>
       <h1>Garage Door Service in {city.name}, {BUSINESS.stateAbbr}</h1>
+      <span class="track-run" aria-hidden="true"></span>
       <p class="city-hero__sub">
         Repairs, springs, openers, and new doors for {city.name} homeowners — from a local team,
         with a written quote before work begins.
@@ -61,6 +69,29 @@ const { city } = Astro.props;
     )
   }
 
+  {
+    jobPhotos.length > 0 && (
+      <section class="section section--alt">
+        <div class="wrap">
+          <SectionHeading eyebrow="Real local work" title={`Jobs completed in ${city.name}`} />
+          <ul class="city-jobs">
+            {jobPhotos.map((photo) => (
+              <li class="track-frame">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  widths={[420, 720]}
+                  sizes="(max-width: 48rem) 92vw, 380px"
+                  loading="lazy"
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
   <ServiceRouter />
 
   <CTASection
@@ -71,14 +102,18 @@ const { city } = Astro.props;
 
 <style>
   .city-hero {
-    background: linear-gradient(120deg, var(--ez-white) 55%, var(--ez-concrete) 100%);
-    padding-block: var(--space-7);
-    border-bottom: 1px solid var(--ez-border);
+    background: var(--ez-paper);
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    border-bottom: 1px solid var(--ez-line);
+  }
+
+  .city-hero h1 {
+    margin-top: var(--space-3);
   }
 
   .city-hero__sub {
     font-size: var(--text-lg);
-    color: var(--color-text-muted);
+    color: var(--color-text);
     margin-top: var(--space-4);
   }
 
@@ -92,6 +127,20 @@ const { city } = Astro.props;
   .city-hero__trust {
     margin-top: var(--space-5);
     padding-top: var(--space-4);
-    border-top: 1px solid var(--ez-border);
+    border-top: 1px solid var(--ez-line);
+  }
+
+  .city-jobs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-5);
+  }
+
+  .city-jobs img {
+    width: 100%;
+    height: auto;
   }
 </style>

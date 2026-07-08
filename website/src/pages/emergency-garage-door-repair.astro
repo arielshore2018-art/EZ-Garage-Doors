@@ -8,7 +8,7 @@ import LandingLayout from "../layouts/LandingLayout.astro";
 import CallButton from "../components/CallButton.astro";
 import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
-import HeroRatingProof from "../components/HeroRatingProof.astro";
+import ProofBand from "../components/ProofBand.astro";
 
 const commonEmergencies = [
   "Door stuck wide open and won't close",
@@ -39,7 +39,7 @@ const service = {
     sub="Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local service and a written quote before work begins."
     callLabel="Call Now"
     callTrack="emergency_call_click"
-    secondaryLabel="Text a Photo"
+    secondaryLabel="Send a Photo"
   />
 
   <ProofColumns />
@@ -91,51 +91,18 @@ const service = {
     </div>
   </section>
 
-  <HeroRatingProof band />
+  <ProofBand heading="Rated on the calls that couldn't wait" />
 
-  <section class="em-final">
+  <section class="em-final section--orange">
     <div class="wrap em-final__inner">
       <h2>Stuck right now?</h2>
       <p>Call EZ Garage Doors — fast, local help with a written quote first.</p>
-      <CallButton label="Call Now" size="lg" track="emergency_call_click" />
+      <CallButton label="Call Now" size="lg" variant="ink" track="emergency_call_click" />
     </div>
   </section>
 </LandingLayout>
 
 <style>
-  .em-hero {
-    background: var(--ez-charcoal);
-    color: #cfd6de;
-    padding-block: var(--space-7);
-    border-bottom: 4px solid var(--ez-orange);
-  }
-
-  .em-hero h1 {
-    color: #fff;
-    max-width: 40rem;
-  }
-
-  .em-hero__sub {
-    font-size: var(--text-lg);
-    margin-top: var(--space-4);
-    max-width: 38rem;
-    color: #b8c1cc;
-  }
-
-  .em-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: var(--space-4);
-    margin-top: var(--space-5);
-  }
-
-  .em-hero__trust {
-    margin-top: var(--space-5);
-    padding-top: var(--space-4);
-    border-top: 1px solid rgb(255 255 255 / 0.15);
-  }
-
   .em-steps {
     background: var(--ez-orange);
     padding-block: var(--space-5);
@@ -189,8 +156,8 @@ const service = {
   .em-issues__grid li {
     display: flex;
     align-items: center;
-    background: var(--ez-concrete);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
     padding: var(--space-3) var(--space-4);
   }
 
@@ -219,17 +186,16 @@ const service = {
   }
 
   .em-final {
-    background: var(--ez-charcoal);
-    color: #cfd6de;
     padding-block: var(--space-7);
     text-align: center;
   }
 
   .em-final h2 {
-    color: #fff;
+    color: var(--ez-white);
   }
 
   .em-final p {
     margin-block: var(--space-3) var(--space-5);
+    color: var(--ez-white);
   }
 </style>

@@ -26,6 +26,21 @@ const problems = [
 ];
 
 const steps = ["Inspect", "Explain", "Written quote", "Your approval — then the repair"];
+
+const miniFaq = [
+  {
+    q: "How fast can someone get here?",
+    a: `Call with your ${c.city} address and what the door is doing — we dispatch locally and confirm your arrival window on the phone.`,
+  },
+  {
+    q: "What does a repair cost?",
+    a: "It depends on what failed — spring, cable, roller, or opener. You get the full price in writing before any work begins, and the quote you approve is the price you pay.",
+  },
+  {
+    q: "Can I use the door until you arrive?",
+    a: "If you heard a bang or the door hangs crooked, no — keep people and cars clear and leave it where it is. The door is under spring tension.",
+  },
+];
 ---
 
 <LandingLayout
@@ -109,11 +124,27 @@ const steps = ["Inspect", "Explain", "Written quote", "Your approval — then th
     </div>
   </section>
 
-  <section class="ppc-final">
+  <section class="section ppc-faq">
+    <div class="wrap wrap--narrow">
+      <SectionHeading eyebrow="Before you call" title="Three quick answers" />
+      <dl>
+        {
+          miniFaq.map((f) => (
+            <div class="ppc-faq__item">
+              <dt>{f.q}</dt>
+              <dd>{f.a}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="ppc-final section--orange">
     <div class="wrap ppc-final__inner">
       <h2>Need the door fixed today in {c.city}?</h2>
       <p>Call EZ Garage Doors — clear answer, written quote, no pressure.</p>
-      <CallButton label="Call for Repair" size="lg" track={`${c.campaignId}_call`} />
+      <CallButton label="Call for Repair" size="lg" variant="ink" track={`${c.campaignId}_call`} />
     </div>
   </section>
 </LandingLayout>
@@ -146,10 +177,9 @@ const steps = ["Inspect", "Explain", "Written quote", "Your approval — then th
   }
 
   .ppc-problems li {
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-top: 4px solid var(--ez-orange);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 3px solid var(--ez-orange);
     padding: var(--space-5);
   }
 
@@ -187,18 +217,40 @@ const steps = ["Inspect", "Explain", "Written quote", "Your approval — then th
     color: var(--ez-orange);
   }
 
+  .ppc-faq dl {
+    margin: 0;
+  }
+
+  .ppc-faq__item {
+    border-top: 1px solid var(--ez-line);
+    padding-block: var(--space-4);
+  }
+
+  .ppc-faq__item dt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-lg);
+    color: var(--ez-ink);
+    margin-bottom: var(--space-1);
+  }
+
+  .ppc-faq__item dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
   .ppc-final {
-    background: var(--ez-charcoal);
-    color: #c3ccd6;
     padding-block: var(--space-7);
     text-align: center;
   }
 
   .ppc-final h2 {
-    color: #fff;
+    color: var(--ez-white);
   }
 
   .ppc-final p {
     margin-block: var(--space-3) var(--space-5);
+    color: var(--ez-white);
   }
 </style>
