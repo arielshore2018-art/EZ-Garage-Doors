@@ -20,6 +20,11 @@ import CallButton from "../components/CallButton.astro";
         A local garage door specialist will follow up. If the door situation gets worse in the
         meantime — stuck open, off track, spring snapped — call instead of waiting.
       </p>
+      <ol class="thanks__next">
+        <li><strong>We read your request</strong> — including any photo you attached.</li>
+        <li><strong>You get a callback</strong> to confirm details and the visit window.</li>
+        <li><strong>Written quote at the door</strong> — before any work begins.</li>
+      </ol>
       <CallButton label="Call EZ Garage Doors" size="lg" />
       <p class="cta-note">No pressure. One quote, in writing.</p>
       <p class="thanks__back"><a href="/">Back to the homepage</a></p>
@@ -42,6 +47,40 @@ import CallButton from "../components/CallButton.astro";
     font-size: var(--text-lg);
     color: var(--color-text-muted);
     margin-block: var(--space-4) var(--space-5);
+  }
+
+  .thanks__next {
+    list-style: none;
+    padding: 0 0 0 calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + 1rem);
+    margin: 0 0 var(--space-5);
+    position: relative;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .thanks__next::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: var(--track-stroke);
+    background: var(--ez-orange);
+  }
+
+  .thanks__next::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--track-stroke) + var(--track-gap));
+    top: 0.3rem;
+    bottom: 0.3rem;
+    width: var(--track-ghost);
+    background: var(--ez-line);
+  }
+
+  .thanks__next strong {
+    font-family: var(--font-display);
+    font-weight: 700;
   }
 
   .thanks__back {
