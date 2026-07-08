@@ -13,6 +13,7 @@ interface Props {
   description: string;
   service?: { name: string; description: string; url: string };
   faqs?: { question: string; answer: string }[];
+  noindex?: boolean;
 }
 
 const props = Astro.props;

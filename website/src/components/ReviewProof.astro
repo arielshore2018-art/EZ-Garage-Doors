@@ -7,7 +7,7 @@
  * - Real testimonials render once added to reviews.ts — no fake quotes, ever.
  */
 import { APPROVED_CLAIMS } from "../config/business";
-import { reviews, testimonials } from "../config/reviews";
+import { reviews } from "../config/reviews";
 import SectionHeading from "./SectionHeading.astro";
 
 const platforms = [
@@ -50,22 +50,11 @@ const platforms = [
       </li>
     </ul>
 
-    {
-      testimonials.length > 0 && (
-        <ul class="quotes">
-          {testimonials.map((t) => (
-            <li class="quotes__card">
-              <blockquote>
-                <p>“{t.quote}”</p>
-                <footer>
-                  {t.name}, {t.town} — <a href={t.url} rel="noopener">{t.platform}</a>
-                </footer>
-              </blockquote>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+    <!--
+      On-site quote cards stay OFF until verbatim reviews with live
+      platform links are supplied (launch-blocker list). Until then,
+      proof = live platform ratings/counts only.
+    -->
   </div>
 </section>
 

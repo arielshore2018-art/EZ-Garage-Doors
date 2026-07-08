@@ -11,7 +11,8 @@ export default defineConfig({
   integrations: [
     sitemap({
       // PPC landing pages are campaign-only: noindex + out of the sitemap.
-      filter: (page) => !page.includes("/ppc/"),
+      // Thank-you is a conversion page: noindex + robots-disallowed + out.
+      filter: (page) => !page.includes("/ppc/") && !page.includes("/thank-you/"),
     }),
   ],
   build: {

@@ -28,6 +28,7 @@ const localBusiness = {
   "@type": "HomeAndConstructionBusiness",
   name: BUSINESS.name,
   url: BUSINESS.SITE_URL,
+  image: new URL("/og-default.png", BUSINESS.SITE_URL).href,
   slogan: BUSINESS.tagline,
   areaServed: cities.map((c) => ({
     "@type": "City",
@@ -69,8 +70,32 @@ const faqSchema =
         })),
       }
     : null;
+
+/* Breadcrumbs: Home → Service, derived from the service prop so every
+   service page gets a BreadcrumbList without per-page wiring. */
+const breadcrumbSchema = service
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: BUSINESS.SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: service.name,
+          item: new URL(service.url, BUSINESS.SITE_URL).href,
+        },
+      ],
+    }
+  : null;
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
 {serviceSchema && <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />}
 {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+{breadcrumbSchema && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />}
