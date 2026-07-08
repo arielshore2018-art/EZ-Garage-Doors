@@ -43,10 +43,18 @@ const year = new Date().getFullYear();
 
 <style>
   .lp-footer {
-    background: var(--ez-charcoal-deep);
-    color: #b8c1cc;
+    background: var(--ez-ink);
+    color: #b4bac1;
     font-size: var(--text-sm);
     padding-block: var(--space-5);
+    border-top: var(--track-stroke) solid var(--ez-orange);
+  }
+
+  /* clearance so the sticky mobile bar never covers the legal links */
+  @media (max-width: 48rem) {
+    .lp-footer {
+      padding-bottom: calc(var(--space-5) + 76px + env(safe-area-inset-bottom));
+    }
   }
 
   .lp-footer__inner {

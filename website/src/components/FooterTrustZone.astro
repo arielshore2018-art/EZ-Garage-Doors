@@ -182,6 +182,13 @@ const year = new Date().getFullYear();
     padding-block: var(--space-4);
   }
 
+  /* clearance so the sticky mobile bar never covers the legal links */
+  @media (max-width: 48rem) {
+    .footer__legal {
+      padding-bottom: calc(var(--space-4) + 76px + env(safe-area-inset-bottom));
+    }
+  }
+
   .footer__legal-inner {
     display: flex;
     justify-content: space-between;
