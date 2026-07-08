@@ -54,22 +54,43 @@ const { doors, heading = "Door styles we install", eyebrow = "Finished work" } =
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-5);
   }
 
+  /* editorial asymmetry: the first style leads at double width */
+  .door-grid__card:first-child {
+    grid-column: span 2;
+  }
+
   .door-grid__card {
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
     overflow: hidden;
-    box-shadow: var(--shadow-card);
   }
 
   .door-grid__card img {
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
+  }
+
+  .door-grid__card:first-child img {
+    aspect-ratio: 8 / 3.05;
+  }
+
+  @media (max-width: 48rem) {
+    .door-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .door-grid__card:first-child {
+      grid-column: auto;
+    }
+
+    .door-grid__card:first-child img {
+      aspect-ratio: 4 / 3;
+    }
   }
 
   .door-grid__caption {

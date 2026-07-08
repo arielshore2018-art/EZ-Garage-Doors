@@ -106,55 +106,6 @@ const service = {
 </SiteLayout>
 
 <style>
-  .comm-hero {
-    background: var(--ez-charcoal);
-    color: #cfd6de;
-    padding-block: var(--space-8);
-    border-bottom: 4px solid var(--ez-orange);
-  }
-
-  .comm-hero h1 {
-    color: #fff;
-  }
-
-  .comm-hero__sub {
-    font-size: var(--text-lg);
-    margin-top: var(--space-4);
-    color: #b8c1cc;
-  }
-
-  .comm-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
-
-  .comm-hero__facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-5);
-    list-style: none;
-    padding: var(--space-4) 0 0;
-    margin: var(--space-4) 0 0;
-    border-top: 1px solid rgb(255 255 255 / 0.15);
-    font-family: var(--font-display);
-    font-weight: 650;
-    font-size: var(--text-sm);
-    color: #e6eaef;
-  }
-
-  .comm-hero__facts li::before {
-    content: "";
-    display: inline-block;
-    width: 0.9rem;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--ez-orange);
-    margin-right: var(--space-2);
-    vertical-align: middle;
-  }
-
   .comm-downtime {
     max-width: 46rem;
     font-size: var(--text-lg);
@@ -170,10 +121,9 @@ const service = {
   }
 
   .comm-types__card {
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-left: 4px solid var(--ez-charcoal);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-left: var(--track-stroke) solid var(--ez-ink);
     padding: var(--space-5);
   }
 

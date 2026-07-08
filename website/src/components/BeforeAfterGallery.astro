@@ -76,7 +76,6 @@ const { pairs, heading = "Before and after" } = Astro.props;
 
   .ba-pair__frame {
     position: relative;
-    border-radius: var(--radius-md);
     overflow: hidden;
   }
 
@@ -89,8 +88,8 @@ const { pairs, heading = "Before and after" } = Astro.props;
 
   .ba-pair__tag {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 0;
+    left: 0;
     z-index: 1;
     font-family: var(--font-display);
     font-weight: 700;
