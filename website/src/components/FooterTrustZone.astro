@@ -86,9 +86,22 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
-    background: var(--ez-charcoal-deep);
-    color: #b8c1cc;
+    background: var(--ez-ink);
+    color: #b4bac1;
     font-size: var(--text-sm);
+    /* EZ Track top edge: orange run over ghost rail */
+    border-top: var(--track-stroke) solid var(--ez-orange);
+    position: relative;
+  }
+
+  .footer::before {
+    content: "";
+    position: absolute;
+    top: var(--track-gap);
+    left: 0;
+    right: 0;
+    height: var(--track-ghost);
+    background: rgb(255 255 255 / 0.25);
   }
 
   .footer__grid {
@@ -125,7 +138,10 @@ const year = new Date().getFullYear();
 
   .footer h3 {
     color: #fff;
-    font-size: var(--text-base);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
     margin-bottom: var(--space-3);
   }
 
@@ -155,8 +171,8 @@ const year = new Date().getFullYear();
     content: "";
     width: 0.9rem;
     height: 3px;
-    border-radius: 2px;
     background: var(--ez-orange);
+    box-shadow: 0 4px 0 0 rgb(255 255 255 / 0.25);
     margin-right: var(--space-2);
     flex-shrink: 0;
   }

@@ -1,8 +1,9 @@
 /* ============================================================
    EZ Garage Doors — Base styles
-   Reset, typography, buttons, speed-line signature, layout.
-   No animation libraries, no scroll-fade. Motion is reserved
-   for hover/focus feedback only.
+   "Orange Editorial Utility": warm paper, ink type, square
+   surfaces, condensed display headlines, and the EZ Track as
+   the only decorative system. No animation libraries, no
+   scroll-fade. Motion = hover/focus feedback + one hero reveal.
    ============================================================ */
 
 *,
@@ -43,15 +44,14 @@ h3,
 h4 {
   font-family: var(--font-display);
   color: var(--color-heading);
-  line-height: 1.12;
-  font-weight: 750;
-  letter-spacing: -0.015em;
+  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 h1 {
   font-size: var(--text-hero);
-  text-transform: none;
 }
 
 h2 {
@@ -60,6 +60,7 @@ h2 {
 
 h3 {
   font-size: var(--text-xl);
+  line-height: 1.15;
 }
 
 p {
@@ -67,8 +68,9 @@ p {
 }
 
 a {
-  color: var(--ez-charcoal);
+  color: var(--ez-ink);
   text-decoration-color: var(--ez-orange);
+  text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 }
 
@@ -88,6 +90,11 @@ ol {
 :focus-visible {
   outline: 3px solid var(--ez-orange);
   outline-offset: 2px;
+}
+
+.section--dark :focus-visible,
+.section--orange :focus-visible {
+  outline-color: var(--ez-white);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -118,62 +125,86 @@ ol {
   padding-block: var(--space-section);
 }
 
+.section--tight {
+  padding-block: var(--space-section-tight);
+}
+
 .section--alt {
   background: var(--color-bg-alt);
 }
 
 .section--dark {
-  background: var(--ez-charcoal);
-  color: #cfd6de;
+  background: var(--ez-ink);
+  color: #c9cdd2;
 }
 
+.section--dark h1,
 .section--dark h2,
 .section--dark h3 {
   color: var(--ez-white);
 }
 
-/* ---- Signature: EZ Speed Line ---- */
+/* Orange field — a full-width brand moment. Text on it is white
+   (large) or ink (small); CTAs on it are ink or white, never orange. */
+.section--orange {
+  background: var(--ez-orange);
+  color: var(--ez-ink);
+}
 
-/* Rail under section headings */
-.speed-rail {
+.section--orange h1,
+.section--orange h2,
+.section--orange h3 {
+  color: var(--ez-white);
+}
+
+/* Pale wash for quiet routing / navigator zones */
+.section--pale {
+  background: var(--ez-orange-pale);
+}
+
+/* ============================================================
+   Signature: THE EZ TRACK
+   A garage-door track: bold orange run + parallel ghost rail,
+   orthogonal, one radius. Utilities below are the only
+   sanctioned decorative devices.
+   ============================================================ */
+
+/* Horizontal track run under headings (replaces old speed-rail).
+   Two flanges: 6px orange run over 1px ghost rail. */
+.speed-rail,
+.track-run {
   display: block;
   width: 4.5rem;
-  height: 4px;
+  height: calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost));
   margin-top: var(--space-3);
-  border-radius: 2px;
-  background: var(--speed-line-gradient);
-  position: relative;
+  background:
+    linear-gradient(var(--track-color), var(--track-color)) top / 100% var(--track-stroke) no-repeat,
+    linear-gradient(var(--track-ghost-color), var(--track-ghost-color)) bottom / 100% var(--track-ghost) no-repeat;
 }
 
-.speed-rail::before {
-  content: "";
-  position: absolute;
-  left: -1.4rem;
-  top: 0;
-  width: 1rem;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--ez-orange);
-  opacity: 0.55;
-}
-
+.speed-rail::before,
 .speed-rail::after {
-  content: "";
-  position: absolute;
-  left: -2.4rem;
-  top: 0;
-  width: 0.55rem;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--ez-orange);
-  opacity: 0.3;
+  content: none; /* retire old tapered-dash decoration */
 }
 
-.speed-rail--center {
+.speed-rail--center,
+.track-run--center {
   margin-inline: auto;
 }
 
-/* Angled orange side rail — marks high-priority operational blocks */
+.section--dark .speed-rail,
+.section--dark .track-run,
+.section--orange .speed-rail,
+.section--orange .track-run {
+  --track-ghost-color: rgb(255 255 255 / 0.3);
+}
+
+.section--orange .speed-rail,
+.section--orange .track-run {
+  --track-color: var(--ez-white);
+}
+
+/* Vertical track drop — marks high-priority blocks (replaces side-rail) */
 .side-rail {
   position: relative;
 }
@@ -184,21 +215,92 @@ ol {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 8px;
-  background: var(--ez-orange);
-  clip-path: polygon(0 0, 100% 3.5%, 100% 100%, 0 96.5%);
+  width: var(--track-stroke);
+  background: var(--track-color);
+  clip-path: none;
+}
+
+.side-rail::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--track-stroke) + var(--track-gap));
+  top: 0;
+  bottom: 0;
+  width: var(--track-ghost);
+  background: var(--track-ghost-color);
 }
 
 /* Small tick next to trust facts */
-.speed-tick {
+.speed-tick,
+.track-tick {
   display: inline-block;
-  width: 1.1rem;
+  width: 1.05rem;
   height: 3px;
-  border-radius: 2px;
-  background: var(--speed-line-gradient);
+  background: var(--track-color);
+  box-shadow: 0 4px 0 0 var(--track-ghost-color);
   vertical-align: middle;
   margin-right: var(--space-2);
   flex-shrink: 0;
+}
+
+/* Photo corner bracket — a track corner framing an image.
+   Apply to a wrapper around <img>/<Image>. */
+.track-frame {
+  position: relative;
+}
+
+.track-frame > img,
+.track-frame > picture img {
+  display: block;
+}
+
+.track-frame::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--space-3));
+  left: calc(-1 * var(--space-3));
+  width: clamp(3.5rem, 22%, 7rem);
+  height: clamp(3.5rem, 22%, 7rem);
+  border-top: var(--track-stroke) solid var(--track-color);
+  border-left: var(--track-stroke) solid var(--track-color);
+  border-top-left-radius: var(--track-radius);
+  pointer-events: none;
+}
+
+.track-frame--br::before {
+  top: auto;
+  left: auto;
+  bottom: calc(-1 * var(--space-3));
+  right: calc(-1 * var(--space-3));
+  border-top: 0;
+  border-left: 0;
+  border-bottom: var(--track-stroke) solid var(--track-color);
+  border-right: var(--track-stroke) solid var(--track-color);
+  border-top-left-radius: 0;
+  border-bottom-right-radius: var(--track-radius);
+}
+
+/* Section transition: a track run that exits right and re-enters
+   the next section. Use as <div class="track-shift" aria-hidden="true"> */
+.track-shift {
+  height: calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost));
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.track-shift::before {
+  content: "";
+  display: block;
+  height: 100%;
+  width: min(38%, 18rem);
+  background:
+    linear-gradient(var(--track-color), var(--track-color)) top / 100% var(--track-stroke) no-repeat,
+    linear-gradient(var(--track-ghost-color), var(--track-ghost-color)) bottom / 100% var(--track-ghost) no-repeat;
+}
+
+.track-shift--right::before {
+  margin-left: auto;
 }
 
 /* ---- Buttons / CTAs ---- */
@@ -210,33 +312,51 @@ ol {
   gap: 0.5rem;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--text-base);
-  letter-spacing: 0.01em;
-  line-height: 1.2;
-  padding: 0.9rem 1.5rem;
-  border-radius: var(--radius-md);
+  font-size: 1.15rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius-sm);
   border: 2px solid transparent;
   text-decoration: none;
   cursor: pointer;
   min-height: 48px; /* tap target */
-  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  transition: background-color 140ms ease, border-color 140ms ease,
+    color 140ms ease, transform 140ms ease;
 }
 
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Primary call CTA: orange with ink underline-shadow (utility, not glow) */
 .btn--call {
   background: var(--ez-orange);
-  color: #fff;
+  color: var(--ez-white);
   box-shadow: var(--shadow-cta);
 }
 
 .btn--call:hover {
   background: var(--ez-orange-deep);
-  color: #fff;
+  color: var(--ez-white);
+}
+
+/* Ink CTA — the primary action ON orange fields */
+.btn--ink {
+  background: var(--ez-ink);
+  color: var(--ez-white);
+}
+
+.btn--ink:hover {
+  background: #000;
+  color: var(--ez-white);
 }
 
 .btn--outline {
   background: transparent;
-  color: var(--ez-charcoal);
-  border-color: var(--ez-charcoal);
+  color: var(--ez-ink);
+  border-color: var(--ez-ink);
 }
 
 .btn--outline:hover {
@@ -246,8 +366,8 @@ ol {
 
 .btn--inverse-outline {
   background: transparent;
-  color: #fff;
-  border-color: rgb(255 255 255 / 0.7);
+  color: var(--ez-white);
+  border-color: rgb(255 255 255 / 0.75);
 }
 
 .btn--inverse-outline:hover {
@@ -255,9 +375,16 @@ ol {
   color: var(--ez-orange);
 }
 
+.section--orange .btn--inverse-outline:hover {
+  border-color: var(--ez-white);
+  color: var(--ez-white);
+  background: rgb(255 255 255 / 0.12);
+}
+
 .btn--lg {
-  font-size: var(--text-lg);
-  padding: 1.05rem 1.9rem;
+  font-size: 1.35rem;
+  padding: 1rem 2rem;
+  min-height: 56px;
 }
 
 /* Expectation line under CTAs */
@@ -268,18 +395,87 @@ ol {
 }
 
 .section--dark .cta-note {
-  color: #9aa5b1;
+  color: #9aa1a9;
+}
+
+.section--orange .cta-note {
+  color: rgb(23 25 28 / 0.75);
+}
+
+/* ---- Forms ---- */
+
+.field {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.field > label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ez-ink);
+}
+
+.field > input,
+.field > textarea,
+.field > select {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--ez-white);
+  border: 1.5px solid var(--ez-line);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.8rem;
+  min-height: 48px;
+  width: 100%;
+}
+
+.field > textarea {
+  min-height: 6.5rem;
+  resize: vertical;
+}
+
+.field > input:focus-visible,
+.field > textarea:focus-visible,
+.field > select:focus-visible {
+  outline: 3px solid var(--ez-orange);
+  outline-offset: 1px;
+  border-color: var(--ez-orange);
+}
+
+.field > input[aria-invalid="true"],
+.field > textarea[aria-invalid="true"] {
+  border-color: #b3261e;
+}
+
+.field-error {
+  font-size: var(--text-sm);
+  color: #b3261e;
+  min-height: 1.2em;
 }
 
 /* ---- Utility ---- */
 
 .eyebrow {
   font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.08em;
   color: var(--ez-orange-deep);
+}
+
+.section--dark .eyebrow,
+.section--orange .eyebrow {
+  color: var(--ez-orange-pale);
+}
+
+.display-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .muted {
@@ -302,7 +498,7 @@ ol {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--ez-charcoal);
+  background: var(--ez-ink);
   color: #fff;
   padding: 0.6rem 1rem;
   z-index: 100;

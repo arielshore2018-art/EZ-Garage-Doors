@@ -1,17 +1,19 @@
 ---
 /**
- * Full-site header: logo, primary nav, call CTA.
+ * Full-site header: utility trust strip, logo, primary nav, call CTA.
  * Mobile menu is a no-JS <details> disclosure — no menu library.
+ * Nav gives the four core paths: repair, new doors, commercial, areas.
  */
 import { Image } from "astro:assets";
 import logo from "../assets/brand/ez-logo-primary-horizontal.svg";
 import CallButton from "./CallButton.astro";
+import { APPROVED_CLAIMS } from "../config/business";
 
 const nav = [
   { href: "/garage-door-repair/", label: "Repair" },
   { href: "/broken-spring-repair/", label: "Springs" },
   { href: "/garage-door-opener-repair/", label: "Openers" },
-  { href: "/garage-door-installation/", label: "Installation" },
+  { href: "/garage-door-installation/", label: "New Doors" },
   { href: "/commercial-garage-door-repair/", label: "Commercial" },
   { href: "/service-areas/", label: "Service Areas" },
   { href: "/about/", label: "About" },
@@ -19,6 +21,13 @@ const nav = [
 
 const current = Astro.url.pathname;
 ---
+
+<div class="utility-strip">
+  <div class="wrap utility-strip__inner">
+    <p>{APPROVED_CLAIMS.local}</p>
+    <p class="utility-strip__right">{APPROVED_CLAIMS.writtenQuote}</p>
+  </div>
+</div>
 
 <header class="site-header">
   <div class="wrap site-header__inner">
@@ -50,15 +59,27 @@ const current = Astro.url.pathname;
         <span class="visually-hidden">Menu</span>
       </summary>
       <nav aria-label="Main mobile">
+        <p class="site-header__mobile-label">Fix my door</p>
         <ul>
-          {
-            nav.map((item) => (
-              <li>
-                <a href={item.href}>{item.label}</a>
-              </li>
-            ))
-          }
-          <li><a href="/contact/">Get a Written Estimate</a></li>
+          <li><a href="/garage-door-repair/">Garage Door Repair</a></li>
+          <li><a href="/broken-spring-repair/">Broken Springs</a></li>
+          <li><a href="/garage-door-opener-repair/">Opener Problems</a></li>
+          <li><a href="/emergency-garage-door-repair/">Urgent Service</a></li>
+        </ul>
+        <p class="site-header__mobile-label">New doors</p>
+        <ul>
+          <li><a href="/garage-door-installation/">New Door Installation</a></li>
+          <li><a href="/garage-door-replacement/">Replacement</a></li>
+          <li><a href="/commercial-garage-door-repair/">Commercial</a></li>
+        </ul>
+        <p class="site-header__mobile-label">Company</p>
+        <ul>
+          <li><a href="/service-areas/">Service Areas</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/reviews/">Reviews</a></li>
+          <li class="site-header__mobile-cta">
+            <a href="/contact/#request">Get a Written Estimate</a>
+          </li>
         </ul>
       </nav>
     </details>
@@ -66,9 +87,35 @@ const current = Astro.url.pathname;
 </header>
 
 <style>
+  .utility-strip {
+    background: var(--ez-ink);
+    color: #c9cdd2;
+    font-size: var(--text-xs);
+  }
+
+  .utility-strip__inner {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: 0.35rem;
+  }
+
+  .utility-strip p {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 30rem) {
+    .utility-strip__right {
+      display: none;
+    }
+  }
+
   .site-header {
-    background: #fff;
-    border-bottom: 1px solid var(--ez-border);
+    background: var(--ez-white);
+    border-bottom: 1px solid var(--ez-line);
     position: relative;
     z-index: 20;
   }
@@ -77,11 +124,11 @@ const current = Astro.url.pathname;
     display: flex;
     align-items: center;
     gap: var(--space-5);
-    min-height: 4.25rem;
+    min-height: 4.5rem;
   }
 
   .site-header__logo img {
-    width: clamp(150px, 17vw, 225px);
+    width: clamp(150px, 17vw, 220px);
     height: auto;
   }
 
@@ -91,7 +138,7 @@ const current = Astro.url.pathname;
 
   .site-header__nav ul {
     display: flex;
-    gap: var(--space-3);
+    gap: clamp(0.75rem, 1.4vw, 1.4rem);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -99,23 +146,29 @@ const current = Astro.url.pathname;
 
   .site-header__nav a {
     font-family: var(--font-display);
-    font-weight: 650;
-    font-size: var(--text-sm);
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     text-decoration: none;
-    color: var(--ez-charcoal);
-    padding: 0.4rem 0.15rem;
-    border-bottom: 3px solid transparent;
+    color: var(--ez-ink);
+    padding: 0.4rem 0.1rem;
+    /* track-style underline: orange run + ghost rail */
+    background:
+      linear-gradient(var(--ez-orange), var(--ez-orange)) left bottom 4px / 0 3px no-repeat,
+      linear-gradient(var(--ez-line), var(--ez-line)) left bottom / 0 1px no-repeat;
+    transition: background-size 140ms ease;
     white-space: nowrap;
+  }
+
+  .site-header__nav a:hover,
+  .site-header__nav a[aria-current="page"] {
+    background-size: 100% 3px, 100% 1px;
   }
 
   .site-header__cta :global(.btn) {
     white-space: nowrap;
     padding-inline: 1.1rem;
-  }
-
-  .site-header__nav a:hover,
-  .site-header__nav a[aria-current="page"] {
-    border-bottom-color: var(--ez-orange);
   }
 
   .site-header__mobile {
@@ -129,15 +182,20 @@ const current = Astro.url.pathname;
     justify-content: center;
     cursor: pointer;
     list-style: none;
-    border: 2px solid var(--ez-charcoal);
-    border-radius: var(--radius-md);
-    width: 44px;
-    height: 44px;
+    border: 2px solid var(--ez-ink);
+    border-radius: var(--radius-sm);
+    width: 48px;
+    height: 48px;
     padding: 0;
   }
 
   .site-header__mobile summary::-webkit-details-marker {
     display: none;
+  }
+
+  .site-header__mobile[open] summary {
+    background: var(--ez-ink);
+    color: var(--ez-white);
   }
 
   .site-header__burger,
@@ -170,28 +228,45 @@ const current = Astro.url.pathname;
     left: 0;
     right: 0;
     top: 100%;
-    background: #fff;
-    border-bottom: 1px solid var(--ez-border);
+    background: var(--ez-white);
+    border-bottom: 4px solid var(--ez-orange);
     box-shadow: var(--shadow-card);
+    max-height: calc(100dvh - 8rem);
+    overflow-y: auto;
+  }
+
+  .site-header__mobile-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ez-orange-deep);
+    margin: 0;
+    padding: 0.9rem clamp(1rem, 4vw, 2rem) 0.2rem;
   }
 
   .site-header__mobile nav ul {
     list-style: none;
     margin: 0;
-    padding: var(--space-3) 0;
+    padding: 0 0 var(--space-2);
   }
 
   .site-header__mobile nav a {
     display: block;
-    padding: 0.8rem clamp(1rem, 4vw, 2rem);
-    font-family: var(--font-display);
-    font-weight: 650;
+    padding: 0.7rem clamp(1rem, 4vw, 2rem);
+    font-family: var(--font-body);
+    font-weight: 600;
     text-decoration: none;
-    color: var(--ez-charcoal);
+    color: var(--ez-ink);
   }
 
   .site-header__mobile nav a:hover {
-    background: var(--ez-orange-tint);
+    background: var(--ez-orange-pale);
+  }
+
+  .site-header__mobile-cta a {
+    color: var(--ez-orange-deep);
   }
 
   @media (max-width: 62rem) {
