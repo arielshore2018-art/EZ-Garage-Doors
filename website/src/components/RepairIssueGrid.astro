@@ -1,12 +1,15 @@
 ---
 /**
  * Symptom/issue grid — meets urgent visitors at their actual problem.
+ * Cards become links when an href is provided (routing to the
+ * specialty page that solves that symptom).
  */
 import SectionHeading from "./SectionHeading.astro";
 
 interface Issue {
   symptom: string;
   meaning: string;
+  href?: string;
 }
 
 interface Props {
@@ -25,9 +28,19 @@ const { heading = "What is your door doing?", eyebrow = "Common problems", issue
     <ul class="issues">
       {
         issues.map((issue) => (
-          <li class="issues__card">
-            <h3>{issue.symptom}</h3>
-            <p>{issue.meaning}</p>
+          <li class:list={["issues__card", { "issues__card--link": !!issue.href }]}>
+            {issue.href ? (
+              <a href={issue.href}>
+                <h3>{issue.symptom}</h3>
+                <p>{issue.meaning}</p>
+                <span class="issues__go" aria-hidden="true">→</span>
+              </a>
+            ) : (
+              <>
+                <h3>{issue.symptom}</h3>
+                <p>{issue.meaning}</p>
+              </>
+            )}
           </li>
         ))
       }
@@ -46,20 +59,41 @@ const { heading = "What is your door doing?", eyebrow = "Common problems", issue
   }
 
   .issues__card {
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 3px solid var(--ez-orange);
     padding: var(--space-5);
+  }
+
+  .issues__card--link {
+    padding: 0;
+  }
+
+  .issues__card--link a {
+    display: block;
+    padding: var(--space-5);
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: background-color 140ms ease;
+  }
+
+  .issues__card--link a:hover {
+    background: var(--ez-orange-pale);
+  }
+
+  .issues__go {
+    position: absolute;
+    right: var(--space-4);
+    bottom: var(--space-3);
+    color: var(--ez-orange);
+    font-size: var(--text-lg);
   }
 
   .issues__card h3 {
     font-size: var(--text-lg);
     margin-bottom: var(--space-2);
-    padding-bottom: var(--space-2);
-    border-bottom: 3px solid transparent;
-    border-image: var(--speed-line-gradient) 1;
-    border-image-width: 0 0 3px 0;
-    display: inline-block;
   }
 
   .issues__card p {

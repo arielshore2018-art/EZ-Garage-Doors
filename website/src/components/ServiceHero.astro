@@ -1,14 +1,14 @@
 ---
 /**
- * Full-bleed service hero: page-specific image from the site-images
- * manifest, layered gradient, overlaid copy + one dominant repair CTA
- * + rating proof. No detached text cards. Each service page passes a
- * UNIQUE imageId (enforced by review, not code).
+ * Service-page hero — light editorial split, not a dark overlay.
+ * Type panel on warm paper (ink text, instant legibility for a
+ * stressed visitor), real photo with an EZ Track corner bracket.
+ * Each service page passes a UNIQUE imageId (enforced by review).
  */
-import { getImage } from "astro:assets";
+import { Image } from "astro:assets";
 import CallButton from "./CallButton.astro";
-import OverlayRating from "./OverlayRating.astro";
 import { img } from "../config/site-images";
+import { reviews } from "../config/reviews";
 
 interface Props {
   imageId: string;
@@ -45,136 +45,93 @@ const {
 } = Astro.props;
 
 const image = img(imageId);
-const picture = await getImage({
-  src: image.src,
-  format: "webp",
-  widths: [780, 1200, 1680],
-  sizes: "100vw",
-});
 ---
 
 <section class="shero">
-  <img
-    class="shero__bg"
-    src={picture.src}
-    srcset={picture.srcSet.attribute}
-    sizes="100vw"
-    alt=""
-    width={image.src.width}
-    height={image.src.height}
-    loading="eager"
-    fetchpriority="high"
-    style={`object-position: ${image.focalPointDesktop ?? "center"};`}
-    aria-hidden="true"
-  />
-  <span class="shero__overlay" aria-hidden="true"></span>
-
-  <div class="shero__content">
-    <p class="shero__eyebrow">
-      <span class="speed-tick" aria-hidden="true"></span>
-      {eyebrow}
-    </p>
-    <h1>{heading}</h1>
-    <p class="shero__sub">{sub}</p>
-    {alert && <p class="shero__alert" role="alert"><strong>Safety first:</strong> {alert}</p>}
-    <div class="shero__actions">
+  <div class="shero__grid">
+    <div class="shero__copy">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{heading}</h1>
+      <span class="track-run" aria-hidden="true"></span>
+      <p class="shero__sub">{sub}</p>
+      {alert && <p class="shero__alert" role="alert"><strong>Safety first:</strong> {alert}</p>}
+      <div class="shero__actions">
+        {
+          primaryMode === "call" ? (
+            <CallButton label={callLabel} size="lg" track={callTrack} />
+          ) : (
+            <a href={primaryHref} class="btn btn--call btn--lg" data-track={callTrack}>
+              {callLabel}
+            </a>
+          )
+        }
+        <a href={secondaryHref} class="shero__secondary" data-track="photo_cta_click">
+          {secondaryLabel}
+        </a>
+      </div>
+      <p class="shero__micro muted">{micro}</p>
       {
-        primaryMode === "call" ? (
-          <CallButton label={callLabel} size="lg" track={callTrack} />
-        ) : (
-          <a href={primaryHref} class="btn btn--call btn--lg" data-track={callTrack}>
-            {callLabel}
-          </a>
+        showRating && (
+          <p class="shero__rating">
+            <span class="shero__stars" aria-hidden="true">★★★★★</span>
+            <span>
+              {reviews.google.rating} on Google · 850+ five-star reviews across platforms
+            </span>
+          </p>
         )
       }
-      <a href={secondaryHref} class="shero__secondary" data-track="photo_cta_click">
-        {secondaryLabel}
-      </a>
     </div>
-    <p class="shero__micro">{micro}</p>
-    {
-      showRating && (
-        <div class="shero__rating">
-          <OverlayRating />
-        </div>
-      )
-    }
+
+    <div class="shero__media track-frame">
+      <Image
+        src={image.src}
+        alt={image.alt}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(max-width: 56rem) 100vw, 55vw"
+        loading="eager"
+        fetchpriority="high"
+        class="shero__img"
+        style={`object-position: ${image.focalPointDesktop ?? "center"};`}
+      />
+    </div>
   </div>
 </section>
 
 <style>
   .shero {
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    min-height: clamp(520px, 78vh, 620px);
+    background: var(--ez-paper);
+    border-bottom: 1px solid var(--ez-line);
     overflow: hidden;
   }
 
-  .shero__bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .shero__overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(
-      180deg,
-      rgb(13 21 31 / 0.12) 0%,
-      rgb(13 21 31 / 0.3) 30%,
-      rgb(13 21 31 / 0.86) 62%,
-      rgb(13 21 31 / 0.97) 100%
-    );
-  }
-
-  .shero__content {
-    position: relative;
-    z-index: 1;
-    width: 100%;
+  .shero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
     max-width: var(--content-max);
     margin-inline: auto;
-    padding: var(--space-6) clamp(1rem, 4vw, 2rem);
-    color: #c9d2dc;
-  }
-
-  .shero__eyebrow {
-    display: flex;
+    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);
     align-items: center;
-    font-family: var(--font-display);
-    font-weight: 750;
-    font-size: var(--text-xs);
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--ez-orange);
-    margin-bottom: var(--space-2);
   }
 
-  .shero__content h1 {
-    color: #fff;
-    font-size: clamp(1.9rem, 1.4rem + 2.4vw, 3rem);
-    max-width: 18ch;
+  .shero__copy h1 {
+    font-size: clamp(2.3rem, 1.6rem + 3.2vw, 4rem);
+    margin-top: var(--space-3);
   }
 
   .shero__sub {
-    margin-top: var(--space-3);
-    font-size: var(--text-base);
-    max-width: 34rem;
-    color: #d6dce3;
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+    max-width: 32rem;
   }
 
   .shero__alert {
-    margin-top: var(--space-3);
+    margin-top: var(--space-4);
     padding: var(--space-3) var(--space-4);
-    background: rgb(242 106 27 / 0.16);
-    border-left: 4px solid var(--ez-orange);
-    border-radius: var(--radius-sm);
-    max-width: 34rem;
-    color: #f0f3f6;
+    background: var(--ez-orange-pale);
+    border-left: var(--track-stroke) solid var(--ez-orange);
+    max-width: 32rem;
+    color: var(--ez-ink);
     font-size: var(--text-sm);
   }
 
@@ -183,7 +140,7 @@ const picture = await getImage({
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-4);
-    margin-top: var(--space-4);
+    margin-top: var(--space-5);
   }
 
   .shero__actions :global(.btn) {
@@ -193,9 +150,12 @@ const picture = await getImage({
   .shero__secondary {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: var(--text-sm);
-    color: #fff;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ez-ink);
     text-decoration-color: var(--ez-orange);
+    text-decoration-thickness: 2px;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -203,43 +163,73 @@ const picture = await getImage({
   }
 
   .shero__secondary:hover {
-    color: var(--ez-orange);
+    color: var(--ez-orange-deep);
   }
 
   .shero__micro {
     margin-top: var(--space-2);
     font-size: var(--text-sm);
-    color: #9aa5b1;
   }
 
   .shero__rating {
     margin-top: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--ez-line);
+    padding-top: var(--space-3);
+    max-width: 32rem;
   }
 
-  @media (min-width: 62rem) {
-    .shero {
-      align-items: center;
-      min-height: 560px;
+  .shero__stars {
+    color: var(--ez-orange);
+    letter-spacing: 0.1em;
+  }
+
+  .shero__media {
+    align-self: stretch;
+    min-height: clamp(16rem, 36vw, 30rem);
+    position: relative;
+  }
+
+  .shero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 56rem) {
+    .shero__grid {
+      grid-template-columns: 1fr;
+      padding-top: var(--space-5);
     }
 
-    .shero__overlay {
-      background:
-        linear-gradient(
-          90deg,
-          rgb(13 21 31 / 0.92) 0%,
-          rgb(13 21 31 / 0.72) 36%,
-          rgb(13 21 31 / 0.18) 68%,
-          rgb(13 21 31 / 0) 100%
-        ),
-        linear-gradient(0deg, rgb(13 21 31 / 0.35) 0%, rgb(13 21 31 / 0) 30%);
+    .shero__copy h1 {
+      font-size: clamp(2.1rem, 1.5rem + 4vw, 2.9rem);
     }
 
-    .shero__content {
-      padding-block: var(--space-7);
+    .shero__sub {
+      font-size: var(--text-base);
     }
 
-    .shero__content > * {
-      max-width: 560px;
+    .shero__actions :global(.btn) {
+      flex: 1 1 100%;
+      justify-content: center;
+    }
+
+    .shero__media {
+      min-height: 15rem;
+      order: 2;
+    }
+
+    /* bracket sits inside the viewport on mobile */
+    .shero__media.track-frame::before {
+      top: 0;
+      left: 0;
     }
   }
 </style>

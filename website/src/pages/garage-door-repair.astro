@@ -10,17 +10,17 @@ import RepairIssueGrid from "../components/RepairIssueGrid.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
 import TrustLogoStrip from "../components/TrustLogoStrip.astro";
 import WorkGallery from "../components/WorkGallery.astro";
-import ReviewCards from "../components/home/ReviewCards.astro";
+import ProofBand from "../components/ProofBand.astro";
 import FaqList from "../components/FaqList.astro";
 import CityGrid from "../components/CityGrid.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 
 const issues = [
-  { symptom: "Door won't open or close", meaning: "Often a spring, opener, or track problem — stop forcing it and have it diagnosed." },
-  { symptom: "Loud bang from the garage", meaning: "The classic sign of a snapped torsion spring. The door will feel very heavy." },
-  { symptom: "Door is off its track", meaning: "Rollers or cables have failed or slipped. Keep the door still until it's secured." },
-  { symptom: "Grinding, squealing, or shaking", meaning: "Worn rollers, dry hinges, or a failing opener drive. Cheap to fix early." },
+  { symptom: "Door won't open or close", meaning: "Often a spring, opener, or track problem — stop forcing it and have it diagnosed.", href: "/garage-door-opener-repair/" },
+  { symptom: "Loud bang from the garage", meaning: "The classic sign of a snapped torsion spring. The door will feel very heavy.", href: "/broken-spring-repair/" },
+  { symptom: "Door is off its track", meaning: "Rollers or cables have failed or slipped. Keep the door still until it's secured.", href: "/garage-door-off-track-repair/" },
+  { symptom: "Grinding, squealing, or shaking", meaning: "Worn rollers, dry hinges, or a failing opener drive. Cheap to fix early.", href: "/garage-door-cable-repair/" },
 ];
 
 const service = {
@@ -86,12 +86,7 @@ const faqs = [
     imageIds={["stuck-repair", "broken-spring", "new-springs"]}
   />
 
-  <section class="section">
-    <div class="wrap">
-      <SectionHeading eyebrow="What customers say" title="Repairs, reviewed" />
-      <ReviewCards limit={3} />
-    </div>
-  </section>
+  <ProofBand heading="Rated on the platforms that don't let us edit" />
 
   <FaqList faqs={faqs} heading="Garage door repair questions" />
 

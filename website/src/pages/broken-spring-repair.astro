@@ -10,7 +10,7 @@ import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
 import WorkGallery from "../components/WorkGallery.astro";
-import ReviewCards from "../components/home/ReviewCards.astro";
+import ProofBand from "../components/ProofBand.astro";
 import FaqList from "../components/FaqList.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
@@ -75,7 +75,7 @@ const faqs = [
           }
         </ul>
       </div>
-      <figure class="signs__media">
+      <figure class="signs__media track-frame track-frame--br">
         <Image
           src={brokenSpringImg.src}
           alt={brokenSpringImg.alt}
@@ -124,12 +124,7 @@ const faqs = [
     imageIds={["spring-safety", "new-springs", "walkthrough"]}
   />
 
-  <section class="section">
-    <div class="wrap">
-      <SectionHeading eyebrow="What customers say" title="Spring repairs, reviewed" />
-      <ReviewCards limit={3} />
-    </div>
-  </section>
+  <ProofBand heading="The spring calls we get rated on" />
 
   <FaqList faqs={faqs} heading="Broken spring questions" />
 
@@ -160,19 +155,17 @@ const faqs = [
   .signs__list li {
     display: flex;
     align-items: center;
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
     padding: var(--space-3) var(--space-4);
   }
 
   .signs__media {
     margin: 0;
+    position: relative;
   }
 
   .signs__media img {
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
     width: 100%;
     height: auto;
   }

@@ -1,7 +1,8 @@
 ---
 /**
- * "What happens when you call" — numbered operational steps.
- * Styled like a dispatch sequence, not marketing fluff.
+ * "What happens when you call" — numbered steps hanging off a
+ * horizontal EZ Track rail (the process-rail use of the signature).
+ * Vertical rail on mobile.
  */
 interface Step {
   title: string;
@@ -47,13 +48,11 @@ import SectionHeading from "./SectionHeading.astro";
       {
         steps.map((step, i) => (
           <li class="steps__item">
-            <span class="steps__num" aria-hidden="true">
-              {i + 1}
+            <span class="steps__num display-num" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
             </span>
-            <div>
-              <h3 class="steps__title">{step.title}</h3>
-              <p class="steps__detail">{step.detail}</p>
-            </div>
+            <h3 class="steps__title">{step.title}</h3>
+            <p class="steps__detail">{step.detail}</p>
           </li>
         ))
       }
@@ -64,31 +63,59 @@ import SectionHeading from "./SectionHeading.astro";
 <style>
   .steps {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    padding: calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + 1rem) 0 0;
+    margin: var(--space-6) 0 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: var(--space-5);
-    counter-reset: step;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    position: relative;
+  }
+
+  /* the horizontal track the steps hang from */
+  .steps::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--track-stroke);
+    background: var(--ez-orange);
+  }
+
+  .steps::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--track-stroke) + var(--track-gap));
+    left: 0;
+    right: 0;
+    height: var(--track-ghost);
+    background: var(--ez-line);
   }
 
   .steps__item {
-    display: flex;
-    gap: var(--space-3);
-    align-items: flex-start;
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
     padding: var(--space-5);
+    position: relative;
+  }
+
+  /* hanger connecting each step to the rail */
+  .steps__item::before {
+    content: "";
+    position: absolute;
+    top: calc(-1rem - var(--track-gap) - var(--track-ghost));
+    left: var(--space-5);
+    width: 3px;
+    height: calc(1rem + var(--track-gap) + var(--track-ghost));
+    background: var(--ez-orange);
   }
 
   .steps__num {
-    font-family: var(--font-display);
-    font-weight: 800;
     font-size: var(--text-2xl);
     line-height: 1;
     color: var(--ez-orange);
-    min-width: 2rem;
+    display: block;
+    margin-bottom: var(--space-2);
   }
 
   .steps__title {
@@ -100,5 +127,38 @@ import SectionHeading from "./SectionHeading.astro";
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     margin: 0;
+  }
+
+  @media (max-width: 56rem) {
+    .steps {
+      grid-template-columns: 1fr;
+      padding: 0 0 0 calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + 1rem);
+    }
+
+    /* rail rotates vertical on mobile */
+    .steps::before {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: auto;
+      width: var(--track-stroke);
+      height: auto;
+    }
+
+    .steps::after {
+      top: 0;
+      bottom: 0;
+      left: calc(var(--track-stroke) + var(--track-gap));
+      right: auto;
+      width: var(--track-ghost);
+      height: auto;
+    }
+
+    .steps__item::before {
+      top: 1.4rem;
+      left: calc(-1rem - var(--track-gap) - var(--track-ghost));
+      width: calc(1rem + var(--track-gap) + var(--track-ghost));
+      height: 3px;
+    }
   }
 </style>
