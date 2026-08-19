@@ -10,3 +10,6 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+
+# Browser-MCP session artifacts — never committed
+.playwright-mcp/
