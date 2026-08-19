@@ -28,10 +28,10 @@ NOT: dark, cheap, cartoonish, industrial-oppressive, franchise-template, SaaS-te
 | Steel Gray | `--c-steel` | `#626A73` | Secondary text, captions, metadata |
 | Structural Line | `--c-line` | `#DDD7CF` | Hairlines, table rules, grid strokes |
 
-Contrast rules (verified):
-- Body text: ink on paper/white only. Steel gray ≥ 16px only, never under 4.5:1 backgrounds.
-- On orange `#F36A21`: **white text at ≥18.66px bold / ≥24px regular only** (contrast 3.05:1 — large-text AA); for smaller text on orange use ink (`#17191C`, 6.9:1). Buttons on orange fields are **ink** or **white-on-ink**, never orange-on-orange.
-- Orange text on paper only at display sizes (≥24px). Deep orange `#D65312` passes 4.5:1 on white for 16px+ — use it for inline text accents, not `#F36A21`.
+Contrast rules (verified; corrected 2026-08-18 after Lighthouse measurement):
+- Body text: ink on paper/white only. Steel gray ≥ 15px only, never under 4.5:1 backgrounds.
+- On orange `#F36A21`: **white text at ≥18.66px bold / ≥24px regular only** (contrast 3.05:1 — large-text AA); buttons are pinned at 1.175rem (18.8px/700) to stay above that threshold. For smaller text on orange use ink (`#17191C`, 6.9:1). Buttons on orange fields are **ink** or **white-on-ink**, never orange-on-orange.
+- Small orange TEXT on light grounds uses `--ez-orange-text` `#B23F0E` (≥4.75:1 on paper, white, alt, and pale). The earlier assumption that deep orange `#D65312` passes 4.5:1 on white was **wrong** (it measures 4.11:1, and only 3.72:1 on paper) — `#D65312` is a hover *background* only.
 
 Orange dominance is achieved by placement, not coverage: hero field, section transitions, the Track, routing panels, sticky mobile bar, closing conversion zone. Between those moments the page is warm paper and white.
 

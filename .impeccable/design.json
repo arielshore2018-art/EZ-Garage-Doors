@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-17T00:00:00Z",
+  "title": "Design System: EZ Garage Doors — Orange Editorial Utility",
+  "northStar": "A beautifully organized work order: condensed ink type on warm paper, one orange track system carrying the eye, everything in service of a phone call or a written-estimate request.",
+  "sourceOfTruth": {
+    "tokens": "website/src/styles/tokens.css",
+    "base": "website/src/styles/base.css",
+    "rationale": "docs/ez-design-direction.md",
+    "claims": "docs/ez-verified-claims.md"
+  },
+  "track": {
+    "stroke": "6px",
+    "ghost": "1px",
+    "gap": "5px",
+    "cornerRadius": "22px",
+    "color": "{colors.orange}",
+    "ghostColor": "{colors.line}",
+    "maxUsesPerPage": 2,
+    "sanctionedUses": [
+      "hero photo frame (one-time CSS draw-in, 700ms, post-LCP, reduced-motion static)",
+      "process rail (steps hang from horizontal/vertical run)",
+      "photo corner brackets (.track-frame / .track-frame--br)",
+      "section transition (.track-shift)",
+      "homepage routing junction (repair/new-door switch)",
+      "footer top edge"
+    ]
+  },
+  "shadows": {
+    "cta-underline": "0 2px 0 rgb(23 25 28 / 0.9)",
+    "card-whisper": "0 1px 2px rgb(23 25 28 / 0.06), 0 6px 18px rgb(23 25 28 / 0.05)"
+  },
+  "motion": {
+    "budget": [
+      "hero track draw-in (once, stroke-dashoffset, 700ms ease-out 150ms delay)",
+      "button/nav feedback (140ms transforms and color)",
+      "accordion open/close (native details)",
+      "form success feedback",
+      "sticky mobile bar slide-in (160ms, after 160px scroll)"
+    ],
+    "banned": [
+      "global fade-ups",
+      "parallax",
+      "scroll-jacking",
+      "auto-rotating carousels",
+      "marquee text",
+      "typewriter headings",
+      "animation libraries"
+    ],
+    "reducedMotion": "all transitions/animations disabled globally; track draw-in renders complete"
+  },
+  "breakpoints": {
+    "xs": "30rem",
+    "sticky-mobile": "48rem",
+    "hero-collapse": "56rem",
+    "desktop-nav": "62rem"
+  },
+  "contrastRules": [
+    "body text: ink (#24272b) on paper/white only",
+    "white on orange: >=24px regular or >=18.66px at 700 weight only — .btn is pinned at 1.175rem (18.8px/700) for this",
+    "small text on orange: ink (#17191c), 6.9:1",
+    "small orange TEXT on light grounds: orange-text (#b23f0e, >=4.75:1 on paper/white/alt/pale); orange-deep (#d65312) is a hover BACKGROUND only — it measures 4.1:1 on white and fails as small text",
+    "on-ink secondary text: ink-soft (#c9cdd2); muted notes: ink-mute (#9aa1a9) — no ad-hoc grays",
+    "steel (#626a73) secondary text at >=15px on white/paper only",
+    "CTAs on orange fields: ink or white-on-ink, never orange"
+  ],
+  "voice": {
+    "readingLevel": "grade 5-7 on repair/PPC pages",
+    "bannedPhrases": [
+      "trusted partner", "one-stop shop", "best-in-class", "world-class",
+      "seamless experience", "Learn More", "Get Started", "Submit",
+      "Licensed & Insured", "24/7", "same-day guaranteed", "authorized dealer"
+    ],
+    "claimsGate": "every factual claim must exist in website/src/config/business.ts APPROVED_CLAIMS/STATS"
+  }
+}

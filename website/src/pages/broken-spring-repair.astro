@@ -9,7 +9,6 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
-import WorkGallery from "../components/WorkGallery.astro";
 import ProofBand from "../components/ProofBand.astro";
 import FaqList from "../components/FaqList.astro";
 import CTASection from "../components/CTASection.astro";
@@ -119,11 +118,9 @@ const faqs = [
     ]}
   />
 
-  <WorkGallery
-    heading="Spring work, up close"
-    imageIds={["spring-safety", "new-springs", "walkthrough"]}
-  />
-
+  {/* Work gallery removed: its images were 2/3 AI technician-models,
+      which the claims policy bars from proof modules. The page keeps
+      real spring hardware imagery in the signs figure above. */}
   <ProofBand heading="The spring calls we get rated on" />
 
   <FaqList faqs={faqs} heading="Broken spring questions" />

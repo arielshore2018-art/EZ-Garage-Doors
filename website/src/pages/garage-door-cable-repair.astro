@@ -47,7 +47,7 @@ const faqs = [
     sub="Cable came off the drum, rollers worn out, or the door pulling crooked? Stop running the opener — a loose cable gets worse with every cycle."
     callLabel="Call for Cable Repair"
     callTrack="cable_call_click"
-    secondaryLabel="Text a Photo of the Cable"
+    secondaryLabel="Send a Photo of the Cable"
   />
 
   <ProofColumns />
@@ -82,9 +82,11 @@ const faqs = [
     </div>
   </section>
 
+  {/* Real hardware only — AI technician-model photos never appear in
+      proof modules (docs/ez-verified-claims.md). */}
   <WorkGallery
     heading="Track and hardware work"
-    imageIds={["walkthrough", "new-springs", "broken-spring"]}
+    imageIds={["new-springs", "broken-spring"]}
   />
 
   <FaqList faqs={faqs} heading="Cable & track questions" />
@@ -121,14 +123,25 @@ const faqs = [
     margin-top: var(--space-5);
     padding: var(--space-4) var(--space-5);
     background: var(--ez-orange-tint);
-    border-left: 4px solid var(--ez-orange);
-    border-radius: var(--radius-sm);
+    /* track side-rail: orange run + ghost rail */
+    border-left: var(--track-stroke) solid var(--ez-orange);
     max-width: 44rem;
+    position: relative;
+  }
+
+  .cable-safety::before {
+    content: "";
+    position: absolute;
+    left: var(--track-gap);
+    top: 0;
+    bottom: 0;
+    width: var(--track-ghost);
+    background: var(--ez-line);
   }
 
   .cable-final {
     background: var(--ez-charcoal);
-    color: #c3ccd6;
+    color: #c9cdd2;
     padding-block: var(--space-7);
     text-align: center;
   }

@@ -312,7 +312,9 @@ ol {
   gap: 0.5rem;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.15rem;
+  /* 1.175rem = 18.8px: keeps white-on-orange above the WCAG
+     large-text threshold (18.66px at 700) — do not shrink */
+  font-size: 1.175rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   line-height: 1.15;
@@ -399,7 +401,8 @@ ol {
 }
 
 .section--orange .cta-note {
-  color: rgb(23 25 28 / 0.75);
+  /* ≥0.85 alpha keeps ink-on-orange above 4.5:1 at note sizes */
+  color: rgb(23 25 28 / 0.85);
 }
 
 /* ---- Forms ---- */
@@ -464,7 +467,7 @@ ol {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--ez-orange-deep);
+  color: var(--ez-orange-text);
 }
 
 .section--dark .eyebrow,

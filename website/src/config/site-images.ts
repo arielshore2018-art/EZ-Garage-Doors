@@ -78,6 +78,10 @@ export const siteImages: SiteImage[] = [
   { id: "spring-winding", src: springWinding, alt: "Technician winding a garage door torsion spring with winding bars", category: "spring", orientation: "landscape", focalPointDesktop: "55% 35%", approved: true },
   { id: "spring-safety", src: springSafety, alt: "Technician with safety glasses winding garage door spring bars", category: "spring", orientation: "landscape", focalPointDesktop: "50% 30%", approved: true },
   // --- opener ---
+  /* NOTE (2026-08-18 visual audit): this photo includes a technician
+     MODEL reaching for the release cord — treat like the AI model shots:
+     illustrative positions only, never proof modules ("real work",
+     before/after, reviews). */
   { id: "opener-rail", src: openerRail, alt: "Garage door opener rail, trolley, and red emergency release cord", category: "opener", orientation: "landscape", focalPointDesktop: "50% 45%", approved: true },
   // --- process / team ---
   { id: "quote-tablet", src: quoteTablet, alt: "Technician showing a written garage door repair quote on a tablet to a customer", category: "process", orientation: "landscape", focalPointDesktop: "50% 30%", approved: true },

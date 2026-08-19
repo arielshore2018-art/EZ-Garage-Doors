@@ -8,7 +8,8 @@
 :root {
   /* ---- Color: brand ---- */
   --ez-orange: #f36a21;        /* Primary Orange — brand fields, EZ Track, key highlights */
-  --ez-orange-deep: #d65312;   /* hover / pressed; AA text accent on white at 16px+ */
+  --ez-orange-deep: #d65312;   /* hover / pressed BACKGROUNDS only (4.1:1 vs white — not enough for small text) */
+  --ez-orange-text: #b23f0e;   /* burnt-orange TEXT accent — ≥4.75:1 on paper, white, alt, and pale */
   --ez-orange-pale: #ffe3d0;   /* tint fields, quiet washes */
   --ez-ink: #17191c;           /* headlines, dark conversion zones, footer */
   --ez-paper: #f7f3ed;         /* warm paper — default page background */

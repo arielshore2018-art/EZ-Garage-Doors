@@ -184,9 +184,20 @@ const service = {
   .replace-signs__honesty {
     margin-top: var(--space-5);
     padding: var(--space-4) var(--space-5);
-    background: #fff;
-    border-left: 4px solid var(--ez-orange);
-    border-radius: var(--radius-sm);
+    background: var(--ez-white);
+    /* track side-rail: orange run + ghost rail */
+    border-left: var(--track-stroke) solid var(--ez-orange);
+    position: relative;
+  }
+
+  .replace-signs__honesty::before {
+    content: "";
+    position: absolute;
+    left: var(--track-gap);
+    top: 0;
+    bottom: 0;
+    width: var(--track-ghost);
+    background: var(--ez-line);
   }
 
   .replace-next__cols {
@@ -197,13 +208,11 @@ const service = {
 
   .replace-next__card {
     display: block;
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-top: 4px solid var(--ez-orange);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 3px solid var(--ez-orange);
     padding: var(--space-5);
     text-decoration: none;
-    box-shadow: var(--shadow-card);
   }
 
   .replace-next__card h3 {

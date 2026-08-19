@@ -129,10 +129,22 @@ const image = img(imageId);
     margin-top: var(--space-4);
     padding: var(--space-3) var(--space-4);
     background: var(--ez-orange-pale);
+    /* track side-rail: orange run + ghost rail */
     border-left: var(--track-stroke) solid var(--ez-orange);
     max-width: 32rem;
     color: var(--ez-ink);
     font-size: var(--text-sm);
+    position: relative;
+  }
+
+  .shero__alert::before {
+    content: "";
+    position: absolute;
+    left: var(--track-gap);
+    top: 0;
+    bottom: 0;
+    width: var(--track-ghost);
+    background: var(--ez-line);
   }
 
   .shero__actions {

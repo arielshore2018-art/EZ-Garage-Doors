@@ -53,3 +53,27 @@
 
 ## Rollback
 `git checkout main` — production branch untouched; rebuild is 10 clean commits on `rebuild/orange-editorial-utility`.
+
+---
+
+# Addendum — Modernization pass (2026-08-18, branch `modernize/2026-08-pass`)
+
+First rebuild QA with working visual tooling (Chrome DevTools MCP + Lighthouse — unavailable in July).
+
+## Audit → fix summary (Impeccable audit 17/20 before fixes)
+- **[P1 fixed] Systemic AA contrast:** `#D65312` text accents measured 4.11:1 on white / 3.72:1 on paper (July assumption of 4.5+ was wrong). New `--ez-orange-text: #B23F0E` (≥4.75:1 on paper/white/alt/pale) for eyebrows + accent links. Buttons pinned at 1.175rem (18.8px/700) to clear the white-on-orange large-text threshold; sticky-bar buttons raised from 15px, labels "Call Now"/"Request Service" (fit-verified 171×53px at 390w). AFTER tags + orange-section notes → ink-on-orange.
+- **[P1 fixed] Claims policy:** AI technician-model imagery removed from all "real work" proof galleries (repair hub → broken-spring/new-springs/van-front, all real; cable → 2 real hardware shots; spring + off-track galleries removed). `opener-rail` photo found to include a technician model — flagged in the manifest as illustrative-only; retained solely as the opener page hero.
+- **[P2 fixed] Track-language accents:** generic 4–5px side-tabs/top-borders (7 files, detector-flagged) converted to the sanctioned track devices (6px run + 1px ghost rail on alerts/form/ticket; 3px top rules on cards). LeadForm squared. TrustLogoStrip rebuilt as a labeled two-row brands band (review logos removed from `combined` — redundant beside ProofBand); badges squared.
+- **[P3 fixed]** On-ink grays standardized to `#c9cdd2`/`#9aa1a9` (documented); 7 dead components deleted (6 OneDrive-resurrected + orphan StatsProofBar); door-styles grid last-row banner treatment; cable page "Text a Photo" → "Send a Photo" (no texting number exists).
+- **Docs synced:** DESIGN.md (+ sidecar, + design-direction) — new tokens, button/ui type steps, ticket-mono utility face, corrected contrast law.
+- **Suppressed (evidence recorded):** one detector false positive — base.css `.track-frame > img` selector matched as a broken `<img>`.
+
+## Verification results
+- Build 37 pages, 0 errors · `astro check` 0 errors 0 warnings · static crawl ALL PASS (unique metadata, 1 H1/page, noindex scope exact, 0 broken links, 0 banned phrases, sitemap 20) · detector 0 findings (was 9).
+- **Lighthouse mobile — home: 100 a11y / 100 BP / 100 SEO, 0 failed audits. PPC Middletown: 100 a11y / 100 BP** (SEO 69 = intentional noindex only).
+- CWV (4× CPU, Fast 4G, local): LCP 1.03s, CLS 0.03.
+- Form flow: empty submit blocked with inline errors → valid submit fires `form_submit` (campaign context) → `/thank-you/` + `lead_thank_you` + success state. Leads still NOT delivered (FORM_ENDPOINT empty — unchanged owner blocker).
+- Full-page-screenshot artifacts (lazy images, absolute-positioned heroes) verified as capture-mode quirks, not defects.
+
+## Rollback
+Tag `v2026.07-orange-editorial` (= production before this pass, pushed to origin).

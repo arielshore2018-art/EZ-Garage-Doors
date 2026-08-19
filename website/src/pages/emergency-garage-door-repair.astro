@@ -165,9 +165,20 @@ const service = {
     margin-top: var(--space-5);
     padding: var(--space-4) var(--space-5);
     background: var(--ez-orange-tint);
-    border-left: 4px solid var(--ez-orange);
-    border-radius: var(--radius-sm);
+    /* track side-rail: orange run + ghost rail */
+    border-left: var(--track-stroke) solid var(--ez-orange);
     max-width: 44rem;
+    position: relative;
+  }
+
+  .em-issues__safety::before {
+    content: "";
+    position: absolute;
+    left: var(--track-gap);
+    top: 0;
+    bottom: 0;
+    width: var(--track-ghost);
+    background: var(--ez-line);
   }
 
   .em-pricing {

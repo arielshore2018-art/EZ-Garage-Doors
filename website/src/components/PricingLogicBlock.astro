@@ -63,14 +63,24 @@ const {
   }
 
   .pricing__ticket {
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-top: 5px solid var(--ez-orange);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: var(--track-stroke) solid var(--ez-orange);
     box-shadow: var(--shadow-card);
     padding: var(--space-5) var(--space-6);
     font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
     font-size: var(--text-sm);
+    position: relative;
+  }
+
+  .pricing__ticket::before {
+    content: "";
+    position: absolute;
+    top: var(--track-gap);
+    left: 0;
+    right: 0;
+    height: var(--track-ghost);
+    background: var(--ez-line);
   }
 
   .pricing__ticket-head {

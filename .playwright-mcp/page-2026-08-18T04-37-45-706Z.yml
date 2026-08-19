@@ -1,0 +1,402 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Charter Oak Chimney — home" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e6]:
+          - generic [ref=e7]: Charter Oak Chimney
+          - generic [ref=e8]: Connecticut
+      - navigation "Main" [ref=e9]:
+        - link "Services" [ref=e11] [cursor=pointer]:
+          - /url: "#services"
+        - link "Before & After" [ref=e12] [cursor=pointer]:
+          - /url: pages/before-after.html
+        - link "Service Areas" [ref=e13] [cursor=pointer]:
+          - /url: pages/service-areas.html
+        - link "Chimney Knowledge" [ref=e14] [cursor=pointer]:
+          - /url: pages/blog.html
+        - link "FAQ" [ref=e15] [cursor=pointer]:
+          - /url: pages/faq.html
+      - generic [ref=e16]:
+        - link "Call Charter Oak Chimney at (475) 260-0922" [ref=e17] [cursor=pointer]:
+          - /url: tel:+14752600922
+          - generic [ref=e20]: (475) 260-0922
+        - link "Choose a Service Window" [ref=e21] [cursor=pointer]:
+          - /url: schedule.html
+  - main [ref=e22]:
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - paragraph [ref=e26]: Chimney inspection · cleaning · repair — Connecticut
+        - heading "Keep the Fire. Remove the Risk." [level=1] [ref=e27]:
+          - generic [ref=e28]: Keep the Fire.
+          - generic [ref=e29]: Remove the Risk.
+        - paragraph [ref=e30]: Charter Oak inspects, cleans, and repairs chimneys across Fairfield County, greater Hartford, and the Connecticut shoreline. Book online, pick an arrival window, and get photo-documented findings you can actually understand.
+        - generic [ref=e31]:
+          - link "Choose a Service Window" [ref=e32] [cursor=pointer]:
+            - /url: schedule.html
+          - link "Call Charter Oak Chimney at (475) 260-0922" [ref=e33] [cursor=pointer]:
+            - /url: tel:+14752600922
+            - text: Call (475) 260-0922
+        - paragraph [ref=e36]: Booking online takes about a minute. We confirm your window before we arrive.
+        - generic [ref=e37]:
+          - generic [ref=e38]: Licensed & insured — Connecticut
+          - generic [ref=e39]: NFPA-aligned inspections
+          - generic [ref=e40]: $149 inspection — credited toward service
+      - figure "What an inspection covers Illustrative" [ref=e41]:
+        - generic [ref=e42]:
+          - img "A white Connecticut colonial home with a tall exterior brick chimney" [ref=e43]
+          - generic: Cap & crown
+          - generic: Flashing
+          - generic: Masonry & joints
+        - generic [ref=e44]:
+          - text: What an inspection covers
+          - generic [ref=e45]: Illustrative
+    - generic [ref=e47]:
+      - generic [ref=e48]:
+        - paragraph [ref=e49]: Start here
+        - heading "What's happening with your chimney?" [level=2] [ref=e50]
+      - generic [ref=e51]:
+        - link "01 It's time for the annual inspection NFPA 211 recommends one every year — even with light fireplace use." [ref=e52] [cursor=pointer]:
+          - /url: pages/chimney-inspection-connecticut.html
+          - generic [ref=e53]: "01"
+          - generic [ref=e54]:
+            - strong [ref=e55]: It's time for the annual inspection
+            - text: NFPA 211 recommends one every year — even with light fireplace use.
+          - generic [ref=e56]: →
+        - link "02 The fireplace needs a cleaning Soot, creosote, odor, or a season of heavy burning behind you." [ref=e57] [cursor=pointer]:
+          - /url: pages/chimney-cleaning-connecticut.html
+          - generic [ref=e58]: "02"
+          - generic [ref=e59]:
+            - strong [ref=e60]: The fireplace needs a cleaning
+            - text: Soot, creosote, odor, or a season of heavy burning behind you.
+          - generic [ref=e61]: →
+        - link "03 I can see damage — or water is getting in Cracked brick, ceiling stains near the chimney, a rusted or missing cap." [ref=e62] [cursor=pointer]:
+          - /url: pages/chimney-repair-connecticut.html
+          - generic [ref=e63]: "03"
+          - generic [ref=e64]:
+            - strong [ref=e65]: I can see damage — or water is getting in
+            - text: Cracked brick, ceiling stains near the chimney, a rusted or missing cap.
+          - generic [ref=e66]: →
+        - link "04 I want an assessment for a known repair Tell us what you're seeing — we'll look at it on site and scope it in writing." [ref=e67] [cursor=pointer]:
+          - /url: schedule.html?service=repair
+          - generic [ref=e68]: "04"
+          - generic [ref=e69]:
+            - strong [ref=e70]: I want an assessment for a known repair
+            - text: Tell us what you're seeing — we'll look at it on site and scope it in writing.
+          - generic [ref=e71]: →
+        - link "05 I'm buying or selling a home A chimney inspection before closing protects everyone at the table." [ref=e72] [cursor=pointer]:
+          - /url: pages/chimney-inspection-connecticut.html
+          - generic [ref=e73]: "05"
+          - generic [ref=e74]:
+            - strong [ref=e75]: I'm buying or selling a home
+            - text: A chimney inspection before closing protects everyone at the table.
+          - generic [ref=e76]: →
+        - link "06 I'm not sure what I need Describe what you're seeing — we'll point you the right way. No pressure." [ref=e77] [cursor=pointer]:
+          - /url: schedule.html?service=help
+          - generic [ref=e78]: "06"
+          - generic [ref=e79]:
+            - strong [ref=e80]: I'm not sure what I need
+            - text: Describe what you're seeing — we'll point you the right way. No pressure.
+          - generic [ref=e81]: →
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - paragraph [ref=e86]: The Charter Oak difference
+        - heading "You see what we see." [level=2] [ref=e87]
+        - paragraph [ref=e88]: "Every inspection ends the same way: photos of your actual chimney — cap, crown, flashing, flue — and a plain-English explanation of what matters now, what can wait, and why. No mystery findings, no scare tactics, and no additional work without your approval."
+        - generic [ref=e89]:
+          - generic [ref=e91]:
+            - text: Photos of any areas of concern
+            - generic [ref=e92]: Taken at your home, on the day of service
+          - generic [ref=e94]:
+            - text: A written summary for your records
+            - generic [ref=e95]: What was checked and what we found
+          - generic [ref=e97]:
+            - text: Practical next steps, if any are needed
+            - generic [ref=e98]: Scoped in writing before any work begins
+          - generic [ref=e100]:
+            - text: A person who walks you through it
+            - generic [ref=e101]: Ask anything — that's the point
+      - figure "Fig. 01 — Inside the flue Illustrative example, not a customer report" [ref=e102]:
+        - img "Looking up the inside of a masonry chimney flue" [ref=e103]
+        - generic [ref=e104]:
+          - text: Fig. 01 — Inside the flue
+          - generic [ref=e105]: Illustrative example, not a customer report
+    - generic [ref=e107]:
+      - generic [ref=e108]:
+        - paragraph [ref=e109]: Two ways we help
+        - heading "Routine care, or a repair you can see coming" [level=2] [ref=e110]
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - generic [ref=e113]: Maintain
+          - heading "Inspection & cleaning — the annual rhythm" [level=3] [ref=e114]
+          - paragraph [ref=e115]: Most chimney trouble starts quietly. An annual inspection — and a cleaning when it's due — catches small problems while they're still small. Book online today and pick the arrival window that fits your week.
+          - paragraph [ref=e116]:
+            - text: "Inspection fee:"
+            - strong [ref=e117]: $149
+            - text: — credited toward service if you proceed
+          - generic [ref=e118]:
+            - link "Schedule My Chimney Inspection" [ref=e119] [cursor=pointer]:
+              - /url: schedule.html?service=inspection
+            - link "Book Chimney Cleaning" [ref=e120] [cursor=pointer]:
+              - /url: schedule.html?service=cleaning
+        - generic [ref=e121]:
+          - generic [ref=e122]: Repair
+          - heading "Repairs — masonry, crown, cap, flashing, liner, water" [level=3] [ref=e123]
+          - paragraph [ref=e124]: Seen something that doesn't look right? We assess it on site, photograph what we find, and put the scope in writing. Repairs differ in cost because chimneys differ in condition — you approve everything before work begins.
+          - generic [ref=e125]:
+            - link "Masonry" [ref=e126] [cursor=pointer]:
+              - /url: pages/chimney-masonry-repair-connecticut.html
+            - link "Crown" [ref=e127] [cursor=pointer]:
+              - /url: pages/chimney-crown-repair-connecticut.html
+            - link "Cap" [ref=e128] [cursor=pointer]:
+              - /url: pages/chimney-cap-replacement-connecticut.html
+            - link "Flashing" [ref=e129] [cursor=pointer]:
+              - /url: pages/chimney-flashing-repair-connecticut.html
+            - link "Liner" [ref=e130] [cursor=pointer]:
+              - /url: pages/chimney-liner-service-connecticut.html
+            - link "Waterproofing" [ref=e131] [cursor=pointer]:
+              - /url: pages/chimney-waterproofing-connecticut.html
+          - link "Request a Repair Assessment" [ref=e133] [cursor=pointer]:
+            - /url: schedule.html?service=repair
+    - generic [ref=e136]:
+      - generic [ref=e137]:
+        - paragraph [ref=e138]: The visit
+        - heading "Booked in a minute. Handled with care." [level=2] [ref=e139]
+        - paragraph [ref=e140]: The same sequence, every time — so you know exactly what happens after you tap "request."
+      - generic [ref=e141]:
+        - generic [ref=e143]:
+          - generic [ref=e144]: Step 01 — Book
+          - heading "Tell us what you need" [level=3] [ref=e145]
+          - paragraph [ref=e146]: Choose a service, a preferred date, and an arrival window online — or call. Not sure? Pick "not sure" and describe what you're seeing.
+        - generic [ref=e147]:
+          - generic [ref=e148]: Step 02 — Confirm
+          - heading "We confirm your window" [level=3] [ref=e149]
+          - paragraph [ref=e150]: Your request isn't final until we confirm it — a person reviews every booking and locks in the details with you.
+        - generic [ref=e151]:
+          - generic [ref=e152]: Step 03 — Protect
+          - heading "Floors covered before work starts" [level=3] [ref=e153]
+          - paragraph [ref=e154]: Protective coverings go down first, and the fireplace opening is sealed during dusty work. Clean work area, organized tools.
+        - generic [ref=e155]:
+          - generic [ref=e156]: Step 04 — Document
+          - heading "You see what we see" [level=3] [ref=e157]
+          - paragraph [ref=e158]: We photograph what we find and explain it in plain English — what matters now, what can wait, and why.
+        - generic [ref=e159]:
+          - generic [ref=e160]: Step 05 — Approve
+          - heading "Nothing extra without your OK" [level=3] [ref=e161]
+          - paragraph [ref=e162]: Any additional work is scoped in writing first. You decide — then we clean up and leave your home the way we found it.
+    - generic [ref=e164]:
+      - generic [ref=e165]:
+        - paragraph [ref=e166]: Service area
+        - heading "Fairfield County, greater Hartford, and the shoreline" [level=2] [ref=e167]
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - heading "Fairfield County" [level=3] [ref=e170]
+          - list [ref=e171]:
+            - listitem [ref=e172]:
+              - link "Greenwich" [ref=e173] [cursor=pointer]:
+                - /url: pages/chimney-service-greenwich-ct.html
+            - listitem [ref=e174]:
+              - link "Stamford" [ref=e175] [cursor=pointer]:
+                - /url: pages/chimney-service-stamford-ct.html
+            - listitem [ref=e176]:
+              - link "Darien" [ref=e177] [cursor=pointer]:
+                - /url: pages/chimney-service-darien-ct.html
+            - listitem [ref=e178]:
+              - link "New Canaan" [ref=e179] [cursor=pointer]:
+                - /url: pages/chimney-service-new-canaan-ct.html
+            - listitem [ref=e180]:
+              - link "Norwalk" [ref=e181] [cursor=pointer]:
+                - /url: pages/chimney-service-norwalk-ct.html
+            - listitem [ref=e182]:
+              - link "Westport" [ref=e183] [cursor=pointer]:
+                - /url: pages/chimney-service-westport-ct.html
+            - listitem [ref=e184]:
+              - link "Wilton" [ref=e185] [cursor=pointer]:
+                - /url: pages/chimney-service-wilton-ct.html
+            - listitem [ref=e186]:
+              - link "Weston" [ref=e187] [cursor=pointer]:
+                - /url: pages/chimney-service-weston-ct.html
+            - listitem [ref=e188]:
+              - link "Easton" [ref=e189] [cursor=pointer]:
+                - /url: pages/chimney-service-easton-ct.html
+            - listitem [ref=e190]:
+              - link "Redding" [ref=e191] [cursor=pointer]:
+                - /url: pages/chimney-service-redding-ct.html
+            - listitem [ref=e192]:
+              - link "Ridgefield" [ref=e193] [cursor=pointer]:
+                - /url: pages/chimney-service-ridgefield-ct.html
+            - listitem [ref=e194]:
+              - link "Fairfield" [ref=e195] [cursor=pointer]:
+                - /url: pages/chimney-service-fairfield-ct.html
+        - generic [ref=e196]:
+          - heading "Greater Hartford" [level=3] [ref=e197]
+          - list [ref=e198]:
+            - listitem [ref=e199]:
+              - link "West Hartford" [ref=e200] [cursor=pointer]:
+                - /url: pages/chimney-service-west-hartford-ct.html
+            - listitem [ref=e201]:
+              - link "Glastonbury" [ref=e202] [cursor=pointer]:
+                - /url: pages/chimney-service-glastonbury-ct.html
+        - generic [ref=e203]:
+          - heading "Shoreline" [level=3] [ref=e204]
+          - list [ref=e205]:
+            - listitem [ref=e206]:
+              - link "Guilford" [ref=e207] [cursor=pointer]:
+                - /url: pages/chimney-service-guilford-ct.html
+            - listitem [ref=e208]:
+              - link "Madison" [ref=e209] [cursor=pointer]:
+                - /url: pages/chimney-service-madison-ct.html
+      - paragraph [ref=e210]: Not on the list? We serve surrounding towns across Connecticut — mention your town when you book and we'll confirm coverage.
+      - generic [ref=e211]:
+        - link "Choose a Service Window" [ref=e212] [cursor=pointer]:
+          - /url: schedule.html
+        - link "View All Service Areas" [ref=e213] [cursor=pointer]:
+          - /url: pages/service-areas.html
+    - generic [ref=e215]:
+      - generic [ref=e216]:
+        - paragraph [ref=e217]: Season by season
+        - heading "A chimney has a calendar" [level=2] [ref=e218]
+      - generic [ref=e219]:
+        - article [ref=e220]:
+          - generic [ref=e221]: Sep – Nov
+          - heading "Fall — inspect before the first fire" [level=3] [ref=e222]
+          - paragraph [ref=e223]: The busiest season. Book the inspection before heavy use starts, while calendars are still open.
+        - article [ref=e224]:
+          - generic [ref=e225]: Dec – Feb
+          - heading "Winter — burn season" [level=3] [ref=e226]
+          - paragraph [ref=e227]: Seasoned hardwood, a working damper, and attention to smoke smells. Cleaning matters most when the fireplace works hardest.
+        - article [ref=e228]:
+          - generic [ref=e229]: Mar – May
+          - heading "Spring — check what winter did" [level=3] [ref=e230]
+          - paragraph [ref=e231]: Freeze-thaw cycles crack crowns and open mortar joints. Water stains near the chimney usually show up now.
+        - article [ref=e232]:
+          - generic [ref=e233]: Jun – Aug NOW
+          - heading "Summer — the repair window" [level=3] [ref=e234]
+          - paragraph [ref=e235]: Warm, dry weather is the right time for masonry work, waterproofing, and anything the spring check turned up.
+    - generic [ref=e237]:
+      - generic [ref=e238]:
+        - paragraph [ref=e239]: FAQ
+        - heading "Common questions" [level=2] [ref=e240]
+      - generic [ref=e241]:
+        - generic [ref=e242]:
+          - button "How often should I have my chimney inspected? +" [ref=e243] [cursor=pointer]:
+            - text: How often should I have my chimney inspected?
+            - generic [ref=e244]: +
+          - generic:
+            - paragraph: The National Fire Protection Association recommends annual chimney inspections. Even if you don't use your fireplace often, animals, moisture, and settling can cause issues that go unnoticed without a professional inspection.
+        - generic [ref=e245]:
+          - button "How do I book an appointment? +" [ref=e246] [cursor=pointer]:
+            - text: How do I book an appointment?
+            - generic [ref=e247]: +
+          - generic:
+            - paragraph: Use our online scheduling form to choose your preferred date and arrival window. We'll review your request and confirm availability. No phone call needed.
+        - generic [ref=e248]:
+          - button "How much does an inspection cost? +" [ref=e249] [cursor=pointer]:
+            - text: How much does an inspection cost?
+            - generic [ref=e250]: +
+          - generic:
+            - paragraph: The inspection fee is $149, and it's credited toward the service if you proceed with recommended work. Repair pricing depends on what the inspection finds — every repair is scoped in writing before any work begins.
+        - generic [ref=e251]:
+          - button "Do you protect the inside of my home during service? +" [ref=e252] [cursor=pointer]:
+            - text: Do you protect the inside of my home during service?
+            - generic [ref=e253]: +
+          - generic:
+            - paragraph: Yes. We lay protective floor coverings, seal the fireplace opening during cleaning, and keep the work area organized. We leave your home as clean as we found it.
+        - generic [ref=e254]:
+          - button "What areas of Connecticut do you serve? +" [ref=e255] [cursor=pointer]:
+            - text: What areas of Connecticut do you serve?
+            - generic [ref=e256]: +
+          - generic:
+            - paragraph: We serve communities across Fairfield County, the greater Hartford area, and the Connecticut shoreline — including Greenwich, Darien, New Canaan, Westport, Stamford, West Hartford, Glastonbury, Madison, Guilford, and surrounding towns.
+        - generic [ref=e257]:
+          - button "What's included in a chimney inspection? +" [ref=e258] [cursor=pointer]:
+            - text: What's included in a chimney inspection?
+            - generic [ref=e259]: +
+          - generic:
+            - paragraph: Our inspections cover the chimney exterior, crown, cap, flashing, accessible flue liner, damper, smoke chamber, and firebox. You receive photos of any findings and a written summary in plain English.
+    - generic [ref=e261]:
+      - paragraph [ref=e262]: Next step
+      - heading "Ready when your chimney is." [level=2] [ref=e263]
+      - link "Call Charter Oak Chimney at (475) 260-0922" [ref=e264] [cursor=pointer]:
+        - /url: tel:+14752600922
+        - text: (475) 260-0922
+      - generic [ref=e267]:
+        - link "Choose a Service Window" [ref=e268] [cursor=pointer]:
+          - /url: schedule.html
+        - link "Help Me Choose the Right Service" [ref=e269] [cursor=pointer]:
+          - /url: schedule.html?service=help
+      - paragraph [ref=e270]:
+        - text: "Active fire, heavy smoke, or a suspected carbon-monoxide problem is an emergency: leave the home and call 911 first. For everything less urgent, our"
+        - link "fireplace & chimney safety guide" [ref=e271] [cursor=pointer]:
+          - /url: pages/fireplace-chimney-safety-connecticut.html
+        - text: is a good place to start.
+  - contentinfo [ref=e272]:
+    - generic [ref=e273]:
+      - generic [ref=e274]:
+        - link "Charter Oak Chimney — home" [ref=e275] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e276]:
+            - generic [ref=e277]: Charter Oak Chimney
+            - generic [ref=e278]: Connecticut
+        - paragraph [ref=e279]: Chimney inspection, cleaning, and repair for Connecticut homes. Licensed & insured.
+        - paragraph [ref=e280]:
+          - link "info@charteroakchimney.com" [ref=e281] [cursor=pointer]:
+            - /url: mailto:info@charteroakchimney.com
+        - paragraph [ref=e282]:
+          - link "Call Charter Oak Chimney at (475) 260-0922" [ref=e283] [cursor=pointer]:
+            - /url: tel:+14752600922
+            - text: (475) 260-0922
+        - paragraph [ref=e284]: "\"Keep the Fire. Remove the Risk.\""
+      - generic [ref=e285]:
+        - heading "Services" [level=4] [ref=e286]
+        - generic [ref=e287]:
+          - link "Chimney Inspection" [ref=e288] [cursor=pointer]:
+            - /url: pages/chimney-inspection-connecticut.html
+          - link "Chimney Cleaning" [ref=e289] [cursor=pointer]:
+            - /url: pages/chimney-cleaning-connecticut.html
+          - link "Chimney Repair" [ref=e290] [cursor=pointer]:
+            - /url: pages/chimney-repair-connecticut.html
+          - link "Masonry Repair" [ref=e291] [cursor=pointer]:
+            - /url: pages/chimney-masonry-repair-connecticut.html
+          - link "Crown Repair" [ref=e292] [cursor=pointer]:
+            - /url: pages/chimney-crown-repair-connecticut.html
+          - link "Cap Replacement" [ref=e293] [cursor=pointer]:
+            - /url: pages/chimney-cap-replacement-connecticut.html
+          - link "Flashing Repair" [ref=e294] [cursor=pointer]:
+            - /url: pages/chimney-flashing-repair-connecticut.html
+          - link "Liner Service" [ref=e295] [cursor=pointer]:
+            - /url: pages/chimney-liner-service-connecticut.html
+          - link "Waterproofing" [ref=e296] [cursor=pointer]:
+            - /url: pages/chimney-waterproofing-connecticut.html
+      - generic [ref=e297]:
+        - heading "Company" [level=4] [ref=e298]
+        - generic [ref=e299]:
+          - link "Service Areas" [ref=e300] [cursor=pointer]:
+            - /url: pages/service-areas.html
+          - link "Before & After" [ref=e301] [cursor=pointer]:
+            - /url: pages/before-after.html
+          - link "Chimney Knowledge" [ref=e302] [cursor=pointer]:
+            - /url: pages/blog.html
+          - link "FAQ" [ref=e303] [cursor=pointer]:
+            - /url: pages/faq.html
+          - link "Fireplace Safety" [ref=e304] [cursor=pointer]:
+            - /url: pages/fireplace-chimney-safety-connecticut.html
+          - link "Schedule Online" [ref=e305] [cursor=pointer]:
+            - /url: schedule.html
+      - generic [ref=e306]:
+        - heading "Legal" [level=4] [ref=e307]
+        - generic [ref=e308]:
+          - link "Terms of Service" [ref=e309] [cursor=pointer]:
+            - /url: pages/terms.html
+          - link "Privacy Policy" [ref=e310] [cursor=pointer]:
+            - /url: pages/privacy.html
+    - generic [ref=e311]:
+      - paragraph [ref=e312]: © 2026 Charter Oak Chimney. All rights reserved.
+      - generic [ref=e313]:
+        - link "Terms" [ref=e314] [cursor=pointer]:
+          - /url: pages/terms.html
+        - text: ·
+        - link "Privacy" [ref=e315] [cursor=pointer]:
+          - /url: pages/privacy.html

@@ -91,12 +91,10 @@ const commercial = services.find((s) => s.urgency === "commercial");
   .router__card {
     display: block;
     padding: var(--space-4) var(--space-5);
-    background: #fff;
-    border: 1px solid var(--ez-border);
-    border-left: 4px solid var(--ez-orange);
-    border-radius: var(--radius-md);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 3px solid var(--ez-orange);
     text-decoration: none;
-    box-shadow: var(--shadow-card);
     transition: border-color 120ms ease, transform 120ms ease;
   }
 

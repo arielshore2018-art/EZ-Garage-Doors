@@ -200,11 +200,23 @@ const uid = context.replace(/[^a-z0-9]/gi, "-");
   .lead-form {
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
-    border-top: 5px solid var(--ez-orange);
-    border-radius: var(--radius-lg);
+    /* EZ Track top edge: orange run + ghost rail, square corners */
+    border-top: var(--track-stroke) solid var(--ez-orange);
+    border-radius: var(--radius-sm);
     box-shadow: var(--shadow-card);
     padding: clamp(1.25rem, 3vw, 2rem);
     scroll-margin-top: var(--space-6);
+    position: relative;
+  }
+
+  .lead-form::before {
+    content: "";
+    position: absolute;
+    top: var(--track-gap);
+    left: 0;
+    right: 0;
+    height: var(--track-ghost);
+    background: var(--ez-line);
   }
 
   .lead-form h3 {

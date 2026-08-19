@@ -58,9 +58,19 @@ const { doors, heading = "Door styles we install", eyebrow = "Finished work" } =
     gap: var(--space-5);
   }
 
-  /* editorial asymmetry: the first style leads at double width */
+  /* editorial asymmetry: the first style leads at double width,
+     and a lone trailing card widens to a full-row banner crop
+     instead of leaving two empty columns */
   .door-grid__card:first-child {
     grid-column: span 2;
+  }
+
+  .door-grid__card:last-child:nth-child(3n) {
+    grid-column: 1 / -1;
+  }
+
+  .door-grid__card:last-child:nth-child(3n) img {
+    aspect-ratio: 3 / 1;
   }
 
   .door-grid__card {

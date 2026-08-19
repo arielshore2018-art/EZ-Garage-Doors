@@ -8,7 +8,7 @@ import CallButton from "./CallButton.astro";
 ---
 
 <div class="sticky-cta" role="region" aria-label="Quick contact" data-sticky-cta>
-  <CallButton label="Call EZ Garage Doors" class="sticky-cta__btn" />
+  <CallButton label="Call Now" class="sticky-cta__btn" />
   <a href="/contact/#request" class="btn btn--ink sticky-cta__btn" data-track="estimate_click">
     Request Service
   </a>
@@ -57,8 +57,9 @@ import CallButton from "./CallButton.astro";
 
     .sticky-cta :global(.sticky-cta__btn) {
       flex: 1;
-      font-size: var(--text-sm);
-      padding-inline: 0.75rem;
+      /* keep ≥18.8px so white-on-orange stays WCAG large text */
+      font-size: 1.175rem;
+      padding-inline: 0.6rem;
     }
   }
 </style>
