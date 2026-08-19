@@ -1,76 +1,70 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-17T00:00:00Z",
-  "title": "Design System: EZ Garage Doors — Orange Editorial Utility",
-  "northStar": "A beautifully organized work order: condensed ink type on warm paper, one orange track system carrying the eye, everything in service of a phone call or a written-estimate request.",
+  "generatedAt": "2026-08-19T00:00:00Z",
+  "title": "Design System: EZ Garage Doors — PROJECTED LIGHT (hand-processed 16mm)",
+  "northStar": "The company's work record projected as hand-processed film: near-black leader, silver stamped caps, real frames on a sprocketed strip, and orange only ever as light — leaks, flares, the beam. Every CTA is a light-flooded frame plate.",
   "sourceOfTruth": {
     "tokens": "website/src/styles/tokens.css",
     "base": "website/src/styles/base.css",
-    "rationale": "docs/ez-design-direction.md",
+    "contract": "BaseLayout.astro <body> HTML comment (seed 4d6f9491)",
     "claims": "docs/ez-verified-claims.md"
   },
-  "track": {
-    "stroke": "6px",
-    "ghost": "1px",
-    "gap": "5px",
-    "cornerRadius": "22px",
-    "color": "{colors.orange}",
-    "ghostColor": "{colors.line}",
-    "maxUsesPerPage": 2,
-    "sanctionedUses": [
-      "hero photo frame (one-time CSS draw-in, 700ms, post-LCP, reduced-motion static)",
-      "process rail (steps hang from horizontal/vertical run)",
-      "photo corner brackets (.track-frame / .track-frame--br)",
-      "section transition (.track-shift)",
-      "homepage routing junction (repair/new-door switch)",
-      "footer top edge"
-    ]
+  "world": {
+    "form": "hand-processed 16mm film (owner-adopted declined challenger, seed 4d6f9491)",
+    "predecessor": "Orange Editorial Utility (retired 2026-08-19; rollback tag v2026.07-orange-editorial)"
   },
-  "shadows": {
-    "cta-underline": "0 2px 0 rgb(23 25 28 / 0.9)",
-    "card-whisper": "0 1px 2px rgb(23 25 28 / 0.06), 0 6px 18px rgb(23 25 28 / 0.05)"
+  "strip": {
+    "sprocketWidth": "2.25rem",
+    "sprocketHole": "0.8rem square, 1px radius",
+    "frameGap": "0.6rem gap-black between frames",
+    "grain": "SVG feTurbulence overlay at 0.42, frames ONLY — the page never carries texture",
+    "frameCharacter": "inset rebate edge (1px + falloff) and a leak catch on each frame's right edge",
+    "registrationCorners": "emulsion L-marks on priority photos"
+  },
+  "light": {
+    "law": "orange is light, never ink",
+    "devices": [
+      "leak gradient (--leak-gradient): hero right edge, section rules, footer top edge",
+      "flare plates: grain-textured flood gradient CTAs with square sprocket tabs",
+      "projector beam: .section--orange radial beam on leader ground",
+      "light-struck type: hero lit line exposure rising toward the leak (background-clip)",
+      "perforation ticks: small flare squares in edge-print assemblies"
+    ],
+    "banned": "flat orange text on cards/labels; orange-filled section grounds"
   },
   "motion": {
     "budget": [
-      "hero track draw-in (once, stroke-dashoffset, 700ms ease-out 150ms delay)",
-      "button/nav feedback (140ms transforms and color)",
-      "accordion open/close (native details)",
-      "form success feedback",
-      "sticky mobile bar slide-in (160ms, after 160px scroll)"
+      "hero leak single breath (2.8s ease-out, once)",
+      "button/nav feedback (140ms)",
+      "backlit hover states (full-field light shifts)",
+      "native details accordions",
+      "sticky bar slide-in"
     ],
-    "banned": [
-      "global fade-ups",
-      "parallax",
-      "scroll-jacking",
-      "auto-rotating carousels",
-      "marquee text",
-      "typewriter headings",
-      "animation libraries"
-    ],
-    "reducedMotion": "all transitions/animations disabled globally; track draw-in renders complete"
-  },
-  "breakpoints": {
-    "xs": "30rem",
-    "sticky-mobile": "48rem",
-    "hero-collapse": "56rem",
-    "desktop-nav": "62rem"
+    "banned": ["carousels", "marquees", "scroll-jacking", "global fade-ups", "animation libraries"],
+    "reducedMotion": "all animation killed globally; leak renders settled"
   },
   "contrastRules": [
-    "body text: ink (#24272b) on paper/white only",
-    "white on orange: >=24px regular or >=18.66px at 700 weight only — .btn is pinned at 1.175rem (18.8px/700) for this",
-    "small text on orange: ink (#17191c), 6.9:1",
-    "small orange TEXT on light grounds: orange-text (#b23f0e, >=4.75:1 on paper/white/alt/pale); orange-deep (#d65312) is a hover BACKGROUND only — it measures 4.1:1 on white and fails as small text",
-    "on-ink secondary text: ink-soft (#c9cdd2); muted notes: ink-mute (#9aa1a9) — no ad-hoc grays",
-    "steel (#626a73) secondary text at >=15px on white/paper only",
-    "CTAs on orange fields: ink or white-on-ink, never orange"
+    "emulsion (#c9c4bb) on leader: 9.8:1 — body floor",
+    "emulsion-dim (#98928a) on leader: 5.4:1 — secondary floor",
+    "flare (#f36a21) on leader: 6.1:1 — passes all sizes when used as text-like edge print",
+    "leader (#141210) on flare plates: 6.1:1 — CTA text at any size",
+    "err (#ff7a66) on panel: form errors",
+    "focus ring: 3px flare-hot"
   ],
+  "browserSurfaces": {
+    "selection": "flare background, leader text",
+    "caret": "flare",
+    "scrollbar": "thin, flare thumb on panel track"
+  },
   "voice": {
     "readingLevel": "grade 5-7 on repair/PPC pages",
-    "bannedPhrases": [
-      "trusted partner", "one-stop shop", "best-in-class", "world-class",
-      "seamless experience", "Learn More", "Get Started", "Submit",
-      "Licensed & Insured", "24/7", "same-day guaranteed", "authorized dealer"
-    ],
+    "annotationGrammar": "mono uppercase tracked (edge codes, frame numerals, metadata); stamps in condensed caps",
+    "bannedPhrases": ["trusted partner", "one-stop shop", "Learn More", "Get Started", "Submit", "Licensed & Insured", "24/7", "same-day guaranteed", "authorized dealer"],
     "claimsGate": "every factual claim must exist in website/src/config/business.ts APPROVED_CLAIMS/STATS"
-  }
+  },
+  "proofRules": [
+    "proof-framed strips carry real, person-free photographs only",
+    "AI/model imagery is illustrative-only and never sits inside record framing",
+    "review proof = platform ratings/counts + outbound links; no on-site quotes until verbatim reviews exist"
+  ]
 }

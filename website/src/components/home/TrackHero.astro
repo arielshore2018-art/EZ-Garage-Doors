@@ -1,229 +1,304 @@
 ---
 /**
- * Homepage hero — "Orange Editorial Utility".
- * Asymmetric 40/60 composition: type panel on warm paper, full-bleed
- * real photo (branded van arriving at a CT driveway) framed by the
- * EZ Track. The track draws in once after paint; static under
- * prefers-reduced-motion. Phone CTA and H1 render before the image.
+ * Homepage hero — "PROJECTED LIGHT" (hand-processed 16mm).
+ * Left: stamped silver caps, flare-plate call CTA, edge-code trust
+ * strip. Right: the strip — two REAL frames with sprocket margins,
+ * frame numerals, and the orange light leak bleeding from the edge.
+ * The leak breathes once slowly (CSS only; static under
+ * prefers-reduced-motion). Phone CTA renders before the images.
  */
 import { Image } from "astro:assets";
 import CallButton from "../CallButton.astro";
 import { img } from "../../config/site-images";
 import { APPROVED_CLAIMS, STATS, BUSINESS } from "../../config/business";
 
-const photo = img("van-arrival");
+/* Proof-framed strip: images must be provably real and person-free
+   (finish-review finding #1 — the driveway-arrival shot contains a
+   technician figure). van-front = branded Transit, no person. */
+const frameA = img("van-front");
+const frameB = img("hero-problem-door");
 ---
 
-<section class="hero" aria-labelledby="hero-heading">
-  <div class="hero__grid">
-    <div class="hero__copy">
-      <p class="eyebrow">Garage door repair &amp; new doors</p>
-      <h1 id="hero-heading">
-        Your garage door, <span class="hero__accent">working again</span> — across central Connecticut.
+<section class="fhero" aria-labelledby="hero-heading">
+  <p class="fhero__edge edge-code" aria-hidden="true">EZ&nbsp;&nbsp;·&nbsp;&nbsp;15&nbsp;YRS&nbsp;&nbsp;·&nbsp;&nbsp;CT</p>
+
+  <div class="fhero__grid">
+    <div class="fhero__copy">
+      <p class="eyebrow">Garage door repair · Central Connecticut</p>
+      <h1 id="hero-heading" class="stamped">
+        Stuck door?<br />Snapped spring?<br />
+        <span class="fhero__lit">Your garage door, moving&nbsp;again.</span>
       </h1>
-      <p class="hero__sub">
-        Stuck door, snapped spring, opener that hums and quits — a local crew
-        diagnoses it and hands you a written quote before any work begins.
+      <p class="fhero__sub">
+        A local crew diagnoses what failed and hands you a written quote
+        before any work begins. No bait pricing — the number you approve
+        is the number you pay.
       </p>
 
-      <div class="hero__actions">
+      <div class="fhero__actions">
         <CallButton label="Call EZ Garage Doors" size="lg" track="home_hero_call" />
-        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="home_hero_estimate">
-          Get a Written Estimate
+        <a href="/contact/#request" class="fhero__estimate" data-track="home_hero_estimate">
+          Get a written estimate
         </a>
       </div>
 
-      <ul class="hero__trust" aria-label="Company facts">
+      <ul class="fhero__trust" aria-label="Company facts">
         <li>{APPROVED_CLAIMS.years}</li>
-        <li>{STATS.fiveStarReviews} 5-star reviews</li>
-        <li>{APPROVED_CLAIMS.writtenQuote.toLowerCase().replace(/^w/, "W")}</li>
+        <li>{STATS.fiveStarReviews} five-star reviews</li>
+        <li>Written quote first</li>
         <li>{STATS.townsServed} {BUSINESS.stateAbbr} towns</li>
       </ul>
     </div>
 
-    <div class="hero__media">
-      <Image
-        src={photo.src}
-        alt={photo.alt}
-        widths={[480, 800, 1200, 1600]}
-        sizes="(max-width: 56rem) 100vw, 60vw"
-        loading="eager"
-        fetchpriority="high"
-        class="hero__img"
-      />
-      <!-- EZ Track frame: run along the top, radius, drop down the seam -->
-      <svg
-        class="hero__track"
-        viewBox="0 0 1000 620"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <path
-          class="hero__track-ghost"
-          d="M 1000 44 H 60 A 28 28 0 0 0 32 72 V 620"
-          pathLength="1000"
-        ></path>
-        <path
-          class="hero__track-run"
-          d="M 1000 30 H 46 A 28 28 0 0 0 18 58 V 620"
-          pathLength="1000"
-        ></path>
-      </svg>
+    <div class="fhero__strip sprockets" aria-hidden="false">
+      <div class="fhero__frames">
+        <figure class="frame fhero__frame">
+          <Image
+            src={frameA.src}
+            alt={frameA.alt}
+            widths={[480, 800, 1100]}
+            sizes="(max-width: 56rem) 100vw, 40vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <figcaption class="fhero__num mono" aria-hidden="true">04A</figcaption>
+        </figure>
+        <figure class="frame fhero__frame">
+          <Image
+            src={frameB.src}
+            alt={frameB.alt}
+            widths={[480, 800, 1100]}
+            sizes="(max-width: 56rem) 100vw, 40vw"
+            loading="eager"
+          />
+          <figcaption class="fhero__num mono" aria-hidden="true">05</figcaption>
+        </figure>
+      </div>
+      <span class="fhero__leak" aria-hidden="true"></span>
     </div>
   </div>
 </section>
 
 <style>
-  .hero {
-    background: var(--ez-paper);
+  .fhero {
+    position: relative;
+    background: var(--film-leader);
     overflow: hidden;
   }
 
-  .hero__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    max-width: var(--content-max);
-    margin-inline: auto;
-    align-items: center;
+  .fhero__edge {
+    position: absolute;
+    left: clamp(0.4rem, 1vw, 1.1rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
   }
 
-  .hero__copy {
-    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 5vw, 4.5rem)
-      clamp(1rem, 4vw, 2rem);
+  .fhero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    max-width: var(--content-max);
+    margin-inline: auto;
+    align-items: stretch;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding-left: clamp(2.2rem, 5vw, 3.5rem);
+  }
+
+  .fhero__copy {
+    padding-block: clamp(1.75rem, 4vw, 3.25rem);
     max-width: 36rem;
   }
 
   h1 {
     margin-block: var(--space-3) var(--space-4);
+    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.6rem);
   }
 
-  .hero__accent {
-    color: var(--ez-orange-text);
+  /* light-struck line: exposure rises toward the leak on the right —
+     the strip's own light hitting the lettering, not flat ink */
+  .fhero__lit {
+    background: linear-gradient(90deg, var(--flare) 0%, var(--flare-hot) 55%, #ffc499 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .hero__sub {
+  .fhero__sub {
     font-size: var(--text-lg);
-    color: var(--color-text);
     max-width: 30rem;
     margin-bottom: var(--space-5);
   }
 
-  .hero__actions {
+  .fhero__actions {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-bottom: var(--space-5);
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
   }
 
-  .hero__trust {
+  .fhero__estimate {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--film-emulsion);
+    text-decoration-color: var(--flare);
+    text-underline-offset: 5px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .fhero__estimate:hover {
+    color: var(--flare-hot);
+  }
+
+  .fhero__trust {
     list-style: none;
-    padding: 0;
+    padding: var(--space-4) 0 0;
     margin: 0;
+    border-top: 1px solid var(--film-rule);
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-5);
-    border-top: 1px solid var(--ez-line);
-    padding-top: var(--space-4);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--film-emulsion-dim);
   }
 
-  .hero__trust li {
+  .fhero__trust li {
     display: flex;
     align-items: center;
   }
 
-  .hero__trust li::before {
+  .fhero__trust li::before {
     content: "";
-    width: 0.9rem;
-    height: 3px;
-    background: var(--ez-orange);
+    width: 0.55rem;
+    height: 0.55rem;
+    background: var(--flare);
     margin-right: var(--space-2);
     flex-shrink: 0;
   }
 
-  .hero__media {
+  /* THE STRIP */
+  .fhero__strip {
     position: relative;
-    min-height: clamp(20rem, 44vw, 40rem);
-    align-self: stretch;
+    background: var(--film-panel);
+    padding-inline: var(--sprocket-w);
+    display: flex;
+    align-items: center;
   }
 
-  .hero__img {
+  /* right-side sprocket column too */
+  .fhero__strip::after {
+    content: "";
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 40% 55%;
+    top: 0;
+    bottom: 0;
+    right: calc(var(--sprocket-w) / 2 - var(--sprocket-hole) / 2);
+    width: var(--sprocket-hole);
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--film-gap) 0,
+      var(--film-gap) var(--sprocket-hole),
+      transparent var(--sprocket-hole),
+      transparent calc(var(--sprocket-hole) * 2.4)
+    );
   }
 
-  .hero__track {
-    position: absolute;
-    inset: 0;
+  .fhero__frames {
+    display: grid;
+    gap: var(--frame-gap);
+    padding-block: var(--space-5);
     width: 100%;
-    height: 100%;
+  }
+
+  .fhero__frame {
+    margin: 0;
+  }
+
+  .fhero__num {
+    position: absolute;
+    right: -1.7rem;
+    bottom: 0.9rem;
+    font-size: var(--text-xs);
+    letter-spacing: 0.18em;
+    color: var(--flare);
+    writing-mode: vertical-rl;
+  }
+
+  /* the light leak — bleeds in from the right edge and breathes once */
+  .fhero__leak {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: clamp(4rem, 9vw, 8rem);
+    background: var(--leak-gradient);
+    mix-blend-mode: screen;
+    opacity: 0.9;
     pointer-events: none;
+    animation: leak-breathe 2.8s ease-out 1;
   }
 
-  .hero__track path {
-    fill: none;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .hero__track-ghost {
-    stroke: rgb(255 255 255 / 0.55);
-    stroke-width: var(--track-ghost);
-  }
-
-  .hero__track-run {
-    stroke: var(--ez-orange);
-    stroke-width: var(--track-stroke);
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: hero-track-open 700ms ease-out 150ms forwards;
-  }
-
-  @keyframes hero-track-open {
-    to {
-      stroke-dashoffset: 0;
+  @keyframes leak-breathe {
+    0% {
+      opacity: 0.35;
+      transform: translateX(18%);
+    }
+    100% {
+      opacity: 0.9;
+      transform: translateX(0);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__track-run {
+    .fhero__leak {
       animation: none;
-      stroke-dashoffset: 0;
     }
   }
 
   @media (max-width: 56rem) {
-    .hero__grid {
+    .fhero__edge {
+      display: none;
+    }
+
+    .fhero__grid {
       grid-template-columns: 1fr;
+      padding-left: clamp(1rem, 4vw, 2rem);
+      padding-right: clamp(1rem, 4vw, 2rem);
     }
 
-    .hero__copy {
-      padding-block: clamp(1.5rem, 6vw, 2.5rem) var(--space-5);
+    .fhero__copy {
+      padding-block: clamp(1.75rem, 6vw, 2.5rem) var(--space-5);
     }
 
-    .hero__sub {
+    .fhero__sub {
       font-size: var(--text-base);
     }
 
-    .hero__actions :global(.btn) {
+    .fhero__actions :global(.btn) {
       flex: 1 1 100%;
     }
 
-    .hero__trust {
-      gap: var(--space-2) var(--space-4);
+    .fhero__strip {
+      margin-inline: calc(-1 * clamp(1rem, 4vw, 2rem));
+      padding-inline: var(--sprocket-w);
     }
 
-    .hero__media {
-      min-height: clamp(14rem, 60vw, 22rem);
-      margin-inline: 0;
+    .fhero__frames {
+      grid-template-columns: 1fr;
     }
 
-    .hero__img {
-      object-position: 40% 60%;
+    .fhero__frame:nth-child(2) {
+      display: none;
+    }
+
+    .fhero__num {
+      right: -1.55rem;
     }
   }
 </style>

@@ -47,9 +47,11 @@ const symptoms = [
 
 <section class="nav-sec section" aria-labelledby="symptom-heading">
   <div class="wrap">
-    <p class="eyebrow">Symptom checker</p>
     <h2 id="symptom-heading">What's your door doing?</h2>
-    <span class="track-run" aria-hidden="true"></span>
+    <p class="nav-sec__margin" aria-hidden="true">
+      <span class="nav-sec__splice"></span>
+      <span class="nav-sec__code mono">Symptom log</span>
+    </p>
 
     <ol class="symptoms">
       {
@@ -76,7 +78,27 @@ const symptoms = [
 
 <style>
   .nav-sec {
-    background: var(--ez-white);
+    background: var(--film-panel);
+  }
+
+  .nav-sec__margin {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .nav-sec__splice {
+    width: 2.6rem;
+    height: 3px;
+    background: var(--flare);
+  }
+
+  .nav-sec__code {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--film-emulsion-dim);
   }
 
   .symptoms {
@@ -105,10 +127,14 @@ const symptoms = [
     background: var(--ez-orange-pale);
   }
 
+  /* frame numerals, not a numbered-list scaffold: mono edge-print
+     (finish-review finding #5) */
   .symptoms__num {
-    font-size: var(--text-2xl);
-    color: var(--ez-orange);
-    min-width: 2.2ch;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.2em;
+    color: var(--film-emulsion-dim);
+    min-width: 3.2ch;
   }
 
   .symptoms__body {
@@ -131,6 +157,11 @@ const symptoms = [
 
   .symptoms__arrow {
     font-size: var(--text-xl);
-    color: var(--ez-orange);
+    color: var(--film-emulsion-dim);
+  }
+
+  .symptoms a:hover .symptoms__arrow,
+  .symptoms a:hover .symptoms__num {
+    color: var(--flare-hot);
   }
 </style>

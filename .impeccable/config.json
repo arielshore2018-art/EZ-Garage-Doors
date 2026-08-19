@@ -20,6 +20,48 @@
         ],
         "createdAt": "2026-08-19T02:37:35.877Z",
         "reason": "false positive: line 247 is the CSS child selector '.track-frame > img', not an <img> element with a missing src"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "website/src/components/FooterTrustZone.astro"
+        ],
+        "createdAt": "2026-08-19T03:45:19.582Z",
+        "reason": "sanctioned world device: the footer's light-leak top edge (leak-gradient strip) named in the direction contract; not a card accent"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/FooterTrustZone.astro"
+        ],
+        "createdAt": "2026-08-19T03:45:19.699Z",
+        "reason": "sanctioned world device: the footer's light-leak top edge (leak-gradient strip) named in the direction contract; not a card accent"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "website/src/components/home/TrackHero.astro"
+        ],
+        "createdAt": "2026-08-19T04:04:31.415Z",
+        "reason": "finish-review fix #3: lit line re-derived as light-struck exposure tied to the leak — the world's own light-on-emulsion grammar, not decoration"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#ffc499",
+        "createdAt": "2026-08-19T04:04:31.581Z",
+        "reason": "exposure highlight of the leak gradient (film world); documented in DESIGN.md at finish"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/components/home/TrackHero.astro"
+        ],
+        "createdAt": "2026-08-19T04:23:45.362Z",
+        "reason": "finish-review fix #3: light-struck exposure line tied to the leak — world grammar, reviewer-scored resolved"
       }
     ]
   }

@@ -1,44 +1,71 @@
 /* ============================================================
    EZ Garage Doors — Design Tokens
-   Direction: "Orange Editorial Utility" (docs/ez-design-direction.md)
-   Light, warm-paper editorial system led by brand orange, with
-   the EZ Track as the single signature device.
+   World: "PROJECTED LIGHT" — hand-processed 16mm film.
+   (Replacement world chosen by the owner 2026-08-18, seed 4d6f9491;
+   direction contract lives in BaseLayout's body comment.)
+
+   The page is a strip of hand-processed film: near-black leader
+   ground, silver emulsion type, and ORANGE ONLY AS LIGHT — leaks,
+   flares, the projector beam. Every call-to-action is a
+   light-flooded frame plate. Real photos are frames on the strip;
+   verified stats are edge codes. Grain belongs to frames, never
+   smeared across the page.
    ============================================================ */
 
 :root {
-  /* ---- Color: brand ---- */
-  --ez-orange: #f36a21;        /* Primary Orange — brand fields, EZ Track, key highlights */
-  --ez-orange-deep: #d65312;   /* hover / pressed BACKGROUNDS only (4.1:1 vs white — not enough for small text) */
-  --ez-orange-text: #b23f0e;   /* burnt-orange TEXT accent — ≥4.75:1 on paper, white, alt, and pale */
-  --ez-orange-pale: #ffe3d0;   /* tint fields, quiet washes */
-  --ez-ink: #17191c;           /* headlines, dark conversion zones, footer */
-  --ez-paper: #f7f3ed;         /* warm paper — default page background */
-  --ez-white: #ffffff;         /* knockout panels, text on orange/ink */
-  --ez-steel: #626a73;         /* secondary text, captions */
-  --ez-line: #ddd7cf;          /* hairlines, rules, ghost rail */
+  /* ---- Color: the film ---- */
+  --film-leader: #141210;          /* page ground — warm near-black leader */
+  --film-gap: #060505;             /* frame gaps, deepest black */
+  --film-panel: #1d1a16;           /* raised panel on leader (metadata, cards) */
+  --film-panel-2: #262119;         /* second panel step */
+  --film-emulsion: #c9c4bb;        /* silver emulsion — body text (9.8:1 on leader) */
+  --film-emulsion-bright: #efece6; /* bright silver — headings (13.9:1) */
+  --film-emulsion-dim: #98928a;    /* dim silver — secondary text (5.4:1 on leader) */
+  --film-rule: rgb(201 196 187 / 0.16);   /* hairlines */
+  --film-rule-strong: rgb(201 196 187 / 0.34);
 
-  /* Back-compat aliases (legacy component styles) */
-  --ez-charcoal: var(--ez-ink);
-  --ez-charcoal-deep: var(--ez-ink);
-  --ez-concrete: #efe9e1;
-  --ez-border: var(--ez-line);
-  --ez-orange-tint: var(--ez-orange-pale);
+  /* ---- Color: the light ---- */
+  --flare: #f36a21;                /* brand orange — the projector light (6.1:1 on leader) */
+  --flare-hot: #ffa15c;            /* flare core — hover/active intensity (9.6:1) */
+  --flare-bright: #ff8b47;        /* orange TEXT on dark when emphasis needed (8.2:1) */
+  --flare-glow: rgb(243 106 33 / 0.35);
+  --flare-wash: rgb(243 106 33 / 0.08);   /* faint leak wash on panels */
+  --stain: #7a5c40;                /* chemical sepia stain — decorative wear only */
+  --err: #ff7a66;                  /* form errors on dark (5.9:1 on panel) */
 
-  /* ---- Color: roles ---- */
-  --color-bg: var(--ez-paper);
-  --color-bg-alt: var(--ez-white);
-  --color-text: #24272b;
-  --color-text-muted: var(--ez-steel);
-  --color-heading: var(--ez-ink);
-  --color-action: var(--ez-orange);
-  --color-action-hover: var(--ez-orange-deep);
-  --color-inverse: var(--ez-white);
+  /* ---- Legacy role aliases — flip every component into the world.
+     paper/ink INVERT deliberately: old "light ground" components land
+     on leader with emulsion type until each is rebuilt. ---- */
+  --ez-paper: var(--film-leader);
+  --ez-white: var(--film-panel);
+  --ez-ink: var(--film-emulsion-bright);
+  --ez-steel: var(--film-emulsion-dim);
+  --ez-line: var(--film-rule);
+  --ez-orange: var(--flare);
+  --ez-orange-deep: var(--flare-hot);
+  --ez-orange-text: var(--flare-bright);
+  --ez-orange-pale: var(--film-panel-2);
+  --ez-charcoal: var(--film-emulsion-bright);
+  --ez-charcoal-deep: var(--film-gap);
+  --ez-concrete: var(--film-panel);
+  --ez-border: var(--film-rule);
+  --ez-orange-tint: var(--film-panel-2);
+
+  --color-bg: var(--film-leader);
+  --color-bg-alt: var(--film-panel);
+  --color-text: var(--film-emulsion);
+  --color-text-muted: var(--film-emulsion-dim);
+  --color-heading: var(--film-emulsion-bright);
+  --color-action: var(--flare);
+  --color-action-hover: var(--flare-hot);
+  --color-inverse: var(--film-leader);
 
   /* ---- Type ---- */
-  /* Display: Barlow Condensed — confident, mechanical, high-legibility condensed grotesque */
+  /* Stamped caps: Barlow Condensed set wide-tracked uppercase = edge-code stamp voice */
   --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
-  /* Body & UI: Source Sans 3 — readable humanist sans with clean numerals */
   --font-body: "Source Sans 3 Variable", "Source Sans 3", system-ui, -apple-system, sans-serif;
+  /* Edge codes, frame numerals, metadata: the mono annotation face */
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
 
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
@@ -47,8 +74,8 @@
   --text-xl: clamp(1.35rem, 1.15rem + 0.9vw, 1.75rem);
   --text-2xl: clamp(1.6rem, 1.25rem + 1.6vw, 2.25rem);
   --text-3xl: clamp(2rem, 1.4rem + 2.8vw, 3.4rem);
-  --text-hero: clamp(2.6rem, 1.7rem + 4.6vw, 5.2rem);
-  --text-mega: clamp(3rem, 1.8rem + 6.5vw, 6.5rem); /* oversized editorial numerals/words */
+  --text-hero: clamp(2.8rem, 1.8rem + 5vw, 5.6rem);
+  --text-mega: clamp(3rem, 1.8rem + 6.5vw, 6.5rem);
 
   /* ---- Space ---- */
   --space-1: 0.25rem;
@@ -62,34 +89,37 @@
   --space-section: clamp(3.5rem, 2.25rem + 5vw, 7rem);
   --space-section-tight: clamp(2.25rem, 1.5rem + 3vw, 4rem);
 
-  /* ---- Shape: square editorial surfaces ---- */
-  --radius-sm: 2px;
-  --radius-md: 2px;
-  --radius-lg: 4px;
-  --shadow-card: 0 1px 2px rgb(23 25 28 / 0.06), 0 6px 18px rgb(23 25 28 / 0.05);
-  --shadow-cta: 0 2px 0 rgb(23 25 28 / 0.9); /* hard utility shadow, not a glow */
+  /* ---- Shape: square-cut frames ---- */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-sprocket: 3px;          /* the one rounded element: sprocket holes */
+  --shadow-card: none;             /* depth = overlap + gaps, not shadows */
+  --shadow-cta: 0 0 24px var(--flare-glow); /* flare glow is light, not depth */
 
   /* ---- Layout ---- */
-  --content-max: 75rem;
+  --content-max: 78rem;
   --content-narrow: 46rem;
 
-  /* ---- Signature: The EZ Track ----
-     One device: a garage-door track rendered as a bold orange run
-     (6px) with a parallel 1px ghost rail, always orthogonal with a
-     single radius. Appears as hero frame, process rail, photo
-     corner brackets, and section transitions. Nothing else. */
+  /* ---- Signature: THE STRIP ----
+     Sprocket margins, frame bands, and the orange light leak. */
+  --sprocket-w: 2.25rem;           /* sprocket margin width */
+  --sprocket-hole: 0.8rem;         /* hole size */
+  --frame-gap: 0.6rem;             /* black gap between frames */
+  --leak-gradient: linear-gradient(
+    270deg,
+    var(--flare-hot) 0%,
+    var(--flare) 34%,
+    rgb(243 106 33 / 0.42) 62%,
+    transparent 100%
+  );
+
+  /* Legacy signature aliases (retired track device → splice mark) */
   --track-stroke: 6px;
   --track-ghost: 1px;
-  --track-gap: 5px;          /* distance between run and ghost rail */
-  --track-radius: 22px;      /* the single corner radius of the track */
-  --track-color: var(--ez-orange);
-  --track-ghost-color: var(--ez-line);
-
-  /* Legacy gradient alias — resolves to solid track color so old
-     speed-line styles inherit the new system until fully replaced */
-  --speed-line-gradient: linear-gradient(
-    90deg,
-    var(--ez-orange) 0%,
-    var(--ez-orange) 100%
-  );
+  --track-gap: 5px;
+  --track-radius: 0px;
+  --track-color: var(--flare);
+  --track-ghost-color: var(--film-rule);
+  --speed-line-gradient: linear-gradient(90deg, var(--flare) 0%, var(--flare) 100%);
 }

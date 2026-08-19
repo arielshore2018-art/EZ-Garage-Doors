@@ -5,7 +5,7 @@
  * Nav gives the four core paths: repair, new doors, commercial, areas.
  */
 import { Image } from "astro:assets";
-import logo from "../assets/brand/ez-logo-primary-horizontal.svg";
+import logo from "../assets/brand/ez-logo-white.svg";
 import CallButton from "./CallButton.astro";
 import { APPROVED_CLAIMS } from "../config/business";
 
@@ -88,7 +88,7 @@ const current = Astro.url.pathname;
 
 <style>
   .utility-strip {
-    background: var(--ez-ink);
+    background: var(--film-gap);
     color: #c9cdd2;
     font-size: var(--text-xs);
   }
@@ -168,7 +168,7 @@ const current = Astro.url.pathname;
 
   .site-header__cta :global(.btn) {
     white-space: nowrap;
-    padding-inline: 1.1rem;
+    padding-inline: 1.7rem;
   }
 
   .site-header__mobile {
@@ -194,8 +194,8 @@ const current = Astro.url.pathname;
   }
 
   .site-header__mobile[open] summary {
-    background: var(--ez-ink);
-    color: var(--ez-white);
+    background: var(--film-gap);
+    color: var(--film-emulsion-bright);
   }
 
   .site-header__burger,

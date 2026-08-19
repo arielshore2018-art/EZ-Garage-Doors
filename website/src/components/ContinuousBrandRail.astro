@@ -129,6 +129,10 @@ const dims = (img: { width: number; height: number }, h: number) => ({
     display: flex;
     align-items: center;
     flex-shrink: 0;
+    /* film-can label plate: dark logo artwork needs a light chip on
+       the leader ground */
+    background: var(--film-emulsion-bright);
+    padding: 0.4rem 0.75rem;
   }
 
   .brand-set :global(img) {

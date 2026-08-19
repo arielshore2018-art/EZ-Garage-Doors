@@ -37,7 +37,7 @@ const {
     <span class="track-run track-run--center" aria-hidden="true"></span>
     <p class="cta-final__sub">{sub}</p>
     <div class="cta-final__actions">
-      <CallButton label={callLabel} size="lg" variant={variant === "orange" ? "ink" : "call"} />
+      <CallButton label={callLabel} size="lg" />
       <a href={secondaryHref} class="btn btn--inverse-outline btn--lg" data-track="estimate_click">
         {secondaryLabel}
       </a>
@@ -62,7 +62,7 @@ const {
   }
 
   .section--orange .cta-final__sub {
-    color: var(--ez-ink);
+    color: var(--film-emulsion);
   }
 
   .cta-final__actions {

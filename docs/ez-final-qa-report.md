@@ -77,3 +77,21 @@ First rebuild QA with working visual tooling (Chrome DevTools MCP + Lighthouse �
 
 ## Rollback
 Tag `v2026.07-orange-editorial` (= production before this pass, pushed to origin).
+
+---
+
+# Addendum — PROJECTED LIGHT replacement world (2026-08-19, branch `modernize/2026-08-pass`)
+
+Owner rejected refinement ("no visible difference") and selected the **hand-processed 16mm film** world on the Impeccable direction page (adopting a declined challenger; seed 4d6f9491, contract in BaseLayout body comment, survives build).
+
+## What replaced what
+"Orange Editorial Utility" (paper/ink/track) → **PROJECTED LIGHT**: near-black leader ground, silver emulsion stamped caps (turbulence-eroded hero), mono edge-code annotations, real photos as strip frames (sprockets, rebate edges, grain-on-frames-only, leak catches), and **orange only as light** — leaks, flare-plate CTAs with square sprocket tabs, projector-beam closing sections, light-struck hero line. All 37 pages converted; URLs, tracking contract, noindex scope, claims register, LeadForm fields untouched. Retired world preserved at tag `v2026.07-orange-editorial`.
+
+## Finish review (fresh-context reviewer, 2 rounds — the budget)
+Round 1: disposition **fix**, 8 material findings — including a person-bearing photo inside the proof-framed strip (van-arrival; swapped for person-free van-front + manifest rule), orange-as-ink violations page-wide (beam sections + light-struck line + silver demotions), floor-banned kickers (migrated to below-heading strip-margin edge-print), stat band re-derived as counter frames, stamp + frame-character production. Round 2 verdict: **all 8 resolved; disposition SHIP** (scored on the fix list; round-1 review as amended stands for the surface). DESIGN.md + .impeccable/design.json rewritten FROM the built world and reviewer-verified. Raster provenance embedded (og-default regenerated for the film world; favicons origin-tagged); scan clean.
+
+## Verification
+Build 37 pages, 0 errors · astro check 0 errors · crawl ALL PASS (metadata unique, H1s single, noindex exact, 0 broken links, 0 banned phrases, sitemap 20) · Lighthouse mobile: home 100 a11y/BP/SEO; PPC 100 a11y/BP (SEO 69 = intentional noindex) · overflow 0 at 390 · form flow end-to-end (validation block → form_submit w/ campaign context → thank-you + lead_thank_you) · contract seed grep-verified in dist. Detector: clean after four scoped, reasoned suppressions (leak edge ×2 path forms, light-struck line ×2, exposure color, CSS-selector img false positive).
+
+## Rollback ladder
+Film world = this deploy · Orange Editorial Utility = `v2026.07-orange-editorial` · pre-redesign site = `082b8a8`.

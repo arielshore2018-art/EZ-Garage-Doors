@@ -1,9 +1,10 @@
 /* ============================================================
    EZ Garage Doors — Base styles
-   "Orange Editorial Utility": warm paper, ink type, square
-   surfaces, condensed display headlines, and the EZ Track as
-   the only decorative system. No animation libraries, no
-   scroll-fade. Motion = hover/focus feedback + one hero reveal.
+   World: "PROJECTED LIGHT" (hand-processed 16mm film).
+   Near-black leader ground; silver emulsion type; orange only as
+   light. Frames carry the grain; the page never does. No shadows —
+   depth is overlap and frame gaps. One authored motion moment:
+   the hero leak breathing. Everything else is state feedback.
    ============================================================ */
 
 *,
@@ -27,6 +28,18 @@ body {
   line-height: 1.6;
   color: var(--color-text);
   background: var(--color-bg);
+  caret-color: var(--flare);
+}
+
+/* Browser surfaces carry the design too */
+::selection {
+  background: var(--flare);
+  color: var(--film-leader);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--flare) var(--film-panel);
 }
 
 img,
@@ -44,9 +57,11 @@ h3,
 h4 {
   font-family: var(--font-display);
   color: var(--color-heading);
-  line-height: 1.02;
+  line-height: 1.04;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  /* stamped caps: tracked wide, never tight */
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
   text-wrap: balance;
 }
 
@@ -68,18 +83,19 @@ p {
 }
 
 a {
-  color: var(--ez-ink);
-  text-decoration-color: var(--ez-orange);
+  color: var(--film-emulsion-bright);
+  text-decoration-color: var(--flare);
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 }
 
 a:hover {
-  color: var(--ez-orange-deep);
+  color: var(--flare-hot);
 }
 
 strong {
   font-weight: 650;
+  color: var(--film-emulsion-bright);
 }
 
 ul,
@@ -88,13 +104,8 @@ ol {
 }
 
 :focus-visible {
-  outline: 3px solid var(--ez-orange);
+  outline: 3px solid var(--flare-hot);
   outline-offset: 2px;
-}
-
-.section--dark :focus-visible,
-.section--orange :focus-visible {
-  outline-color: var(--ez-white);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -130,61 +141,73 @@ ol {
 }
 
 .section--alt {
-  background: var(--color-bg-alt);
+  background: var(--film-panel);
 }
 
 .section--dark {
-  background: var(--ez-ink);
-  color: #c9cdd2;
+  background: var(--film-gap);
+  color: var(--film-emulsion);
 }
 
 .section--dark h1,
 .section--dark h2,
 .section--dark h3 {
-  color: var(--ez-white);
+  color: var(--film-emulsion-bright);
 }
 
-/* Orange field — a full-width brand moment. Text on it is white
-   (large) or ink (small); CTAs on it are ink or white, never orange. */
+/* Projector-beam section — orange stays LIGHT, never ink: a beam
+   flooding the leader ground from above (finish-review finding #3). */
 .section--orange {
-  background: var(--ez-orange);
-  color: var(--ez-ink);
+  position: relative;
+  background:
+    radial-gradient(90% 130% at 50% -20%, rgb(255 161 92 / 0.5) 0%, rgb(243 106 33 / 0.22) 45%, transparent 75%),
+    var(--film-leader);
+  color: var(--film-emulsion);
 }
 
 .section--orange h1,
 .section--orange h2,
 .section--orange h3 {
-  color: var(--ez-white);
+  color: var(--film-emulsion-bright);
 }
 
-/* Pale wash for quiet routing / navigator zones */
 .section--pale {
-  background: var(--ez-orange-pale);
+  background: var(--film-panel-2);
 }
 
 /* ============================================================
-   Signature: THE EZ TRACK
-   A garage-door track: bold orange run + parallel ghost rail,
-   orthogonal, one radius. Utilities below are the only
-   sanctioned decorative devices.
+   Signature: THE STRIP
+   Sprocket margins, frame bands, edge codes, splice marks,
+   and the orange light leak.
    ============================================================ */
 
-/* Horizontal track run under headings (replaces old speed-rail).
-   Two flanges: 6px orange run over 1px ghost rail. */
+/* Splice mark under headings (replaces the old track run) */
 .speed-rail,
-.track-run {
+.track-run,
+.splice {
   display: block;
   width: 4.5rem;
-  height: calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost));
+  height: 3px;
   margin-top: var(--space-3);
-  background:
-    linear-gradient(var(--track-color), var(--track-color)) top / 100% var(--track-stroke) no-repeat,
-    linear-gradient(var(--track-ghost-color), var(--track-ghost-color)) bottom / 100% var(--track-ghost) no-repeat;
+  background: var(--flare);
+  position: relative;
 }
 
 .speed-rail::before,
-.speed-rail::after {
-  content: none; /* retire old tapered-dash decoration */
+.track-run::before,
+.splice::before {
+  content: "";
+  position: absolute;
+  left: 4.9rem;
+  top: 1px;
+  width: 2.6rem;
+  height: 1px;
+  background: var(--film-rule-strong);
+}
+
+.speed-rail::after,
+.track-run::after {
+  content: none;
 }
 
 .speed-rail--center,
@@ -192,19 +215,34 @@ ol {
   margin-inline: auto;
 }
 
-.section--dark .speed-rail,
-.section--dark .track-run,
 .section--orange .speed-rail,
-.section--orange .track-run {
-  --track-ghost-color: rgb(255 255 255 / 0.3);
+.section--orange .track-run,
+.section--orange .splice {
+  background: var(--flare-hot);
 }
 
-.section--orange .speed-rail,
-.section--orange .track-run {
-  --track-color: var(--ez-white);
+/* Sprocket margin — a strip edge with punched holes */
+.sprockets {
+  position: relative;
 }
 
-/* Vertical track drop — marks high-priority blocks (replaces side-rail) */
+.sprockets::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--sprocket-w) / 2 - var(--sprocket-hole) / 2);
+  width: var(--sprocket-hole);
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--film-gap) 0,
+    var(--film-gap) var(--sprocket-hole),
+    transparent var(--sprocket-hole),
+    transparent calc(var(--sprocket-hole) * 2.4)
+  );
+}
+
+/* Legacy side-rail → sprocket edge on alerts/priority blocks */
 .side-rail {
   position: relative;
 }
@@ -216,8 +254,7 @@ ol {
   top: 0;
   bottom: 0;
   width: var(--track-stroke);
-  background: var(--track-color);
-  clip-path: none;
+  background: var(--flare);
 }
 
 .side-rail::after {
@@ -227,83 +264,132 @@ ol {
   top: 0;
   bottom: 0;
   width: var(--track-ghost);
-  background: var(--track-ghost-color);
+  background: var(--film-rule);
 }
 
-/* Small tick next to trust facts */
-.speed-tick,
-.track-tick {
-  display: inline-block;
-  width: 1.05rem;
-  height: 3px;
-  background: var(--track-color);
-  box-shadow: 0 4px 0 0 var(--track-ghost-color);
-  vertical-align: middle;
-  margin-right: var(--space-2);
-  flex-shrink: 0;
+/* Frame: a photo as a frame on the strip. Grain lives HERE only. */
+.frame {
+  position: relative;
+  background: var(--film-gap);
+  padding: var(--frame-gap);
 }
 
-/* Photo corner bracket — a track corner framing an image.
-   Apply to a wrapper around <img>/<Image>. */
+.frame > img,
+.frame > picture,
+.frame :global(img) {
+  display: block;
+  width: 100%;
+}
+
+/* Film character on the frame: visible grain weighted into shadows,
+   a rebate edge, exposure falloff, and the leak catching the right
+   edge (finish-review finding #7). */
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: var(--frame-gap);
+  pointer-events: none;
+  opacity: 0.42;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+}
+
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: var(--frame-gap);
+  pointer-events: none;
+  z-index: 1;
+  /* rebate edge + exposure falloff + leak catch on the right */
+  box-shadow: inset 0 0 0 1px rgb(6 5 5 / 0.85), inset 0 0 2.2rem rgb(6 5 5 / 0.5);
+  background: linear-gradient(
+    270deg,
+    rgb(243 106 33 / 0.28) 0%,
+    rgb(243 106 33 / 0.07) 12%,
+    transparent 26%
+  );
+  mix-blend-mode: screen;
+}
+
+/* Registration corners (replaces old track-frame brackets) */
 .track-frame {
   position: relative;
-}
-
-.track-frame > img,
-.track-frame > picture img {
-  display: block;
 }
 
 .track-frame::before {
   content: "";
   position: absolute;
-  top: calc(-1 * var(--space-3));
-  left: calc(-1 * var(--space-3));
-  width: clamp(3.5rem, 22%, 7rem);
-  height: clamp(3.5rem, 22%, 7rem);
-  border-top: var(--track-stroke) solid var(--track-color);
-  border-left: var(--track-stroke) solid var(--track-color);
-  border-top-left-radius: var(--track-radius);
+  top: -0.55rem;
+  left: -0.55rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-top: 2px solid var(--film-emulsion-bright);
+  border-left: 2px solid var(--film-emulsion-bright);
   pointer-events: none;
 }
 
 .track-frame--br::before {
   top: auto;
   left: auto;
-  bottom: calc(-1 * var(--space-3));
-  right: calc(-1 * var(--space-3));
+  bottom: -0.55rem;
+  right: -0.55rem;
   border-top: 0;
   border-left: 0;
-  border-bottom: var(--track-stroke) solid var(--track-color);
-  border-right: var(--track-stroke) solid var(--track-color);
+  border-bottom: 2px solid var(--film-emulsion-bright);
+  border-right: 2px solid var(--film-emulsion-bright);
   border-top-left-radius: 0;
-  border-bottom-right-radius: var(--track-radius);
+  border-bottom-right-radius: 0;
 }
 
-/* Section transition: a track run that exits right and re-enters
-   the next section. Use as <div class="track-shift" aria-hidden="true"> */
-.track-shift {
-  height: calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost));
-  max-width: var(--content-max);
-  margin-inline: auto;
-  padding-inline: clamp(1rem, 4vw, 2rem);
+/* Edge code — vertical mono annotation on the margin */
+.edge-code {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--flare);
+  writing-mode: vertical-rl;
+}
+
+/* Metadata panel — STRIP / FRAME / EVENT chips */
+.meta-panel {
+  background: var(--film-panel);
+  border: 1px solid var(--film-rule);
+  padding: var(--space-3) var(--space-4);
+}
+
+.meta-panel dt,
+.meta-panel__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--film-emulsion-dim);
+  margin-bottom: var(--space-1);
+}
+
+.meta-panel dd,
+.meta-panel__value {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--film-emulsion-bright);
+}
+
+/* Light-leak edge (section transition; replaces track-shift) */
+.track-shift,
+.leak-rule {
+  height: 4px;
+  background: var(--leak-gradient);
+  max-width: none;
+  padding: 0;
 }
 
 .track-shift::before {
-  content: "";
-  display: block;
-  height: 100%;
-  width: min(38%, 18rem);
-  background:
-    linear-gradient(var(--track-color), var(--track-color)) top / 100% var(--track-stroke) no-repeat,
-    linear-gradient(var(--track-ghost-color), var(--track-ghost-color)) bottom / 100% var(--track-ghost) no-repeat;
+  content: none;
 }
 
-.track-shift--right::before {
-  margin-left: auto;
-}
-
-/* ---- Buttons / CTAs ---- */
+/* ---- Buttons: flare plates ---- */
 
 .btn {
   display: inline-flex;
@@ -312,84 +398,114 @@ ol {
   gap: 0.5rem;
   font-family: var(--font-display);
   font-weight: 700;
-  /* 1.175rem = 18.8px: keeps white-on-orange above the WCAG
-     large-text threshold (18.66px at 700) — do not shrink */
   font-size: 1.175rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.09em;
   line-height: 1.15;
-  padding: 0.85rem 1.6rem;
+  padding: 0.85rem 1.9rem;
   border-radius: var(--radius-sm);
   border: 2px solid transparent;
   text-decoration: none;
   cursor: pointer;
-  min-height: 48px; /* tap target */
+  min-height: 48px;
+  position: relative;
   transition: background-color 140ms ease, border-color 140ms ease,
-    color 140ms ease, transform 140ms ease;
+    color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
 }
 
 .btn:active {
   transform: translateY(1px);
 }
 
-/* Primary call CTA: orange with ink underline-shadow (utility, not glow) */
+/* The flare plate: a light-flooded frame with sprocket tabs.
+   Dark leader text on orange = 6:1+ at every size. */
 .btn--call {
-  background: var(--ez-orange);
-  color: var(--ez-white);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E"),
+    linear-gradient(100deg, var(--flare-hot) 0%, var(--flare) 60%, #e05c14 100%);
+  color: var(--film-leader);
   box-shadow: var(--shadow-cta);
 }
 
-.btn--call:hover {
-  background: var(--ez-orange-deep);
-  color: var(--ez-white);
+/* square perforations matching the strip's sprocket geometry */
+.btn--call::before,
+.btn--call::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.58rem;
+  height: 0.58rem;
+  background: var(--film-leader);
+  border-radius: 1px;
 }
 
-/* Ink CTA — the primary action ON orange fields */
+.btn--call::before {
+  left: 0.55rem;
+}
+
+.btn--call::after {
+  right: 0.55rem;
+}
+
+.btn--call:hover {
+  background: linear-gradient(100deg, #ffb271 0%, var(--flare-hot) 55%, var(--flare) 100%);
+  color: var(--film-leader);
+  box-shadow: 0 0 38px var(--flare-glow);
+}
+
 .btn--ink {
-  background: var(--ez-ink);
-  color: var(--ez-white);
+  background: var(--film-panel);
+  color: var(--film-emulsion-bright);
+  border-color: var(--film-rule-strong);
 }
 
 .btn--ink:hover {
-  background: #000;
-  color: var(--ez-white);
+  background: var(--film-panel-2);
+  color: var(--film-emulsion-bright);
+  border-color: var(--flare);
 }
 
 .btn--outline {
   background: transparent;
-  color: var(--ez-ink);
-  border-color: var(--ez-ink);
+  color: var(--film-emulsion-bright);
+  border-color: var(--film-rule-strong);
 }
 
 .btn--outline:hover {
-  border-color: var(--ez-orange);
-  color: var(--ez-orange-deep);
+  border-color: var(--flare);
+  color: var(--flare-hot);
 }
 
 .btn--inverse-outline {
   background: transparent;
-  color: var(--ez-white);
-  border-color: rgb(255 255 255 / 0.75);
+  color: var(--film-emulsion-bright);
+  border-color: var(--film-rule-strong);
 }
 
 .btn--inverse-outline:hover {
-  border-color: var(--ez-orange);
-  color: var(--ez-orange);
+  border-color: var(--flare);
+  color: var(--flare-hot);
 }
 
-.section--orange .btn--inverse-outline:hover {
-  border-color: var(--ez-white);
-  color: var(--ez-white);
-  background: rgb(255 255 255 / 0.12);
+/* Under the beam, plates behave as everywhere else on the leader */
+.section--orange .btn--ink {
+  background: var(--film-panel);
+  border-color: var(--film-rule-strong);
+  color: var(--film-emulsion-bright);
+}
+
+.section--orange .btn--ink:hover {
+  background: var(--film-panel-2);
+  border-color: var(--flare);
 }
 
 .btn--lg {
   font-size: 1.35rem;
-  padding: 1rem 2rem;
+  padding: 1rem 2.4rem;
   min-height: 56px;
 }
 
-/* Expectation line under CTAs */
 .cta-note {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
@@ -397,12 +513,11 @@ ol {
 }
 
 .section--dark .cta-note {
-  color: #9aa1a9;
+  color: var(--film-emulsion-dim);
 }
 
 .section--orange .cta-note {
-  /* ≥0.85 alpha keeps ink-on-orange above 4.5:1 at note sizes */
-  color: rgb(23 25 28 / 0.85);
+  color: var(--film-emulsion-dim);
 }
 
 /* ---- Forms ---- */
@@ -413,12 +528,12 @@ ol {
 }
 
 .field > label {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ez-ink);
+  color: var(--film-emulsion);
 }
 
 .field > input,
@@ -426,9 +541,9 @@ ol {
 .field > select {
   font-family: var(--font-body);
   font-size: var(--text-base);
-  color: var(--color-text);
-  background: var(--ez-white);
-  border: 1.5px solid var(--ez-line);
+  color: var(--film-emulsion-bright);
+  background: var(--film-panel);
+  border: 1px solid var(--film-rule-strong);
   border-radius: var(--radius-sm);
   padding: 0.65rem 0.8rem;
   min-height: 48px;
@@ -443,42 +558,80 @@ ol {
 .field > input:focus-visible,
 .field > textarea:focus-visible,
 .field > select:focus-visible {
-  outline: 3px solid var(--ez-orange);
+  outline: 3px solid var(--flare-hot);
   outline-offset: 1px;
-  border-color: var(--ez-orange);
+  border-color: var(--flare);
 }
 
 .field > input[aria-invalid="true"],
 .field > textarea[aria-invalid="true"] {
-  border-color: #b3261e;
+  border-color: var(--err);
 }
 
 .field-error {
   font-size: var(--text-sm);
-  color: #b3261e;
+  color: var(--err);
   min-height: 1.2em;
 }
 
 /* ---- Utility ---- */
 
+/* Eyebrow → EDGE-PRINT: not a floating kicker but film edge printing —
+   a mono annotation sitting ON a rule, breaking it like stamped codes
+   on the strip margin (finish-review finding #4). */
 .eyebrow {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ez-orange-text);
+  letter-spacing: 0.26em;
+  color: var(--flare);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
-.section--dark .eyebrow,
+.eyebrow::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--flare);
+  flex-shrink: 0;
+}
+
+.eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--film-rule);
+}
+
 .section--orange .eyebrow {
-  color: var(--ez-orange-pale);
+  color: var(--flare-hot);
+}
+
+.section--orange .eyebrow::before {
+  background: var(--flare-hot);
+}
+
+/* Stamped emulsion display type: turbulence-eroded lettering for
+   dark-ground heroes (finish-review finding #6). Mask keeps the ink
+   partially starved like a worn stamp; text stays selectable. */
+.stamped {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='340'%3E%3Cfilter id='e'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09' numOctaves='4' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='3.4' intercept='-0.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='340' height='340' fill='white'/%3E%3Crect width='340' height='340' filter='url(%23e)' opacity='0.85'/%3E%3C/svg%3E");
+  -webkit-mask-size: 340px 340px;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='340'%3E%3Cfilter id='e'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09' numOctaves='4' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='3.4' intercept='-0.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='340' height='340' fill='white'/%3E%3Crect width='340' height='340' filter='url(%23e)' opacity='0.85'/%3E%3C/svg%3E");
+  mask-size: 340px 340px;
 }
 
 .display-num {
   font-family: var(--font-display);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+
+.mono {
+  font-family: var(--font-mono);
 }
 
 .muted {
@@ -501,8 +654,8 @@ ol {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--ez-ink);
-  color: #fff;
+  background: var(--flare);
+  color: var(--film-leader);
   padding: 0.6rem 1rem;
   z-index: 100;
 }

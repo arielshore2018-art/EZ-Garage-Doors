@@ -15,9 +15,11 @@ const after = img("after-dark-bronze");
   <div class="wrap">
     <div class="realwork__head">
       <div>
-        <p class="eyebrow">Real jobs</p>
         <h2 id="realwork-heading">Same opening. Different house.</h2>
-        <span class="track-run" aria-hidden="true"></span>
+        <p class="realwork__margin" aria-hidden="true">
+          <span class="realwork__splice"></span>
+          <span class="realwork__code mono">Real jobs · frames 07–08</span>
+        </p>
       </div>
       <a href="/gallery/" class="realwork__more" data-track="home_gallery_link">
         See more finished work
@@ -25,7 +27,7 @@ const after = img("after-dark-bronze");
     </div>
 
     <figure class="realwork__pair">
-      <div class="realwork__shot">
+      <div class="realwork__shot frame">
         <span class="realwork__tag realwork__tag--before">Before</span>
         <Image
           src={before.src}
@@ -35,7 +37,7 @@ const after = img("after-dark-bronze");
           loading="lazy"
         />
       </div>
-      <div class="realwork__shot realwork__shot--after track-frame track-frame--br">
+      <div class="realwork__shot realwork__shot--after frame">
         <span class="realwork__tag realwork__tag--after">After</span>
         <Image
           src={after.src}
@@ -60,6 +62,26 @@ const after = img("after-dark-bronze");
     gap: var(--space-4);
     margin-bottom: var(--space-6);
     flex-wrap: wrap;
+  }
+
+  .realwork__margin {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .realwork__splice {
+    width: 2.6rem;
+    height: 3px;
+    background: var(--flare);
+  }
+
+  .realwork__code {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--film-emulsion-dim);
   }
 
   .realwork__more {
@@ -115,13 +137,13 @@ const after = img("after-dark-bronze");
   }
 
   .realwork__tag--before {
-    background: var(--ez-ink);
-    color: var(--ez-white);
+    background: var(--film-gap);
+    color: var(--film-emulsion-bright);
   }
 
   .realwork__tag--after {
-    background: var(--ez-orange);
-    color: var(--ez-ink);
+    background: var(--flare);
+    color: var(--film-leader);
   }
 
   .realwork__caption {

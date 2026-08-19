@@ -33,9 +33,11 @@ const steps = [
 <section class="workorder section" aria-labelledby="workorder-heading">
   <div class="wrap workorder__grid">
     <header class="workorder__head">
-      <p class="eyebrow">No bait pricing</p>
       <h2 id="workorder-heading">You'll know the price before work begins.</h2>
-      <span class="track-run" aria-hidden="true"></span>
+      <p class="workorder__margin" aria-hidden="true">
+        <span class="workorder__splice"></span>
+        <span class="workorder__code mono">No bait pricing</span>
+      </p>
       <p class="workorder__lede">
         "{APPROVED_CLAIMS.writtenQuote}" isn't a slogan here — it's the order
         of operations on every single visit.
@@ -73,6 +75,26 @@ const steps = [
   .workorder__head {
     position: sticky;
     top: var(--space-5);
+  }
+
+  .workorder__margin {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .workorder__splice {
+    width: 2.6rem;
+    height: 3px;
+    background: var(--flare);
+  }
+
+  .workorder__code {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--film-emulsion-dim);
   }
 
   .workorder__lede {

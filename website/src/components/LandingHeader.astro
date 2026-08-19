@@ -4,7 +4,7 @@
  * No navigation — one goal per page.
  */
 import { Image } from "astro:assets";
-import logo from "../assets/brand/ez-logo-primary-horizontal.svg";
+import logo from "../assets/brand/ez-logo-white.svg";
 import CallButton from "./CallButton.astro";
 
 interface Props {
@@ -25,7 +25,7 @@ const { callLabel = "Call Now" } = Astro.props;
 
 <style>
   .lp-header {
-    background: #fff;
+    background: var(--film-panel);
     border-bottom: 1px solid var(--ez-border);
   }
 

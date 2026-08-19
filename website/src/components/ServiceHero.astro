@@ -1,9 +1,10 @@
 ---
 /**
- * Service-page hero — light editorial split, not a dark overlay.
- * Type panel on warm paper (ink text, instant legibility for a
- * stressed visitor), real photo with an EZ Track corner bracket.
- * Each service page passes a UNIQUE imageId (enforced by review).
+ * Service-page hero — "PROJECTED LIGHT" film split.
+ * Left: mono eyebrow, stamped caps H1, splice mark, sub, sprocket-
+ * margined safety note, flare-plate CTA, mono rating line.
+ * Right: ONE frame on the strip with sprocket edge, frame numeral,
+ * and the light leak. Same props API as previous versions.
  */
 import { Image } from "astro:assets";
 import CallButton from "./CallButton.astro";
@@ -19,11 +20,9 @@ interface Props {
   callTrack?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
-  /** Optional alert line (e.g. spring safety warning). */
   alert?: string;
   micro?: string;
   showRating?: boolean;
-  /** "estimate" renders the primary CTA as an estimate link instead of a call button. */
   primaryMode?: "call" | "estimate";
   primaryHref?: string;
 }
@@ -52,9 +51,9 @@ const image = img(imageId);
     <div class="shero__copy">
       <p class="eyebrow">{eyebrow}</p>
       <h1>{heading}</h1>
-      <span class="track-run" aria-hidden="true"></span>
+      <span class="splice" aria-hidden="true"></span>
       <p class="shero__sub">{sub}</p>
-      {alert && <p class="shero__alert" role="alert"><strong>Safety first:</strong> {alert}</p>}
+      {alert && <p class="shero__alert side-rail" role="alert"><strong>Safety first:</strong> {alert}</p>}
       <div class="shero__actions">
         {
           primaryMode === "call" ? (
@@ -72,50 +71,55 @@ const image = img(imageId);
       <p class="shero__micro muted">{micro}</p>
       {
         showRating && (
-          <p class="shero__rating">
+          <p class="shero__rating mono">
             <span class="shero__stars" aria-hidden="true">★★★★★</span>
-            <span>
-              {reviews.google.rating} on Google · 850+ five-star reviews across platforms
-            </span>
+            <span>{reviews.google.rating} ON GOOGLE · 850+ FIVE-STAR REVIEWS ACROSS PLATFORMS</span>
           </p>
         )
       }
     </div>
 
-    <div class="shero__media track-frame">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        widths={[480, 800, 1200, 1600]}
-        sizes="(max-width: 56rem) 100vw, 55vw"
-        loading="eager"
-        fetchpriority="high"
-        class="shero__img"
-        style={`object-position: ${image.focalPointDesktop ?? "center"};`}
-      />
+    <div class="shero__strip sprockets">
+      <figure class="frame shero__frame">
+        <Image
+          src={image.src}
+          alt={image.alt}
+          widths={[480, 800, 1200]}
+          sizes="(max-width: 56rem) 100vw, 42vw"
+          loading="eager"
+          fetchpriority="high"
+          class="shero__img"
+          style={`object-position: ${image.focalPointDesktop ?? "center"};`}
+        />
+      </figure>
+      <span class="shero__leak" aria-hidden="true"></span>
     </div>
   </div>
 </section>
 
 <style>
   .shero {
-    background: var(--ez-paper);
-    border-bottom: 1px solid var(--ez-line);
+    background: var(--film-leader);
+    border-bottom: 1px solid var(--film-rule);
     overflow: hidden;
   }
 
   .shero__grid {
     display: grid;
-    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
     gap: clamp(1.5rem, 4vw, 3.5rem);
     max-width: var(--content-max);
     margin-inline: auto;
-    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem);
-    align-items: center;
+    padding: 0 0 0 clamp(1rem, 4vw, 2rem);
+    align-items: stretch;
+  }
+
+  .shero__copy {
+    padding-block: clamp(2rem, 5vw, 4rem);
   }
 
   .shero__copy h1 {
-    font-size: clamp(2.3rem, 1.6rem + 3.2vw, 4rem);
+    font-size: clamp(2.3rem, 1.6rem + 3.2vw, 4.2rem);
     margin-top: var(--space-3);
   }
 
@@ -127,24 +131,12 @@ const image = img(imageId);
 
   .shero__alert {
     margin-top: var(--space-4);
-    padding: var(--space-3) var(--space-4);
-    background: var(--ez-orange-pale);
-    /* track side-rail: orange run + ghost rail */
-    border-left: var(--track-stroke) solid var(--ez-orange);
+    padding: var(--space-3) var(--space-4) var(--space-3)
+      calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + var(--space-4));
+    background: var(--film-panel);
     max-width: 32rem;
-    color: var(--ez-ink);
+    color: var(--film-emulsion-bright);
     font-size: var(--text-sm);
-    position: relative;
-  }
-
-  .shero__alert::before {
-    content: "";
-    position: absolute;
-    left: var(--track-gap);
-    top: 0;
-    bottom: 0;
-    width: var(--track-ghost);
-    background: var(--ez-line);
   }
 
   .shero__actions {
@@ -160,14 +152,14 @@ const image = img(imageId);
   }
 
   .shero__secondary {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--ez-ink);
-    text-decoration-color: var(--ez-orange);
+    color: var(--film-emulsion);
+    text-decoration-color: var(--flare);
     text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -175,7 +167,7 @@ const image = img(imageId);
   }
 
   .shero__secondary:hover {
-    color: var(--ez-orange-deep);
+    color: var(--flare-hot);
   }
 
   .shero__micro {
@@ -188,35 +180,77 @@ const image = img(imageId);
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    border-top: 1px solid var(--ez-line);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--film-emulsion-dim);
+    border-top: 1px solid var(--film-rule);
     padding-top: var(--space-3);
     max-width: 32rem;
   }
 
   .shero__stars {
-    color: var(--ez-orange);
+    color: var(--flare);
     letter-spacing: 0.1em;
+    font-size: var(--text-sm);
   }
 
-  .shero__media {
-    align-self: stretch;
-    min-height: clamp(16rem, 36vw, 30rem);
+  .shero__strip {
     position: relative;
+    background: var(--film-panel);
+    padding-inline: var(--sprocket-w);
+    display: flex;
+    align-items: center;
+    min-height: clamp(16rem, 36vw, 30rem);
+  }
+
+  .shero__strip::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(var(--sprocket-w) / 2 - var(--sprocket-hole) / 2);
+    width: var(--sprocket-hole);
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--film-gap) 0,
+      var(--film-gap) var(--sprocket-hole),
+      transparent var(--sprocket-hole),
+      transparent calc(var(--sprocket-hole) * 2.4)
+    );
+  }
+
+  .shero__frame {
+    margin: 0;
+    width: 100%;
+    align-self: stretch;
+    display: flex;
   }
 
   .shero__img {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
+  .shero__leak {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: clamp(3rem, 7vw, 6rem);
+    background: var(--leak-gradient);
+    mix-blend-mode: screen;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
   @media (max-width: 56rem) {
     .shero__grid {
       grid-template-columns: 1fr;
+      padding-right: clamp(1rem, 4vw, 2rem);
+    }
+
+    .shero__copy {
       padding-top: var(--space-5);
     }
 
@@ -233,15 +267,10 @@ const image = img(imageId);
       justify-content: center;
     }
 
-    .shero__media {
+    .shero__strip {
+      margin-inline: calc(-1 * clamp(1rem, 4vw, 2rem)) 0;
       min-height: 15rem;
       order: 2;
-    }
-
-    /* bracket sits inside the viewport on mobile */
-    .shero__media.track-frame::before {
-      top: 0;
-      left: 0;
     }
   }
 </style>

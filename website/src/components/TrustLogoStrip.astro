@@ -190,6 +190,14 @@ const dims = (l: LogoDef) => {
   .tls__logos li {
     display: flex;
     align-items: center;
+    /* film-can label plate for dark logo artwork on the dark ground */
+    background: var(--film-emulsion-bright);
+    padding: 0.4rem 0.75rem;
+  }
+
+  .tls__logos li.tls__badge {
+    background: transparent;
+    padding: 0.2rem 0.65rem;
   }
 
   .tls__logos img {

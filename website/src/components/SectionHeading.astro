@@ -1,7 +1,8 @@
 ---
 /**
- * Section heading with the EZ Speed Line rail — the one signature
- * element, applied consistently instead of ad-hoc decoration.
+ * Section heading, film grammar: the heading speaks first; the label
+ * is a strip-margin edge-code annotation sitting ON the splice rule
+ * AFTER the heading — never a kicker above it (finish-review fix #4).
  */
 interface Props {
   eyebrow?: string;
@@ -15,9 +16,12 @@ const Tag = level;
 ---
 
 <div class:list={["section-heading", { "section-heading--center": center }]}>
-  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <Tag>{title}</Tag>
-  <span class:list={["speed-rail", { "speed-rail--center": center }]} aria-hidden="true"></span>
+  <div class="section-heading__margin" aria-hidden={eyebrow ? undefined : "true"}>
+    <span class="section-heading__splice"></span>
+    {eyebrow && <span class="section-heading__code mono">{eyebrow}</span>}
+    <span class="section-heading__rule"></span>
+  </div>
 </div>
 
 <style>
@@ -31,7 +35,42 @@ const Tag = level;
     margin-inline: auto;
   }
 
-  .eyebrow {
-    margin-bottom: var(--space-2);
+  /* the margin line: splice mark, then the edge-code annotation
+     breaking a hairline that runs off the measure */
+  .section-heading__margin {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .section-heading--center .section-heading__margin {
+    justify-content: center;
+  }
+
+  .section-heading__splice {
+    width: 2.6rem;
+    height: 3px;
+    background: var(--flare);
+    flex-shrink: 0;
+  }
+
+  .section-heading__code {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--film-emulsion-dim);
+    white-space: nowrap;
+  }
+
+  .section-heading__rule {
+    flex: 1;
+    max-width: 9rem;
+    height: 1px;
+    background: var(--film-rule);
+  }
+
+  .section-heading--center .section-heading__rule {
+    max-width: 2.6rem;
   }
 </style>

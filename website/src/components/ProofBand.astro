@@ -32,9 +32,11 @@ const platforms = [
   <div class="wrap">
     <div class="proof__head">
       <div>
-        <p class="eyebrow">Verified on live platforms</p>
         <h2 id="proof-heading">{heading}</h2>
-        <span class="track-run" aria-hidden="true"></span>
+        <p class="proof__margin" aria-hidden="true">
+          <span class="proof__splice"></span>
+          <span class="proof__code mono">Verified on live platforms</span>
+        </p>
       </div>
       <p class="proof__total display-num">{REVIEWS_TOTAL_LINE}</p>
     </div>
@@ -80,6 +82,26 @@ const platforms = [
 
   .proof__head h2 {
     max-width: 26ch;
+  }
+
+  .proof__margin {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .proof__splice {
+    width: 2.6rem;
+    height: 3px;
+    background: var(--flare);
+  }
+
+  .proof__code {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--film-emulsion-dim);
   }
 
   .proof__total {
