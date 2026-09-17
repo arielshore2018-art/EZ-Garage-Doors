@@ -223,54 +223,11 @@ ol {
   border-radius: var(--radius-md);
 }
 
-/* ---- Rules & accents ---- */
-
-.speed-rail,
-.track-run,
-.splice {
-  display: block;
-  width: 3.5rem;
-  height: 4px;
-  border-radius: 2px;
-  margin-top: var(--space-3);
-  background: var(--ez-orange);
-}
-
-.speed-rail--center,
-.track-run--center {
-  margin-inline: auto;
-}
-
-.speed-tick {
-  display: inline-block;
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  background: var(--ez-orange);
-  margin-right: var(--space-2);
-  flex-shrink: 0;
-}
-
-.side-rail {
-  position: relative;
-  border-left: 4px solid var(--ez-orange);
-}
-
-.track-frame {
-  position: relative;
-}
-
-.track-shift,
-.leak-rule {
-  height: 4px;
-  background: var(--ez-orange);
-}
-
-/* Callout box (safety notes, honesty notes) */
+/* ---- Callout box (safety notes, honesty notes) ---- */
 .callout {
   background: var(--ez-tint);
-  border-left: 4px solid var(--ez-orange);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border: 1px solid var(--ez-orange-pale);
+  border-radius: var(--radius-md);
   padding: var(--space-4) var(--space-5);
   color: var(--ez-charcoal);
 }

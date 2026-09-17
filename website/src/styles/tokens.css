@@ -138,12 +138,4 @@
   --content-narrow: 46rem;
   --sidebar-w: 20rem;
 
-  /* Legacy signature aliases (retired track device) — neutralized */
-  --track-stroke: 4px;
-  --track-ghost: 1px;
-  --track-gap: 4px;
-  --track-radius: 4px;
-  --track-color: var(--ez-orange);
-  --track-ghost-color: var(--ez-line);
-  --speed-line-gradient: linear-gradient(90deg, var(--ez-orange) 0%, var(--ez-orange) 100%);
 }

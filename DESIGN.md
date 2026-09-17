@@ -126,9 +126,10 @@ components:
     shadow: "0 1px 2px rgb(28 28 28 / 0.06), 0 8px 24px rgb(28 28 28 / 0.08)"
   service-card:
     backgroundColor: "{colors.white}"
-    borderTop: "4px {colors.orange}"
+    borderColor: "{colors.line}"
     rounded: "{rounded.md}"
     padding: "1.5rem"
+    iconDisc: "{colors.tint} ground, {colors.orange-text} stroke"
   input:
     backgroundColor: "{colors.white}"
     textColor: "{colors.ink}"
@@ -137,7 +138,8 @@ components:
     height: "48px"
   callout:
     backgroundColor: "{colors.tint}"
-    borderLeft: "4px {colors.orange}"
+    borderColor: "{colors.orange-pale}"
+    rounded: "{rounded.md}"
 ---
 
 ## Overview
@@ -146,7 +148,7 @@ components:
 
 ## Colors
 
-White page ground; warm light-gray (`{colors.alt}`) alternating sections; ink (`{colors.ink}`) headings and dark bands (stat band, closing CTA, footer). **Orange is the one action color**: buttons, the 4px rules under headings, card top-edges, icons, check marks, breadcrumb separators, and the hero's emphasis line. The contrast law is measured, not assumed: brand orange `#f36a21` on white is 3.05:1 — **large text only** (≥24px, or ≥18.66px bold), which is why buttons are pinned at 1.175rem/700 and orange headings only appear at hero sizes on white. Small orange text (eyebrows, accent links) always uses `{colors.orange-text}` (`#b23f0e`, 6.6:1). On dark bands orange text is `{colors.orange-on-ink}` (7.3:1). On orange bands, small text is ink and buttons flip to white/ink — never orange-on-orange. Never orange text on the gray alt ground (2.77:1 fails even large).
+White page ground; warm light-gray (`{colors.alt}`) alternating sections; ink (`{colors.ink}`) headings and dark bands (stat band, closing CTA, footer). **Orange is the one action color**: buttons, the 4px rules under headings, icon discs, check marks, breadcrumb separators, hover borders, and the hero's emphasis line. Cards carry no thick accent borders — identity comes from icons, type, and shadow (thick side/top tabs on rounded cards are banned as the generic-AI tell). The contrast law is measured, not assumed: brand orange `#f36a21` on white is 3.05:1 — **large text only** (≥24px, or ≥18.66px bold), which is why buttons are pinned at 1.175rem/700 and orange headings only appear at hero sizes on white. Small orange text (eyebrows, accent links) always uses `{colors.orange-text}` (`#b23f0e`, 6.6:1). On dark bands orange text is `{colors.orange-on-ink}` (7.3:1). On orange bands, small text is ink and buttons flip to white/ink — never orange-on-orange. Never orange text on the gray alt ground (2.77:1 fails even large).
 
 ## Typography
 
@@ -167,16 +169,16 @@ Soft, conventional: `card` shadow (0 1px 2px + 0 8px 24px at 6–8%), `card-hove
 ## Components
 
 - **Buttons** (`.btn--call` orange/white, `.btn--outline` white/ink, `.btn--ink`, `.btn--inverse-outline` on dark): 48px min, 56px large.
-- **ServiceGrid**: icon-disc cards with an orange top edge (`Icon.astro` line icons, no icon font).
+- **ServiceGrid**: plain white cards with orange icon discs (`Icon.astro` line icons, no icon font); orange only on the icon and the "Learn about" link.
 - **WhyEZ**: four verified reasons with orange icon discs — only APPROVED_CLAIMS / STATS / COVERAGE content.
 - **ProofColumns**: four orange numerals on white under every hero. **StatBand**: four orange-on-ink numerals on the ink band (home).
 - **ProofBand**: platform rating cards (logo, stars, rating, count) — outbound links appear when profile URLs exist; no quote cards until verbatim reviews exist.
-- **Sidebar**: sticky call card (orange top edge) + link-list of related pages.
+- **Sidebar**: sticky white call card + link-list of related pages.
 - **CountyGrid / TownList / nearby list**: the statewide-coverage modules built from `ma-towns.ts`.
-- **RepairIssueGrid**: symptom cards with an orange left edge routing to the fix.
+- **RepairIssueGrid**: plain symptom cards (orange border on hover) routing to the fix.
 - **FaqList**: native `<details>` cards with +/– glyph; same array feeds FAQPage schema.
-- **LeadForm**: white card, orange top edge; field names locked (CRM contract).
-- **Callout** (`.callout`): tint ground + orange left rule for safety notes and honesty notes.
+- **LeadForm**: white card; field names locked (CRM contract).
+- **Callout** (`.callout`): tint ground with a 1px orange-pale border, rounded, for safety notes and honesty notes.
 - **TrustLogoStrip**: grayscale logo band, labeled "brands we service", non-affiliation line always rendered.
 - **Breadcrumbs**: on every inner page, mirrored in BreadcrumbList JSON-LD.
 
