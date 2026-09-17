@@ -1,10 +1,11 @@
 ---
 /**
- * Above-the-fold micro-trust strip. Only owner-approved claims —
+ * Micro-trust strip. Only owner-approved claims —
  * see APPROVED_CLAIMS in src/config/business.ts. "Licensed & Insured"
- * and review counts are intentionally absent until verified.
+ * is intentionally absent until verified.
  */
 import { APPROVED_CLAIMS } from "../config/business";
+import Icon from "./Icon.astro";
 
 interface Props {
   items?: string[];
@@ -21,7 +22,7 @@ const {
   {
     items.map((item) => (
       <li>
-        <span class="speed-tick" aria-hidden="true" />
+        <Icon name="check" size={18} />
         {item}
       </li>
     ))
@@ -37,21 +38,26 @@ const {
     padding: 0;
     margin: 0;
     font-family: var(--font-display);
-    font-size: var(--text-sm);
-    font-weight: 650;
-    letter-spacing: 0.015em;
+    font-size: 1.05rem;
+    font-weight: 600;
   }
 
   .trust-bar li {
     display: flex;
     align-items: center;
+    gap: 0.4rem;
+  }
+
+  .trust-bar svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
   }
 
   .trust-bar--light {
-    color: var(--ez-charcoal);
+    color: var(--ez-ink);
   }
 
   .trust-bar--dark {
-    color: #e6eaef;
+    color: var(--ez-white);
   }
 </style>

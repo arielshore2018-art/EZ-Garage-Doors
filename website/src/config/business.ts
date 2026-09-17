@@ -3,6 +3,11 @@
  * Every page and component reads from this file — never hardcode
  * the company name, phone, or trust claims anywhere else.
  *
+ * 2026-09-17: the business is Massachusetts-only (owner decision).
+ * Connecticut was removed entirely; it is not a "former" market on the
+ * site, it simply does not appear. The crew's home base is NOT
+ * published (service-area business, no public address).
+ *
  * TODO: Replace PRIMARY_PHONE / PRIMARY_PHONE_TEL and set PHONE_READY = true before launch.
  * TODO: Replace SITE_URL with the final production domain before launch.
  * TODO: Set FORM_ENDPOINT to the lead-form backend (e.g. Formspree/Basin/own API) before launch.
@@ -14,12 +19,12 @@ export const BUSINESS = {
   legalName: "EZ Garage Doors", // needs-owner-confirmation: LLC / Inc. suffix if any
   tagline: "Fast. Reliable. Local.",
   yearsInBusiness: 15,
-  state: "Connecticut",
-  stateAbbr: "CT",
+  state: "Massachusetts",
+  stateAbbr: "MA",
 
   /** Phone is not finalized. Buttons render as estimate links until PHONE_READY. */
   PRIMARY_PHONE: "PHONE NUMBER COMING SOON",
-  PRIMARY_PHONE_TEL: "", // e.g. "+18605551234" — leave empty until final number exists
+  PRIMARY_PHONE_TEL: "", // e.g. "+14135551234" — leave empty until final number exists
   PHONE_READY: false,
 
   /** Lead form backend endpoint. Empty = form falls back to thank-you redirect (not live). */
@@ -34,6 +39,9 @@ export const hasPhone = (): boolean =>
 
 /**
  * Proof numbers supplied by the owner on 2026-07-03 (PROJECT FACTS directive).
+ * 2026-09-17: owner indicated "some numbers change" — corrected figures
+ * are PENDING. Nothing deploys until they arrive; these stay as the last
+ * owner-supplied values so the templates remain wired.
  * verify-against-live-profiles-before-launch: counts drift over time.
  */
 export const STATS = {
@@ -41,7 +49,21 @@ export const STATS = {
   springRepairs: "900+",
   openerServices: "1,200+",
   fiveStarReviews: "850+",
-  townsServed: "40+",
+} as const;
+
+export const STATS_STATUS =
+  "owner-supplied 2026-07-03; correction pending since 2026-09-17 — re-verify before deploy";
+
+/**
+ * Coverage is an owner DECISION (full state), not a track-record stat:
+ * every Massachusetts county and municipality is served. Numbers are
+ * derived from the public municipality dataset in ma-towns.ts.
+ */
+export const COVERAGE = {
+  counties: 14,
+  municipalities: 351,
+  line: "Serving all 351 cities and towns across Massachusetts",
+  short: "All 14 Massachusetts counties",
 } as const;
 
 /**
@@ -52,11 +74,12 @@ export const STATS = {
  */
 export const APPROVED_CLAIMS = {
   years: "15 Years in Business",
-  local: "Local Connecticut Garage Door Company",
+  local: "Local Massachusetts Garage Door Company",
   tagline: "Fast. Reliable. Local.",
   writtenQuote: "Written Quote Before Work Begins",
   reviews: "850+ 5-star reviews across Google, Yelp, Angi, and other platforms",
   reviewsShort: `${STATS.fiveStarReviews} 5-Star Reviews`,
+  coverage: COVERAGE.line,
 } as const;
 
 /** Opener/door brands the company works with. Phrase as "Brands We Service" only. */

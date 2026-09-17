@@ -1,9 +1,9 @@
 ---
 /**
- * Final call-to-action section. Concrete labels + expectation line.
- * variant="dark"  — ink field (default)
- * variant="orange" — full orange brand field; CTAs flip to ink/white
- *                    so no orange-on-orange ever renders.
+ * Final call-to-action band. Concrete labels + expectation line.
+ * variant="dark"   — ink band with orange call button (default)
+ * variant="orange" — orange band; buttons flip to white/ink so no
+ *                    orange-on-orange ever renders.
  */
 import CallButton from "./CallButton.astro";
 
@@ -19,9 +19,9 @@ interface Props {
 
 const {
   heading = "Need garage door service today?",
-  sub = "Call EZ Garage Doors or request a written estimate.",
+  sub = "Call EZ Garage Doors or request service online — written quote before work begins.",
   callLabel = "Call EZ Garage Doors",
-  secondaryLabel = "Get a Written Estimate",
+  secondaryLabel = "Request Service",
   secondaryHref = "/contact/#request",
   note = "No pressure. One quote, in writing.",
   variant = "dark",
@@ -34,7 +34,6 @@ const {
 >
   <div class="wrap cta-final__inner">
     <h2 id="final-cta-heading">{heading}</h2>
-    <span class="track-run track-run--center" aria-hidden="true"></span>
     <p class="cta-final__sub">{sub}</p>
     <div class="cta-final__actions">
       <CallButton label={callLabel} size="lg" />
@@ -57,12 +56,8 @@ const {
     font-size: var(--text-lg);
   }
 
-  .section--dark .cta-final__sub {
-    color: var(--film-emulsion);
-  }
-
   .section--orange .cta-final__sub {
-    color: var(--film-emulsion);
+    color: var(--ez-ink);
   }
 
   .cta-final__actions {

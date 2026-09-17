@@ -1,16 +1,18 @@
 ---
 /**
  * JSON-LD structured data. LocalBusiness on every page; optional
- * Service and FAQPage blocks per page.
+ * Service, FAQPage, and BreadcrumbList blocks per page.
  *
  * Deliberately absent until verified (do not add without live proof):
  * - telephone (no final number yet)
  * - aggregateRating / Review markup (counts unverified; third-party
  *   Google ratings must not be marked up as on-site reviews)
  * - license numbers, priceRange
+ * - a street address (service-area business; base is not published)
  */
 import { BUSINESS } from "../config/business";
-import { cities } from "../config/cities";
+import { MA_COUNTIES } from "../config/ma-towns";
+import type { Crumb } from "./Breadcrumbs.astro";
 
 interface Props {
   service?: {
@@ -19,9 +21,10 @@ interface Props {
     url: string;
   };
   faqs?: { question: string; answer: string }[];
+  breadcrumbs?: Crumb[];
 }
 
-const { service, faqs } = Astro.props;
+const { service, faqs, breadcrumbs } = Astro.props;
 
 const localBusiness = {
   "@context": "https://schema.org",
@@ -30,10 +33,13 @@ const localBusiness = {
   url: BUSINESS.SITE_URL,
   image: new URL("/og-default.png", BUSINESS.SITE_URL).href,
   slogan: BUSINESS.tagline,
-  areaServed: cities.map((c) => ({
-    "@type": "City",
-    name: `${c.name}, ${BUSINESS.stateAbbr}`,
-  })),
+  areaServed: [
+    { "@type": "State", name: BUSINESS.state },
+    ...MA_COUNTIES.map((c) => ({
+      "@type": "AdministrativeArea",
+      name: `${c.name} County, ${BUSINESS.stateAbbr}`,
+    })),
+  ],
   knowsAbout: [
     "garage door repair",
     "garage door spring replacement",
@@ -71,25 +77,27 @@ const faqSchema =
       }
     : null;
 
-/* Breadcrumbs: Home → Service, derived from the service prop so every
-   service page gets a BreadcrumbList without per-page wiring. */
-const breadcrumbSchema = service
+/* Breadcrumbs: explicit trail when the page passes one; otherwise
+   Home → Service derived from the service prop so every service page
+   still gets a BreadcrumbList without per-page wiring. */
+const trail: Crumb[] | null = breadcrumbs
+  ? breadcrumbs
+  : service
+    ? [{ label: service.name, href: service.url }]
+    : null;
+
+const breadcrumbSchema = trail
   ? {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        {
+        { "@type": "ListItem", position: 1, name: "Home", item: BUSINESS.SITE_URL },
+        ...trail.map((c, i) => ({
           "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: BUSINESS.SITE_URL,
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: service.name,
-          item: new URL(service.url, BUSINESS.SITE_URL).href,
-        },
+          position: i + 2,
+          name: c.label,
+          ...(c.href ? { item: new URL(c.href, BUSINESS.SITE_URL).href } : {}),
+        })),
       ],
     }
   : null;

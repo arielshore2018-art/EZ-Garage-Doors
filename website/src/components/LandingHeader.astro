@@ -4,7 +4,7 @@
  * No navigation — one goal per page.
  */
 import { Image } from "astro:assets";
-import logo from "../assets/brand/ez-logo-white.svg";
+import logo from "../assets/brand/ez-logo-primary-horizontal.svg";
 import CallButton from "./CallButton.astro";
 
 interface Props {
@@ -17,7 +17,7 @@ const { callLabel = "Call Now" } = Astro.props;
 <header class="lp-header">
   <div class="wrap lp-header__inner">
     <a href="/" class="lp-header__logo" aria-label="EZ Garage Doors — home">
-      <Image src={logo} alt="EZ Garage Doors — Fast. Reliable. Local." width={190} loading="eager" />
+      <Image src={logo} alt="EZ Garage Doors — Fast. Reliable. Local." width={200} loading="eager" />
     </a>
     <CallButton label={callLabel} />
   </div>
@@ -25,8 +25,8 @@ const { callLabel = "Call Now" } = Astro.props;
 
 <style>
   .lp-header {
-    background: var(--film-panel);
-    border-bottom: 1px solid var(--ez-border);
+    background: var(--ez-white);
+    border-bottom: 1px solid var(--ez-line);
   }
 
   .lp-header__inner {
@@ -34,11 +34,11 @@ const { callLabel = "Call Now" } = Astro.props;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
-    min-height: 4rem;
+    min-height: 4.25rem;
   }
 
   .lp-header__logo img {
-    width: clamp(140px, 20vw, 190px);
+    width: clamp(140px, 20vw, 200px);
     height: auto;
   }
 

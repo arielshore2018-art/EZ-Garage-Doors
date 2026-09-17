@@ -1,18 +1,20 @@
 ---
 /**
- * Full website layout: header with nav, footer trust zone,
+ * Full website layout: header with nav, footer with the county index,
  * sticky mobile call bar.
  */
 import BaseLayout from "./BaseLayout.astro";
 import LogoHeader from "../components/LogoHeader.astro";
 import FooterTrustZone from "../components/FooterTrustZone.astro";
 import StickyMobileCTA from "../components/StickyMobileCTA.astro";
+import type { Crumb } from "../components/Breadcrumbs.astro";
 
 interface Props {
   title: string;
   description: string;
   service?: { name: string; description: string; url: string };
   faqs?: { question: string; answer: string }[];
+  breadcrumbs?: Crumb[];
   noindex?: boolean;
 }
 
@@ -20,6 +22,7 @@ const props = Astro.props;
 ---
 
 <BaseLayout {...props}>
+  <slot name="head" slot="head" />
   <LogoHeader />
   <main id="main">
     <slot />

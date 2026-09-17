@@ -1,0 +1,85 @@
+---
+/**
+ * Related-content strip: a row of link cards at the bottom of a page
+ * (services → guides, guides → services, town → county). Internal
+ * linking is the SEO glue of the 500+ page architecture.
+ */
+import SectionHeading from "./SectionHeading.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+  heading?: string;
+  eyebrow?: string;
+  items: { label: string; href: string; blurb?: string }[];
+  alt?: boolean;
+}
+
+const { heading = "Related pages", eyebrow = "Keep reading", items, alt = true } = Astro.props;
+---
+
+<section class:list={["section section--tight", { "section--alt": alt }]} aria-labelledby="related-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <ul class="related">
+      {
+        items.map((i) => (
+          <li>
+            <a href={i.href} class="related__card">
+              <span class="related__label">{i.label}</span>
+              {i.blurb && <span class="related__blurb">{i.blurb}</span>}
+              <Icon name="arrow" size={18} class="related__arrow" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .related {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .related__card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.2rem var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    min-height: 64px;
+  }
+
+  .related__card:hover {
+    border-color: var(--ez-orange);
+  }
+
+  .related__label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ez-ink);
+  }
+
+  .related__blurb {
+    grid-column: 1;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .related__arrow {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    color: var(--ez-orange);
+  }
+</style>

@@ -32,25 +32,11 @@ const { pairs, heading = "Before and after" } = Astro.props;
             <div class="ba-pair__images">
               <div class="ba-pair__frame">
                 <span class="ba-pair__tag">Before</span>
-                <Image
-                  src={pair.before}
-                  alt={`Before: ${pair.caption}`}
-                  width={640}
-                  widths={[420, 640]}
-                  sizes="(max-width: 48rem) 46vw, 320px"
-                  loading="lazy"
-                />
+                <Image src={pair.before} alt={`Before: ${pair.caption}`} width={640} widths={[420, 640]} sizes="(max-width: 48rem) 46vw, 320px" loading="lazy" />
               </div>
               <div class="ba-pair__frame">
                 <span class="ba-pair__tag ba-pair__tag--after">After</span>
-                <Image
-                  src={pair.after}
-                  alt={`After: ${pair.caption}`}
-                  width={640}
-                  widths={[420, 640]}
-                  sizes="(max-width: 48rem) 46vw, 320px"
-                  loading="lazy"
-                />
+                <Image src={pair.after} alt={`After: ${pair.caption}`} width={640} widths={[420, 640]} sizes="(max-width: 48rem) 46vw, 320px" loading="lazy" />
               </div>
             </div>
             <figcaption>{pair.caption}</figcaption>
@@ -64,51 +50,59 @@ const { pairs, heading = "Before and after" } = Astro.props;
 <style>
   .ba-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-    gap: var(--space-6);
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: var(--space-5);
+  }
+
+  .ba-pair {
+    margin: 0;
+    background: var(--ez-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
   }
 
   .ba-pair__images {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-2);
+    gap: 3px;
+    background: var(--ez-line);
   }
 
   .ba-pair__frame {
     position: relative;
-    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--ez-alt-deep);
   }
 
-  .ba-pair__frame img {
+  .ba-pair__frame :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    aspect-ratio: 4 / 3;
   }
 
   .ba-pair__tag {
     position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+    top: 0.6rem;
+    left: 0.6rem;
+    background: var(--ez-ink);
+    color: var(--ez-white);
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: var(--text-xs);
-    text-transform: uppercase;
+    font-size: 0.85rem;
     letter-spacing: 0.06em;
-    background: var(--film-gap);
-    color: #fff;
+    text-transform: uppercase;
     padding: 0.2rem 0.55rem;
     border-radius: var(--radius-sm);
   }
 
   .ba-pair__tag--after {
-    background: var(--flare);
-    color: var(--film-leader);
+    background: var(--ez-orange);
+    color: var(--ez-ink);
   }
 
-  figcaption {
-    margin-top: var(--space-2);
+  .ba-pair figcaption {
+    padding: var(--space-3) var(--space-4);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
   }

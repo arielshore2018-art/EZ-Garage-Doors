@@ -10,6 +10,7 @@ import { reviews, REVIEWS_TOTAL_LINE } from "../config/reviews";
 import googleLogo from "../assets/trust-logos/review-platforms/google-logo.webp";
 import yelpLogo from "../assets/trust-logos/review-platforms/yelp-logo.webp";
 import angiLogo from "../assets/trust-logos/review-platforms/angi-logo.webp";
+import SectionHeading from "./SectionHeading.astro";
 
 interface Props {
   heading?: string;
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const {
-  heading = "Rated by the homeowners we've dug out of stuck-door mornings",
+  heading = "Rated by Massachusetts homeowners on the platforms we can't edit",
   note = "Counts change as new reviews come in — read them on the live platforms.",
 } = Astro.props;
 
@@ -28,18 +29,9 @@ const platforms = [
 ];
 ---
 
-<section class="proof section--tight" aria-labelledby="proof-heading">
+<section class="proof section" aria-labelledby="proof-heading">
   <div class="wrap">
-    <div class="proof__head">
-      <div>
-        <h2 id="proof-heading">{heading}</h2>
-        <p class="proof__margin" aria-hidden="true">
-          <span class="proof__splice"></span>
-          <span class="proof__code mono">Verified on live platforms</span>
-        </p>
-      </div>
-      <p class="proof__total display-num">{REVIEWS_TOTAL_LINE}</p>
-    </div>
+    <SectionHeading eyebrow="Reviews" title={heading} center intro={REVIEWS_TOTAL_LINE} />
 
     <ul class="proof__platforms">
       {
@@ -47,13 +39,15 @@ const platforms = [
           <li class="proof__chip">
             {p.data.url ? (
               <a href={p.data.url} rel="noopener" target="_blank" data-track={`review_platform_${p.key}`}>
-                <Image src={p.logo} alt={`${p.name} reviews`} height={24} loading="lazy" />
+                <Image src={p.logo} alt={`${p.name} reviews`} height={28} loading="lazy" />
+                <span class="proof__stars" aria-hidden="true">★★★★★</span>
                 <span class="proof__rating display-num">{p.data.rating}</span>
                 <span class="proof__count">{p.data.count}+ reviews</span>
               </a>
             ) : (
               <span class="proof__static">
-                <Image src={p.logo} alt={`${p.name} reviews`} height={24} loading="lazy" />
+                <Image src={p.logo} alt={`${p.name} reviews`} height={28} loading="lazy" />
+                <span class="proof__stars" aria-hidden="true">★★★★★</span>
                 <span class="proof__rating display-num">{p.data.rating}</span>
                 <span class="proof__count">{p.data.count}+ reviews</span>
               </span>
@@ -63,52 +57,13 @@ const platforms = [
       }
     </ul>
 
-    <p class="proof__note muted">{note}</p>
+    <p class="proof__note muted">{note} <a href="/reviews/">About our reviews →</a></p>
   </div>
 </section>
 
 <style>
   .proof {
-    background: var(--ez-paper);
-  }
-
-  .proof__head {
-    display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-    gap: var(--space-5);
-    align-items: end;
-    margin-bottom: var(--space-5);
-  }
-
-  .proof__head h2 {
-    max-width: 26ch;
-  }
-
-  .proof__margin {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-3);
-  }
-
-  .proof__splice {
-    width: 2.6rem;
-    height: 3px;
-    background: var(--flare);
-  }
-
-  .proof__code {
-    font-size: 0.72rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--film-emulsion-dim);
-  }
-
-  .proof__total {
-    font-size: var(--text-lg);
-    color: var(--ez-ink);
-    text-align: right;
-    margin: 0;
+    background: var(--ez-white);
   }
 
   .proof__platforms {
@@ -117,31 +72,44 @@ const platforms = [
     margin: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-3);
+    gap: var(--space-4);
+    max-width: 56rem;
+    margin-inline: auto;
   }
 
   .proof__chip a,
   .proof__static {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
-    border-top: 3px solid var(--ez-orange);
-    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-5);
     text-decoration: none;
     color: inherit;
     min-height: 64px;
   }
 
+  .proof__chip a:hover {
+    border-color: var(--ez-orange);
+  }
+
   .proof__chip img {
-    height: 24px;
+    height: 28px;
     width: auto;
+  }
+
+  .proof__stars {
+    color: var(--ez-orange);
+    letter-spacing: 0.1em;
   }
 
   .proof__rating {
     font-size: var(--text-2xl);
     color: var(--ez-ink);
+    line-height: 1;
   }
 
   .proof__count {
@@ -151,19 +119,11 @@ const platforms = [
 
   .proof__note {
     font-size: var(--text-sm);
-    margin-top: var(--space-3);
+    margin-top: var(--space-5);
+    text-align: center;
   }
 
-  @media (max-width: 56rem) {
-    .proof__head {
-      grid-template-columns: 1fr;
-      align-items: start;
-    }
-
-    .proof__total {
-      text-align: left;
-    }
-
+  @media (max-width: 40rem) {
     .proof__platforms {
       grid-template-columns: 1fr;
     }

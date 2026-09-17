@@ -1,17 +1,23 @@
 ---
 /**
- * Footer: legal identity, service area, contact, legal links.
+ * Footer: identity, service links, company links, the full county
+ * index (the statewide-coverage proof), legal row.
  * License / insurance lines appear ONLY when confirmed values are
- * added to this component — no placeholder numbers are rendered.
+ * added here — no placeholder numbers are rendered. No street address:
+ * service-area business.
  */
 import { Image } from "astro:assets";
 import logoWhite from "../assets/brand/ez-logo-white.svg";
-import { BUSINESS, APPROVED_CLAIMS, hasPhone } from "../config/business";
-import { services } from "../config/services";
+import { BUSINESS, APPROVED_CLAIMS, COVERAGE, hasPhone } from "../config/business";
+import { servicesInGroup } from "../config/services";
+import { MA_COUNTIES } from "../config/ma-towns";
 
 const year = new Date().getFullYear();
+const repair = servicesInGroup("repair").filter((s) => s.slug !== "same-day-garage-door-service");
+const openers = servicesInGroup("opener");
+const install = [...servicesInGroup("install"), ...servicesInGroup("maintenance")];
 
-/* needs-owner-confirmation: CT HIC / license number and insurance statement.
+/* needs-owner-confirmation: MA HIC / license number and insurance statement.
    When confirmed, add them to the identity column below. */
 ---
 
@@ -22,7 +28,7 @@ const year = new Date().getFullYear();
       <p class="footer__tagline">{APPROVED_CLAIMS.tagline}</p>
       <p>
         {BUSINESS.legalName} — a local {BUSINESS.state} garage door company.
-        {APPROVED_CLAIMS.years}.
+        {APPROVED_CLAIMS.years}. {COVERAGE.line}.
       </p>
       <p>
         {
@@ -35,19 +41,23 @@ const year = new Date().getFullYear();
           )
         }
       </p>
+      <p><a href="/contact/#request" class="footer__request">Request service online →</a></p>
     </div>
 
-    <nav class="footer__col" aria-label="Services">
-      <h3>Services</h3>
+    <nav class="footer__col" aria-label="Repair services">
+      <h3>Repair</h3>
       <ul>
-        {
-          services.map((s) => (
-            <li>
-              <a href={`/${s.slug}/`}>{s.title}</a>
-            </li>
-          ))
-        }
-        <li><a href="/emergency-garage-door-repair/">Emergency Repair</a></li>
+        {repair.map((s) => <li><a href={`/${s.slug}/`}>{s.title}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Openers and new doors">
+      <h3>Openers &amp; New Doors</h3>
+      <ul>
+        {openers.map((s) => <li><a href={`/${s.slug}/`}>{s.title}</a></li>)}
+        {install.map((s) => <li><a href={`/${s.slug}/`}>{s.title}</a></li>)}
+        <li><a href="/garage-door-styles/">Garage Door Styles</a></li>
+        <li><a href="/brands/">Brands We Service</a></li>
       </ul>
     </nav>
 
@@ -57,25 +67,38 @@ const year = new Date().getFullYear();
         <li><a href="/about/">About EZ Garage Doors</a></li>
         <li><a href="/reviews/">Reviews</a></li>
         <li><a href="/gallery/">Finished Work</a></li>
-        <li><a href="/service-areas/">Service Areas</a></li>
-        <li><a href="/garage-door-replacement-cost/">Cost Guide</a></li>
+        <li><a href="/guides/">Guides &amp; Troubleshooting</a></li>
+        <li><a href="/commercial-garage-door-repair/">Commercial Service</a></li>
         <li><a href="/contact/">Contact</a></li>
       </ul>
-    </nav>
-
-    <div class="footer__col">
-      <h3>Our promise</h3>
+      <h3 class="footer__promise-head">Our promise</h3>
       <ul class="footer__promises">
         <li>{APPROVED_CLAIMS.writtenQuote}</li>
         <li>No bait pricing</li>
         <li>{APPROVED_CLAIMS.reviewsShort}</li>
       </ul>
-    </div>
+    </nav>
   </div>
+
+  <nav class="footer__areas" aria-label="Service areas by county">
+    <div class="wrap">
+      <h3>Massachusetts service areas — {COVERAGE.short}</h3>
+      <ul>
+        {
+          MA_COUNTIES.map((c) => (
+            <li>
+              <a href={`/service-areas/${c.slug}/`}>{c.name} County</a>
+            </li>
+          ))
+        }
+        <li><a href="/service-areas/" class="footer__areas-all">All {COVERAGE.municipalities} cities &amp; towns →</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <div class="footer__legal">
     <div class="wrap footer__legal-inner">
-      <p>© {year} {BUSINESS.legalName}. Serving central {BUSINESS.state}.</p>
+      <p>© {year} {BUSINESS.legalName}. Serving all of {BUSINESS.state}. Brand names belong to their owners; we service them and are not affiliated with or endorsed by them.</p>
       <ul>
         <li><a href="/privacy-policy/">Privacy Policy</a></li>
         <li><a href="/terms/">Terms of Service</a></li>
@@ -86,26 +109,15 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
-    background: var(--film-gap);
-    color: #c9cdd2;
+    background: var(--ez-ink);
+    color: var(--ez-on-ink);
     font-size: var(--text-sm);
-    position: relative;
-  }
-
-  /* light-leak top edge: the last flare on the reel */
-  .footer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: var(--leak-gradient);
+    border-top: 5px solid var(--ez-orange);
   }
 
   .footer__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
     gap: var(--space-6);
     padding-block: var(--space-7);
   }
@@ -120,7 +132,7 @@ const year = new Date().getFullYear();
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: 0.08em;
-    color: var(--ez-orange);
+    color: var(--ez-orange-on-ink);
     text-transform: uppercase;
     font-size: var(--text-xs);
     margin-bottom: var(--space-3);
@@ -128,20 +140,28 @@ const year = new Date().getFullYear();
 
   .footer__identity p {
     margin-bottom: var(--space-2);
+    max-width: 26rem;
   }
 
   .footer__phone-soon {
-    color: #8b95a1;
+    color: var(--ez-on-ink-muted);
     font-style: italic;
   }
 
-  .footer h3 {
-    color: #fff;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+  .footer__request {
     font-weight: 600;
+  }
+
+  .footer h3 {
+    color: var(--ez-white);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    font-weight: 700;
     margin-bottom: var(--space-3);
+  }
+
+  .footer__promise-head {
+    margin-top: var(--space-5);
   }
 
   .footer__col ul {
@@ -149,16 +169,17 @@ const year = new Date().getFullYear();
     padding: 0;
     margin: 0;
     display: grid;
-    gap: var(--space-2);
+    gap: 0.45rem;
   }
 
   .footer a {
-    color: #c9cdd2;
+    color: var(--ez-on-ink);
     text-decoration: none;
   }
 
   .footer a:hover {
-    color: var(--ez-orange);
+    color: var(--ez-white);
+    text-decoration: underline;
   }
 
   .footer__promises li {
@@ -167,18 +188,36 @@ const year = new Date().getFullYear();
   }
 
   .footer__promises li::before {
-    content: "";
-    width: 0.9rem;
-    height: 3px;
-    background: var(--ez-orange);
-    box-shadow: 0 4px 0 0 rgb(255 255 255 / 0.25);
+    content: "✓";
+    color: var(--ez-orange-on-ink);
+    font-weight: 700;
     margin-right: var(--space-2);
-    flex-shrink: 0;
+  }
+
+  .footer__areas {
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    padding-block: var(--space-5);
+  }
+
+  .footer__areas ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+  }
+
+  .footer__areas-all {
+    color: var(--ez-white) !important;
+    font-weight: 600;
   }
 
   .footer__legal {
     border-top: 1px solid rgb(255 255 255 / 0.12);
     padding-block: var(--space-4);
+    color: var(--ez-on-ink-muted);
+    font-size: var(--text-xs);
   }
 
   /* clearance so the sticky mobile bar never covers the legal links */
@@ -195,11 +234,27 @@ const year = new Date().getFullYear();
     gap: var(--space-3);
   }
 
+  .footer__legal-inner p {
+    max-width: 52rem;
+  }
+
   .footer__legal ul {
     display: flex;
     gap: var(--space-4);
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+
+  @media (max-width: 62rem) {
+    .footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

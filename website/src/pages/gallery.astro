@@ -4,6 +4,7 @@
  * styles only; no invented town/customer attributions.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import FinishedDoorGallery from "../components/FinishedDoorGallery.astro";
 import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
 import CTASection from "../components/CTASection.astro";
@@ -26,21 +27,26 @@ import baBefore4 from "../assets/photos/ez-before-dirty-beige-door.png";
 import baAfter4 from "../assets/photos/ez-after-dark-bronze-panel.png";
 
 const doors = [
-  { image: doorSteel, style: "Insulated steel flush panel", detail: "Clean modern face, quiet and warm." },
-  { image: doorCharcoal, style: "Charcoal recessed panel", detail: "Modern color, classic panel lines." },
-  { image: doorBlackWin, style: "Black modern with windows", detail: "Vertical glass stack for daylight." },
-  { image: doorCarriage, style: "Carriage house", detail: "Cream finish, X-brace, black hardware." },
-  { image: doorWhiteCarriage, style: "White carriage with windows", detail: "Grille windows, classic look." },
-  { image: doorWood, style: "Wood-look walnut", detail: "Wood warmth, steel durability." },
+  { image: doorSteel, style: "Insulated steel flush panel", detail: "Clean modern face, quiet and warm.", href: "/garage-door-styles/insulated-steel-garage-doors/" },
+  { image: doorCharcoal, style: "Charcoal recessed panel", detail: "Modern color, classic panel lines.", href: "/garage-door-styles/charcoal-and-dark-finish-garage-doors/" },
+  { image: doorBlackWin, style: "Black modern with windows", detail: "Vertical glass stack for daylight.", href: "/garage-door-styles/modern-garage-doors/" },
+  { image: doorCarriage, style: "Carriage house", detail: "Cream finish, X-brace, black hardware.", href: "/garage-door-styles/carriage-house-garage-doors/" },
+  { image: doorWhiteCarriage, style: "White carriage with windows", detail: "Grille windows, classic look.", href: "/garage-door-styles/carriage-house-garage-doors/" },
+  { image: doorWood, style: "Wood-look walnut", detail: "Wood warmth, steel durability.", href: "/garage-door-styles/wood-look-garage-doors/" },
 ];
+
+const crumbs = [{ label: "Finished Work" }];
 ---
 
 <SiteLayout
   title="Garage Door Gallery | Finished Work by EZ Garage Doors"
-  description="Finished garage door installations and before-and-after transformations: insulated steel, carriage house, black modern, wood-look, and more."
+  description="Finished garage door installations and before-and-after transformations across Massachusetts: insulated steel, carriage house, black modern, wood-look, and more."
+  breadcrumbs={crumbs}
 >
   <section class="gallery-hero">
     <div class="wrap wrap--narrow">
+      <Breadcrumbs items={crumbs} class="gallery-hero__crumbs" />
+      <p class="eyebrow">Gallery</p>
       <h1>Finished Work</h1>
       <p class="gallery-hero__sub">
         Door styles we install and the difference a replacement makes. See something close to
@@ -62,23 +68,26 @@ const doors = [
     ]}
   />
 
-  <CTASection
-    heading="Picture your garage here"
-    sub="Request a written installation estimate with the style you have in mind."
-    secondaryLabel="Request Installation Estimate"
-  />
+  <CTASection heading="Picture your garage here" sub="Request a written installation estimate with the style you have in mind." secondaryLabel="Request Installation Estimate" />
 </SiteLayout>
 
 <style>
   .gallery-hero {
-    background: var(--ez-paper);
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
     padding-block: var(--space-7);
-    border-bottom: 1px solid var(--ez-border);
+    border-bottom: 1px solid var(--ez-line);
+  }
+
+  .gallery-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .gallery-hero h1 {
+    margin-top: var(--space-2);
   }
 
   .gallery-hero__sub {
     font-size: var(--text-lg);
-    color: var(--color-text-muted);
     margin-top: var(--space-4);
   }
 </style>

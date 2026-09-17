@@ -1,15 +1,17 @@
 ---
 /**
- * Cable / roller / track repair — expanded phone-first urgency page:
- * full-bleed hero, proof bar, signs, causes, written-quote, gallery, FAQ.
+ * Cable repair — urgency page: hero with safety note, signs, quote
+ * promise, real hardware gallery, FAQ.
  */
-import LandingLayout from "../layouts/LandingLayout.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import WorkGallery from "../components/WorkGallery.astro";
 import FaqList from "../components/FaqList.astro";
-import CallButton from "../components/CallButton.astro";
+import RelatedLinks from "../components/RelatedLinks.astro";
+import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import Icon from "../components/Icon.astro";
 
 const signs = [
   "Cable hanging loose or coiled on the floor",
@@ -21,54 +23,48 @@ const signs = [
 ];
 
 const service = {
-  name: "Garage Door Cable, Roller & Track Repair",
-  description: "Snapped cables, worn rollers, and bent tracks repaired — door realigned and balanced with a written quote before work.",
+  name: "Garage Door Cable Repair & Replacement",
+  description: "Snapped or slipped lift cables replaced and the door re-balanced across Massachusetts — written quote before work.",
   url: "/garage-door-cable-repair/",
 };
 
 const faqs = [
   { question: "The cable came off but the door still moves — is that OK?", answer: "No. A slipped cable puts the door's full weight on one side; every cycle bends tracks and wears the good cable. Stop running the opener and call." },
-  { question: "Why did the cable snap?", answer: "Cables fray where they meet the bottom bracket — moisture, age, and an out-of-balance door speed it up. We check the spring balance behind it, because a cable that 'just slipped' usually slipped for a reason." },
+  { question: "Why did the cable snap?", answer: "Cables fray where they meet the bottom bracket — moisture, salt, age, and an out-of-balance door speed it up. We check the spring balance behind it, because a cable that 'just slipped' usually slipped for a reason." },
   { question: "Do you replace both cables?", answer: "Usually yes — both cables have the same age and wear. Replacing the pair keeps the door lifting evenly and saves a second visit." },
   { question: "Can bent track be repaired, or does it need replacing?", answer: "Minor bends can often be trued; kinked or crushed sections get replaced. You'll see which one your door needs — with the price — in the written quote before any work." },
 ];
+
+const crumbs = [{ label: "Garage Door Repair", href: "/garage-door-repair/" }, { label: "Cable Repair" }];
 ---
 
-<LandingLayout
-  title="Garage Door Cable Repair in Connecticut | EZ Garage Doors"
-  description="Cable came off, rollers worn, or tracks bent? EZ Garage Doors repairs cables, rollers, and tracks across Connecticut — written quote before work begins."
-  callLabel="Call for Cable Repair"
+<SiteLayout
+  title="Garage Door Cable Repair in Massachusetts | EZ Garage Doors"
+  description="Cable came off, snapped, or the door is pulling crooked? Garage door cables replaced and the door rebalanced across Massachusetts — written quote before work begins."
   service={service}
+  faqs={faqs}
+  breadcrumbs={crumbs}
 >
   <ServiceHero
     imageId="stuck-repair"
-    eyebrow="Cable · Roller · Track"
-    heading="Garage Door Cable & Track Repair"
-    sub="Cable came off the drum, rollers worn out, or the door pulling crooked? Stop running the opener — a loose cable gets worse with every cycle."
+    eyebrow="Cables · Drums · Tracks"
+    heading="Garage Door Cable Repair & Replacement"
+    sub="Cable came off the drum, snapped, or the door is pulling crooked? Stop running the opener — a loose cable gets worse with every cycle."
     callLabel="Call for Cable Repair"
     callTrack="cable_call_click"
     secondaryLabel="Send a Photo of the Cable"
+    alert="Cables are under the same tension as the springs. Don't pull, rewind, or unbolt anything — keep the door still until it's serviced."
+    breadcrumbs={crumbs}
   />
 
   <ProofColumns />
 
   <section class="section">
     <div class="wrap">
-      <SectionHeading eyebrow="Diagnosis" title="What a failing cable or track looks like" />
+      <SectionHeading eyebrow="Diagnosis" title="What a failing cable looks like" />
       <ul class="cable-signs">
-        {
-          signs.map((sign) => (
-            <li>
-              <span class="speed-tick" aria-hidden="true" />
-              {sign}
-            </li>
-          ))
-        }
+        {signs.map((sign) => <li><Icon name="check" size={18} /><span>{sign}</span></li>)}
       </ul>
-      <p class="cable-safety">
-        <strong>Careful:</strong> cables are under the same tension as the springs. Don't pull,
-        rewind, or unbolt anything — keep the door still until it's serviced.
-      </p>
     </div>
   </section>
 
@@ -82,23 +78,23 @@ const faqs = [
     </div>
   </section>
 
-  {/* Real hardware only — AI technician-model photos never appear in
-      proof modules (docs/ez-verified-claims.md). */}
-  <WorkGallery
-    heading="Track and hardware work"
-    imageIds={["new-springs", "broken-spring"]}
+  {/* Real hardware only — AI technician-model photos never appear in proof modules. */}
+  <WorkGallery heading="Cable and hardware work" imageIds={["new-springs", "broken-spring"]} />
+
+  <FaqList faqs={faqs} heading="Cable questions" />
+
+  <RelatedLinks
+    heading="Related repairs"
+    items={[
+      { label: "Cable Drum Replacement", href: "/garage-door-drum-replacement/" },
+      { label: "Track Repair", href: "/garage-door-track-repair/" },
+      { label: "Roller Replacement", href: "/garage-door-roller-replacement/" },
+      { label: "Off-Track Door Repair", href: "/garage-door-off-track-repair/" },
+    ]}
   />
 
-  <FaqList faqs={faqs} heading="Cable & track questions" />
-
-  <section class="cable-final">
-    <div class="wrap cable-final__inner">
-      <h2>Door pulling crooked right now?</h2>
-      <p>Call EZ Garage Doors — fast local cable, roller, and track repair.</p>
-      <CallButton label="Call for Cable Repair" size="lg" track="cable_call_click" />
-    </div>
-  </section>
-</LandingLayout>
+  <CTASection heading="Door pulling crooked right now?" sub="Call EZ Garage Doors — fast local cable, drum, and track repair." callLabel="Call for Cable Repair" />
+</SiteLayout>
 
 <style>
   .cable-signs {
@@ -108,49 +104,22 @@ const faqs = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     gap: var(--space-3);
-    font-weight: 500;
   }
 
   .cable-signs li {
     display: flex;
-    align-items: center;
-    background: var(--ez-concrete);
-    border-radius: var(--radius-md);
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--ez-alt);
+    border-radius: var(--radius-sm);
     padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
   }
 
-  .cable-safety {
-    margin-top: var(--space-5);
-    padding: var(--space-4) var(--space-5);
-    background: var(--ez-orange-tint);
-    /* track side-rail: orange run + ghost rail */
-    border-left: var(--track-stroke) solid var(--ez-orange);
-    max-width: 44rem;
-    position: relative;
-  }
-
-  .cable-safety::before {
-    content: "";
-    position: absolute;
-    left: var(--track-gap);
-    top: 0;
-    bottom: 0;
-    width: var(--track-ghost);
-    background: var(--ez-line);
-  }
-
-  .cable-final {
-    background: var(--film-gap);
-    color: var(--film-emulsion);
-    padding-block: var(--space-7);
-    text-align: center;
-  }
-
-  .cable-final h2 {
-    color: var(--film-emulsion-bright);
-  }
-
-  .cable-final p {
-    margin-block: var(--space-3) var(--space-5);
+  .cable-signs svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
   }
 </style>

@@ -1,0 +1,232 @@
+---
+/**
+ * Brand page template — "we service X". Non-affiliation on every page.
+ */
+import type { GetStaticPaths } from "astro";
+import { Image } from "astro:assets";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CallButton from "../../components/CallButton.astro";
+import ProofColumns from "../../components/home/ProofColumns.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import FaqList from "../../components/FaqList.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
+import CTASection from "../../components/CTASection.astro";
+import Icon from "../../components/Icon.astro";
+import { ALL_BRANDS, OPENER_BRANDS, DOOR_BRANDS, type BrandPage } from "../../config/brands";
+import { brandLogos } from "../../config/brand-logos";
+
+export const getStaticPaths = (() => {
+  return ALL_BRANDS.map((b) => ({ params: { brand: b.slug }, props: { b } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  b: BrandPage;
+}
+
+const { b } = Astro.props;
+const logo = b.logoId ? brandLogos.find((l) => l.id === b.logoId) : undefined;
+const noun = b.kind === "opener" ? "Garage Door Openers" : "Garage Doors";
+/* Short label for titles: "LiftMaster Openers", "Clopay Doors", "Haas Door" */
+const label = b.kind === "opener" ? `${b.name} Openers` : /Door/.test(b.name) ? b.name : `${b.name} Doors`;
+const breadcrumbs = [{ label: "Brands We Service", href: "/brands/" }, { label }];
+const siblings = (b.kind === "opener" ? OPENER_BRANDS : DOOR_BRANDS).filter((x) => x.slug !== b.slug);
+
+const sidebarLinks =
+  b.kind === "opener"
+    ? [
+        { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+        { label: "Opener Installation", href: "/garage-door-opener-installation/" },
+        { label: "Remotes & Keypads", href: "/garage-door-remote-programming/" },
+        { label: "Safety Sensor Repair", href: "/garage-door-safety-sensor-repair/" },
+        { label: "Smart Openers", href: "/smart-garage-door-opener/" },
+      ]
+    : [
+        { label: "Garage Door Repair", href: "/garage-door-repair/" },
+        { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+        { label: "Panel Replacement", href: "/garage-door-panel-replacement/" },
+        { label: "New Door Installation", href: "/garage-door-installation/" },
+        { label: "Door Styles", href: "/garage-door-styles/" },
+      ];
+
+const service = {
+  name: `${b.name} ${noun} — Repair & Service`,
+  description: `Repair, service, and replacement of ${b.name} ${noun.toLowerCase()} across Massachusetts by an independent company (not affiliated with the manufacturer).`,
+  url: `/brands/${b.slug}/`,
+};
+---
+
+<SiteLayout
+  title={`${label} Repair & Service in MA | EZ Garage Doors`}
+  description={`${label} repaired, serviced, and replaced across Massachusetts by an independent local company. Written quote before work begins.`}
+  service={service}
+  faqs={b.faqs}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="brand-hero">
+    <div class="wrap brand-hero__grid">
+      <div>
+        <Breadcrumbs items={breadcrumbs} class="brand-hero__crumbs" />
+        <p class="eyebrow">Brands we service · {b.kind === "opener" ? "Openers" : "Doors"}</p>
+        <h1>{b.name} {noun} — Repair, Service &amp; Replacement</h1>
+        <p class="brand-hero__sub">{b.tagline}. Serviced across all of Massachusetts with a written quote before work begins.</p>
+        <div class="brand-hero__actions">
+          <CallButton label={`Call for ${b.name} Service`} size="lg" track={`brand_${b.slug}_call`} />
+          <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
+        </div>
+      </div>
+      <div class="brand-hero__logo card">
+        {logo ? <Image src={logo.src} alt={logo.alt} height={logo.railHeight * 2} loading="eager" /> : <span class="brand-hero__text">{b.name}</span>}
+        <p class="brand-hero__disclaimer">Independent service — not an authorized dealer, not affiliated with or endorsed by {b.name}.</p>
+      </div>
+    </div>
+  </section>
+
+  <ProofColumns />
+
+  <section class="section">
+    <div class="wrap page-grid">
+      <article class="brand-main">
+        <div class="prose">
+          {b.intro.map((p) => <p>{p}</p>)}
+        </div>
+
+        <SectionHeading eyebrow="What we see most" title={`Common ${b.name} service calls`} />
+        <ul class="brand-list">
+          {b.commonCalls.map((c) => <li><Icon name="check" size={18} /><span>{c}</span></li>)}
+        </ul>
+
+        <SectionHeading eyebrow="Good to know" title={`${b.name} notes`} />
+        <ul class="brand-list brand-list--plain">
+          {b.notes.map((n) => <li><Icon name="arrow" size={18} /><span>{n}</span></li>)}
+        </ul>
+
+        <FaqList faqs={b.faqs} heading={`${b.name} questions`} bare />
+      </article>
+
+      <Sidebar title={`${b.name} ${b.kind} help`} callLabel="Call EZ Garage Doors" callTrack={`brand_${b.slug}_sidebar_call`} links={sidebarLinks} />
+    </div>
+  </section>
+
+  <RelatedLinks
+    heading={`Other ${b.kind === "opener" ? "opener" : "door"} brands we service`}
+    eyebrow="Brands"
+    items={siblings.map((s) => ({ label: `${s.name} ${s.kind === "opener" ? "openers" : "doors"}`, href: `/brands/${s.slug}/` }))}
+  />
+
+  <CTASection heading={`${b.name} ${b.kind} acting up?`} sub="Call EZ Garage Doors — we'll tell you if it's a fix or a replacement, in writing." callLabel={`Call for ${b.name} Service`} />
+</SiteLayout>
+
+<style>
+  .brand-hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+  }
+
+  .brand-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    padding-block: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .brand-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .brand-hero h1 {
+    margin-top: var(--space-2);
+    font-size: clamp(2rem, 1.5rem + 2.6vw, 3.4rem);
+  }
+
+  .brand-hero__sub {
+    font-size: var(--text-lg);
+    margin-top: var(--space-4);
+    max-width: 34rem;
+  }
+
+  .brand-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .brand-hero__logo {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    text-align: center;
+  }
+
+  .brand-hero__logo img {
+    width: auto;
+    max-height: 72px;
+    max-width: 80%;
+  }
+
+  .brand-hero__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2.4rem;
+    color: var(--ez-ink);
+  }
+
+  .brand-hero__disclaimer {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .brand-main :global(.section-heading) {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-4);
+  }
+
+  .brand-main :global(.faq--bare) {
+    margin-top: var(--space-6);
+  }
+
+  .brand-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .brand-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--ez-alt);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .brand-list svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .brand-list--plain li {
+    background: transparent;
+    font-weight: 400;
+    color: var(--color-text);
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--ez-line);
+    border-radius: 0;
+  }
+
+  @media (max-width: 56rem) {
+    .brand-hero__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

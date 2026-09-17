@@ -5,6 +5,7 @@
  * specialty page that solves that symptom).
  */
 import SectionHeading from "./SectionHeading.astro";
+import Icon from "./Icon.astro";
 
 interface Issue {
   symptom: string;
@@ -17,13 +18,14 @@ interface Props {
   eyebrow?: string;
   issues: Issue[];
   alt?: boolean;
+  bare?: boolean;
 }
 
-const { heading = "What is your door doing?", eyebrow = "Common problems", issues, alt = false } = Astro.props;
+const { heading = "What is your door doing?", eyebrow = "Common problems", issues, alt = false, bare = false } = Astro.props;
 ---
 
-<section class:list={["section", { "section--alt": alt }]} aria-labelledby="issues-heading">
-  <div class="wrap">
+<section class:list={[{ section: !bare, "section--alt": alt && !bare }]} aria-labelledby="issues-heading">
+  <div class:list={{ wrap: !bare }}>
     <SectionHeading eyebrow={eyebrow} title={heading} />
     <ul class="issues">
       {
@@ -33,7 +35,7 @@ const { heading = "What is your door doing?", eyebrow = "Common problems", issue
               <a href={issue.href}>
                 <h3>{issue.symptom}</h3>
                 <p>{issue.meaning}</p>
-                <span class="issues__go" aria-hidden="true">→</span>
+                <span class="issues__go">See the fix <Icon name="arrow" size={16} /></span>
               </a>
             ) : (
               <>
@@ -54,51 +56,53 @@ const { heading = "What is your door doing?", eyebrow = "Common problems", issue
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
     gap: var(--space-4);
   }
 
   .issues__card {
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
-    border-top: 3px solid var(--ez-orange);
-    padding: var(--space-5);
+    border-left: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
   }
 
   .issues__card--link {
     padding: 0;
   }
 
-  .issues__card--link a {
+  .issues__card a {
     display: block;
-    padding: var(--space-5);
     height: 100%;
+    padding: var(--space-4) var(--space-5);
     text-decoration: none;
     color: inherit;
-    position: relative;
-    transition: background-color 140ms ease;
   }
 
-  .issues__card--link a:hover {
-    background: var(--ez-orange-pale);
-  }
-
-  .issues__go {
-    position: absolute;
-    right: var(--space-4);
-    bottom: var(--space-3);
-    color: var(--ez-orange);
-    font-size: var(--text-lg);
+  .issues__card--link:hover {
+    box-shadow: var(--shadow-card);
+    border-color: var(--ez-orange);
   }
 
   .issues__card h3 {
     font-size: var(--text-lg);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
   }
 
   .issues__card p {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     margin: 0;
+  }
+
+  .issues__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: var(--space-2);
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ez-orange-text);
   }
 </style>

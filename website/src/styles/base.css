@@ -1,10 +1,10 @@
 /* ============================================================
    EZ Garage Doors — Base styles
-   World: "PROJECTED LIGHT" (hand-processed 16mm film).
-   Near-black leader ground; silver emulsion type; orange only as
-   light. Frames carry the grain; the page never does. No shadows —
-   depth is overlap and frame gaps. One authored motion moment:
-   the hero leak breathing. Everything else is state feedback.
+   World: "ORANGE STANDARD" — conventional national-brand canon in
+   EZ orange. White ground, warm-gray alternating sections, ink
+   headings (Barlow Condensed), Source Sans body, orange buttons
+   with white large-text labels, soft card shadows, 6–10px radii.
+   Motion: hover feedback and the mobile sticky bar only.
    ============================================================ */
 
 *,
@@ -28,18 +28,11 @@ body {
   line-height: 1.6;
   color: var(--color-text);
   background: var(--color-bg);
-  caret-color: var(--flare);
 }
 
-/* Browser surfaces carry the design too */
 ::selection {
-  background: var(--flare);
-  color: var(--film-leader);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--flare) var(--film-panel);
+  background: var(--ez-orange-pale);
+  color: var(--ez-ink);
 }
 
 img,
@@ -57,11 +50,9 @@ h3,
 h4 {
   font-family: var(--font-display);
   color: var(--color-heading);
-  line-height: 1.04;
+  line-height: 1.08;
   font-weight: 700;
-  /* stamped caps: tracked wide, never tight */
-  text-transform: uppercase;
-  letter-spacing: 0.035em;
+  letter-spacing: 0.005em;
   text-wrap: balance;
 }
 
@@ -75,7 +66,12 @@ h2 {
 
 h3 {
   font-size: var(--text-xl);
-  line-height: 1.15;
+  line-height: 1.2;
+}
+
+h4 {
+  font-size: var(--text-lg);
+  line-height: 1.25;
 }
 
 p {
@@ -83,19 +79,19 @@ p {
 }
 
 a {
-  color: var(--film-emulsion-bright);
-  text-decoration-color: var(--flare);
-  text-decoration-thickness: 2px;
+  color: var(--ez-orange-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
 
 a:hover {
-  color: var(--flare-hot);
+  color: var(--ez-ink);
 }
 
 strong {
   font-weight: 650;
-  color: var(--film-emulsion-bright);
+  color: var(--ez-ink);
 }
 
 ul,
@@ -104,7 +100,7 @@ ol {
 }
 
 :focus-visible {
-  outline: 3px solid var(--flare-hot);
+  outline: 3px solid var(--ez-orange);
   outline-offset: 2px;
 }
 
@@ -141,73 +137,103 @@ ol {
 }
 
 .section--alt {
-  background: var(--film-panel);
+  background: var(--ez-alt);
 }
 
 .section--dark {
-  background: var(--film-gap);
-  color: var(--film-emulsion);
+  background: var(--ez-ink);
+  color: var(--ez-on-ink);
 }
 
 .section--dark h1,
 .section--dark h2,
 .section--dark h3 {
-  color: var(--film-emulsion-bright);
+  color: var(--ez-white);
 }
 
-/* Projector-beam section — orange stays LIGHT, never ink: a beam
-   flooding the leader ground from above (finish-review finding #3). */
+.section--dark a {
+  color: var(--ez-white);
+}
+
+.section--dark strong {
+  color: var(--ez-white);
+}
+
+/* Orange band: large white headings only; small text is ink. */
 .section--orange {
-  position: relative;
-  background:
-    radial-gradient(90% 130% at 50% -20%, rgb(255 161 92 / 0.5) 0%, rgb(243 106 33 / 0.22) 45%, transparent 75%),
-    var(--film-leader);
-  color: var(--film-emulsion);
+  background: var(--ez-orange);
+  color: var(--ez-ink);
 }
 
 .section--orange h1,
-.section--orange h2,
+.section--orange h2 {
+  color: var(--ez-white);
+}
+
 .section--orange h3 {
-  color: var(--film-emulsion-bright);
+  color: var(--ez-ink);
+}
+
+.section--orange a {
+  color: var(--ez-ink);
 }
 
 .section--pale {
-  background: var(--film-panel-2);
+  background: var(--ez-tint);
 }
 
-/* ============================================================
-   Signature: THE STRIP
-   Sprocket margins, frame bands, edge codes, splice marks,
-   and the orange light leak.
-   ============================================================ */
+/* Two-column inner page: content + sticky sidebar */
+.page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--sidebar-w);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
 
-/* Splice mark under headings (replaces the old track run) */
+@media (max-width: 62rem) {
+  .page-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Long-form prose (guides, legal, service copy) */
+.prose > * + * {
+  margin-top: var(--space-4);
+}
+
+.prose h2 {
+  font-size: var(--text-2xl);
+  margin-top: var(--space-6);
+}
+
+.prose h3 {
+  margin-top: var(--space-5);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4rem;
+}
+
+.prose li + li {
+  margin-top: var(--space-2);
+}
+
+.prose img {
+  border-radius: var(--radius-md);
+}
+
+/* ---- Rules & accents ---- */
+
 .speed-rail,
 .track-run,
 .splice {
   display: block;
-  width: 4.5rem;
-  height: 3px;
+  width: 3.5rem;
+  height: 4px;
+  border-radius: 2px;
   margin-top: var(--space-3);
-  background: var(--flare);
-  position: relative;
-}
-
-.speed-rail::before,
-.track-run::before,
-.splice::before {
-  content: "";
-  position: absolute;
-  left: 4.9rem;
-  top: 1px;
-  width: 2.6rem;
-  height: 1px;
-  background: var(--film-rule-strong);
-}
-
-.speed-rail::after,
-.track-run::after {
-  content: none;
+  background: var(--ez-orange);
 }
 
 .speed-rail--center,
@@ -215,181 +241,53 @@ ol {
   margin-inline: auto;
 }
 
-.section--orange .speed-rail,
-.section--orange .track-run,
-.section--orange .splice {
-  background: var(--flare-hot);
+.speed-tick {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--ez-orange);
+  margin-right: var(--space-2);
+  flex-shrink: 0;
 }
 
-/* Sprocket margin — a strip edge with punched holes */
-.sprockets {
-  position: relative;
-}
-
-.sprockets::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(var(--sprocket-w) / 2 - var(--sprocket-hole) / 2);
-  width: var(--sprocket-hole);
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--film-gap) 0,
-    var(--film-gap) var(--sprocket-hole),
-    transparent var(--sprocket-hole),
-    transparent calc(var(--sprocket-hole) * 2.4)
-  );
-}
-
-/* Legacy side-rail → sprocket edge on alerts/priority blocks */
 .side-rail {
   position: relative;
+  border-left: 4px solid var(--ez-orange);
 }
 
-.side-rail::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: var(--track-stroke);
-  background: var(--flare);
-}
-
-.side-rail::after {
-  content: "";
-  position: absolute;
-  left: calc(var(--track-stroke) + var(--track-gap));
-  top: 0;
-  bottom: 0;
-  width: var(--track-ghost);
-  background: var(--film-rule);
-}
-
-/* Frame: a photo as a frame on the strip. Grain lives HERE only. */
-.frame {
-  position: relative;
-  background: var(--film-gap);
-  padding: var(--frame-gap);
-}
-
-.frame > img,
-.frame > picture,
-.frame :global(img) {
-  display: block;
-  width: 100%;
-}
-
-/* Film character on the frame: visible grain weighted into shadows,
-   a rebate edge, exposure falloff, and the leak catching the right
-   edge (finish-review finding #7). */
-.frame::after {
-  content: "";
-  position: absolute;
-  inset: var(--frame-gap);
-  pointer-events: none;
-  opacity: 0.42;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
-}
-
-.frame::before {
-  content: "";
-  position: absolute;
-  inset: var(--frame-gap);
-  pointer-events: none;
-  z-index: 1;
-  /* rebate edge + exposure falloff + leak catch on the right */
-  box-shadow: inset 0 0 0 1px rgb(6 5 5 / 0.85), inset 0 0 2.2rem rgb(6 5 5 / 0.5);
-  background: linear-gradient(
-    270deg,
-    rgb(243 106 33 / 0.28) 0%,
-    rgb(243 106 33 / 0.07) 12%,
-    transparent 26%
-  );
-  mix-blend-mode: screen;
-}
-
-/* Registration corners (replaces old track-frame brackets) */
 .track-frame {
   position: relative;
 }
 
-.track-frame::before {
-  content: "";
-  position: absolute;
-  top: -0.55rem;
-  left: -0.55rem;
-  width: 1.6rem;
-  height: 1.6rem;
-  border-top: 2px solid var(--film-emulsion-bright);
-  border-left: 2px solid var(--film-emulsion-bright);
-  pointer-events: none;
-}
-
-.track-frame--br::before {
-  top: auto;
-  left: auto;
-  bottom: -0.55rem;
-  right: -0.55rem;
-  border-top: 0;
-  border-left: 0;
-  border-bottom: 2px solid var(--film-emulsion-bright);
-  border-right: 2px solid var(--film-emulsion-bright);
-  border-top-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-/* Edge code — vertical mono annotation on the margin */
-.edge-code {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--flare);
-  writing-mode: vertical-rl;
-}
-
-/* Metadata panel — STRIP / FRAME / EVENT chips */
-.meta-panel {
-  background: var(--film-panel);
-  border: 1px solid var(--film-rule);
-  padding: var(--space-3) var(--space-4);
-}
-
-.meta-panel dt,
-.meta-panel__label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--film-emulsion-dim);
-  margin-bottom: var(--space-1);
-}
-
-.meta-panel dd,
-.meta-panel__value {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--film-emulsion-bright);
-}
-
-/* Light-leak edge (section transition; replaces track-shift) */
 .track-shift,
 .leak-rule {
   height: 4px;
-  background: var(--leak-gradient);
-  max-width: none;
-  padding: 0;
+  background: var(--ez-orange);
 }
 
-.track-shift::before {
-  content: none;
+/* Callout box (safety notes, honesty notes) */
+.callout {
+  background: var(--ez-tint);
+  border-left: 4px solid var(--ez-orange);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: var(--space-4) var(--space-5);
+  color: var(--ez-charcoal);
 }
 
-/* ---- Buttons: flare plates ---- */
+.callout strong {
+  color: var(--ez-ink);
+}
+
+/* Card */
+.card {
+  background: var(--ez-white);
+  border: 1px solid var(--ez-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+/* ---- Buttons ---- */
 
 .btn {
   display: inline-flex;
@@ -398,111 +296,93 @@ ol {
   gap: 0.5rem;
   font-family: var(--font-display);
   font-weight: 700;
+  /* 1.175rem = 18.8px bold: clears the large-text threshold so
+     white-on-orange passes AA. Never shrink below this. */
   font-size: 1.175rem;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.02em;
   line-height: 1.15;
-  padding: 0.85rem 1.9rem;
+  padding: 0.8rem 1.6rem;
   border-radius: var(--radius-sm);
   border: 2px solid transparent;
   text-decoration: none;
   cursor: pointer;
   min-height: 48px;
-  position: relative;
-  transition: background-color 140ms ease, border-color 140ms ease,
-    color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease,
+    box-shadow 140ms ease, transform 140ms ease;
 }
 
 .btn:active {
   transform: translateY(1px);
 }
 
-/* The flare plate: a light-flooded frame with sprocket tabs.
-   Dark leader text on orange = 6:1+ at every size. */
 .btn--call {
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E"),
-    linear-gradient(100deg, var(--flare-hot) 0%, var(--flare) 60%, #e05c14 100%);
-  color: var(--film-leader);
+  background: var(--ez-orange);
+  color: var(--ez-white);
   box-shadow: var(--shadow-cta);
 }
 
-/* square perforations matching the strip's sprocket geometry */
-.btn--call::before,
-.btn--call::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0.58rem;
-  height: 0.58rem;
-  background: var(--film-leader);
-  border-radius: 1px;
-}
-
-.btn--call::before {
-  left: 0.55rem;
-}
-
-.btn--call::after {
-  right: 0.55rem;
-}
-
 .btn--call:hover {
-  background: linear-gradient(100deg, #ffb271 0%, var(--flare-hot) 55%, var(--flare) 100%);
-  color: var(--film-leader);
-  box-shadow: 0 0 38px var(--flare-glow);
+  background: var(--ez-orange-deep);
+  color: var(--ez-white);
 }
 
 .btn--ink {
-  background: var(--film-panel);
-  color: var(--film-emulsion-bright);
-  border-color: var(--film-rule-strong);
+  background: var(--ez-ink);
+  color: var(--ez-white);
 }
 
 .btn--ink:hover {
-  background: var(--film-panel-2);
-  color: var(--film-emulsion-bright);
-  border-color: var(--flare);
+  background: var(--ez-ink-2);
+  color: var(--ez-white);
 }
 
 .btn--outline {
-  background: transparent;
-  color: var(--film-emulsion-bright);
-  border-color: var(--film-rule-strong);
+  background: var(--ez-white);
+  color: var(--ez-ink);
+  border-color: var(--ez-ink);
 }
 
 .btn--outline:hover {
-  border-color: var(--flare);
-  color: var(--flare-hot);
+  background: var(--ez-ink);
+  color: var(--ez-white);
 }
 
 .btn--inverse-outline {
   background: transparent;
-  color: var(--film-emulsion-bright);
-  border-color: var(--film-rule-strong);
+  color: var(--ez-white);
+  border-color: var(--ez-white);
 }
 
 .btn--inverse-outline:hover {
-  border-color: var(--flare);
-  color: var(--flare-hot);
+  background: var(--ez-white);
+  color: var(--ez-ink);
 }
 
-/* Under the beam, plates behave as everywhere else on the leader */
-.section--orange .btn--ink {
-  background: var(--film-panel);
-  border-color: var(--film-rule-strong);
-  color: var(--film-emulsion-bright);
+/* On orange fields: white plate with ink text, or ink plate. Never orange-on-orange. */
+.section--orange .btn--call {
+  background: var(--ez-white);
+  color: var(--ez-ink);
+  box-shadow: 0 6px 18px rgb(28 28 28 / 0.18);
 }
 
-.section--orange .btn--ink:hover {
-  background: var(--film-panel-2);
-  border-color: var(--flare);
+.section--orange .btn--call:hover {
+  background: var(--ez-ink);
+  color: var(--ez-white);
+}
+
+.section--orange .btn--inverse-outline {
+  color: var(--ez-ink);
+  border-color: var(--ez-ink);
+}
+
+.section--orange .btn--inverse-outline:hover {
+  background: var(--ez-ink);
+  color: var(--ez-white);
 }
 
 .btn--lg {
   font-size: 1.35rem;
-  padding: 1rem 2.4rem;
+  padding: 0.95rem 2.1rem;
   min-height: 56px;
 }
 
@@ -513,11 +393,11 @@ ol {
 }
 
 .section--dark .cta-note {
-  color: var(--film-emulsion-dim);
+  color: var(--ez-on-ink-muted);
 }
 
 .section--orange .cta-note {
-  color: var(--film-emulsion-dim);
+  color: var(--ez-ink);
 }
 
 /* ---- Forms ---- */
@@ -528,12 +408,10 @@ ol {
 }
 
 .field > label {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 0.78rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--film-emulsion);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--ez-ink);
 }
 
 .field > input,
@@ -541,9 +419,9 @@ ol {
 .field > select {
   font-family: var(--font-body);
   font-size: var(--text-base);
-  color: var(--film-emulsion-bright);
-  background: var(--film-panel);
-  border: 1px solid var(--film-rule-strong);
+  color: var(--ez-ink);
+  background: var(--ez-white);
+  border: 1px solid #9a9a96;
   border-radius: var(--radius-sm);
   padding: 0.65rem 0.8rem;
   min-height: 48px;
@@ -558,9 +436,9 @@ ol {
 .field > input:focus-visible,
 .field > textarea:focus-visible,
 .field > select:focus-visible {
-  outline: 3px solid var(--flare-hot);
+  outline: 3px solid var(--ez-orange);
   outline-offset: 1px;
-  border-color: var(--flare);
+  border-color: var(--ez-orange);
 }
 
 .field > input[aria-invalid="true"],
@@ -576,52 +454,21 @@ ol {
 
 /* ---- Utility ---- */
 
-/* Eyebrow → EDGE-PRINT: not a floating kicker but film edge printing —
-   a mono annotation sitting ON a rule, breaking it like stamped codes
-   on the strip margin (finish-review finding #4). */
 .eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.26em;
-  color: var(--flare);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
+  letter-spacing: 0.1em;
+  color: var(--ez-orange-text);
 }
 
-.eyebrow::before {
-  content: "";
-  width: 0.55rem;
-  height: 0.55rem;
-  background: var(--flare);
-  flex-shrink: 0;
-}
-
-.eyebrow::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--film-rule);
+.section--dark .eyebrow {
+  color: var(--ez-orange-on-ink);
 }
 
 .section--orange .eyebrow {
-  color: var(--flare-hot);
-}
-
-.section--orange .eyebrow::before {
-  background: var(--flare-hot);
-}
-
-/* Stamped emulsion display type: turbulence-eroded lettering for
-   dark-ground heroes (finish-review finding #6). Mask keeps the ink
-   partially starved like a worn stamp; text stays selectable. */
-.stamped {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='340'%3E%3Cfilter id='e'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09' numOctaves='4' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='3.4' intercept='-0.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='340' height='340' fill='white'/%3E%3Crect width='340' height='340' filter='url(%23e)' opacity='0.85'/%3E%3C/svg%3E");
-  -webkit-mask-size: 340px 340px;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='340'%3E%3Cfilter id='e'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.09' numOctaves='4' stitchTiles='stitch'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='3.4' intercept='-0.5'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='340' height='340' fill='white'/%3E%3Crect width='340' height='340' filter='url(%23e)' opacity='0.85'/%3E%3C/svg%3E");
-  mask-size: 340px 340px;
+  color: var(--ez-ink);
 }
 
 .display-num {
@@ -654,13 +501,99 @@ ol {
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--flare);
-  color: var(--film-leader);
+  background: var(--ez-ink);
+  color: var(--ez-white);
   padding: 0.6rem 1rem;
   z-index: 100;
+  border-radius: var(--radius-sm);
 }
 
 .skip-link:focus {
   left: 0.5rem;
   top: 0.5rem;
+}
+
+/* Link list with orange arrows (sidebars, related links) */
+.link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-list li + li {
+  border-top: 1px solid var(--ez-line);
+}
+
+.link-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.6rem 0;
+  color: var(--ez-ink);
+  text-decoration: none;
+  font-weight: 600;
+  min-height: 44px;
+}
+
+.link-list a::after {
+  content: "›";
+  color: var(--ez-orange);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.link-list a:hover {
+  color: var(--ez-orange-text);
+}
+
+/* Data table */
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--ez-line);
+  vertical-align: top;
+}
+
+.data-table thead th {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--ez-ink);
+  border-bottom: 2px solid var(--ez-ink);
+}
+
+.data-table tbody th {
+  font-weight: 600;
+  color: var(--ez-ink);
+}
+
+/* Chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--ez-alt);
+  border: 1px solid var(--ez-line);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ez-ink);
+  text-decoration: none;
+}
+
+.chip:hover {
+  border-color: var(--ez-orange);
+  color: var(--ez-orange-text);
 }

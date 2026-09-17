@@ -1,0 +1,396 @@
+---
+/**
+ * County hubs AND town pages from one route (slugs are disjoint:
+ * counties end in "-county", towns in "-ma").
+ *
+ * Every page is built from REAL public data (Census gazetteer +
+ * municipality table) plus hand-written county context — never a
+ * token-swap of the town name. Nothing claims per-town job history;
+ * coverage is an owner decision (full state), stated as such.
+ * Home base is never mentioned.
+ */
+import type { GetStaticPaths } from "astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CallButton from "../../components/CallButton.astro";
+import ServiceGrid from "../../components/ServiceGrid.astro";
+import ProofColumns from "../../components/home/ProofColumns.astro";
+import FaqList from "../../components/FaqList.astro";
+import TownList from "../../components/TownList.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import CTASection from "../../components/CTASection.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import Icon from "../../components/Icon.astro";
+import { BUSINESS, COVERAGE, APPROVED_CLAIMS } from "../../config/business";
+import {
+  MA_COUNTIES,
+  MA_TOWNS,
+  countyRef,
+  townsInCounty,
+  nearbyTowns,
+  density,
+  formatNumber,
+  type MaTown,
+  type MaCountyRef,
+} from "../../config/ma-towns";
+import { COUNTY_CONTENT } from "../../config/ma-counties";
+import { featuredServices } from "../../config/services";
+
+export const getStaticPaths = (() => {
+  const counties = MA_COUNTIES.map((c) => ({ params: { slug: c.slug }, props: { kind: "county", county: c } }));
+  const towns = MA_TOWNS.map((t) => ({ params: { slug: t.slug }, props: { kind: "town", town: t } }));
+  return [...counties, ...towns];
+}) satisfies GetStaticPaths;
+
+interface Props {
+  kind: "county" | "town";
+  county?: MaCountyRef;
+  town?: MaTown;
+}
+
+const { kind } = Astro.props;
+
+/* ---------- shared ---------- */
+const sidebarLinks = [
+  { label: "Garage Door Repair", href: "/garage-door-repair/" },
+  { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+  { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+  { label: "Door Won't Close", href: "/garage-door-wont-close/" },
+  { label: "New Door Installation", href: "/garage-door-installation/" },
+  { label: "Emergency Repair", href: "/emergency-garage-door-repair/" },
+];
+
+/* ---------- county ---------- */
+const county = kind === "county" ? Astro.props.county! : countyRef(Astro.props.town!.county);
+const content = COUNTY_CONTENT[county.name];
+const countyTowns = townsInCounty(county.name);
+const countyPop = countyTowns.reduce((s, t) => s + (t.population2020 ?? 0), 0);
+const countyLand = Math.round(countyTowns.reduce((s, t) => s + t.landSqmi, 0));
+const largest = [...countyTowns].sort((a, b) => (b.population2020 ?? 0) - (a.population2020 ?? 0)).slice(0, 6);
+
+/* ---------- town ---------- */
+const town = kind === "town" ? Astro.props.town! : null;
+const near = town ? nearbyTowns(town, 8) : [];
+const dens = town ? density(town) : null;
+const growth =
+  town && town.population2020 && town.population2010
+    ? Math.round(((town.population2020 - town.population2010) / town.population2010) * 1000) / 10
+    : null;
+
+const settlementLine = (t: MaTown): string => {
+  if (!t.established) return "";
+  if (t.established < 1700) return `Established in ${t.established}, ${t.name} is one of the oldest communities in Massachusetts`;
+  if (t.established < 1800) return `Established in ${t.established}, ${t.name} is an 18th-century ${t.type}`;
+  if (t.established < 1900) return `Established in ${t.established}, ${t.name} is a 19th-century ${t.type}`;
+  return `${t.name} was incorporated in ${t.established}`;
+};
+
+const characterLine = (d: number | null): string => {
+  if (d === null) return "";
+  if (d > 5000) return "dense, urban neighborhoods where garages are tight — often detached, off an alley, or tucked under the house with low headroom";
+  if (d > 1500) return "established suburban neighborhoods with a mix of attached and detached garages, most with openers in their second decade";
+  if (d > 400) return "spread-out residential streets and larger lots where two-car doors and detached garages are common";
+  return "rural roads, long driveways, barns, and outbuildings with non-standard openings";
+};
+
+const housingLine = (t: MaTown): string =>
+  t.established && t.established < 1900
+    ? "A town settled this early carries housing from every era: older homes usually have detached or retrofitted garages with non-standard openings, so measurement comes before any replacement door is ordered."
+    : "Most garages here were built with the house, so stock door sizes usually fit — but headroom and side-room still get measured before a new door is ordered.";
+
+const townFaqs = town
+  ? [
+      {
+        question: `Do you serve ${town.name}, MA?`,
+        answer: `Yes. ${town.name} is in ${county.name} County, and EZ Garage Doors serves every city and town in Massachusetts. Call with your address and what the door is doing — we confirm coverage and timing on the phone before anyone drives out.`,
+      },
+      {
+        question: `How soon can you get to ${town.name}?`,
+        answer: `It depends on the day's schedule and where in the state the crew is. We don't promise arrival windows we can't keep — call, describe the problem, and we'll tell you honestly what today's availability looks like for ${town.name}.`,
+      },
+      {
+        question: "Do I get the price before you start?",
+        answer: `Always. ${APPROVED_CLAIMS.writtenQuote} — you see the full repair or installation price in writing and approve it first. The quote you approve is the price you pay.`,
+      },
+      ...content.faqs.slice(0, 2),
+    ]
+  : content.faqs;
+
+const title = town
+  ? `Garage Door Repair in ${town.name}, MA | EZ Garage Doors`
+  : `Garage Door Repair in ${county.name} County, MA | EZ Garage Doors`;
+
+const description = town
+  ? `Garage door repair, springs, openers, and new doors in ${town.name}, MA (${county.name} County). Local Massachusetts company — written quote before work begins.`
+  : `Garage door repair and installation across ${county.name} County, MA — all ${countyTowns.length} ${countyTowns.length === 1 ? "town" : "cities and towns"}, from springs and openers to new doors. Written quote first.`;
+
+const breadcrumbs = town
+  ? [
+      { label: "Service Areas", href: "/service-areas/" },
+      { label: `${county.name} County`, href: `/service-areas/${county.slug}/` },
+      { label: `${town.name}, MA` },
+    ]
+  : [{ label: "Service Areas", href: "/service-areas/" }, { label: `${county.name} County` }];
+---
+
+<SiteLayout title={title} description={description} faqs={townFaqs} breadcrumbs={breadcrumbs}>
+  <section class="area-hero">
+    <div class="wrap">
+      <Breadcrumbs items={breadcrumbs} class="area-hero__crumbs" />
+      <p class="eyebrow">{town ? `${county.name} County · ${county.region}` : `${county.region} · ${countyTowns.length} ${countyTowns.length === 1 ? "town" : "cities & towns"}`}</p>
+      <h1>
+        {town ? `Garage Door Repair & Installation in ${town.name}, MA` : `Garage Door Repair & Installation in ${county.name} County, MA`}
+      </h1>
+      <p class="area-hero__sub">
+        {
+          town
+            ? `Broken springs, stuck doors, opener failures, cables, off-track doors, and new door installation for ${town.name} homeowners — from a local Massachusetts company, with a written quote before work begins.`
+            : content.intro[0]
+        }
+      </p>
+      <div class="area-hero__actions">
+        <CallButton label="Call for Repair" size="lg" track="area_call_click" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
+      </div>
+      <ul class="area-hero__facts" aria-label="Company facts">
+        <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.writtenQuote}</li>
+        <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.years}</li>
+        <li><Icon name="check" size={18} /> {COVERAGE.line}</li>
+      </ul>
+    </div>
+  </section>
+
+  <ProofColumns />
+
+  <section class="section">
+    <div class="wrap page-grid">
+      <div class="area-main">
+        {
+          town ? (
+            <>
+              <SectionHeading eyebrow="Local context" title={`Garage doors in ${town.name}`} />
+              <div class="prose">
+                <p>
+                  {settlementLine(town)}{town.established ? ". " : ""}
+                  {town.population2020 ? `About ${formatNumber(town.population2020)} people live here` : `${town.name} sits`} across {town.landSqmi.toFixed(1)} square miles of land
+                  {dens ? ` — roughly ${formatNumber(dens)} per square mile — which means ${characterLine(dens)}.` : "."}
+                  {" "}{housingLine(town)}
+                </p>
+                <p>
+                  {town.name} is part of {county.name} County in {county.region}
+                  {town.countySeat ? " and is the county seat" : ""}. {content.intro[1] ?? ""}
+                </p>
+                <h3>What {content.nickname} doors deal with</h3>
+                <ul>
+                  {content.doorNotes.map((n) => (
+                    <li>{n}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <dl class="area-data card">
+                <div><dt>County</dt><dd><a href={`/service-areas/${county.slug}/`}>{county.name} County</a>{town.countySeat ? " (county seat)" : ""}</dd></div>
+                <div><dt>Region</dt><dd>{county.region}</dd></div>
+                <div><dt>Municipality</dt><dd>{town.type === "city" ? "City" : "Town"} · {town.government}</dd></div>
+                <div><dt>Population (2020)</dt><dd>{formatNumber(town.population2020)}{growth !== null ? ` (${growth > 0 ? "+" : ""}${growth}% since 2010)` : ""}</dd></div>
+                <div><dt>Land area</dt><dd>{town.landSqmi.toFixed(1)} sq mi{dens ? ` · ${formatNumber(dens)} people / sq mi` : ""}</dd></div>
+                <div><dt>Established</dt><dd>{town.established ?? "—"}</dd></div>
+              </dl>
+              <p class="area-source muted">Municipal data: U.S. Census Bureau (2020 Census, 2023 Gazetteer). Coverage: all {COVERAGE.municipalities} Massachusetts municipalities.</p>
+
+              <SectionHeading eyebrow="Nearby" title={`Towns near ${town.name} we also serve`} />
+              <ul class="area-near">
+                {near.map((n) => (
+                  <li>
+                    <a href={`/service-areas/${n.town.slug}/`}>
+                      <span>{n.town.name}</span>
+                      <span class="area-near__mi">{n.miles} mi</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <>
+              <SectionHeading eyebrow="About the county" title={`Garage doors across ${content.nickname}`} />
+              <div class="prose">
+                {content.intro.slice(1).map((p) => (
+                  <p>{p}</p>
+                ))}
+                <p>
+                  {county.name} County has {countyTowns.length} {countyTowns.length === 1 ? "municipality" : "municipalities"}
+                  {countyPop ? ` and about ${formatNumber(countyPop)} residents` : ""} across roughly {formatNumber(countyLand)} square miles of land. The county seat is {county.seat}.
+                  {largest.length > 1 ? ` The largest communities are ${largest.map((t) => t.name).join(", ")}.` : ""}
+                </p>
+                <h3>What {content.nickname} doors deal with</h3>
+                <ul>
+                  {content.doorNotes.map((n) => (
+                    <li>{n}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <SectionHeading eyebrow={`${countyTowns.length} ${countyTowns.length === 1 ? "town" : "cities & towns"}`} title={`Every ${county.name} County community we serve`} />
+              <TownList towns={countyTowns} id="towns" />
+              <p class="area-source muted">★ = county seat. Municipal data: U.S. Census Bureau. {BUSINESS.name} serves every Massachusetts municipality.</p>
+            </>
+          )
+        }
+      </div>
+
+      <Sidebar
+        title={town ? `Garage door help in ${town.name}` : `Garage door help in ${county.name} County`}
+        links={sidebarLinks}
+        callTrack="area_sidebar_call"
+      />
+    </div>
+  </section>
+
+  <ServiceGrid
+    heading={town ? `Garage door services in ${town.name}` : `Garage door services across ${county.name} County`}
+    eyebrow="What we do"
+    items={featuredServices}
+    alt
+  />
+
+  <FaqList faqs={townFaqs} heading={town ? `${town.name} garage door questions` : `${county.name} County garage door questions`} />
+
+  <CTASection
+    variant="orange"
+    heading={town ? `Need garage door service in ${town.name}?` : `Need garage door service in ${county.name} County?`}
+    sub="Call EZ Garage Doors or request service online — written quote before work begins."
+    callLabel="Call for Repair"
+  />
+</SiteLayout>
+
+<style>
+  .area-hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .area-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .area-hero h1 {
+    margin-top: var(--space-2);
+    font-size: clamp(2rem, 1.5rem + 2.6vw, 3.4rem);
+    max-width: 22ch;
+  }
+
+  .area-hero__sub {
+    font-size: var(--text-lg);
+    max-width: 44rem;
+    margin-top: var(--space-4);
+  }
+
+  .area-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .area-hero__facts {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-4) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--ez-ink);
+  }
+
+  .area-hero__facts li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .area-hero__facts svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .area-main :global(.section-heading) {
+    margin-top: var(--space-6);
+  }
+
+  .area-main :global(.section-heading:first-child) {
+    margin-top: 0;
+  }
+
+  .area-data {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .area-data dt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ez-orange-text);
+  }
+
+  .area-data dd {
+    margin: 0;
+    color: var(--ez-ink);
+    font-weight: 600;
+  }
+
+  .area-source {
+    font-size: var(--text-xs);
+    margin-top: var(--space-3);
+  }
+
+  .area-near {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: var(--space-2);
+  }
+
+  .area-near a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.6rem 0.9rem;
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--ez-ink);
+    font-weight: 600;
+    min-height: 44px;
+  }
+
+  .area-near a:hover {
+    border-color: var(--ez-orange);
+    color: var(--ez-orange-text);
+  }
+
+  .area-near__mi {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  @media (max-width: 36rem) {
+    .area-hero__actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+  }
+</style>

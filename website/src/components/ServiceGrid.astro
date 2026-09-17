@@ -1,0 +1,127 @@
+---
+/**
+ * Service cards with line icons (A1's "Services and Products" block).
+ * Defaults to the featured services from the taxonomy; pass `items`
+ * to scope it (e.g. a county page shows the same grid).
+ */
+import Icon from "./Icon.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { featuredServices, type Service } from "../config/services";
+
+interface Props {
+  heading?: string;
+  eyebrow?: string;
+  intro?: string;
+  items?: Service[];
+  alt?: boolean;
+  compact?: boolean;
+}
+
+const {
+  heading = "Garage door services across Massachusetts",
+  eyebrow = "What we do",
+  intro,
+  items = featuredServices,
+  alt = false,
+  compact = false,
+} = Astro.props;
+
+const iconFor = (s: Service): "spring" | "opener" | "door" | "wrench" | "cable" | "track" | "gear" | "clock" | "building" | "seal" => {
+  if (s.slug.includes("spring")) return "spring";
+  if (s.slug.includes("opener") || s.slug.includes("smart") || s.slug.includes("remote") || s.slug.includes("sensor")) return "opener";
+  if (s.slug.includes("cable")) return "cable";
+  if (s.slug.includes("track")) return "track";
+  if (s.slug.includes("emergency") || s.slug.includes("same-day")) return "clock";
+  if (s.slug.includes("commercial")) return "building";
+  if (s.slug.includes("tune") || s.slug.includes("noisy")) return "gear";
+  if (s.slug.includes("weather")) return "seal";
+  if (s.group === "install") return "door";
+  return "wrench";
+};
+---
+
+<section class:list={["section", { "section--alt": alt, "section--tight": compact }]} aria-labelledby="services-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow={eyebrow} title={heading} intro={intro} center />
+    <ul class="svc-grid">
+      {
+        items.map((s) => (
+          <li>
+            <a href={`/${s.slug}/`} class="svc-card" data-track={`svc_grid_${s.slug}`}>
+              <span class="svc-card__icon"><Icon name={iconFor(s)} size={30} /></span>
+              <span class="svc-card__title">{s.title}</span>
+              <span class="svc-card__blurb">{s.blurb}</span>
+              <span class="svc-card__go">Learn about {s.short.toLowerCase()} <Icon name="arrow" size={16} /></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .svc-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .svc-card {
+    display: grid;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-5);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 140ms ease, transform 140ms ease;
+  }
+
+  .svc-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .svc-card__icon {
+    display: inline-flex;
+    width: 3.25rem;
+    height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: var(--ez-tint);
+    color: var(--ez-orange-text);
+  }
+
+  .svc-card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-xl);
+    color: var(--ez-ink);
+    line-height: 1.15;
+  }
+
+  .svc-card__blurb {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .svc-card__go {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ez-orange-text);
+  }
+</style>

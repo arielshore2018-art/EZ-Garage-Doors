@@ -1,0 +1,69 @@
+---
+/**
+ * Visible breadcrumb trail for inner pages. The matching BreadcrumbList
+ * JSON-LD is emitted by Schema.astro from the same `breadcrumbs` prop
+ * passed to the layout — keep both in sync by passing one array.
+ */
+export interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+  class?: string;
+}
+
+const { items, class: className = "" } = Astro.props;
+---
+
+<nav class:list={["crumbs", className]} aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    {
+      items.map((c, i) => (
+        <li>
+          {c.href && i < items.length - 1 ? (
+            <a href={c.href}>{c.label}</a>
+          ) : (
+            <span aria-current="page">{c.label}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .crumbs li + li::before {
+    content: "›";
+    margin-right: 0.35rem;
+    color: var(--ez-orange);
+  }
+
+  .crumbs a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--ez-orange-text);
+    text-decoration: underline;
+  }
+
+  .crumbs span {
+    color: var(--ez-ink);
+    font-weight: 600;
+  }
+</style>

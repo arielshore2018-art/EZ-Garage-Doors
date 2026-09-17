@@ -1,226 +1,117 @@
 ---
 /**
- * TrustLogoStrip — recognizable third-party logos as small, practical
- * trust signals (not a SaaS logo wall, no marquee, no carousel).
- *
- * Wording rules (owner directive): only "brands we service" /
- * "reviewed across platforms" language. Never "authorized dealer",
- * "certified", "official partner", ratings, or counts.
- *
- * Logo sources: owner-supplied files from Brand/general/, audited and
- * reprocessed (see ASSET-INVENTORY.md). Brands without a usable logo
- * asset (Clopay, Raynor, Linear, Sommer, Marantec) render as text
- * badges — the Raynor file was rejected because it had "AUTHORIZED
- * DEALER" baked into the artwork.
+ * Brand logo strip — "Brands we service" as a labeled logo band.
+ * Reads the brand-logos manifest; never phrased as "authorized dealer",
+ * "certified", or "partner". Non-affiliation line always renders.
  */
 import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
-
-import googleLogo from "../assets/trust-logos/review-platforms/google-logo.webp";
-import yelpLogo from "../assets/trust-logos/review-platforms/yelp-logo.webp";
-import angiLogo from "../assets/trust-logos/review-platforms/angi-logo.webp";
-import thumbtackLogo from "../assets/trust-logos/review-platforms/thumbtack-logo.webp";
-import fiveStars from "../assets/trust-logos/review-platforms/five-stars.webp";
-import liftmasterLogo from "../assets/trust-logos/opener-brands/liftmaster-logo.webp";
-import chamberlainLogo from "../assets/trust-logos/opener-brands/chamberlain-logo.webp";
-import genieLogo from "../assets/trust-logos/opener-brands/genie-logo.webp";
-import craftsmanLogo from "../assets/trust-logos/opener-brands/craftsman-logo.webp";
-import amarrLogo from "../assets/trust-logos/door-brands/amarr-logo.webp";
-import haasLogo from "../assets/trust-logos/door-brands/haas-logo.webp";
-import wayneDaltonLogo from "../assets/trust-logos/door-brands/wayne-dalton-logo.webp";
-import chiLogo from "../assets/trust-logos/door-brands/chi-logo.webp";
-
-interface LogoDef {
-  img: ImageMetadata;
-  alt: string;
-  /** Display height in px (logos vary in aspect; short wordmarks need less). */
-  h?: number;
-}
+import { brandLogos } from "../config/brand-logos";
 
 type Variant = "review-platforms" | "opener-brands" | "door-brands" | "combined";
 
 interface Props {
   variant: Variant;
-  /** Slimmer paddings for tight placements (e.g. directly under a hero). */
   slim?: boolean;
 }
 
 const { variant, slim = false } = Astro.props;
 
-const review: LogoDef[] = [
-  { img: googleLogo, alt: "Google reviews platform logo", h: 26 },
-  { img: yelpLogo, alt: "Yelp reviews platform logo", h: 28 },
-  { img: angiLogo, alt: "Angi reviews platform logo", h: 28 },
-  { img: thumbtackLogo, alt: "Thumbtack reviews platform logo", h: 20 },
-];
+const pick = (cat: string) => brandLogos.filter((l) => l.enabled && l.category === cat);
 
-const openers: LogoDef[] = [
-  { img: liftmasterLogo, alt: "LiftMaster garage door opener brand logo", h: 24 },
-  { img: chamberlainLogo, alt: "Chamberlain garage door opener brand logo", h: 18 },
-  { img: genieLogo, alt: "Genie garage door opener brand logo", h: 30 },
-  { img: craftsmanLogo, alt: "Craftsman garage door opener brand logo", h: 24 },
-];
-
-const doors: LogoDef[] = [
-  { img: amarrLogo, alt: "Amarr garage door brand logo", h: 28 },
-  { img: haasLogo, alt: "Haas Door garage door brand logo", h: 32 },
-  { img: wayneDaltonLogo, alt: "Wayne Dalton garage door brand logo", h: 30 },
-  { img: chiLogo, alt: "C.H.I. garage door brand logo", h: 24 },
-];
-
-const config: Record<Variant, { text: string; logos: LogoDef[]; badges: string[]; stars: boolean; note?: string }> = {
-  "review-platforms": {
-    text: "850+ 5-star reviews across major platforms",
-    logos: review,
-    badges: [],
-    stars: true,
-  },
-  "opener-brands": {
-    text: "We service most major garage door opener brands",
-    logos: openers,
-    badges: ["Linear", "Sommer", "Marantec"],
-    stars: false,
-    note: "Brand names and logos belong to their owners. Listing them means we service this equipment — not that we are an authorized dealer.",
-  },
-  "door-brands": {
-    text: "Repair and replacement support for common garage door systems",
-    logos: doors,
-    badges: ["Clopay", "Raynor"],
-    stars: false,
-    note: "Brand names and logos belong to their owners. Listing them means we service this equipment — not that we are an authorized dealer.",
-  },
-  /* Brands-only: review-platform proof lives in ProofBand — pages that
-     render both shouldn't repeat the platform logos twice per viewport. */
-  combined: {
-    text: "We service most major garage door and opener brands",
-    logos: [
-      { img: liftmasterLogo, alt: "LiftMaster garage door opener brand logo", h: 24 },
-      { img: chamberlainLogo, alt: "Chamberlain garage door opener brand logo", h: 18 },
-      { img: genieLogo, alt: "Genie garage door opener brand logo", h: 30 },
-      { img: amarrLogo, alt: "Amarr garage door brand logo", h: 26 },
-      { img: wayneDaltonLogo, alt: "Wayne Dalton garage door brand logo", h: 28 },
-    ],
-    badges: ["Clopay", "Raynor", "Linear", "Sommer"],
-    stars: false,
-    note: "Brand names and logos belong to their owners. Listing them means we service this equipment — not that we are an authorized dealer.",
-  },
-};
-
-const { text, logos, badges, stars, note } = config[variant];
-
-const dims = (l: LogoDef) => {
-  const h = l.h ?? 28;
-  return { height: h, width: Math.round(l.img.width * (h / l.img.height)) };
-};
+const rows: { label: string; logos: typeof brandLogos }[] =
+  variant === "review-platforms"
+    ? [{ label: "Reviewed across", logos: pick("review-platform") }]
+    : variant === "opener-brands"
+      ? [{ label: "Opener brands we service", logos: pick("opener-brand") }]
+      : variant === "door-brands"
+        ? [{ label: "Door brands we service", logos: pick("door-brand") }]
+        : [
+            { label: "Opener brands we service", logos: pick("opener-brand") },
+            { label: "Door brands we service", logos: pick("door-brand") },
+          ];
 ---
 
-<aside class:list={["tls", { "tls--slim": slim }]} aria-label={text}>
-  <div class="wrap tls__inner">
-    <p class="tls__text">
-      {
-        stars ? (
-          <Image src={fiveStars} alt="" width={92} height={16} loading="lazy" class="tls__stars" />
-        ) : (
-          <span class="speed-tick" aria-hidden="true" />
-        )
-      }
-      {text}
-    </p>
-    <ul class="tls__logos">
-      {
-        logos.map((l) => {
-          const d = dims(l);
-          return (
-            <li>
-              <Image src={l.img} alt={l.alt} width={d.width} height={d.height} loading="lazy" />
-            </li>
-          );
-        })
-      }
-      {badges.map((b) => <li class="tls__badge">{b}</li>)}
-    </ul>
-    {note && <p class="tls__note">{note}</p>}
+<section class:list={["brands", { "brands--slim": slim }]} aria-label="Brands we service">
+  <div class="wrap">
+    {
+      rows.map((row) => (
+        <div class="brands__row">
+          <p class="brands__label">{row.label}</p>
+          <ul class="brands__logos">
+            {row.logos.map((l) => (
+              <li>
+                <Image src={l.src} alt={l.alt} height={l.railHeight} loading="lazy" style={`height:${l.railHeight}px`} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+    {
+      variant !== "review-platforms" && (
+        <p class="brands__note">
+          We service these brands. We are not affiliated with or endorsed by any of them.
+          <a href="/brands/">See all brands we service →</a>
+        </p>
+      )
+    }
   </div>
-</aside>
+</section>
 
 <style>
-  .tls {
+  .brands {
     background: var(--ez-white);
     border-block: 1px solid var(--ez-line);
-    padding-block: var(--space-5);
+    padding-block: var(--space-6);
   }
 
-  .tls--slim {
-    padding-block: var(--space-3);
+  .brands--slim {
+    padding-block: var(--space-4);
   }
 
-  .tls__inner {
-    display: grid;
-    gap: var(--space-3);
+  .brands__row + .brands__row {
+    margin-top: var(--space-5);
   }
 
-  .tls__text {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin: 0;
+  .brands__label {
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--ez-orange-text);
+    text-align: center;
+    margin-bottom: var(--space-3);
   }
 
-  .tls__stars {
-    width: 92px;
-    height: auto;
-  }
-
-  .tls__logos {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3) var(--space-5);
-    flex-wrap: wrap;
+  .brands__logos {
     list-style: none;
     padding: 0;
     margin: 0;
-  }
-
-  .tls__logos li {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
-    /* film-can label plate for dark logo artwork on the dark ground */
-    background: var(--film-emulsion-bright);
-    padding: 0.4rem 0.75rem;
+    gap: var(--space-4) var(--space-6);
   }
 
-  .tls__logos li.tls__badge {
-    background: transparent;
-    padding: 0.2rem 0.65rem;
-  }
-
-  .tls__logos img {
+  .brands__logos img {
     width: auto;
-    display: block;
+    max-height: 40px;
+    filter: grayscale(1);
+    opacity: 0.8;
+    transition: filter 140ms ease, opacity 140ms ease;
   }
 
-  .tls__badge {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--ez-steel);
-    border: 1px solid var(--ez-line);
-    border-radius: var(--radius-sm);
-    padding: 0.2rem 0.65rem;
-    white-space: nowrap;
+  .brands__logos li:hover img {
+    filter: none;
+    opacity: 1;
   }
 
-  .tls__note {
-    margin: 0;
+  .brands__note {
+    text-align: center;
     font-size: var(--text-xs);
-    color: var(--ez-steel);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
   }
 </style>

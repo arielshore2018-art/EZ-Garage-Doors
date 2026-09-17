@@ -3,22 +3,31 @@
  * Services overview — a router page, not a brochure.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import ServiceRouter from "../components/ServiceRouter.astro";
+import ServiceGrid from "../components/ServiceGrid.astro";
 import EmergencyCallBar from "../components/EmergencyCallBar.astro";
 import PricingLogicBlock from "../components/PricingLogicBlock.astro";
 import CTASection from "../components/CTASection.astro";
+import { services } from "../config/services";
+
+const crumbs = [{ label: "Services" }];
+const all = services.filter((s) => s.slug !== "same-day-garage-door-service");
 ---
 
 <SiteLayout
-  title="Garage Door Services in Connecticut | EZ Garage Doors"
-  description="All EZ Garage Doors services: garage door repair, broken spring replacement, opener repair, new door installation, replacement, and commercial door service."
+  title="Garage Door Services in Massachusetts | EZ Garage Doors"
+  description="Every EZ Garage Doors service across Massachusetts: repair, springs, cables, rollers, tracks, panels, openers, new doors, maintenance, and commercial doors."
+  breadcrumbs={crumbs}
 >
   <section class="services-hero">
     <div class="wrap wrap--narrow">
+      <Breadcrumbs items={crumbs} class="services-hero__crumbs" />
+      <p class="eyebrow">Services · Massachusetts</p>
       <h1>Garage Door Services</h1>
       <p class="services-hero__sub">
-        Repair, springs, openers, new installations, and commercial doors — every job starts with
-        a written quote.
+        Repair, springs, openers, new installations, maintenance, and commercial doors — every job
+        starts with a written quote.
       </p>
     </div>
   </section>
@@ -27,6 +36,8 @@ import CTASection from "../components/CTASection.astro";
 
   <ServiceRouter />
 
+  <ServiceGrid heading="Every service, A to Z" eyebrow="Full list" items={all} alt />
+
   <PricingLogicBlock />
 
   <CTASection />
@@ -34,14 +45,21 @@ import CTASection from "../components/CTASection.astro";
 
 <style>
   .services-hero {
-    background: var(--ez-paper);
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
     padding-block: var(--space-7);
-    border-bottom: 1px solid var(--ez-border);
+    border-bottom: 1px solid var(--ez-line);
+  }
+
+  .services-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .services-hero h1 {
+    margin-top: var(--space-2);
   }
 
   .services-hero__sub {
     font-size: var(--text-lg);
-    color: var(--color-text-muted);
     margin-top: var(--space-4);
   }
 </style>

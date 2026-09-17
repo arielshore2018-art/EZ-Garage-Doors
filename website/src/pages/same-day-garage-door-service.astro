@@ -1,15 +1,16 @@
 ---
 /**
- * Fast-service PPC landing page.
- * "Same-day" is NOT yet confirmed by the owner, so per the brief the
- * copy promises fast LOCAL service and "call for today's availability"
- * — no unconditional same-day claim, no false after-hours promises.
+ * Fast-service landing page.
+ * "Same-day" is NOT confirmed by the owner, so the copy promises fast
+ * LOCAL service and "call for today's availability" — no unconditional
+ * same-day claim, no after-hours promises.
  * needs-owner-confirmation: if same-day capacity is confirmed, the H1
- * may be upgraded to "Same-Day Garage Door Service in Connecticut".
+ * may be upgraded to "Same-Day Garage Door Service in Massachusetts".
  */
 import LandingLayout from "../layouts/LandingLayout.astro";
 import CallButton from "../components/CallButton.astro";
 import MicroTrustBar from "../components/MicroTrustBar.astro";
+import Icon from "../components/Icon.astro";
 import { APPROVED_CLAIMS } from "../config/business";
 
 const fastFixes = [
@@ -22,54 +23,43 @@ const fastFixes = [
 
 const service = {
   name: "Fast Local Garage Door Service",
-  description: "Fast local garage door repair in Connecticut — call for today's availability.",
+  description: "Fast local garage door repair across Massachusetts — call for today's availability.",
   url: "/same-day-garage-door-service/",
 };
 ---
 
 <LandingLayout
-  title="Fast Local Garage Door Service in Connecticut | EZ Garage Doors"
-  description="Stuck door, broken spring, or opener failure? Call EZ Garage Doors for fast local garage door service in Connecticut — ask about today's availability."
+  title="Fast Local Garage Door Service in Massachusetts | EZ Garage Doors"
+  description="Stuck door, broken spring, or opener failure? Call EZ Garage Doors for fast local garage door service anywhere in Massachusetts — ask about today's availability."
   callLabel="Call for Availability"
   service={service}
 >
   <section class="fast-hero">
     <div class="wrap fast-hero__inner">
-      <h1>Fast Local Garage Door Service in Connecticut</h1>
+      <p class="eyebrow">Fast local service · Massachusetts</p>
+      <h1>Fast Local Garage Door Service in Massachusetts</h1>
       <p class="fast-hero__sub">
         For stuck doors, broken springs, opener issues, and urgent repairs, call EZ Garage Doors
-        and ask about today's availability.
+        and ask about today's availability in your town.
       </p>
       <div class="fast-hero__actions">
         <CallButton label="Call for Availability" size="lg" track="fast_call_click" />
-        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">
-          Request Service
-        </a>
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
       </div>
-      <p class="fast-hero__after-hours">
+      <p class="fast-hero__after-hours muted">
         Calling after hours? Request service now — first callback when dispatch opens.
       </p>
       <div class="fast-hero__trust">
-        <MicroTrustBar
-          items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]}
-        />
+        <MicroTrustBar items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]} />
       </div>
     </div>
   </section>
 
-  <section class="fast-list">
+  <section class="fast-list section">
     <div class="wrap">
       <h2>What we can usually fix on the first visit</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
       <ul class="fast-list__grid">
-        {
-          fastFixes.map((fix) => (
-            <li>
-              <span class="speed-tick" aria-hidden="true" />
-              {fix}
-            </li>
-          ))
-        }
+        {fastFixes.map((fix) => <li><Icon name="check" size={18} /><span>{fix}</span></li>)}
       </ul>
       <p class="muted fast-list__note">
         Vans are stocked for the common failures — springs, cables, rollers, and opener parts —
@@ -78,10 +68,9 @@ const service = {
     </div>
   </section>
 
-  <section class="fast-quote">
+  <section class="fast-quote section section--alt">
     <div class="wrap wrap--narrow">
       <h2>Fast doesn't mean loose with pricing</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
       <p>
         However quickly we get there, the rule holds: <strong>written quote before work
         begins</strong>. You approve the number, then we fix the door.
@@ -93,27 +82,29 @@ const service = {
     <div class="wrap fast-final__inner">
       <h2>Need it handled today?</h2>
       <p>Call now and ask about today's availability in your town.</p>
-      <CallButton label="Call for Availability" size="lg" variant="ink" track="fast_call_click" />
+      <CallButton label="Call for Availability" size="lg" track="fast_call_click" />
     </div>
   </section>
 </LandingLayout>
 
 <style>
   .fast-hero {
-    background: var(--ez-paper);
-    padding-block: var(--space-7);
-    border-bottom: var(--track-stroke) solid var(--ez-orange);
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .fast-hero__inner {
+    max-width: 46rem;
   }
 
   .fast-hero h1 {
-    max-width: 44rem;
+    margin-top: var(--space-2);
   }
 
   .fast-hero__sub {
     font-size: var(--text-lg);
-    color: var(--color-text-muted);
     margin-top: var(--space-4);
-    max-width: 38rem;
   }
 
   .fast-hero__actions {
@@ -126,17 +117,12 @@ const service = {
   .fast-hero__after-hours {
     margin-top: var(--space-3);
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
   }
 
   .fast-hero__trust {
     margin-top: var(--space-5);
     padding-top: var(--space-4);
-    border-top: 1px solid var(--ez-border);
-  }
-
-  .fast-list {
-    padding-block: var(--space-7);
+    border-top: 1px solid var(--ez-line);
   }
 
   .fast-list__grid {
@@ -144,28 +130,30 @@ const service = {
     padding: 0;
     margin: var(--space-5) 0 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
     gap: var(--space-3);
-    font-weight: 500;
   }
 
   .fast-list__grid li {
     display: flex;
-    align-items: center;
-    background: var(--ez-white);
-    border: 1px solid var(--ez-line);
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--ez-alt);
+    border-radius: var(--radius-sm);
     padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .fast-list__grid svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
   }
 
   .fast-list__note {
     margin-top: var(--space-4);
     font-size: var(--text-sm);
-  }
-
-  .fast-quote {
-    background: var(--ez-white);
-    border-block: 1px solid var(--ez-line);
-    padding-block: var(--space-7);
   }
 
   .fast-quote p {
@@ -178,12 +166,8 @@ const service = {
     text-align: center;
   }
 
-  .fast-final h2 {
-    color: var(--film-emulsion-bright);
-  }
-
   .fast-final p {
     margin-block: var(--space-3) var(--space-5);
-    color: var(--film-emulsion);
+    color: var(--ez-ink);
   }
 </style>

@@ -1,0 +1,199 @@
+---
+/**
+ * Guides hub: categories, then every guide grouped by category.
+ */
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CallButton from "../../components/CallButton.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import CTASection from "../../components/CTASection.astro";
+import Icon from "../../components/Icon.astro";
+import { GUIDES, GUIDE_CATEGORIES, guidesInCategory } from "../../config/guides";
+
+const breadcrumbs = [{ label: "Guides" }];
+---
+
+<SiteLayout
+  title={`Garage Door Guides & Troubleshooting | EZ Garage Doors`}
+  description={`${GUIDES.length} plain-language garage door guides from a Massachusetts repair company: troubleshooting, springs, openers, safety, maintenance, buying, cost, and commercial.`}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="guides-hero">
+    <div class="wrap">
+      <Breadcrumbs items={breadcrumbs} class="guides-hero__crumbs" />
+      <p class="eyebrow">Guides &amp; troubleshooting</p>
+      <h1>Garage Door Guides</h1>
+      <p class="guides-hero__sub">
+        {GUIDES.length} plain-language articles on what your door is doing, why, and what to do
+        next — written by the company that fixes them across Massachusetts. No teaser prices, no
+        scare tactics; safety notes where they matter.
+      </p>
+      <div class="guides-hero__actions">
+        <CallButton label="Call for Repair" size="lg" track="guides_call_click" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <SectionHeading eyebrow="Browse" title="Guides by topic" center />
+      <ul class="cat-grid">
+        {
+          GUIDE_CATEGORIES.map((c) => (
+            <li>
+              <a href={`/guides/category/${c.id}/`} class="cat-card">
+                <span class="cat-card__name">{c.name}</span>
+                <span class="cat-card__blurb">{c.blurb}</span>
+                <span class="cat-card__count">{guidesInCategory(c.id).length} guides <Icon name="arrow" size={16} /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    GUIDE_CATEGORIES.map((c) => {
+      const list = guidesInCategory(c.id);
+      return (
+        list.length > 0 && (
+          <section class="section section--tight">
+            <div class="wrap">
+              <SectionHeading eyebrow={c.name} title={c.blurb} level="h2" />
+              <ul class="guide-list">
+                {list.map((g) => (
+                  <li>
+                    <a href={`/guides/${g.slug}/`} class="guide-list__item">
+                      <span class="guide-list__title">{g.title}</span>
+                      <span class="guide-list__desc">{g.description}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )
+      );
+    })
+  }
+
+  <CTASection heading="Rather have a technician look at it?" sub="Call EZ Garage Doors or request service — written quote before work begins." />
+</SiteLayout>
+
+<style>
+  .guides-hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .guides-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .guides-hero h1 {
+    margin-top: var(--space-2);
+  }
+
+  .guides-hero__sub {
+    font-size: var(--text-lg);
+    max-width: 46rem;
+    margin-top: var(--space-4);
+  }
+
+  .guides-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .cat-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .cat-card {
+    display: grid;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-5);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cat-card:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .cat-card__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-xl);
+    color: var(--ez-ink);
+  }
+
+  .cat-card__blurb {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .cat-card__count {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ez-orange-text);
+  }
+
+  .guide-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .guide-list__item {
+    display: grid;
+    gap: 0.25rem;
+    padding: var(--space-4) var(--space-5);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .guide-list__item:hover {
+    border-color: var(--ez-orange);
+  }
+
+  .guide-list__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ez-ink);
+    line-height: 1.2;
+  }
+
+  .guide-list__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

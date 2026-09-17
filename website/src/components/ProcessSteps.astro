@@ -1,9 +1,9 @@
 ---
 /**
- * "What happens when you call" — numbered steps hanging off a
- * horizontal EZ Track rail (the process-rail use of the signature).
- * Vertical rail on mobile.
+ * "What happens when you call" — numbered step cards.
  */
+import SectionHeading from "./SectionHeading.astro";
+
 interface Step {
   title: string;
   detail: string;
@@ -13,44 +13,30 @@ interface Props {
   steps?: Step[];
   heading?: string;
   eyebrow?: string;
+  bare?: boolean;
 }
 
 const {
   heading = "What happens when you call",
   eyebrow = "The process",
+  bare = false,
   steps = [
-    {
-      title: "Describe the issue",
-      detail: "Tell us what the door is doing — stuck, loud bang, won't close, opener dead.",
-    },
-    {
-      title: "Send a photo if useful",
-      detail: "A quick photo of the door, spring, or opener often speeds up the diagnosis.",
-    },
-    {
-      title: "Get your arrival window",
-      detail: "We confirm the appointment and the time window before anyone drives out.",
-    },
-    {
-      title: "Written quote before work begins",
-      detail: "You see the price in writing and approve it first. Then we do the repair.",
-    },
+    { title: "Describe the issue", detail: "Tell us what the door is doing — stuck, loud bang, won't close, opener dead." },
+    { title: "Send a photo if useful", detail: "A quick photo of the door, spring, or opener often speeds up the diagnosis." },
+    { title: "Get your arrival window", detail: "We confirm the appointment and the time window before anyone drives out." },
+    { title: "Written quote before work begins", detail: "You see the price in writing and approve it first. Then we do the repair." },
   ],
 } = Astro.props;
-
-import SectionHeading from "./SectionHeading.astro";
 ---
 
-<section class="section section--alt" aria-labelledby="process-heading">
-  <div class="wrap">
+<section class:list={["steps-sec", { "section section--alt": !bare }]} aria-labelledby="process-heading">
+  <div class:list={{ wrap: !bare }}>
     <SectionHeading eyebrow={eyebrow} title={heading} />
     <ol class="steps">
       {
         steps.map((step, i) => (
           <li class="steps__item">
-            <span class="steps__num display-num" aria-hidden="true">
-              {String(i + 1).padStart(2, "0")}
-            </span>
+            <span class="steps__num display-num" aria-hidden="true">{i + 1}</span>
             <h3 class="steps__title">{step.title}</h3>
             <p class="steps__detail">{step.detail}</p>
           </li>
@@ -63,102 +49,48 @@ import SectionHeading from "./SectionHeading.astro";
 <style>
   .steps {
     list-style: none;
-    padding: calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + 1rem) 0 0;
-    margin: var(--space-6) 0 0;
+    padding: 0;
+    margin: 0;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: var(--space-4);
-    position: relative;
+    counter-reset: step;
   }
 
-  /* the horizontal track the steps hang from */
-  .steps::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--track-stroke);
-    background: var(--ez-orange);
-  }
-
-  .steps::after {
-    content: "";
-    position: absolute;
-    top: calc(var(--track-stroke) + var(--track-gap));
-    left: 0;
-    right: 0;
-    height: var(--track-ghost);
-    background: var(--ez-line);
+  /* inside a content column (bare mode) four steps read as a 2×2 grid */
+  .steps-sec:not(.section) .steps {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
 
   .steps__item {
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
     padding: var(--space-5);
-    position: relative;
-  }
-
-  /* hanger connecting each step to the rail */
-  .steps__item::before {
-    content: "";
-    position: absolute;
-    top: calc(-1rem - var(--track-gap) - var(--track-ghost));
-    left: var(--space-5);
-    width: 3px;
-    height: calc(1rem + var(--track-gap) + var(--track-ghost));
-    background: var(--ez-orange);
+    box-shadow: var(--shadow-card);
   }
 
   .steps__num {
-    font-size: var(--text-2xl);
-    line-height: 1;
-    color: var(--ez-orange);
-    display: block;
-    margin-bottom: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--ez-orange);
+    color: var(--ez-white);
+    font-size: 1.35rem;
+    margin-bottom: var(--space-3);
   }
 
   .steps__title {
     font-size: var(--text-lg);
-    margin-bottom: var(--space-1);
+    margin-bottom: var(--space-2);
   }
 
   .steps__detail {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     margin: 0;
-  }
-
-  @media (max-width: 56rem) {
-    .steps {
-      grid-template-columns: 1fr;
-      padding: 0 0 0 calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + 1rem);
-    }
-
-    /* rail rotates vertical on mobile */
-    .steps::before {
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: auto;
-      width: var(--track-stroke);
-      height: auto;
-    }
-
-    .steps::after {
-      top: 0;
-      bottom: 0;
-      left: calc(var(--track-stroke) + var(--track-gap));
-      right: auto;
-      width: var(--track-ghost);
-      height: auto;
-    }
-
-    .steps__item::before {
-      top: 1.4rem;
-      left: calc(-1rem - var(--track-gap) - var(--track-ghost));
-      width: calc(1rem + var(--track-gap) + var(--track-ghost));
-      height: 3px;
-    }
   }
 </style>

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/ppc/garage-door-repair/middletown-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/cromwell-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/rocky-hill-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/glastonbury-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/west-hartford-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/farmington-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/avon-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/simsbury-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/wethersfield-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/newington-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/berlin-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/southington-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/plainville-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/south-windsor-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/vernon-ct/", "destination": "/garage-door-repair/", "permanent": true },
+    { "source": "/ppc/garage-door-repair/tolland-ct/", "destination": "/garage-door-repair/", "permanent": true }
+  ]
+}

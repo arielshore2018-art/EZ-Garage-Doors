@@ -1,0 +1,78 @@
+---
+/**
+ * Openers hub (A1's /garage-door-opener/): routes to repair,
+ * installation, remotes, sensors, smart openers, and brand pages.
+ */
+import SiteLayout from "../layouts/SiteLayout.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
+import ServiceGrid from "../components/ServiceGrid.astro";
+import RepairIssueGrid from "../components/RepairIssueGrid.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+import FaqList from "../components/FaqList.astro";
+import RelatedLinks from "../components/RelatedLinks.astro";
+import CTASection from "../components/CTASection.astro";
+import { servicesInGroup } from "../config/services";
+import { OPENER_BRANDS } from "../config/brands";
+
+const openerServices = servicesInGroup("opener");
+
+const issues = [
+  { symptom: "Opener hums but the door doesn't move", meaning: "Often a stripped gear or broken trolley — or a broken spring making the door too heavy.", href: "/garage-door-opener-repair/" },
+  { symptom: "Sensor lights blinking, door won't close", meaning: "Misaligned or blocked safety sensors — the #1 reason doors refuse to close.", href: "/garage-door-safety-sensor-repair/" },
+  { symptom: "Remote or keypad stopped working", meaning: "Battery, re-pairing, or a failed accessory — quick either way.", href: "/garage-door-remote-programming/" },
+  { symptom: "Opener is 15+ years old and failing", meaning: "Replacement usually costs less over time and adds current safety features.", href: "/garage-door-opener-installation/" },
+];
+
+const faqs = [
+  { question: "Should I repair my garage door opener or replace it?", answer: "It depends on age and the failed part. Sensor alignment, remotes, and adjustments are quick repairs. If the motor or logic board has failed on an opener that is 12–15+ years old, replacement usually costs less over time — and adds current safety features. We explain both numbers in a written quote before any work." },
+  { question: "Belt drive, chain drive, or wall-mount — which opener should I get?", answer: "Belt drives are the quiet choice for garages under bedrooms. Chain drives are the durable budget workhorse. Wall-mount (jackshaft) openers free the ceiling and suit high-lift or low-headroom garages. We size the motor to the door's weight and put the options in writing." },
+  { question: "Which opener brands do you service?", answer: "LiftMaster, Chamberlain, Genie, Craftsman, Linear, Sommer, Marantec, and most other major brands — regardless of who installed them. We service these brands; we are not affiliated with or endorsed by them." },
+  { question: "Can you connect my opener to my phone?", answer: "Yes. Most current LiftMaster and Chamberlain openers have Wi-Fi built in, and many older openers can be connected with an add-on hub. We install, connect, and walk you through the app." },
+];
+
+const service = {
+  name: "Garage Door Openers",
+  description: "Garage door opener repair, replacement, installation, remotes, keypads, safety sensors, and smart openers across Massachusetts.",
+  url: "/garage-door-openers/",
+};
+---
+
+<SiteLayout
+  title="Garage Door Openers in Massachusetts | EZ Garage Doors"
+  description="Opener repair, replacement, and installation across Massachusetts: belt, chain, and wall-mount openers, remotes, sensors, and smart openers. Written quote first."
+  service={service}
+  faqs={faqs}
+>
+  <ServiceHero
+    imageId="opener-rail"
+    eyebrow="Garage door openers"
+    heading="Garage Door Openers — Repair, Replacement & Installation"
+    sub="Opener humming, remote dead, sensors blinking, or ready for a quiet belt-drive with app control? We diagnose the real cause, explain repair vs. replacement, and put both numbers in writing."
+    callLabel="Call for Opener Service"
+    callTrack="openers_call_click"
+    breadcrumbs={[{ label: "Garage Door Openers" }]}
+  />
+
+  <ProofColumns />
+
+  <ServiceGrid heading="Opener services" eyebrow="What we do" items={openerServices} />
+
+  <RepairIssueGrid heading="What is your opener doing?" issues={issues} alt />
+
+  <TrustLogoStrip variant="opener-brands" />
+
+  <FaqList faqs={faqs} heading="Garage door opener questions" />
+
+  <RelatedLinks
+    heading="Opener brands we service"
+    eyebrow="By brand"
+    items={OPENER_BRANDS.map((b) => ({ label: `${b.name} openers`, href: `/brands/${b.slug}/`, blurb: b.tagline }))}
+  />
+
+  <CTASection
+    heading="Opener acting up?"
+    sub="Call EZ Garage Doors — we'll tell you if it's a fix or a replacement, in writing."
+    callLabel="Call for Opener Service"
+  />
+</SiteLayout>

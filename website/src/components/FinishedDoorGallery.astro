@@ -11,6 +11,7 @@ interface Door {
   image: ImageMetadata;
   style: string;
   detail: string;
+  href?: string;
 }
 
 interface Props {
@@ -29,16 +30,11 @@ const { doors, heading = "Door styles we install", eyebrow = "Finished work" } =
       {
         doors.map((door) => (
           <li class="door-grid__card">
-            <Image
-              src={door.image}
-              alt={`${door.style} garage door installed by EZ Garage Doors`}
-              width={720}
-              widths={[420, 720]}
-              sizes="(max-width: 48rem) 92vw, 360px"
-              loading="lazy"
-            />
+            <div class="door-grid__media">
+              <Image src={door.image} alt={`${door.style} garage door installed by EZ Garage Doors`} width={720} widths={[420, 720]} sizes="(max-width: 48rem) 92vw, 360px" loading="lazy" />
+            </div>
             <div class="door-grid__caption">
-              <h3>{door.style}</h3>
+              <h3>{door.href ? <a href={door.href}>{door.style}</a> : door.style}</h3>
               <p>{door.detail}</p>
             </div>
           </li>
@@ -54,67 +50,49 @@ const { doors, heading = "Door styles we install", eyebrow = "Finished work" } =
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     gap: var(--space-5);
-  }
-
-  /* editorial asymmetry: the first style leads at double width,
-     and a lone trailing card widens to a full-row banner crop
-     instead of leaving two empty columns */
-  .door-grid__card:first-child {
-    grid-column: span 2;
-  }
-
-  .door-grid__card:last-child:nth-child(3n) {
-    grid-column: 1 / -1;
-  }
-
-  .door-grid__card:last-child:nth-child(3n) img {
-    aspect-ratio: 3 / 1;
   }
 
   .door-grid__card {
     background: var(--ez-white);
-    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
     overflow: hidden;
   }
 
-  .door-grid__card img {
-    width: 100%;
+  .door-grid__media {
     aspect-ratio: 4 / 3;
+    background: var(--ez-alt-deep);
+  }
+
+  .door-grid__media :global(img) {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-  }
-
-  .door-grid__card:first-child img {
-    aspect-ratio: 8 / 3.05;
-  }
-
-  @media (max-width: 48rem) {
-    .door-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .door-grid__card:first-child {
-      grid-column: auto;
-    }
-
-    .door-grid__card:first-child img {
-      aspect-ratio: 4 / 3;
-    }
   }
 
   .door-grid__caption {
     padding: var(--space-4) var(--space-5);
-    border-top: 3px solid var(--ez-orange);
   }
 
   .door-grid__caption h3 {
     font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .door-grid__caption h3 a {
+    color: var(--ez-ink);
+    text-decoration: none;
+  }
+
+  .door-grid__caption h3 a:hover {
+    color: var(--ez-orange-text);
   }
 
   .door-grid__caption p {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
-    margin: var(--space-1) 0 0;
+    margin: 0;
   }
 </style>

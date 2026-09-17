@@ -1,8 +1,8 @@
 ---
 /**
- * Broken spring repair — expanded: full-bleed torsion-work hero with
- * safety alert, proof bar, spring imagery, torsion vs extension,
- * process, gallery, reviews, FAQ.
+ * Broken spring repair — the highest-urgency organic page: hero with
+ * safety alert, proof strip, signs + real spring photo, torsion vs
+ * extension, process, reviews, FAQ.
  */
 import { Image } from "astro:assets";
 import SiteLayout from "../layouts/SiteLayout.astro";
@@ -11,8 +11,10 @@ import ProofColumns from "../components/home/ProofColumns.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
 import ProofBand from "../components/ProofBand.astro";
 import FaqList from "../components/FaqList.astro";
+import RelatedLinks from "../components/RelatedLinks.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import Icon from "../components/Icon.astro";
 import { img } from "../config/site-images";
 
 const signs = [
@@ -28,7 +30,7 @@ const brokenSpringImg = img("broken-spring");
 
 const service = {
   name: "Broken Garage Door Spring Repair",
-  description: "Torsion and extension spring replacement for residential garage doors, with a written quote before work begins.",
+  description: "Torsion and extension spring replacement for residential garage doors across Massachusetts, with a written quote before work begins.",
   url: "/broken-spring-repair/",
 };
 
@@ -38,23 +40,26 @@ const faqs = [
   { question: "Why replace both springs on a two-spring door?", answer: "Both springs have the same cycle life. When one snaps, the other is at the end of its life too — replacing both keeps the door balanced and saves you a second visit." },
   { question: "How long does a spring replacement take?", answer: "Most residential spring replacements are done in a single visit — vans are stocked with common spring sizes. We confirm on the phone after you describe the door." },
   { question: "Will the new springs last longer?", answer: "Springs are rated in cycles, not years. We match the spring to your door's weight and can quote higher-cycle springs if you use the door heavily." },
+  { question: "Do springs break more in winter?", answer: "Yes — cold steel is less forgiving, and a spring near the end of its cycle life is most likely to snap on a sub-zero Massachusetts morning. A fall tune-up catches most of them first." },
 ];
 ---
 
 <SiteLayout
-  title="Broken Garage Door Spring Repair in Connecticut | EZ Garage Doors"
-  description="Heard a loud bang? Door too heavy to lift? Broken garage door spring repair in Connecticut — torsion and extension springs replaced with a written quote first."
+  title="Broken Garage Door Spring Repair in Massachusetts | EZ Garage Doors"
+  description="Heard a loud bang? Door too heavy to lift? Broken garage door spring repair across Massachusetts — torsion and extension springs replaced with a written quote first."
   service={service}
   faqs={faqs}
+  breadcrumbs={[{ label: "Garage Door Repair", href: "/garage-door-repair/" }, { label: "Broken Spring Repair" }]}
 >
   <ServiceHero
     imageId="spring-winding"
-    eyebrow="Spring Service"
+    eyebrow="Spring service"
     heading="Broken Garage Door Spring Repair"
-    sub="If you heard a loud bang or your door suddenly feels too heavy, stop using it and call EZ Garage Doors for spring service."
+    sub="If you heard a loud bang or your door suddenly feels too heavy, stop using it and call EZ Garage Doors for spring service anywhere in Massachusetts."
     callLabel="Call for Spring Repair"
     callTrack="spring_call_click"
     alert="Do not try to lift or force the door. Garage door springs are under high tension and can be dangerous."
+    breadcrumbs={[{ label: "Garage Door Repair", href: "/garage-door-repair/" }, { label: "Broken Spring Repair" }]}
   />
 
   <ProofColumns />
@@ -64,29 +69,12 @@ const faqs = [
       <div>
         <SectionHeading eyebrow="Diagnosis" title="Signs your spring is broken" />
         <ul class="signs__list">
-          {
-            signs.map((sign) => (
-              <li>
-                <span class="speed-tick" aria-hidden="true" />
-                {sign}
-              </li>
-            ))
-          }
+          {signs.map((sign) => <li><Icon name="check" size={18} /><span>{sign}</span></li>)}
         </ul>
       </div>
-      <figure class="signs__media track-frame track-frame--br">
-        <Image
-          src={brokenSpringImg.src}
-          alt={brokenSpringImg.alt}
-          width={720}
-          widths={[480, 720]}
-          sizes="(max-width: 62rem) 92vw, 440px"
-          loading="lazy"
-        />
-        <figcaption>
-          <span class="speed-tick" aria-hidden="true"></span>
-          The tell: a visible gap in the coil above the door.
-        </figcaption>
+      <figure class="signs__media card">
+        <Image src={brokenSpringImg.src} alt={brokenSpringImg.alt} width={720} widths={[480, 720]} sizes="(max-width: 62rem) 92vw, 440px" loading="lazy" />
+        <figcaption>The tell: a visible gap in the coil above the door.</figcaption>
       </figure>
     </div>
   </section>
@@ -94,17 +82,21 @@ const faqs = [
   <section class="section">
     <div class="wrap wrap--narrow">
       <SectionHeading eyebrow="Two spring systems" title="Torsion vs. extension springs" />
-      <p>
-        <strong>Torsion springs</strong> sit on a shaft above the door and fail with a loud bang —
-        most modern doors use one or two, replaced in pairs to keep the door balanced.
-        <strong> Extension springs</strong> stretch along the side tracks and should always have
-        safety cables through them; if yours don't, we fix that in the same visit.
-      </p>
-      <p class="muted">
-        Spring jobs are the classic bait-and-switch trap in this industry — a cheap teaser price
-        by phone, then "surprises" at the door. We quote the spring system your door actually
-        has, in writing, before work begins.
-      </p>
+      <div class="prose">
+        <p>
+          <strong>Torsion springs</strong> sit on a shaft above the door and fail with a loud bang —
+          most modern doors use one or two, replaced in pairs to keep the door balanced.
+          <strong> Extension springs</strong> stretch along the side tracks and should always have
+          safety cables through them; if yours don't, we fix that in the same visit. Some doors use
+          an enclosed <strong>TorqueMaster</strong> system with the springs hidden inside the tube — a
+          break isn't visible, the door just gets heavy.
+        </p>
+        <p class="muted">
+          Spring jobs are the classic bait-and-switch trap in this industry — a cheap teaser price
+          by phone, then "surprises" at the door. We quote the spring system your door actually
+          has, in writing, before work begins.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -118,24 +110,27 @@ const faqs = [
     ]}
   />
 
-  {/* Work gallery removed: its images were 2/3 AI technician-models,
-      which the claims policy bars from proof modules. The page keeps
-      real spring hardware imagery in the signs figure above. */}
   <ProofBand heading="The spring calls we get rated on" />
 
   <FaqList faqs={faqs} heading="Broken spring questions" />
 
-  <CTASection
-    heading="Broken spring? Don't force the door."
-    sub="Call EZ Garage Doors for spring service with a written quote before work begins."
-    callLabel="Call for Spring Repair"
+  <RelatedLinks
+    heading="Related repairs"
+    items={[
+      { label: "Cable Repair", href: "/garage-door-cable-repair/", blurb: "Cables usually go with the spring." },
+      { label: "Door Won't Open", href: "/garage-door-wont-open/", blurb: "Spring or opener? How to tell." },
+      { label: "Cable Drum Replacement", href: "/garage-door-drum-replacement/" },
+      { label: "Tune-Up & Inspection", href: "/garage-door-tune-up/", blurb: "Catch the next spring before it snaps." },
+    ]}
   />
+
+  <CTASection heading="Broken spring? Don't force the door." sub="Call EZ Garage Doors for spring service with a written quote before work begins." callLabel="Call for Spring Repair" />
 </SiteLayout>
 
 <style>
   .signs {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: var(--space-7);
     align-items: center;
   }
@@ -145,32 +140,38 @@ const faqs = [
     padding: 0;
     margin: 0;
     display: grid;
-    gap: var(--space-3);
-    font-weight: 500;
+    gap: var(--space-2);
   }
 
   .signs__list li {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: 0.5rem;
     background: var(--ez-white);
-    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-sm);
     padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .signs__list svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
   }
 
   .signs__media {
     margin: 0;
-    position: relative;
+    overflow: hidden;
   }
 
-  .signs__media img {
+  .signs__media :global(img) {
     width: 100%;
     height: auto;
   }
 
   .signs__media figcaption {
-    display: flex;
-    align-items: center;
-    margin-top: var(--space-3);
+    padding: var(--space-3) var(--space-4);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
   }

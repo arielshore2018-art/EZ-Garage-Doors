@@ -1,0 +1,103 @@
+---
+/**
+ * The 14 Massachusetts counties as link cards with real town counts —
+ * the statewide-coverage module (replaces the old CT town grid).
+ */
+import SectionHeading from "./SectionHeading.astro";
+import Icon from "./Icon.astro";
+import { MA_COUNTIES, townsInCounty } from "../config/ma-towns";
+import { COVERAGE } from "../config/business";
+
+interface Props {
+  heading?: string;
+  eyebrow?: string;
+  intro?: string;
+  compact?: boolean;
+  alt?: boolean;
+}
+
+const {
+  heading = "Serving every county in Massachusetts",
+  eyebrow = "Service areas",
+  intro = `${COVERAGE.line} — pick your county to find your town.`,
+  compact = false,
+  alt = false,
+} = Astro.props;
+---
+
+<section class:list={["section", { "section--alt": alt, "section--tight": compact }]} aria-labelledby="areas-heading">
+  <div class="wrap">
+    <SectionHeading eyebrow={eyebrow} title={heading} intro={intro} center />
+    <ul class="counties">
+      {
+        MA_COUNTIES.map((c) => {
+          const n = townsInCounty(c.name).length;
+          return (
+            <li>
+              <a href={`/service-areas/${c.slug}/`} class="counties__card" data-track={`county_${c.slug}`}>
+                <Icon name="pin" size={22} class="counties__pin" />
+                <span class="counties__name">{c.name} County</span>
+                <span class="counties__meta">{n} {n === 1 ? "town" : "cities & towns"} · {c.region}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <p class="counties__all">
+      <a href="/service-areas/" class="btn btn--outline">See all {COVERAGE.municipalities} cities &amp; towns</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .counties {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .counties__card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.15rem var(--space-3);
+    align-items: center;
+    padding: var(--space-4);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    min-height: 64px;
+  }
+
+  .counties__card:hover {
+    border-color: var(--ez-orange);
+    box-shadow: var(--shadow-card);
+  }
+
+  .counties__pin {
+    grid-row: 1 / span 2;
+    color: var(--ez-orange);
+  }
+
+  .counties__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--ez-ink);
+  }
+
+  .counties__meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .counties__all {
+    text-align: center;
+    margin-top: var(--space-5);
+  }
+</style>

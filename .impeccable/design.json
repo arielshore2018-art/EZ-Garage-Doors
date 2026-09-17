@@ -1,70 +1,161 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-19T00:00:00Z",
-  "title": "Design System: EZ Garage Doors — PROJECTED LIGHT (hand-processed 16mm)",
-  "northStar": "The company's work record projected as hand-processed film: near-black leader, silver stamped caps, real frames on a sprocketed strip, and orange only ever as light — leaks, flares, the beam. Every CTA is a light-flooded frame plate.",
+  "generatedAt": "2026-09-17T14:02:01.793Z",
+  "title": "Design System: EZ Garage Doors — ORANGE STANDARD (A1-style canon in EZ orange)",
+  "northStar": "The category-standard national garage-door brand site, rebuilt for one Massachusetts company: white ground, ink Barlow headings, orange as the single action color, soft cards, breadcrumbs and a sticky sidebar on every inner page. Conventional on purpose — the owner chose recognizability and trust over a signature world.",
   "sourceOfTruth": {
     "tokens": "website/src/styles/tokens.css",
     "base": "website/src/styles/base.css",
-    "contract": "BaseLayout.astro <body> HTML comment (seed 4d6f9491)",
-    "claims": "docs/ez-verified-claims.md"
+    "contract": "BaseLayout.astro <body> HTML comment (canon path, owner decision 2026-09-17)",
+    "claims": "docs/ez-verified-claims.md",
+    "data": "website/src/config/ma-towns.ts (351 municipalities, public Census/Wikipedia data)"
   },
   "world": {
-    "form": "hand-processed 16mm film (owner-adopted declined challenger, seed 4d6f9491)",
-    "predecessor": "Orange Editorial Utility (retired 2026-08-19; rollback tag v2026.07-orange-editorial)"
+    "form": "A1-style national-brand structure in EZ orange (canon path; A1 Garage Door Service = craft bar, none of its assets/copy used)",
+    "predecessors": [
+      "PROJECTED LIGHT (retired 2026-09-17; rollback tag v2026.08-projected-light)",
+      "Orange Editorial Utility (retired 2026-08-19; rollback tag v2026.07-orange-editorial)"
+    ]
   },
-  "strip": {
-    "sprocketWidth": "2.25rem",
-    "sprocketHole": "0.8rem square, 1px radius",
-    "frameGap": "0.6rem gap-black between frames",
-    "grain": "SVG feTurbulence overlay at 0.42, frames ONLY — the page never carries texture",
-    "frameCharacter": "inset rebate edge (1px + falloff) and a leak catch on each frame's right edge",
-    "registrationCorners": "emulsion L-marks on priority photos"
+  "color": {
+    "ground": {
+      "white": "#ffffff",
+      "alt": "#f4f4f2",
+      "tint": "#fff1e8",
+      "line": "#dcdcd8"
+    },
+    "ink": {
+      "ink": "#1c1c1c",
+      "charcoal": "#333333",
+      "steel": "#5c5c5c",
+      "onInk": "#d6d6d3",
+      "onInkMuted": "#b3b3b0"
+    },
+    "orange": {
+      "brand": "#f36a21",
+      "deep": "#d8551a",
+      "text": "#b23f0e",
+      "pale": "#ffe3d2",
+      "onInk": "#ff8b47"
+    },
+    "law": "Orange is the single action color. Brand orange on white = 3.05:1 → large text only (buttons pinned at 1.175rem/700, hero headings). Small orange type uses orange-text (6.6:1). Never orange on the alt ground (2.77:1). Never orange-on-orange: on orange bands small text is ink and buttons flip to white/ink."
   },
-  "light": {
-    "law": "orange is light, never ink",
-    "devices": [
-      "leak gradient (--leak-gradient): hero right edge, section rules, footer top edge",
-      "flare plates: grain-textured flood gradient CTAs with square sprocket tabs",
-      "projector beam: .section--orange radial beam on leader ground",
-      "light-struck type: hero lit line exposure rising toward the leak (background-clip)",
-      "perforation ticks: small flare squares in edge-print assemblies"
-    ],
-    "banned": "flat orange text on cards/labels; orange-filled section grounds"
+  "typography": {
+    "display": "Barlow Condensed 700, title case, letter-spacing 0.005em, line-height 1.08",
+    "body": "Source Sans 3 Variable 17px/1.6",
+    "eyebrow": "Barlow 700 uppercase 0.95rem tracked 0.1em in orange-text",
+    "buttons": "Barlow 700 1.175rem (18.8px) — the large-text threshold for white-on-orange"
+  },
+  "layout": {
+    "header": "ink utility strip → sticky white header: color logo, dropdown nav (CSS hover/focus-within), outline Request + orange Call; ≤66rem a <details> menu with grouped disclosures",
+    "innerPage": "breadcrumbs → light hero (copy | rounded photo card) → 4-stat proof strip → .page-grid (content | sticky 20rem sidebar) → related links → CTA band → footer with 14-county index",
+    "breakpoints": [
+      "36rem",
+      "48rem sticky bar + proof 2-col",
+      "56rem hero stacks",
+      "62rem sidebar stacks",
+      "66rem mobile nav",
+      "78rem header secondary CTA"
+    ]
+  },
+  "depth": {
+    "card": "0 1px 2px rgb(28 28 28 / 0.06), 0 8px 24px rgb(28 28 28 / 0.08)",
+    "cardHover": "0 2px 4px rgb(28 28 28 / 0.08), 0 14px 34px rgb(28 28 28 / 0.14)",
+    "cta": "0 6px 18px rgb(243 106 33 / 0.32)",
+    "rule": "no other shadows; borders are 1px line"
+  },
+  "shape": {
+    "sm": "6px buttons/inputs",
+    "md": "10px cards",
+    "lg": "16px hero photo cards",
+    "pill": "chips",
+    "circle": "step numerals and icon discs"
   },
   "motion": {
     "budget": [
-      "hero leak single breath (2.8s ease-out, once)",
-      "button/nav feedback (140ms)",
-      "backlit hover states (full-field light shifts)",
+      "button/nav/card feedback (120–140ms)",
       "native details accordions",
       "sticky bar slide-in"
     ],
-    "banned": ["carousels", "marquees", "scroll-jacking", "global fade-ups", "animation libraries"],
-    "reducedMotion": "all animation killed globally; leak renders settled"
+    "banned": [
+      "carousels",
+      "marquees",
+      "scroll-jacking",
+      "global fade-ups",
+      "animation libraries"
+    ],
+    "reducedMotion": "all transitions and animations off globally"
   },
-  "contrastRules": [
-    "emulsion (#c9c4bb) on leader: 9.8:1 — body floor",
-    "emulsion-dim (#98928a) on leader: 5.4:1 — secondary floor",
-    "flare (#f36a21) on leader: 6.1:1 — passes all sizes when used as text-like edge print",
-    "leader (#141210) on flare plates: 6.1:1 — CTA text at any size",
-    "err (#ff7a66) on panel: form errors",
-    "focus ring: 3px flare-hot"
+  "components": [
+    "HomeHero",
+    "ServiceHero",
+    "ServiceGrid (+Icon)",
+    "WhyEZ",
+    "ProofColumns",
+    "StatBand",
+    "ProofBand",
+    "ReviewProof",
+    "RepairIssueGrid",
+    "ProcessSteps",
+    "FaqList",
+    "Sidebar",
+    "RelatedLinks",
+    "Breadcrumbs",
+    "CountyGrid",
+    "TownList",
+    "LeadForm",
+    "CTASection",
+    "TrustLogoStrip",
+    "WorkGallery",
+    "BeforeAfterGallery",
+    "FinishedDoorGallery",
+    "PricingLogicBlock",
+    "EmergencyCallBar",
+    "MicroTrustBar",
+    "LogoHeader",
+    "FooterTrustZone",
+    "StickyMobileCTA",
+    "LandingHeader"
   ],
-  "browserSurfaces": {
-    "selection": "flare background, leader text",
-    "caret": "flare",
-    "scrollbar": "thin, flare thumb on panel track"
+  "contentArchitecture": {
+    "pages": 545,
+    "indexable": 520,
+    "families": {
+      "core hand-built": 23,
+      "data services ([service].astro)": 15,
+      "openers hub": 1,
+      "brands": "1 hub + 13 (brands.ts)",
+      "styles": "1 hub + 6 (door-styles.ts)",
+      "guides": "1 hub + 9 categories + 87 (config/guides/*)",
+      "service areas": "1 hub + 14 counties + 351 towns ([slug].astro from ma-towns.ts + ma-counties.ts)",
+      "ppc": "24 MA metros, noindex"
+    },
+    "antiDoorway": "town pages are built from real public data (population, land area, density, incorporation, county seat, nearest towns by distance) plus hand-written county context — no town×service matrix, no invented job history"
   },
   "voice": {
-    "readingLevel": "grade 5-7 on repair/PPC pages",
-    "annotationGrammar": "mono uppercase tracked (edge codes, frame numerals, metadata); stamps in condensed caps",
-    "bannedPhrases": ["trusted partner", "one-stop shop", "Learn More", "Get Started", "Submit", "Licensed & Insured", "24/7", "same-day guaranteed", "authorized dealer"],
-    "claimsGate": "every factual claim must exist in website/src/config/business.ts APPROVED_CLAIMS/STATS"
+    "readingLevel": "grade 5-7 on repair pages; plain-language guides",
+    "policyLine": "Written Quote Before Work Begins — at every decision point",
+    "coverage": "Serving all 351 cities and towns across Massachusetts (owner decision); base location never published",
+    "bannedCopy": [
+      "Learn More",
+      "Get Started",
+      "Submit",
+      "trusted partner",
+      "one-stop shop",
+      "any Connecticut reference",
+      "24/7",
+      "licensed & insured",
+      "same-day guaranteed",
+      "authorized dealer",
+      "prices",
+      "warranties",
+      "financing"
+    ]
   },
-  "proofRules": [
-    "proof-framed strips carry real, person-free photographs only",
-    "AI/model imagery is illustrative-only and never sits inside record framing",
-    "review proof = platform ratings/counts + outbound links; no on-site quotes until verbatim reviews exist"
-  ]
+  "imagery": {
+    "proofModules": "real, person-free photos only (van-front, hardware, finished doors, before/after)",
+    "illustrative": "technician-model shots allowed only as page heroes, never captioned as the actual team",
+    "manifest": "website/src/config/site-images.ts"
+  },
+  "typographyRamp": "see DESIGN.md frontmatter (h1, hero-h1, hero-h1-mobile, inner-h1, inner-h1-mobile, area-h1, guide-h1, h2, h3, body, eyebrow, button, button-lg, ui-nav, stat)"
 }

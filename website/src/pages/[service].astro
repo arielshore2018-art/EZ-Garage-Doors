@@ -1,0 +1,151 @@
+---
+/**
+ * Template for data-driven service pages (services.ts kind: "data").
+ * Layout: hero → proof strip → content + sticky sidebar (signs, what we
+ * check, process, FAQ) → gallery (real photos only) → related → CTA.
+ */
+import type { GetStaticPaths } from "astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import ServiceHero from "../components/ServiceHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
+import Sidebar from "../components/Sidebar.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import FaqList from "../components/FaqList.astro";
+import WorkGallery from "../components/WorkGallery.astro";
+import RelatedLinks from "../components/RelatedLinks.astro";
+import CTASection from "../components/CTASection.astro";
+import Icon from "../components/Icon.astro";
+import { SERVICE_PAGES, type ServicePage } from "../config/service-pages";
+import { serviceBySlug, SERVICE_GROUPS } from "../config/services";
+
+export const getStaticPaths = (() => {
+  return SERVICE_PAGES.map((p) => ({ params: { service: p.slug }, props: { page: p } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: ServicePage;
+}
+
+const { page } = Astro.props;
+const svc = serviceBySlug(page.slug);
+if (!svc) throw new Error(`[service].astro: ${page.slug} missing from services.ts`);
+const group = SERVICE_GROUPS.find((g) => g.id === svc.group)!;
+
+const service = { name: svc.title, description: svc.blurb, url: `/${svc.slug}/` };
+const breadcrumbs = [{ label: group.label, href: group.hub }, { label: svc.title }];
+const primaryMode = page.primaryMode ?? "call";
+const callLabel = page.callLabel ?? (primaryMode === "call" ? "Call for Repair" : "Get a Written Estimate");
+---
+
+<SiteLayout
+  title={`${svc.title} in Massachusetts | EZ Garage Doors`}
+  description={`${svc.blurb} Serving all of Massachusetts — written quote before work begins.`}
+  service={service}
+  faqs={page.faqs}
+  breadcrumbs={breadcrumbs}
+>
+  <ServiceHero
+    imageId={page.imageId}
+    eyebrow={page.eyebrow}
+    heading={page.h1}
+    sub={page.sub}
+    alert={page.alert}
+    callLabel={callLabel}
+    callTrack={`${svc.slug.replaceAll("-", "_")}_cta`}
+    primaryMode={primaryMode}
+    primaryHref="/contact/#request"
+    secondaryLabel={primaryMode === "call" ? "Request Service" : "Send a Photo"}
+    breadcrumbs={breadcrumbs}
+  />
+
+  <ProofColumns />
+
+  <section class="section">
+    <div class="wrap page-grid">
+      <article class="svc-main">
+        <div class="prose">
+          {page.intro.map((p) => <p>{p}</p>)}
+        </div>
+
+        <SectionHeading eyebrow="Diagnosis" title={page.signsHeading} />
+        <ul class="svc-list">
+          {page.signs.map((s) => <li><Icon name="check" size={18} /><span>{s}</span></li>)}
+        </ul>
+
+        <SectionHeading eyebrow="The whole system" title={page.checksHeading} />
+        <ul class="svc-list svc-list--plain">
+          {page.checks.map((s) => <li><Icon name="arrow" size={18} /><span>{s}</span></li>)}
+        </ul>
+
+        <ProcessSteps heading="How it works" eyebrow="The process" steps={page.steps} bare />
+
+        <FaqList faqs={page.faqs} heading={`${svc.short} questions`} bare />
+      </article>
+
+      <Sidebar
+        title={primaryMode === "call" ? "Need this fixed today?" : "Want it priced in writing?"}
+        callLabel={primaryMode === "call" ? callLabel : "Call EZ Garage Doors"}
+        callTrack={`${svc.slug.replaceAll("-", "_")}_sidebar_call`}
+        links={page.related}
+      />
+    </div>
+  </section>
+
+  {page.gallery && page.gallery.length > 0 && <WorkGallery heading="Hardware, up close" eyebrow="Real work" imageIds={page.gallery} />}
+
+  <RelatedLinks heading="Related services and guides" items={page.related} alt={!page.gallery} />
+
+  <CTASection
+    heading={primaryMode === "call" ? "Need help with this today?" : "Ready for a written estimate?"}
+    sub="Call EZ Garage Doors or request service online — the price is in writing before work begins."
+    callLabel={primaryMode === "call" ? callLabel : "Call EZ Garage Doors"}
+  />
+</SiteLayout>
+
+<style>
+  .svc-main :global(.section-heading) {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-4);
+  }
+
+  .svc-main :global(.steps-sec),
+  .svc-main :global(.faq--bare) {
+    margin-top: var(--space-6);
+  }
+
+  .svc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .svc-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--ez-alt);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .svc-list svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .svc-list--plain li {
+    background: transparent;
+    padding: 0.35rem 0;
+    font-weight: 400;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--ez-line);
+    border-radius: 0;
+  }
+</style>

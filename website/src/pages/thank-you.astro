@@ -14,8 +14,8 @@ import CallButton from "../components/CallButton.astro";
 >
   <section class="thanks">
     <div class="wrap wrap--narrow thanks__inner">
-      <h1>Request received</h1>
-      <span class="speed-rail" aria-hidden="true"></span>
+      <p class="eyebrow">Request received</p>
+      <h1>Thanks — we have your request</h1>
       <p class="thanks__sub">
         A local garage door specialist will follow up. If the door situation gets worse in the
         meantime — stuck open, off track, spring snapped — call instead of waiting.
@@ -43,6 +43,10 @@ import CallButton from "../components/CallButton.astro";
     padding-block: var(--space-8);
   }
 
+  .thanks h1 {
+    margin-top: var(--space-2);
+  }
+
   .thanks__sub {
     font-size: var(--text-lg);
     color: var(--color-text-muted);
@@ -51,31 +55,13 @@ import CallButton from "../components/CallButton.astro";
 
   .thanks__next {
     list-style: none;
-    padding: 0 0 0 calc(var(--track-stroke) + var(--track-gap) + var(--track-ghost) + 1rem);
+    padding: var(--space-4) var(--space-5);
     margin: 0 0 var(--space-5);
-    position: relative;
     display: grid;
     gap: var(--space-3);
-  }
-
-  .thanks__next::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.3rem;
-    bottom: 0.3rem;
-    width: var(--track-stroke);
-    background: var(--ez-orange);
-  }
-
-  .thanks__next::after {
-    content: "";
-    position: absolute;
-    left: calc(var(--track-stroke) + var(--track-gap));
-    top: 0.3rem;
-    bottom: 0.3rem;
-    width: var(--track-ghost);
-    background: var(--ez-line);
+    background: var(--ez-alt);
+    border-left: 4px solid var(--ez-orange);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
   }
 
   .thanks__next strong {

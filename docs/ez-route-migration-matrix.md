@@ -1,34 +1,36 @@
 # EZ Garage Doors — Route Migration Matrix
-**Policy:** Every existing URL is preserved exactly. **No renames, no deletions → no redirects required.** Sitemap/robots/canonical behavior unchanged (PPC noindex + sitemap-excluded; thank-you noindex + robots-disallowed).
 
-Template families (new system): `HOME` · `REPAIR-HUB` · `REPAIR-SVC` (calm phone-first) · `URGENT` (minimal-nav call-primary) · `INSTALL` (editorial estimate-first) · `COMMERCIAL` (dense factual) · `AREA` · `PPC-URGENT` · `INFO` · `UTILITY`.
+## 2026-09-17 — Massachusetts A1-style architecture (branch `rebuild/massachusetts-a1-architecture`)
 
-| URL | Purpose | Family | Conversion goal | Content status | SEO status | Redirect | QA |
-|---|---|---|---|---|---|---|---|
-| `/` | Homepage / router | HOME | Call (primary), estimate (secondary) | rewrite | keep title/desc intent, add H1 | none | pass |
-| `/services/` | Service router | INFO | route to service pages | rewrite | keep | none | pass |
-| `/garage-door-repair/` | Repair hub | REPAIR-HUB | Call | rewrite | keep | none | pass |
-| `/broken-spring-repair/` | Spring repair | REPAIR-SVC | Call | rewrite | keep | none | pass |
-| `/garage-door-opener-repair/` | Opener repair | REPAIR-SVC | Call | rewrite | keep | none | pass |
-| `/garage-door-cable-repair/` | Cable/track repair | URGENT | Call | rewrite | keep | none | pass |
-| `/garage-door-off-track-repair/` | Off-track | URGENT | Call | rewrite | keep | none | pass |
-| `/emergency-garage-door-repair/` | Urgent service | URGENT | Call | rewrite | keep (no 24/7 claims) | none | pass |
-| `/same-day-garage-door-service/` | Fast service | URGENT | Call | rewrite (keep "today's availability" hedge) | keep | none | pass |
-| `/garage-door-installation/` | New door install | INSTALL | Estimate form | rewrite | keep | none | pass |
-| `/garage-door-replacement/` | Replace decision | INSTALL | Estimate | rewrite | keep | none | pass |
-| `/garage-door-replacement-cost/` | Cost guide | INSTALL | Estimate | rewrite (price table stays gated) | keep | none | pass |
-| `/commercial-garage-door-repair/` | Commercial | COMMERCIAL | Call + form | rewrite | keep | none | pass |
-| `/service-areas/` | Area hub | AREA | Call | rewrite | keep | none | pass |
-| `/service-areas/[city]/` | City pages (template) | AREA | Call | template rebuilt; **still 0 published** until real local proof | n/a until published | none | pass |
-| `/about/` | Company | INFO | Call/estimate | rewrite | keep | none | pass |
-| `/reviews/` | Review hub | INFO | outbound to live profiles | rewrite (verified counts only) | keep | none | pass |
-| `/gallery/` | Finished work | INFO | Estimate | rewrite | keep | none | pass |
-| `/contact/` | Lead capture | INFO | Form | rewrite | keep | none | pass |
-| `/thank-you/` | Success state | UTILITY | reassure + call | rewrite | noindex kept | none | pass |
-| `/privacy-policy/` | Legal | UTILITY | n/a | restyle only (draft pending legal) | keep | none | pass |
-| `/terms/` | Legal | UTILITY | n/a | restyle only (draft pending legal) | keep | none | pass |
-| `/ppc/garage-door-repair/<city>/` ×16 | Paid repair intent | PPC-URGENT | Call primary, short form secondary | template rebuilt (config-driven) | noindex + sitemap-excluded kept | none | pass |
+**Policy:** every indexable URL that existed before this rebuild is preserved exactly. The only URLs retired are the 16 Connecticut PPC landers (noindex, never in the sitemap); each has a permanent 301 in `website/vercel.json`. No other redirect exists.
 
-PPC slugs (16, unchanged): middletown-ct, cromwell-ct, rocky-hill-ct, glastonbury-ct, west-hartford-ct, farmington-ct, avon-ct, simsbury-ct, wethersfield-ct, newington-ct, berlin-ct, southington-ct, plainville-ct, south-windsor-ct, vernon-ct, tolland-ct.
+### Redirects (301, `website/vercel.json`)
+| Old URL (noindex CT PPC) | New destination | Reason |
+|---|---|---|
+| `/ppc/garage-door-repair/{middletown,cromwell,rocky-hill,glastonbury,west-hartford,farmington,avon,simsbury,wethersfield,newington,berlin,southington,plainville,south-windsor,vernon,tolland}-ct/` | `/garage-door-repair/` | Connecticut removed entirely (owner decision). Residual ad clicks land on the repair hub. **Google Ads campaigns must be re-pointed by the owner to the MA slugs below.** |
 
-**Intent-family coverage note (brief §14):** current campaigns are all general-repair city intent. Existing standalone pages cover emergency / same-day / cable / off-track intents. Installation/replacement paid intent lands on `/garage-door-installation/` and `/garage-door-replacement-cost/`. New PPC intent families beyond these require new campaigns (owner decision) — not fabricated now.
+### Page inventory (545 built, 520 indexable)
+| Family | URLs | Template / data | Indexed |
+|---|---|---|---|
+| Home | `/` | `index.astro` | yes |
+| Core services (unchanged URLs) | `/garage-door-repair/`, `/broken-spring-repair/`, `/garage-door-opener-repair/`, `/garage-door-cable-repair/`, `/garage-door-off-track-repair/`, `/emergency-garage-door-repair/`, `/same-day-garage-door-service/`, `/garage-door-installation/`, `/garage-door-replacement/`, `/garage-door-replacement-cost/`, `/commercial-garage-door-repair/`, `/services/` | hand-built | yes |
+| Data services (new) | `/garage-door-roller-replacement/`, `/garage-door-track-repair/`, `/garage-door-panel-replacement/`, `/garage-door-drum-replacement/`, `/garage-door-hinge-replacement/`, `/garage-door-wont-close/`, `/garage-door-wont-open/`, `/garage-door-safety-sensor-repair/`, `/garage-door-opener-installation/`, `/garage-door-remote-programming/`, `/smart-garage-door-opener/`, `/garage-door-tune-up/`, `/garage-door-weatherstripping/`, `/noisy-garage-door-repair/`, `/commercial-garage-door-maintenance/` | `[service].astro` ← `service-pages.ts` | yes |
+| Openers hub (new) | `/garage-door-openers/` | hand-built | yes |
+| Brands (new) | `/brands/` + 13 `/brands/<slug>/` | `brands/[brand].astro` ← `brands.ts` | yes |
+| Styles (new) | `/garage-door-styles/` + 6 `/garage-door-styles/<slug>/` | `garage-door-styles/[style].astro` ← `door-styles.ts` | yes |
+| Guides (new) | `/guides/`, 9 `/guides/category/<cat>/`, 87 `/guides/<slug>/` | `guides/*` ← `config/guides/*.ts` | yes |
+| Service areas | `/service-areas/` (unchanged URL, rebuilt), 14 `/service-areas/<county>-county/`, 351 `/service-areas/<town>-ma/` | `service-areas/[slug].astro` ← `ma-towns.ts` + `ma-counties.ts` | yes |
+| Company (unchanged) | `/about/`, `/reviews/`, `/gallery/`, `/contact/`, `/privacy-policy/`, `/terms/` | hand-built | yes |
+| Thank-you | `/thank-you/` | hand-built | noindex + robots-disallowed |
+| PPC (new MA set) | 24 `/ppc/garage-door-repair/<city>-ma/` (springfield, chicopee, holyoke, westfield, northampton, amherst, pittsfield, greenfield, worcester, leominster, framingham, boston, cambridge, newton, quincy, lowell, lawrence, lynn, brockton, plymouth, taunton, new-bedford, fall-river, barnstable) | `ppc/garage-door-repair/[city].astro` ← `ppc.ts` | noindex, out of sitemap |
+
+### Removed source (no URL impact)
+`src/config/cities.ts` (CT list, 0 published pages), `service-areas/[city].astro` (never generated a page), film-world components (`TrackHero`, `RouteJunction`, `SymptomNavigator`, `WorkOrder`, `RealWorkFeature`, `ContinuousBrandRail`, `CityGrid`).
+
+### Campaign ids
+`ppc-gdr-<city>-ma` in `data-track` and `form_context` (was `ppc-gdr-<city>-ct`). CRM/Ads mappings that keyed on the CT ids need updating by the owner.
+
+---
+
+## 2026-08 (historical) — URL-preserving redesigns
+Every URL preserved; no redirects. Template families then: `HOME` · `REPAIR-HUB` · `REPAIR-SVC` · `URGENT` · `INSTALL` · `COMMERCIAL` · `AREA` · `PPC-URGENT` · `INFO` · `UTILITY`. City pages were a template with 0 published cities; the 16 CT PPC slugs listed above were the only campaign pages.

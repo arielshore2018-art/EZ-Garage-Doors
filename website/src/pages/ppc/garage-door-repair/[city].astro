@@ -1,6 +1,6 @@
 ---
 /**
- * Local PPC landing page renderer — one component for every city,
+ * Local PPC landing page renderer — one component for every metro,
  * driven by src/config/ppc.ts. Campaign-only pages: noindex, excluded
  * from the sitemap (astro.config), no site navigation, one goal.
  */
@@ -11,6 +11,7 @@ import ProofColumns from "../../../components/home/ProofColumns.astro";
 import LeadForm from "../../../components/LeadForm.astro";
 import CallButton from "../../../components/CallButton.astro";
 import SectionHeading from "../../../components/SectionHeading.astro";
+import Icon from "../../../components/Icon.astro";
 import { enabledPpcCities } from "../../../config/ppc";
 
 export const getStaticPaths = (() => {
@@ -28,30 +29,21 @@ const problems = [
 const steps = ["Inspect", "Explain", "Written quote", "Your approval — then the repair"];
 
 const miniFaq = [
-  {
-    q: "How fast can someone get here?",
-    a: `Call with your ${c.city} address and what the door is doing — we dispatch locally and confirm your arrival window on the phone.`,
-  },
-  {
-    q: "What does a repair cost?",
-    a: "It depends on what failed — spring, cable, roller, or opener. You get the full price in writing before any work begins, and the quote you approve is the price you pay.",
-  },
-  {
-    q: "Can I use the door until you arrive?",
-    a: "If you heard a bang or the door hangs crooked, no — keep people and cars clear and leave it where it is. The door is under spring tension.",
-  },
+  { q: "How fast can someone get here?", a: `Call with your ${c.city} address and what the door is doing — we dispatch locally across Massachusetts and confirm your arrival window on the phone.` },
+  { q: "What does a repair cost?", a: "It depends on what failed — spring, cable, roller, or opener. You get the full price in writing before any work begins, and the quote you approve is the price you pay." },
+  { q: "Can I use the door until you arrive?", a: "If you heard a bang or the door hangs crooked, no — keep people and cars clear and leave it where it is. The door is under spring tension." },
 ];
 ---
 
 <LandingLayout
-  title={`${c.headline} | EZ Garage Doors`}
-  description={`${c.headline}. ${c.subheadline} Written quote before work begins.`}
+  title={`${c.headline} — Call Today | EZ Garage Doors`}
+  description={`${c.headline}: fast local help for stuck doors, broken springs, openers, cables, and off-track doors. Written quote before work begins.`}
   callLabel="Call for Repair"
   noindex
 >
   <ServiceHero
     imageId={c.heroImageId}
-    eyebrow={`${c.city}, ${c.state} · Local Dispatch`}
+    eyebrow={`${c.city}, ${c.state} · ${c.county} County · Local dispatch`}
     heading={c.headline}
     sub={c.subheadline}
     callLabel="Call for Repair"
@@ -67,14 +59,7 @@ const miniFaq = [
       <SectionHeading eyebrow="Local coverage" title={`Serving ${c.city} and nearby towns`} />
       <p>{c.localProofLine}</p>
       <ul class="ppc-local__nearby" aria-label="Nearby areas we also serve">
-        {
-          c.nearbyAreas.map((area) => (
-            <li>
-              <span class="speed-tick" aria-hidden="true" />
-              {area}
-            </li>
-          ))
-        }
+        {c.nearbyAreas.map((area) => <li><Icon name="check" size={18} /> {area}</li>)}
       </ul>
     </div>
   </section>
@@ -83,14 +68,7 @@ const miniFaq = [
     <div class="wrap">
       <SectionHeading eyebrow="The usual suspects" title="The three calls we get most" />
       <ul class="ppc-problems">
-        {
-          problems.map((p) => (
-            <li>
-              <h3>{p.title}</h3>
-              <p>{p.detail}</p>
-            </li>
-          ))
-        }
+        {problems.map((p) => <li><h3>{p.title}</h3><p>{p.detail}</p></li>)}
       </ul>
     </div>
   </section>
@@ -99,28 +77,14 @@ const miniFaq = [
     <div class="wrap wrap--narrow">
       <SectionHeading eyebrow="No bait pricing" title="You approve the price before work begins" />
       <ol class="ppc-steps">
-        {
-          steps.map((s, i) => (
-            <li>
-              <span class="ppc-steps__num" aria-hidden="true">
-                {i + 1}
-              </span>
-              {s}
-            </li>
-          ))
-        }
+        {steps.map((s, i) => <li><span class="ppc-steps__num" aria-hidden="true">{i + 1}</span>{s}</li>)}
       </ol>
     </div>
   </section>
 
   <section class="section section--alt">
     <div class="wrap wrap--narrow">
-      <LeadForm
-        heading={`Request Repair Service in ${c.city}`}
-        submitLabel="Request Repair Service"
-        context={c.campaignId}
-        showPhotoField
-      />
+      <LeadForm heading={`Request Repair Service in ${c.city}`} submitLabel="Request Repair Service" context={c.campaignId} showPhotoField />
     </div>
   </section>
 
@@ -128,14 +92,7 @@ const miniFaq = [
     <div class="wrap wrap--narrow">
       <SectionHeading eyebrow="Before you call" title="Three quick answers" />
       <dl>
-        {
-          miniFaq.map((f) => (
-            <div class="ppc-faq__item">
-              <dt>{f.q}</dt>
-              <dd>{f.a}</dd>
-            </div>
-          ))
-        }
+        {miniFaq.map((f) => <div class="ppc-faq__item"><dt>{f.q}</dt><dd>{f.a}</dd></div>)}
       </dl>
     </div>
   </section>
@@ -144,7 +101,7 @@ const miniFaq = [
     <div class="wrap ppc-final__inner">
       <h2>Need the door fixed today in {c.city}?</h2>
       <p>Call EZ Garage Doors — clear answer, written quote, no pressure.</p>
-      <CallButton label="Call for Repair" size="lg" variant="ink" track={`${c.campaignId}_call`} />
+      <CallButton label="Call for Repair" size="lg" track={`${c.campaignId}_call`} />
     </div>
   </section>
 </LandingLayout>
@@ -158,13 +115,19 @@ const miniFaq = [
     flex-wrap: wrap;
     gap: var(--space-2) var(--space-5);
     font-family: var(--font-display);
-    font-weight: 650;
-    font-size: var(--text-sm);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ez-ink);
   }
 
   .ppc-local__nearby li {
     display: flex;
     align-items: center;
+    gap: 0.35rem;
+  }
+
+  .ppc-local__nearby svg {
+    color: var(--ez-orange);
   }
 
   .ppc-problems {
@@ -179,8 +142,10 @@ const miniFaq = [
   .ppc-problems li {
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
-    border-top: 3px solid var(--ez-orange);
+    border-top: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
     padding: var(--space-5);
+    box-shadow: var(--shadow-card);
   }
 
   .ppc-problems h3 {
@@ -202,19 +167,28 @@ const miniFaq = [
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
     gap: var(--space-4);
     font-family: var(--font-display);
-    font-weight: 650;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ez-ink);
   }
 
   .ppc-steps li {
     display: flex;
-    align-items: baseline;
-    gap: var(--space-2);
+    align-items: center;
+    gap: var(--space-3);
   }
 
   .ppc-steps__num {
-    font-weight: 800;
-    font-size: var(--text-xl);
-    color: var(--ez-orange);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: var(--ez-orange);
+    color: var(--ez-white);
+    font-weight: 700;
+    flex-shrink: 0;
   }
 
   .ppc-faq dl {
@@ -236,8 +210,7 @@ const miniFaq = [
 
   .ppc-faq__item dd {
     margin: 0;
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--color-text);
   }
 
   .ppc-final {
@@ -245,12 +218,8 @@ const miniFaq = [
     text-align: center;
   }
 
-  .ppc-final h2 {
-    color: var(--film-emulsion-bright);
-  }
-
   .ppc-final p {
     margin-block: var(--space-3) var(--space-5);
-    color: var(--film-emulsion);
+    color: var(--ez-ink);
   }
 </style>

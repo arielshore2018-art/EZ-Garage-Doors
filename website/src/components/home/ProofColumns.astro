@@ -1,14 +1,15 @@
 ---
 /**
- * Clean three-column proof section (replaces the old horizontal
- * stats banner): value over label, generous whitespace, no band.
+ * Three-column proof strip under heroes: value over label.
+ * Numbers come from STATS / COVERAGE only.
  */
-import { BUSINESS, STATS } from "../../config/business";
+import { BUSINESS, STATS, COVERAGE } from "../../config/business";
 
 const stats = [
   { value: `${BUSINESS.yearsInBusiness} Years`, label: "In Business" },
   { value: STATS.fiveStarReviews, label: "Five-Star Reviews" },
   { value: STATS.repairs, label: "Repairs Completed" },
+  { value: `${COVERAGE.municipalities}`, label: "MA Cities & Towns Served" },
 ];
 ---
 
@@ -27,13 +28,15 @@ const stats = [
 
 <style>
   .proof-cols {
-    padding-block: clamp(var(--space-6), 5vw, var(--space-7));
+    background: var(--ez-white);
+    border-block: 1px solid var(--ez-line);
+    padding-block: var(--space-5);
   }
 
   .proof-cols__list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-5);
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
     list-style: none;
     margin: 0;
     text-align: center;
@@ -45,40 +48,36 @@ const stats = [
     justify-items: center;
   }
 
+  .proof-cols__list li + li {
+    border-left: 1px solid var(--ez-line);
+  }
+
   .proof-cols__value {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem);
-    color: var(--ez-charcoal);
+    color: var(--ez-orange);
     line-height: 1.05;
-    padding-bottom: var(--space-2);
-    position: relative;
-  }
-
-  .proof-cols__value::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2.4rem;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--speed-line-gradient);
   }
 
   .proof-cols__label {
     font-size: var(--text-sm);
     color: var(--color-text-muted);
+    font-weight: 600;
   }
 
-  @media (max-width: 30rem) {
+  @media (max-width: 40rem) {
     .proof-cols__list {
-      gap: var(--space-3);
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4) var(--space-2);
+    }
+
+    .proof-cols__list li:nth-child(3) {
+      border-left: 0;
     }
 
     .proof-cols__value {
-      font-size: 1.35rem;
+      font-size: 1.5rem;
     }
   }
 </style>

@@ -1,0 +1,637 @@
+/**
+ * Content for the template-rendered service pages (kind: "data" in
+ * services.ts). Each entry is original, claims-safe copy: no response
+ * times, no prices, no 24/7, no warranties. Safety guidance is general
+ * industry practice. Hero images may be illustrative (models); gallery
+ * images must be real, person-free hardware/door photos only.
+ */
+export interface ServicePage {
+  slug: string;
+  h1: string;
+  eyebrow: string;
+  imageId: string;
+  sub: string;
+  alert?: string;
+  intro: string[];
+  signsHeading: string;
+  signs: string[];
+  checksHeading: string;
+  checks: string[];
+  steps: { title: string; detail: string }[];
+  faqs: { question: string; answer: string }[];
+  gallery?: string[];
+  related: { label: string; href: string }[];
+  /** "call" for urgent pages, "estimate" for planned work */
+  primaryMode?: "call" | "estimate";
+  callLabel?: string;
+}
+
+const CALL_FIRST = { title: "Call and describe it", detail: "What the door is doing, roughly how old it is, and a photo if you can — the van arrives with the right parts." };
+const QUOTE = { title: "Written quote on site", detail: "The technician shows you what failed and hands you the full price in writing before any work begins." };
+const APPROVE = { title: "You approve, then we repair", detail: "Work starts only after you approve. The door is tested through full travel before we leave." };
+
+export const SERVICE_PAGES: ServicePage[] = [
+  {
+    slug: "garage-door-roller-replacement",
+    h1: "Garage Door Roller Replacement",
+    eyebrow: "Rollers",
+    imageId: "stuck-repair",
+    sub: "Worn, cracked, or seized rollers make a door grind, shudder, and eventually jump the track. Replacing them is one of the cheapest fixes that makes the biggest difference.",
+    intro: [
+      "Rollers are the small wheels on each side of every door section that ride inside the vertical and horizontal tracks. A typical door has ten to twelve of them, and they carry the door's full weight through every cycle. Original builder-grade rollers are usually plastic or unsealed steel with a short rated life; after a decade of Massachusetts winters they crack, flatten, or seize in the stem.",
+      "We replace rollers with sealed nylon rollers with ball bearings — quieter than steel, and rated for far more cycles than builder-grade plastic. The whole set is replaced at once, because the ones that haven't failed yet are the same age as the ones that have.",
+    ],
+    signsHeading: "Signs your rollers are worn",
+    signs: [
+      "Grinding, scraping, or a rhythmic thump as the door travels",
+      "The door shudders or hesitates partway up",
+      "A roller wheel is cracked, missing, or wobbling on its stem",
+      "The door pulls to one side or has jumped the track before",
+      "Black plastic dust or metal shavings below the tracks",
+    ],
+    checksHeading: "What we check with the rollers",
+    checks: [
+      "Hinges — cracked hinges and worn rollers go together",
+      "Track alignment and any bent sections that chew rollers",
+      "Spring balance — an unbalanced door destroys rollers early",
+      "Opener force settings after the door runs smoothly again",
+    ],
+    steps: [CALL_FIRST, { title: "Inspect the whole door", detail: "Rollers, hinges, track, and balance — noise usually has more than one cause." }, QUOTE, APPROVE],
+    faqs: [
+      { question: "Can I replace just the one broken roller?", answer: "You can, but the rest of the set has the same age and wear. Replacing all of them at once is only slightly more work, makes the door run evenly, and saves a second visit." },
+      { question: "Nylon or steel rollers?", answer: "Sealed nylon rollers with ball bearings are quieter and don't need the lubrication steel rollers do. Steel rollers suit very heavy doors; we match the roller to your door's weight." },
+      { question: "Will new rollers fix the noise completely?", answer: "Rollers are the most common cause of grinding and shuddering, but hinges, dry springs, and the opener drive can contribute. We check all of it and tell you what the noise actually is before quoting." },
+      { question: "Is it safe to replace rollers myself?", answer: "The bottom rollers are attached to the bottom brackets, which are under full cable and spring tension — that's the dangerous one. We recommend leaving the bottom section to a technician." },
+    ],
+    gallery: ["new-springs", "broken-spring"],
+    related: [
+      { label: "Noisy Garage Door Repair", href: "/noisy-garage-door-repair/" },
+      { label: "Track Repair", href: "/garage-door-track-repair/" },
+      { label: "Off-Track Door Repair", href: "/garage-door-off-track-repair/" },
+      { label: "Tune-Up & Inspection", href: "/garage-door-tune-up/" },
+    ],
+  },
+  {
+    slug: "garage-door-track-repair",
+    h1: "Garage Door Track Repair & Replacement",
+    eyebrow: "Tracks",
+    imageId: "hero-problem-door",
+    sub: "Bent, rusted, or misaligned tracks make a door bind, jump, and strain the opener. We true what can be trued and replace what can't — with the price in writing first.",
+    alert: "If the door is hanging crooked or the rollers have left the track, don't run the opener again. Keep people and cars clear.",
+    intro: [
+      "The tracks are the steel channels the rollers ride in: two vertical tracks beside the opening, curved sections at the top, and two horizontal tracks hung from the ceiling. They only work when they are straight, parallel, and firmly anchored. A bump from a car bumper, a rusted-through bottom section, or a bracket that pulled out of the framing is enough to make the door bind on every cycle.",
+      "Minor bends can often be straightened in place. Kinked, crushed, or rusted sections get replaced. Either way, we find what caused the damage — a slipped cable, a failed roller, an unbalanced door — and fix that too, or the track fails again.",
+    ],
+    signsHeading: "Signs of a track problem",
+    signs: [
+      "The door sticks or stalls at the same spot every time",
+      "Rollers have popped out, or the door hangs crooked",
+      "Visible bend, dent, or rust flaking at the bottom of a vertical track",
+      "Track brackets loose or pulled away from the wall",
+      "A gap between the door edge and the track that changes as the door moves",
+    ],
+    checksHeading: "What we check with the tracks",
+    checks: [
+      "Alignment and spacing of both vertical tracks",
+      "Anchoring into the jambs and ceiling",
+      "Roller and hinge condition — worn hardware chews tracks",
+      "Cable and drum condition, since a slipped cable often bends the track",
+    ],
+    steps: [CALL_FIRST, { title: "Secure and diagnose", detail: "If the door is off track, we secure it first, then find what caused it." }, QUOTE, APPROVE],
+    faqs: [
+      { question: "Can a bent track be fixed or does it have to be replaced?", answer: "Minor bends can usually be straightened in place. Kinked, crushed, or rusted-through sections are replaced. You'll see which your door needs, with the price, in the written quote." },
+      { question: "My track is rusted at the bottom — is that serious?", answer: "It can be. Salt, water, and de-icer collect at the floor and eat the bottom of the vertical track; a rusted-through section can let a roller escape. Coastal and snow-belt garages see this most." },
+      { question: "Why did the track bend in the first place?", answer: "Usually a cable slipped or a roller failed and the door's weight loaded one side. We correct the root cause, not just the track." },
+    ],
+    gallery: ["new-springs", "hero-problem-door"],
+    related: [
+      { label: "Off-Track Door Repair", href: "/garage-door-off-track-repair/" },
+      { label: "Roller Replacement", href: "/garage-door-roller-replacement/" },
+      { label: "Cable Repair", href: "/garage-door-cable-repair/" },
+    ],
+  },
+  {
+    slug: "garage-door-panel-replacement",
+    h1: "Garage Door Panel Replacement",
+    eyebrow: "Panels & sections",
+    imageId: "before-worn-single",
+    sub: "One dented, cracked, or rusted section doesn't always mean a new door. When a matching panel is available, replacing the section costs a fraction of replacement — and we'll tell you honestly when it doesn't make sense.",
+    intro: [
+      "Sectional garage doors are built from four or five horizontal sections hinged together. A car bumper, a basketball, or a rusted bottom edge usually damages one section, not the door. If the manufacturer still produces that model in that color, a single section can be ordered and swapped in.",
+      "The honest limit: panel replacement makes sense on a door whose other sections, hardware, and springs are healthy. On an old door with faded color, rust at several edges, or a history of repairs, one new section stands out and the rest keeps failing — that's when we show you the replacement number instead.",
+    ],
+    signsHeading: "When one section is the problem",
+    signs: [
+      "A dent or crease on one section after an impact",
+      "Rust or delamination along the bottom section only",
+      "A cracked section on an otherwise straight, well-running door",
+      "A broken window insert in a top section",
+    ],
+    checksHeading: "What decides repair vs. replace",
+    checks: [
+      "Whether the model, panel style, and color are still in production",
+      "Condition of the other sections, hinges, rollers, and struts",
+      "Spring and cable condition — a bent section often comes with a slipped cable",
+      "Whether the damage bent the track or hinges too",
+    ],
+    steps: [{ title: "Send a photo and the label", detail: "A photo of the damage and the manufacturer label on the end stile tells us if a matching section exists." }, { title: "We confirm availability", detail: "Model, color, and window layout have to match — we check before quoting." }, QUOTE, { title: "Section swapped and door balanced", detail: "The new section goes in, hardware is checked, and the door is tested through full travel." }],
+    faqs: [
+      { question: "Can you match the color of my existing door?", answer: "If the model is still in production, the factory color will match closely; older doors fade, so a new section may look slightly brighter until it weathers. We'll tell you what to expect." },
+      { question: "How do I find my garage door's model?", answer: "Look for a label on the inside of the door, usually on an end stile or the top section. A photo of it is enough for us to check availability." },
+      { question: "Is it cheaper to replace one panel or the whole door?", answer: "One section is almost always cheaper up front. Whether it's the better value depends on the door's condition — we quote both in writing when it's a close call." },
+    ],
+    gallery: ["before-worn-single", "after-white-raised"],
+    related: [
+      { label: "Garage Door Replacement", href: "/garage-door-replacement/" },
+      { label: "Hinge Replacement", href: "/garage-door-hinge-replacement/" },
+      { label: "What a New Door Costs", href: "/garage-door-replacement-cost/" },
+    ],
+  },
+  {
+    slug: "garage-door-drum-replacement",
+    h1: "Garage Door Cable Drum Replacement",
+    eyebrow: "Cable drums",
+    imageId: "new-springs",
+    sub: "The drums at each end of the torsion shaft wind the lift cables. When one cracks, wears grooves, or slips, the door lifts crooked and the cable comes off. We replace drums in pairs and re-tension the whole system.",
+    alert: "A slipped cable puts the door's weight on one side. Stop using the door until it's serviced.",
+    intro: [
+      "Cable drums are the grooved aluminum spools at each end of the torsion shaft. As the springs unwind, the drums turn and wind the lift cables, raising the door evenly from both sides. They're simple parts, but they carry the full load — and cast aluminum drums crack, wear their grooves smooth, and let set screws slip on the shaft after years of cycles.",
+      "Drum replacement is a spring-tension job: the springs have to be unwound, the drums swapped, the cables re-seated, and the whole system re-tensioned so the door hangs level. We replace both drums together and inspect the cables and springs while the system is apart.",
+    ],
+    signsHeading: "Signs of a drum problem",
+    signs: [
+      "The door lifts crooked or one side rises first",
+      "A cable has come off and is coiled or hanging loose",
+      "A visible crack in the drum or a groove worn smooth",
+      "The drum has walked along the shaft (set screws slipped)",
+      "Cable wear at the drum end — frayed strands or a flattened section",
+    ],
+    checksHeading: "What we check with the drums",
+    checks: [
+      "Both lift cables for fray and wear",
+      "Spring condition and cycle wear",
+      "Shaft, bearings, and set-screw seating",
+      "Door balance after re-tensioning",
+    ],
+    steps: [CALL_FIRST, { title: "Unwind, replace, re-seat", detail: "Springs unwound safely, both drums replaced, cables re-seated in the grooves." }, QUOTE, { title: "Re-tensioned and balanced", detail: "The door is rebalanced and tested so it hangs level and stops where it should." }],
+    faqs: [
+      { question: "Why replace both drums if only one cracked?", answer: "Both have the same cycle count and wear. Replacing the pair keeps the door lifting evenly and avoids a second spring-tension job in a few months." },
+      { question: "Is drum replacement dangerous to do myself?", answer: "Yes — the drums can only be worked on with the springs unwound, and winding torsion springs is the most dangerous task on a garage door. This is a technician job." },
+      { question: "Are drums different for high-lift doors?", answer: "Yes. High-lift and vertical-lift doors use different drum profiles. We match the drum to the track configuration." },
+    ],
+    gallery: ["new-springs", "broken-spring"],
+    related: [
+      { label: "Cable Repair", href: "/garage-door-cable-repair/" },
+      { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+      { label: "Off-Track Door Repair", href: "/garage-door-off-track-repair/" },
+    ],
+  },
+  {
+    slug: "garage-door-hinge-replacement",
+    h1: "Garage Door Hinge Replacement",
+    eyebrow: "Hinges",
+    imageId: "broken-spring",
+    sub: "Cracked or bent hinges let a section fold, bind, or pull the door off track. We replace hinges by number and gauge — and check why they failed.",
+    intro: [
+      "Hinges join the door's sections and hold the roller stems. They're numbered by position — #1 hinges along the bottom joint, #2 above, and so on — because each row sits at a different angle in the track curve. Builder-grade hinges are thin-gauge stamped steel; on a heavy door they crack at the knuckle, and a broken hinge lets a section fold inward or drop a roller.",
+      "We replace hinges with heavier-gauge parts in the correct number for each position, and while we're there we look at what stressed them: worn rollers, an unbalanced door, or a bent track will crack new hinges just as fast as old ones.",
+    ],
+    signsHeading: "Signs of a hinge problem",
+    signs: [
+      "A visible crack at the hinge knuckle or a hinge leaf bent open",
+      "A section folds or kicks in when the door moves",
+      "Squeaking or popping at one joint every cycle",
+      "A roller sitting at an angle in the track",
+      "Screws stripped or pulled through the section",
+    ],
+    checksHeading: "What we check with the hinges",
+    checks: [
+      "Roller condition — the two fail together",
+      "Section integrity where the hinge screws bite",
+      "Door balance and spring condition",
+      "Track alignment at the curve where hinge angles matter most",
+    ],
+    steps: [CALL_FIRST, { title: "Inspect every hinge", detail: "One cracked hinge usually has siblings on the way — we check them all." }, QUOTE, APPROVE],
+    faqs: [
+      { question: "What do the numbers on garage door hinges mean?", answer: "The number is the hinge's position from the bottom joint up. Each row has a different offset so the rollers track through the curve. Using the wrong number binds the door." },
+      { question: "Can I replace a hinge myself?", answer: "Center and end hinges on the upper sections are reasonable for a careful homeowner. Bottom brackets are not hinges — they're under full cable tension and must not be removed." },
+      { question: "Why do hinges keep cracking on my door?", answer: "Usually because the door is heavier than the hinge gauge, the door is out of balance, or a section is bent and loading one hinge. We fix the cause with the hinge." },
+    ],
+    gallery: ["new-springs", "broken-spring"],
+    related: [
+      { label: "Roller Replacement", href: "/garage-door-roller-replacement/" },
+      { label: "Panel Replacement", href: "/garage-door-panel-replacement/" },
+      { label: "Tune-Up & Inspection", href: "/garage-door-tune-up/" },
+    ],
+  },
+  {
+    slug: "garage-door-wont-close",
+    h1: "Garage Door Won't Close? Here's What's Usually Wrong",
+    eyebrow: "Won't close",
+    imageId: "hero-active-repair",
+    sub: "A door that reverses, stops short, or sits open overnight is a security problem, not just an annoyance. Most causes are quick to find — and the fix is priced in writing before we touch it.",
+    intro: [
+      "When a garage door refuses to close, the opener is almost always protecting you from something: the safety sensors see an obstruction (real or imagined), the close-force limit thinks the door hit something, or the door itself is binding on the way down. Openers are built to reverse rather than crush, so a door that won't close is usually a door that can't close safely.",
+      "The fastest check you can do yourself: look at the two sensors near the floor on either side of the opening. If one LED is off or blinking, something is between them or they're out of alignment. If both are steady and the door still reverses, the problem is mechanical — springs, tracks, rollers — or in the opener's settings, and that's when to call.",
+    ],
+    signsHeading: "What the door is doing",
+    signs: [
+      "Starts down, then reverses back up — usually sensors or close force",
+      "Opener light blinks when you press the button — sensor fault",
+      "Closes a foot or two and stops — track obstruction or travel limit",
+      "Closes only when you hold the wall button down — sensors bypassed by the hold-to-close mode",
+      "Closes but slams the last few inches — spring balance",
+      "Won't move at all and the opener is silent — power, lock mode, or logic board",
+    ],
+    checksHeading: "What we check",
+    checks: [
+      "Sensor alignment, wiring, and LEDs",
+      "Close-force and travel-limit settings",
+      "Spring balance — an unbalanced door trips the force limit",
+      "Track, roller, and hinge binding on the way down",
+      "Opener drive, trolley, and logic board",
+    ],
+    steps: [{ title: "Try the sensor check", detail: "Clear anything near the floor sensors and wipe the lenses. If the LEDs go steady, try again." }, CALL_FIRST, QUOTE, APPROVE],
+    faqs: [
+      { question: "My door closes if I hold the button down. Is that a fix?", answer: "No — holding the wall button bypasses the safety sensors, which means the door will close on anything in its path. Use it only in an emergency and get the sensors fixed." },
+      { question: "The sensors look aligned but the door still reverses. Why?", answer: "Sunlight hitting a sensor, a loose wire, a failing sensor, or a mechanical bind can all cause it. If the door reverses at the same spot each time, something in the track is likely. We test all of it." },
+      { question: "Can I leave the door open overnight if it won't close?", answer: "Not safely. If you can't secure the garage, call — a door stuck open is one of the calls we treat as urgent." },
+      { question: "Why did it start reversing after the weather turned cold?", answer: "Cold thickens lubricant and stiffens springs; a door that was marginal in October trips the force limit in January. Often the fix is balance and lubrication, not the opener." },
+    ],
+    related: [
+      { label: "Safety Sensor Repair", href: "/garage-door-safety-sensor-repair/" },
+      { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+      { label: "Emergency Repair", href: "/emergency-garage-door-repair/" },
+      { label: "Track Repair", href: "/garage-door-track-repair/" },
+    ],
+  },
+  {
+    slug: "garage-door-wont-open",
+    h1: "Garage Door Won't Open? Find the Real Cause",
+    eyebrow: "Won't open",
+    imageId: "spring-safety",
+    sub: "A car trapped behind a door that won't lift is the most common urgent call we get. Before you force anything, here is what's usually wrong — and why forcing it makes it worse.",
+    alert: "If you heard a loud bang before the door stopped working, a spring has snapped. Do not lift the door by hand and do not keep pressing the opener — the door weighs hundreds of pounds without the spring.",
+    intro: [
+      "A garage door that won't open has one of three problems: the opener can't move it, the door is too heavy to move, or something is physically holding it. The opener gets blamed most, but a broken spring is the more common culprit — the opener was only ever designed to guide a balanced door, not lift a dead one.",
+      "A quick test if the door is safe to approach: pull the red emergency release cord (with the door fully closed) and try lifting the door by hand. A balanced door lifts easily with one hand and stays where you leave it. If it's dead-weight heavy, the spring is broken — stop and call. If it lifts fine, the problem is the opener.",
+    ],
+    signsHeading: "What the door is doing",
+    signs: [
+      "Loud bang earlier, now the door barely lifts an inch — broken spring",
+      "Opener hums or clicks, door doesn't move — stripped gear, capacitor, or broken spring",
+      "Opener runs, trolley moves, door stays down — disconnected trolley or broken carriage",
+      "Nothing happens at all — power, lock mode on the wall console, or logic board",
+      "Door opens a few inches and stops — travel limit, obstruction, or a cable off its drum",
+      "Manual lift works but it's very heavy — spring at end of life or wrong spring",
+    ],
+    checksHeading: "What we check",
+    checks: [
+      "Springs — broken, worn, or wrong size for the door",
+      "Cables and drums",
+      "Opener drive gear, capacitor, trolley, and logic board",
+      "Track and roller binding",
+      "Power, wall console lock, and remote programming",
+    ],
+    steps: [{ title: "Stop and describe it", detail: "Tell us whether you heard a bang and what the opener does when you press the button." }, { title: "Diagnosis at the door", detail: "We test the door's balance first — it separates spring problems from opener problems in seconds." }, QUOTE, APPROVE],
+    faqs: [
+      { question: "My car is inside and I have to get to work. Can I open the door by hand?", answer: "Only if the spring is intact. Pull the red release cord and try lifting: if the door is very heavy, stop — a broken-spring door can drop and cause serious injury. Call and tell us a car is trapped; that's a call we treat as urgent." },
+      { question: "The opener hums but nothing moves. Is the opener dead?", answer: "Sometimes — a stripped gear or failed capacitor does that. But a humming opener that can't lift a broken-spring door sounds identical. We check the balance before quoting opener work so you don't pay for the wrong repair." },
+      { question: "Why won't it open after a power outage?", answer: "Some openers need the wall console's lock mode cleared or remotes re-paired after an outage. If the opener has power and still does nothing, the logic board may have taken a surge." },
+      { question: "It opens with the wall button but not the remote.", answer: "That's a remote or receiver problem — battery, programming, or antenna — not a door problem. Quick fix either way." },
+    ],
+    related: [
+      { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+      { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+      { label: "Emergency Repair", href: "/emergency-garage-door-repair/" },
+      { label: "Remotes & Keypads", href: "/garage-door-remote-programming/" },
+    ],
+  },
+  {
+    slug: "garage-door-safety-sensor-repair",
+    h1: "Garage Door Safety Sensor Repair",
+    eyebrow: "Safety sensors",
+    imageId: "opener-rail",
+    sub: "The photo eyes near the floor are the #1 reason a door refuses to close. Misaligned, dirty, wired wrong, or failed — we fix the sensors so the door closes and stays safe.",
+    intro: [
+      "Every opener made since 1993 has a pair of infrared sensors mounted a few inches above the floor on each side of the opening. One sends a beam, the other receives it; if anything breaks the beam while the door is closing, the door reverses. It's the single most important safety feature on the door — and the single most common cause of \"my door won't close.\"",
+      "Sensors get knocked out of alignment by a broom or a bike, their lenses fog or collect cobwebs, their wires corrode at the floor or get pinched by a staple, and eventually the sensor itself fails. We realign, rewire, or replace them and test the reversal so the safety system actually works.",
+    ],
+    signsHeading: "Signs of a sensor problem",
+    signs: [
+      "Door starts down and reverses immediately",
+      "Opener light blinks (usually ten times) when you try to close",
+      "One sensor LED is off, dim, or flickering",
+      "The door closes only when you hold the wall button",
+      "The problem comes and goes with sunlight or time of day",
+    ],
+    checksHeading: "What we check",
+    checks: [
+      "Alignment and mounting brackets",
+      "Wiring from the sensors to the motor head, including staples and splices",
+      "Sensor function and LED status on both sides",
+      "Sun interference on the receiving eye",
+      "The opener's auto-reverse test after the fix",
+    ],
+    steps: [{ title: "Clean and clear", detail: "Wipe both lenses and move anything near the floor. If both LEDs go steady, you're done." }, CALL_FIRST, QUOTE, { title: "Fixed and safety-tested", detail: "Sensors aligned or replaced, then the reversal is tested with an obstruction before we leave." }],
+    faqs: [
+      { question: "Can I just bypass the sensors?", answer: "Please don't. Bypassing means the door will close on a child, a pet, or a car bumper. Sensors are a quick, inexpensive fix — there's no good reason to run without them." },
+      { question: "One sensor is green, the other is off. Which one is broken?", answer: "Usually the receiving sensor (often the green one) goes dark when the beam is broken or misaligned; the sending sensor (often amber/red) stays lit. It doesn't always mean a sensor failed — alignment is the first fix." },
+      { question: "Why does the sun make my door reverse?", answer: "Direct sunlight on the receiving eye can overwhelm the beam. A sun shield, swapping the sensors' sides, or slight repositioning solves it." },
+      { question: "My opener has no sensors at all.", answer: "Then it predates 1993 safety standards. Sensors can't be added to most units that old — replacement with a modern opener is the safe answer, and we'll quote it in writing." },
+    ],
+    related: [
+      { label: "Door Won't Close", href: "/garage-door-wont-close/" },
+      { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+      { label: "Opener Installation", href: "/garage-door-opener-installation/" },
+    ],
+  },
+  {
+    slug: "garage-door-opener-installation",
+    h1: "Garage Door Opener Installation",
+    eyebrow: "New opener",
+    imageId: "walkthrough",
+    sub: "Belt drive, chain drive, or wall-mount — sized to your door's weight, installed with the rail, sensors, and remotes set up right, and priced in writing before anything is ordered.",
+    primaryMode: "estimate",
+    callLabel: "Get a Written Opener Estimate",
+    intro: [
+      "A new opener is the right call when the old one has failed past economical repair, when it predates safety sensors, or when you want quiet operation and app control the old unit can't offer. It's also the moment to fix what the old opener was hiding: an opener only works well on a balanced door with healthy springs and rollers.",
+      "We install belt-drive, chain-drive, and wall-mount (jackshaft) openers from the brands we service, match the motor rating to the door's weight and size, mount the rail and brackets to the framing, wire and align the safety sensors, program remotes and keypads, set travel and force limits, and test the auto-reverse.",
+    ],
+    signsHeading: "When replacement beats repair",
+    signs: [
+      "Motor or logic board failed on an opener 12–15+ years old",
+      "No safety sensors (pre-1993 unit)",
+      "Repairs are stacking up — gear kit last year, capacitor this year",
+      "You want a quiet belt drive under a bedroom",
+      "You want Wi-Fi app control, battery backup, or a camera",
+      "A new heavier insulated door needs more lift than the old unit has",
+    ],
+    checksHeading: "What we set up on every install",
+    checks: [
+      "Door balance and hardware check before the opener goes on",
+      "Rail, header bracket, and ceiling hangers anchored to framing",
+      "Safety sensors aligned and wired cleanly",
+      "Remotes, keypad, wall console, and app connection programmed",
+      "Travel limits, force settings, and auto-reverse tested",
+    ],
+    steps: [{ title: "Tell us about the door", detail: "Single or double, insulated or not, headroom, and whether it's under living space — that picks the drive type." }, { title: "Written estimate", detail: "Opener model, accessories, and any door work it needs, itemized in writing." }, { title: "Installed and programmed", detail: "Rail, sensors, remotes, keypad, and app set up and tested." }, { title: "Walkthrough", detail: "You see the release cord, the wall console, and the app before we leave." }],
+    faqs: [
+      { question: "Belt drive or chain drive?", answer: "Belt drives are quieter — the choice for garages under or beside living space. Chain drives are durable and cost a bit less, fine for detached garages. Wall-mount openers free the ceiling and suit high-lift or low-headroom setups." },
+      { question: "What horsepower do I need?", answer: "It depends on the door's weight and size, not just single vs. double. Heavy insulated or wood doors need more. We size it to your actual door rather than guessing." },
+      { question: "Can I keep my old remotes and keypad?", answer: "Usually not across brands or generations — new openers come with new remotes, and we program them plus your car's built-in HomeLink if you have it." },
+      { question: "Do I need a battery backup?", answer: "It lets the door open during a power outage — worth it if the garage is your main entrance or you've been stuck before. It's an option on many models; we'll list it separately in the estimate." },
+    ],
+    related: [
+      { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+      { label: "Smart Openers", href: "/smart-garage-door-opener/" },
+      { label: "Brands We Service", href: "/brands/" },
+      { label: "Garage Door Openers", href: "/garage-door-openers/" },
+    ],
+  },
+  {
+    slug: "garage-door-remote-programming",
+    h1: "Garage Door Remotes, Keypads & Wall Buttons",
+    eyebrow: "Remotes & keypads",
+    imageId: "quote-tablet",
+    sub: "Remote lost its programming, keypad won't take the code, wall button dead, or a car's HomeLink that never worked? These are the quick fixes — no need for a new opener if the drive is healthy.",
+    intro: [
+      "Remotes, keypads, and wall consoles are the accessories that talk to the opener's receiver. They fail in predictable ways: batteries die, memory clears after a power surge, buttons wear out, a keypad's weather seal gives up after a few winters, or the opener's antenna wire gets tucked away and the range drops to a few feet.",
+      "We re-pair and program remotes and keypads, replace dead accessories with compatible ones, fix wall-console wiring, set up HomeLink in the car, and — when an older opener's receiver is the problem — add an external receiver so the opener works with modern remotes.",
+    ],
+    signsHeading: "Common accessory problems",
+    signs: [
+      "Remote works only when you're right under the opener — antenna or battery",
+      "Keypad accepts the code but the door doesn't move — pairing lost",
+      "Wall button dead but the remote works — wiring or console",
+      "Everything stopped after a power outage — memory cleared or lock mode on",
+      "Car's HomeLink never paired — needs the opener's learn button and sometimes a bridge",
+      "Lost a remote and want the old ones erased for security",
+    ],
+    checksHeading: "What we check",
+    checks: [
+      "Opener receiver and antenna",
+      "Wall console wiring and lock mode",
+      "Compatibility of replacement remotes and keypads with the opener's generation",
+      "Erasing old remotes after a loss or a move",
+    ],
+    steps: [{ title: "Try a fresh battery first", detail: "It's the fix more often than not." }, CALL_FIRST, { title: "Programmed or replaced", detail: "Pairing, replacement accessories, or an external receiver — whichever the opener needs." }, { title: "Tested from the driveway", detail: "Range and every accessory checked before we leave." }],
+    faqs: [
+      { question: "I bought a new house — should the old remotes be erased?", answer: "Yes. Anyone who kept a remote can open your garage. Clearing the opener's memory and re-pairing only your remotes and keypad takes minutes." },
+      { question: "Can a universal remote work with my opener?", answer: "Most openers made since the mid-1990s work with a compatible universal remote; very old units with dip-switch codes may need an external receiver. We'll tell you which." },
+      { question: "My keypad works in summer but not winter.", answer: "Keypad batteries and weather seals fail in the cold. A fresh battery and, if needed, a replacement keypad usually solves it." },
+    ],
+    related: [
+      { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+      { label: "Smart Openers", href: "/smart-garage-door-opener/" },
+      { label: "Door Won't Open", href: "/garage-door-wont-open/" },
+    ],
+  },
+  {
+    slug: "smart-garage-door-opener",
+    h1: "Smart Garage Door Openers & App Control",
+    eyebrow: "Smart openers",
+    imageId: "opener-rail",
+    sub: "Open, close, and check the door from your phone, get alerts when it's left open, and let in deliveries — installed and connected by a technician who sets the whole system up, not just the app.",
+    primaryMode: "estimate",
+    callLabel: "Get a Written Estimate",
+    intro: [
+      "A smart opener connects to your home Wi-Fi so the door can be controlled and monitored from an app: close it from the office when you can't remember whether you did, get a notification when it opens, schedule it to close at night, or give a one-time code to a contractor. Most current LiftMaster and Chamberlain openers (myQ) and many Genie models (Aladdin Connect) have it built in; older openers can often be connected with an add-on hub and a door sensor.",
+      "We install new Wi-Fi openers, add hubs to compatible existing openers, connect them to your network, and walk you through the app — including the closing-alert and schedule features most people never find on their own.",
+    ],
+    signsHeading: "What a smart opener gives you",
+    signs: [
+      "Close the door from anywhere and see that it's closed",
+      "Alerts when the door opens or is left open past a set time",
+      "Scheduled auto-close at night",
+      "Guest access and one-time codes without handing out a remote",
+      "Optional camera and battery backup on many models",
+    ],
+    checksHeading: "What we set up",
+    checks: [
+      "Wi-Fi signal strength at the opener — garages are often dead zones",
+      "Hub compatibility for existing openers",
+      "App account, door sensor, and notifications",
+      "Security: old remotes erased, app access limited to you",
+    ],
+    steps: [{ title: "Tell us what you have", detail: "Opener brand and age, and whether the garage gets Wi-Fi — a hub may be all you need." }, { title: "Written estimate", detail: "New opener or add-on hub, itemized." }, { title: "Installed and connected", detail: "Hardware mounted, network joined, app configured." }, { title: "Walkthrough", detail: "Alerts, schedules, and guest access set up with you." }],
+    faqs: [
+      { question: "Can my existing opener be made smart?", answer: "If it was made after the mid-1990s with safety sensors, usually yes with an add-on hub and door sensor. Very old units are better replaced. We'll tell you which on the phone." },
+      { question: "Is app control secure?", answer: "Modern openers use encrypted, rolling-code signals and the app requires your account. The bigger risk is old remotes still paired from a previous owner — we erase those as part of the setup." },
+      { question: "My garage has no Wi-Fi signal.", answer: "Common. A mesh node or extender near the garage fixes it; we'll test signal strength before installing anything that depends on it." },
+    ],
+    related: [
+      { label: "Opener Installation", href: "/garage-door-opener-installation/" },
+      { label: "Remotes & Keypads", href: "/garage-door-remote-programming/" },
+      { label: "LiftMaster Openers", href: "/brands/liftmaster/" },
+    ],
+  },
+  {
+    slug: "garage-door-tune-up",
+    h1: "Garage Door Tune-Up & Safety Inspection",
+    eyebrow: "Maintenance",
+    imageId: "spring-winding",
+    sub: "A once-a-year tune-up catches the spring, cable, and roller wear that becomes a stuck-door emergency in January. Balance, lubrication, hardware, and the opener's safety systems — checked, adjusted, and documented.",
+    primaryMode: "estimate",
+    callLabel: "Schedule a Tune-Up",
+    intro: [
+      "A garage door is the largest moving object in most homes and it cycles thousands of times a year, yet it rarely gets looked at until it fails. A tune-up is a structured inspection and adjustment: we check the door's balance (the single best predictor of a spring at end of life), tighten hardware, lubricate springs, hinges, and rollers with the right product, check cables for fraying, and test the opener's force settings and auto-reverse.",
+      "In Massachusetts the best time is fall — before the cold thickens lubricants, stiffens springs, and turns a marginal door into a January emergency. Seasonal homes on the Cape and Islands benefit from a spring tune-up before opening weekend.",
+    ],
+    signsHeading: "What a tune-up includes",
+    signs: [
+      "Balance test — the door should stay put when lifted halfway by hand",
+      "Spring inspection for wear, gaps, and rust; lubrication",
+      "Cable inspection at the drums and bottom brackets",
+      "Roller and hinge check; lubrication or replacement recommendation",
+      "Track alignment and bracket tightness",
+      "Weatherstripping and bottom seal condition",
+      "Opener: force and travel settings, sensor alignment, auto-reverse test, chain/belt tension",
+      "A written summary of what's fine, what's wearing, and what to plan for",
+    ],
+    checksHeading: "What a tune-up is not",
+    checks: [
+      "It's not a sales visit — anything we recommend is priced in writing and you decide",
+      "It doesn't replace parts that don't need replacing",
+      "It doesn't include lubricating tracks (they should be clean, not greased)",
+    ],
+    steps: [{ title: "Book a time", detail: "Fall is ideal; any time works." }, { title: "Inspect, adjust, lubricate", detail: "The full checklist, done properly." }, { title: "Written summary", detail: "What's wearing and what to plan for — no pressure." }, { title: "Optional repairs, quoted first", detail: "Anything that needs work is priced in writing; you choose." }],
+    faqs: [
+      { question: "How often should a garage door be serviced?", answer: "Once a year for most homes; twice for heavily used doors or high-cycle commercial doors. If the door has never been serviced, the first visit usually finds the most." },
+      { question: "Can I lubricate the door myself?", answer: "Yes — a silicone or white lithium garage-door lubricant on springs, hinges, and roller bearings (not the tracks) twice a year helps. The balance test and spring inspection are the parts worth having a technician do." },
+      { question: "What does the balance test tell you?", answer: "With the opener released, a balanced door stays where you leave it at waist height. If it drifts down, the springs are losing tension — that's the early warning before a snap." },
+    ],
+    gallery: ["new-springs", "van-front"],
+    related: [
+      { label: "Noisy Garage Door Repair", href: "/noisy-garage-door-repair/" },
+      { label: "Weatherstripping & Seals", href: "/garage-door-weatherstripping/" },
+      { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+      { label: "Commercial Door Maintenance", href: "/commercial-garage-door-maintenance/" },
+    ],
+  },
+  {
+    slug: "garage-door-weatherstripping",
+    h1: "Garage Door Weatherstripping & Seal Replacement",
+    eyebrow: "Seals",
+    imageId: "after-white-raised",
+    sub: "Torn bottom seals, cracked side and top seals, and gaps you can see daylight through let in cold, water, salt, and mice. Replacing them is inexpensive and makes an attached garage noticeably warmer.",
+    primaryMode: "estimate",
+    callLabel: "Get a Written Estimate",
+    intro: [
+      "Four seals keep the weather out of a garage: the bottom seal (a rubber astragal in an aluminum retainer along the door's bottom edge), the side and top perimeter seals (vinyl or rubber flaps nailed to the jambs and header), the threshold on the floor, and the seals between sections on some insulated doors. In Massachusetts they take a beating — ice tears bottom seals, UV cracks side seals, and salt hardens everything.",
+      "We replace bottom seals (matching the retainer's profile — T-end, bead, or bulb), install new perimeter weatherstripping, add floor thresholds where water runs in under the door, and check that the door closes flat so the seals can actually do their job.",
+    ],
+    signsHeading: "Signs your seals are done",
+    signs: [
+      "Daylight visible under or beside the closed door",
+      "Bottom seal torn, hard, or frozen to the floor in winter",
+      "Water or snowmelt running in under the door",
+      "Mice or insects getting in",
+      "Drafts in the room beside or above the garage",
+      "Side seals cracked, curled, or pulling away from the jamb",
+    ],
+    checksHeading: "What we check with the seals",
+    checks: [
+      "Door closes flat and level — a crooked door won't seal",
+      "Bottom retainer profile and condition",
+      "Floor slope and cracks where water enters",
+      "Bottom section for rust or rot that the seal was hiding",
+    ],
+    steps: [{ title: "Send a photo of the gap", detail: "Bottom, side, or top — and whether water comes in." }, { title: "Written estimate", detail: "Seals, threshold if needed, and any bottom-section work, itemized." }, { title: "Replaced and tested", detail: "The door is closed and checked for daylight and fit." }, { title: "Warmer garage", detail: "Especially noticeable in rooms adjoining the garage." }],
+    faqs: [
+      { question: "My bottom seal freezes to the floor. What do I do?", answer: "Don't run the opener against it — it tears the seal. A new bottom seal plus a threshold keeps meltwater from pooling under the door; some homeowners also wipe the seal with silicone before a cold snap." },
+      { question: "Will new weatherstripping make the garage warmer?", answer: "Noticeably, if the seals were the leak. If the door itself is a single-layer steel door, insulation is the bigger step — we'll tell you honestly which matters more for your garage." },
+      { question: "Can you stop mice from getting in under the door?", answer: "A good bottom seal and threshold close the common gap; the corners where side seals meet the floor are the other entry point, and we address those too." },
+    ],
+    related: [
+      { label: "Tune-Up & Inspection", href: "/garage-door-tune-up/" },
+      { label: "Insulated Steel Doors", href: "/garage-door-styles/insulated-steel-garage-doors/" },
+      { label: "Panel Replacement", href: "/garage-door-panel-replacement/" },
+    ],
+  },
+  {
+    slug: "noisy-garage-door-repair",
+    h1: "Noisy Garage Door Repair",
+    eyebrow: "Noise",
+    imageId: "hero-active-repair",
+    sub: "Grinding, squealing, banging, rattling — every noise points to a specific part. We find which one, fix it, and tell you when a quiet belt-drive opener or nylon rollers would finish the job.",
+    intro: [
+      "A garage door shouldn't wake the house. Noise is diagnostic: each sound comes from a specific part, and most are inexpensive to fix early and expensive to ignore. Grinding is usually worn rollers; squealing is dry hinges, springs, or bearings; a rattle on the way up is loose hardware or a chain drive; a bang at the bottom is a door slamming because the springs are weak; a rhythmic thump is a flat spot on a roller or a bent track.",
+      "We listen to the door run, isolate the sound, and fix the part — rollers, hinges, bearings, hardware, spring lubrication, opener drive tension. If the opener itself is the noise, we'll tell you what a belt-drive replacement would change, priced in writing next to the repair.",
+    ],
+    signsHeading: "What the noise usually means",
+    signs: [
+      "Grinding or scraping — worn or seized rollers",
+      "Squealing or chirping — dry hinges, springs, or end bearings",
+      "Rattling or vibrating — loose nuts and bolts, chain drive tension",
+      "Banging at close — weak springs letting the door slam",
+      "Popping — a cracked hinge or roller stem",
+      "Rumble through the ceiling — opener mounted to joists without isolation, or a chain drive under a bedroom",
+    ],
+    checksHeading: "What we check",
+    checks: [
+      "Rollers and hinges",
+      "Spring condition, lubrication, and balance",
+      "End bearings and center bearing on the torsion shaft",
+      "Track alignment and hardware tightness",
+      "Opener drive type, tension, and mounting",
+    ],
+    steps: [CALL_FIRST, { title: "Listen and isolate", detail: "We run the door and trace each sound to its part." }, QUOTE, APPROVE],
+    faqs: [
+      { question: "Will lubricating the door fix the noise?", answer: "Sometimes — squealing from dry hinges and springs responds to the right lubricant. Grinding from worn rollers or rattling from loose hardware won't. Use a garage-door silicone or lithium spray, not WD-40, and never on the tracks." },
+      { question: "What's the quietest setup?", answer: "Sealed nylon rollers, a balanced insulated door, and a belt-drive opener with rubber isolation on the mounts. We'll tell you which of those your door actually needs." },
+      { question: "The noise started suddenly. Should I worry?", answer: "A new grinding or popping sound usually means a roller or hinge just failed — get it looked at before it pulls the door off track." },
+    ],
+    gallery: ["new-springs", "broken-spring"],
+    related: [
+      { label: "Roller Replacement", href: "/garage-door-roller-replacement/" },
+      { label: "Hinge Replacement", href: "/garage-door-hinge-replacement/" },
+      { label: "Opener Installation", href: "/garage-door-opener-installation/" },
+      { label: "Tune-Up & Inspection", href: "/garage-door-tune-up/" },
+    ],
+  },
+  {
+    slug: "commercial-garage-door-maintenance",
+    h1: "Commercial Garage Door Maintenance Programs",
+    eyebrow: "Commercial maintenance",
+    imageId: "van-front",
+    sub: "High-cycle doors fail on schedule. Planned inspection and service — documented per door — keeps loading docks, fleet bays, and shared garages moving instead of stopping the business.",
+    primaryMode: "estimate",
+    callLabel: "Request a Maintenance Quote",
+    intro: [
+      "A commercial door that opens forty times a day does in one year what a home door does in ten. Springs and cables have a rated cycle life, operators have duty cycles, and photo eyes and safety edges drift out of adjustment. Waiting for the failure means a truck stuck at a dock, a fleet that can't leave, or a condo garage with residents locked in.",
+      "A maintenance program replaces that with a schedule: quarterly, semi-annual, or annual visits depending on cycle count, with each door inspected, adjusted, lubricated, and safety-tested, and a written record per door — what was done, what's wearing, and what to budget for. Vendor onboarding documentation is available on request.",
+    ],
+    signsHeading: "What each visit covers",
+    signs: [
+      "Spring and cable inspection against rated cycle life",
+      "Operator duty cycle, drive, brake, and limit checks",
+      "Photo eyes, safety edges, and reversing tests",
+      "Rollers, hinges, tracks, guides, and slats (rolling steel)",
+      "Lubrication and hardware tightening",
+      "Weather seals and thresholds",
+      "Per-door written report with recommendations",
+    ],
+    checksHeading: "Who it's for",
+    checks: [
+      "Warehouses and distribution with loading dock doors",
+      "Fleet, municipal, and fire-station bays",
+      "Condo and apartment garages with shared high-cycle doors",
+      "Auto shops, car washes, and service buildings",
+      "Property managers with multiple sites",
+    ],
+    steps: [{ title: "Scope the doors", detail: "Count, type, size, cycle estimate, and any current problems — by phone or a site walk." }, { title: "Written program quote", detail: "Frequency, scope, and pricing per door, in writing." }, { title: "Scheduled visits", detail: "Inspection, adjustment, and safety tests on your schedule, off-hours where needed." }, { title: "Documented", detail: "A report per door after every visit, with what to budget for next." }],
+    faqs: [
+      { question: "How often should commercial doors be serviced?", answer: "It depends on cycles: quarterly for dock doors and shared garage doors that run all day, semi-annual for moderate use, annual for low-traffic bays. We recommend a schedule from your actual cycle count." },
+      { question: "Do you replace springs before they break?", answer: "On high-cycle doors, yes when the cycle count says they're near end of life — a planned replacement costs a fraction of a dock down on a Monday morning. It's always quoted in writing first." },
+      { question: "Can you provide documentation for our vendor system?", answer: "Yes — ask when you call and we'll provide what your onboarding requires." },
+    ],
+    related: [
+      { label: "Commercial Garage Door Repair", href: "/commercial-garage-door-repair/" },
+      { label: "Tune-Up & Inspection", href: "/garage-door-tune-up/" },
+      { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+    ],
+  },
+];
+
+export const servicePageBySlug = (slug: string): ServicePage | undefined => SERVICE_PAGES.find((s) => s.slug === slug);

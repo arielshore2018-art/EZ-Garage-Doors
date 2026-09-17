@@ -1,30 +1,97 @@
 ---
 /**
- * Full-site header: utility trust strip, logo, primary nav, call CTA.
- * Mobile menu is a no-JS <details> disclosure — no menu library.
- * Nav gives the four core paths: repair, new doors, commercial, areas.
+ * Full-site header (A1-style structure): utility strip with the policy
+ * line, white bar with the color logo, dropdown nav (CSS hover +
+ * focus-within, no JS), orange call CTA. Mobile menu is a no-JS
+ * <details> disclosure grouped the same way as the dropdowns.
  */
 import { Image } from "astro:assets";
-import logo from "../assets/brand/ez-logo-white.svg";
+import logo from "../assets/brand/ez-logo-primary-horizontal.svg";
 import CallButton from "./CallButton.astro";
-import { APPROVED_CLAIMS } from "../config/business";
+import { APPROVED_CLAIMS, COVERAGE } from "../config/business";
+import { MA_COUNTIES } from "../config/ma-towns";
 
-const nav = [
-  { href: "/garage-door-repair/", label: "Repair" },
-  { href: "/broken-spring-repair/", label: "Springs" },
-  { href: "/garage-door-opener-repair/", label: "Openers" },
-  { href: "/garage-door-installation/", label: "New Doors" },
-  { href: "/commercial-garage-door-repair/", label: "Commercial" },
-  { href: "/service-areas/", label: "Service Areas" },
-  { href: "/about/", label: "About" },
+interface NavItem {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+}
+
+const nav: NavItem[] = [
+  {
+    label: "Repair",
+    href: "/garage-door-repair/",
+    children: [
+      { label: "Garage Door Repair", href: "/garage-door-repair/" },
+      { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+      { label: "Cable Repair", href: "/garage-door-cable-repair/" },
+      { label: "Off-Track Door", href: "/garage-door-off-track-repair/" },
+      { label: "Roller Replacement", href: "/garage-door-roller-replacement/" },
+      { label: "Track Repair", href: "/garage-door-track-repair/" },
+      { label: "Panel Replacement", href: "/garage-door-panel-replacement/" },
+      { label: "Door Won't Close", href: "/garage-door-wont-close/" },
+      { label: "Door Won't Open", href: "/garage-door-wont-open/" },
+      { label: "Emergency Repair", href: "/emergency-garage-door-repair/" },
+    ],
+  },
+  {
+    label: "Openers",
+    href: "/garage-door-openers/",
+    children: [
+      { label: "Opener Repair", href: "/garage-door-opener-repair/" },
+      { label: "Opener Installation", href: "/garage-door-opener-installation/" },
+      { label: "Remotes & Keypads", href: "/garage-door-remote-programming/" },
+      { label: "Safety Sensors", href: "/garage-door-safety-sensor-repair/" },
+      { label: "Smart Openers", href: "/smart-garage-door-opener/" },
+      { label: "Brands We Service", href: "/brands/" },
+    ],
+  },
+  {
+    label: "New Doors",
+    href: "/garage-door-installation/",
+    children: [
+      { label: "New Door Installation", href: "/garage-door-installation/" },
+      { label: "Door Replacement", href: "/garage-door-replacement/" },
+      { label: "Door Styles", href: "/garage-door-styles/" },
+      { label: "What a New Door Costs", href: "/garage-door-replacement-cost/" },
+      { label: "Finished Work", href: "/gallery/" },
+    ],
+  },
+  {
+    label: "Maintenance",
+    href: "/garage-door-tune-up/",
+    children: [
+      { label: "Tune-Up & Inspection", href: "/garage-door-tune-up/" },
+      { label: "Weatherstripping & Seals", href: "/garage-door-weatherstripping/" },
+      { label: "Noisy Door Repair", href: "/noisy-garage-door-repair/" },
+      { label: "Commercial Doors", href: "/commercial-garage-door-repair/" },
+    ],
+  },
+  {
+    label: "Service Areas",
+    href: "/service-areas/",
+    children: MA_COUNTIES.map((c) => ({ label: `${c.name} County`, href: `/service-areas/${c.slug}/` })),
+  },
+  {
+    label: "Resources",
+    href: "/guides/",
+    children: [
+      { label: "Guides & Troubleshooting", href: "/guides/" },
+      { label: "Reviews", href: "/reviews/" },
+      { label: "About EZ Garage Doors", href: "/about/" },
+      { label: "Contact", href: "/contact/" },
+    ],
+  },
 ];
 
 const current = Astro.url.pathname;
+const isActive = (item: NavItem) =>
+  current === item.href || (item.children?.some((c) => c.href === current) ?? false);
 ---
 
 <div class="utility-strip">
   <div class="wrap utility-strip__inner">
-    <p>{APPROVED_CLAIMS.local}</p>
+    <p>{APPROVED_CLAIMS.local} · {COVERAGE.line}</p>
     <p class="utility-strip__right">{APPROVED_CLAIMS.writtenQuote}</p>
   </div>
 </div>
@@ -32,17 +99,33 @@ const current = Astro.url.pathname;
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a href="/" class="site-header__logo" aria-label="EZ Garage Doors — home">
-      <Image src={logo} alt="EZ Garage Doors — Fast. Reliable. Local." width={210} loading="eager" />
+      <Image src={logo} alt="EZ Garage Doors — Fast. Reliable. Local." width={230} loading="eager" />
     </a>
 
     <nav class="site-header__nav" aria-label="Main">
-      <ul>
+      <ul class="nav">
         {
           nav.map((item) => (
-            <li>
-              <a href={item.href} aria-current={current === item.href ? "page" : undefined}>
+            <li class:list={["nav__item", { "nav__item--has-menu": !!item.children }]}>
+              <a href={item.href} aria-current={isActive(item) ? "page" : undefined}>
                 {item.label}
+                {item.children && (
+                  <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12">
+                    <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  </svg>
+                )}
               </a>
+              {item.children && (
+                <ul class:list={["nav__menu", { "nav__menu--wide": item.children.length > 8 }]}>
+                  {item.children.map((c) => (
+                    <li>
+                      <a href={c.href} aria-current={current === c.href ? "page" : undefined}>
+                        {c.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))
         }
@@ -50,37 +133,40 @@ const current = Astro.url.pathname;
     </nav>
 
     <div class="site-header__cta">
-      <CallButton label="Call for Repair" />
+      <a href="/contact/#request" class="btn btn--outline site-header__request" data-track="header_request">
+        Request Service
+      </a>
+      <CallButton label="Call for Repair" track="header_call" />
     </div>
 
     <details class="site-header__mobile">
       <summary aria-label="Open menu">
         <span class="site-header__burger" aria-hidden="true"></span>
+        <span class="site-header__menu-word" aria-hidden="true">Menu</span>
         <span class="visually-hidden">Menu</span>
       </summary>
       <nav aria-label="Main mobile">
-        <p class="site-header__mobile-label">Fix my door</p>
-        <ul>
-          <li><a href="/garage-door-repair/">Garage Door Repair</a></li>
-          <li><a href="/broken-spring-repair/">Broken Springs</a></li>
-          <li><a href="/garage-door-opener-repair/">Opener Problems</a></li>
-          <li><a href="/emergency-garage-door-repair/">Urgent Service</a></li>
-        </ul>
-        <p class="site-header__mobile-label">New doors</p>
-        <ul>
-          <li><a href="/garage-door-installation/">New Door Installation</a></li>
-          <li><a href="/garage-door-replacement/">Replacement</a></li>
-          <li><a href="/commercial-garage-door-repair/">Commercial</a></li>
-        </ul>
-        <p class="site-header__mobile-label">Company</p>
-        <ul>
-          <li><a href="/service-areas/">Service Areas</a></li>
-          <li><a href="/about/">About</a></li>
-          <li><a href="/reviews/">Reviews</a></li>
-          <li class="site-header__mobile-cta">
-            <a href="/contact/#request">Get a Written Estimate</a>
-          </li>
-        </ul>
+        <div class="site-header__mobile-cta">
+          <CallButton label="Call Now" track="mobile_menu_call" />
+          <a href="/contact/#request" class="btn btn--outline" data-track="mobile_menu_request">Request Service</a>
+        </div>
+        {
+          nav.map((item) => (
+            <details class="site-header__group">
+              <summary>{item.label}</summary>
+              <ul>
+                <li>
+                  <a href={item.href}>All {item.label}</a>
+                </li>
+                {item.children?.map((c) => (
+                  <li>
+                    <a href={c.href}>{c.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))
+        }
       </nav>
     </details>
   </div>
@@ -88,8 +174,8 @@ const current = Astro.url.pathname;
 
 <style>
   .utility-strip {
-    background: var(--film-gap);
-    color: #c9cdd2;
+    background: var(--ez-ink);
+    color: var(--ez-on-ink);
     font-size: var(--text-xs);
   }
 
@@ -97,7 +183,7 @@ const current = Astro.url.pathname;
     display: flex;
     justify-content: space-between;
     gap: var(--space-4);
-    padding-block: 0.35rem;
+    padding-block: 0.4rem;
   }
 
   .utility-strip p {
@@ -107,28 +193,38 @@ const current = Astro.url.pathname;
     text-overflow: ellipsis;
   }
 
-  @media (max-width: 30rem) {
-    .utility-strip__right {
+  .utility-strip__right {
+    color: var(--ez-white);
+    font-weight: 600;
+  }
+
+  @media (max-width: 36rem) {
+    .utility-strip__inner p:first-child {
       display: none;
+    }
+    .utility-strip__inner {
+      justify-content: center;
     }
   }
 
   .site-header {
     background: var(--ez-white);
     border-bottom: 1px solid var(--ez-line);
-    position: relative;
-    z-index: 20;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    box-shadow: 0 1px 0 var(--ez-line), 0 6px 20px rgb(28 28 28 / 0.06);
   }
 
   .site-header__inner {
     display: flex;
     align-items: center;
-    gap: var(--space-5);
-    min-height: 4.5rem;
+    gap: var(--space-4);
+    min-height: 4.75rem;
   }
 
   .site-header__logo img {
-    width: clamp(150px, 17vw, 220px);
+    width: clamp(150px, 16vw, 230px);
     height: auto;
   }
 
@@ -136,39 +232,106 @@ const current = Astro.url.pathname;
     margin-left: auto;
   }
 
-  .site-header__nav ul {
+  .nav {
     display: flex;
-    gap: clamp(0.75rem, 1.4vw, 1.4rem);
+    gap: 0.15rem;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .site-header__nav a {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    color: var(--ez-ink);
-    padding: 0.4rem 0.1rem;
-    /* track-style underline: orange run + ghost rail */
-    background:
-      linear-gradient(var(--ez-orange), var(--ez-orange)) left bottom 4px / 0 3px no-repeat,
-      linear-gradient(var(--ez-line), var(--ez-line)) left bottom / 0 1px no-repeat;
-    transition: background-size 140ms ease;
-    white-space: nowrap;
+  .nav__item {
+    position: relative;
   }
 
-  .site-header__nav a:hover,
-  .site-header__nav a[aria-current="page"] {
-    background-size: 100% 3px, 100% 1px;
+  .nav__item > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.12rem;
+    text-decoration: none;
+    color: var(--ez-ink);
+    padding: 0.55rem 0.7rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    min-height: 44px;
+  }
+
+  .nav__item > a:hover,
+  .nav__item:focus-within > a,
+  .nav__item > a[aria-current="page"] {
+    color: var(--ez-orange-text);
+    background: var(--ez-tint);
+  }
+
+  .nav__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 15.5rem;
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-top: 3px solid var(--ez-orange);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    box-shadow: var(--shadow-card-hover);
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    display: none;
+    z-index: 40;
+  }
+
+  .nav__menu--wide {
+    min-width: 30rem;
+    columns: 2;
+    column-gap: 0;
+  }
+
+  .nav__item:hover > .nav__menu,
+  .nav__item:focus-within > .nav__menu {
+    display: block;
+  }
+
+  .nav__item:nth-last-child(-n + 2) > .nav__menu {
+    left: auto;
+    right: 0;
+  }
+
+  .nav__menu li {
+    break-inside: avoid;
+  }
+
+  .nav__menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--ez-charcoal);
+    text-decoration: none;
+  }
+
+  .nav__menu a:hover,
+  .nav__menu a[aria-current="page"] {
+    background: var(--ez-alt);
+    color: var(--ez-orange-text);
+  }
+
+  .site-header__cta {
+    display: flex;
+    gap: var(--space-2);
   }
 
   .site-header__cta :global(.btn) {
     white-space: nowrap;
-    padding-inline: 1.7rem;
+    padding-inline: 1.1rem;
+  }
+
+  @media (max-width: 78rem) {
+    .site-header__request {
+      display: none;
+    }
   }
 
   .site-header__mobile {
@@ -176,26 +339,30 @@ const current = Astro.url.pathname;
     margin-left: auto;
   }
 
-  .site-header__mobile summary {
+  .site-header__mobile > summary {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.45rem;
     cursor: pointer;
     list-style: none;
     border: 2px solid var(--ez-ink);
     border-radius: var(--radius-sm);
-    width: 48px;
+    min-width: 48px;
     height: 48px;
-    padding: 0;
+    padding: 0 0.8rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ez-ink);
   }
 
-  .site-header__mobile summary::-webkit-details-marker {
+  .site-header__mobile > summary::-webkit-details-marker {
     display: none;
   }
 
-  .site-header__mobile[open] summary {
-    background: var(--film-gap);
-    color: var(--film-emulsion-bright);
+  .site-header__mobile[open] > summary {
+    background: var(--ez-ink);
+    color: var(--ez-white);
   }
 
   .site-header__burger,
@@ -223,53 +390,80 @@ const current = Astro.url.pathname;
     top: 5px;
   }
 
-  .site-header__mobile nav {
+  .site-header__mobile > nav {
     position: absolute;
     left: 0;
     right: 0;
     top: 100%;
     background: var(--ez-white);
     border-bottom: 4px solid var(--ez-orange);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-card-hover);
     max-height: calc(100dvh - 8rem);
     overflow-y: auto;
+    padding-bottom: var(--space-4);
   }
 
-  .site-header__mobile-label {
+  .site-header__mobile-cta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    padding: var(--space-4) clamp(1rem, 4vw, 2rem);
+    border-bottom: 1px solid var(--ez-line);
+  }
+
+  .site-header__group {
+    border-bottom: 1px solid var(--ez-line);
+  }
+
+  .site-header__group > summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+    padding: 0.85rem clamp(1rem, 4vw, 2rem);
     font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ez-orange-text);
-    margin: 0;
-    padding: 0.9rem clamp(1rem, 4vw, 2rem) 0.2rem;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ez-ink);
+    min-height: 48px;
   }
 
-  .site-header__mobile nav ul {
+  .site-header__group > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .site-header__group > summary::after {
+    content: "+";
+    color: var(--ez-orange);
+    font-size: var(--text-xl);
+  }
+
+  .site-header__group[open] > summary::after {
+    content: "–";
+  }
+
+  .site-header__group ul {
     list-style: none;
     margin: 0;
     padding: 0 0 var(--space-2);
+    background: var(--ez-alt);
   }
 
-  .site-header__mobile nav a {
+  .site-header__group a {
     display: block;
-    padding: 0.7rem clamp(1rem, 4vw, 2rem);
-    font-family: var(--font-body);
+    padding: 0.65rem clamp(1.5rem, 6vw, 3rem);
     font-weight: 600;
     text-decoration: none;
-    color: var(--ez-ink);
+    color: var(--ez-charcoal);
+    min-height: 44px;
   }
 
-  .site-header__mobile nav a:hover {
-    background: var(--ez-orange-pale);
-  }
-
-  .site-header__mobile-cta a {
+  .site-header__group a:hover {
     color: var(--ez-orange-text);
   }
 
-  @media (max-width: 62rem) {
+  @media (max-width: 66rem) {
     .site-header__nav,
     .site-header__cta {
       display: none;
@@ -277,6 +471,12 @@ const current = Astro.url.pathname;
 
     .site-header__mobile {
       display: block;
+    }
+  }
+
+  @media (max-width: 24rem) {
+    .site-header__menu-word {
+      display: none;
     }
   }
 </style>

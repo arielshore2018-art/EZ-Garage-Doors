@@ -1,0 +1,223 @@
+---
+/**
+ * Homepage hero (A1-style structure): eyebrow, ink H1 with an orange
+ * emphasis line, one paragraph, orange CALL + outline REQUEST, four
+ * check-marked trust facts. Right: the real branded van in a rounded
+ * card with a review badge. Phone CTA renders before the image.
+ */
+import { Image } from "astro:assets";
+import CallButton from "../CallButton.astro";
+import Icon from "../Icon.astro";
+import { img } from "../../config/site-images";
+import { APPROVED_CLAIMS, STATS, COVERAGE } from "../../config/business";
+import { reviews } from "../../config/reviews";
+import googleLogo from "../../assets/trust-logos/review-platforms/google-logo.webp";
+
+/* Person-free real photo: branded Transit, no technician figure. */
+const van = img("van-front");
+
+const facts = [
+  APPROVED_CLAIMS.years,
+  `${STATS.fiveStarReviews} five-star reviews`,
+  APPROVED_CLAIMS.writtenQuote,
+  COVERAGE.line,
+];
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow">Garage door repair · Massachusetts</p>
+      <h1 id="hero-heading">
+        Garage Door Repair Across Massachusetts.
+        <span class="hero__accent">Written Quote Before Work Begins.</span>
+      </h1>
+      <p class="hero__sub">
+        Broken spring, stuck door, dead opener, or time for a new door? One local
+        Massachusetts company diagnoses what failed, hands you the price in writing, and
+        fixes it after you approve. No bait pricing — the number you approve is the number
+        you pay.
+      </p>
+
+      <div class="hero__actions">
+        <CallButton label="Call for Repair" size="lg" track="home_hero_call" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="home_hero_estimate">
+          Request Service
+        </a>
+      </div>
+
+      <ul class="hero__facts" aria-label="Company facts">
+        {
+          facts.map((f) => (
+            <li>
+              <Icon name="check" size={20} class="hero__check" />
+              {f}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="hero__media">
+      <figure class="hero__photo">
+        <Image
+          src={van.src}
+          alt={van.alt}
+          widths={[480, 800, 1100]}
+          sizes="(max-width: 56rem) 100vw, 46vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+      <p class="hero__badge">
+        <Image src={googleLogo} alt="Google" height={22} loading="eager" />
+        <span class="hero__badge-stars" aria-hidden="true">★★★★★</span>
+        <span><strong>{reviews.google.rating}</strong> · {reviews.google.count}+ reviews</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    overflow: hidden;
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: center;
+    padding-block: clamp(2rem, 4.5vw, 4rem);
+  }
+
+  .hero__copy h1 {
+    margin-top: var(--space-2);
+    font-size: clamp(2.1rem, 1.4rem + 2.5vw, 3.4rem);
+    max-width: 24ch;
+  }
+
+  .hero__accent {
+    display: block;
+    color: var(--ez-orange);
+  }
+
+  .hero__sub {
+    font-size: var(--text-lg);
+    max-width: 34rem;
+    margin-top: var(--space-4);
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .hero__facts {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+    font-size: var(--text-sm);
+  }
+
+  .hero__facts li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .hero__check {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .hero__media {
+    position: relative;
+  }
+
+  .hero__photo {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card-hover);
+    aspect-ratio: 4 / 3;
+    background: var(--ez-alt-deep);
+  }
+
+  .hero__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__badge {
+    position: absolute;
+    left: 1rem;
+    bottom: -1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: 0.55rem 0.9rem;
+    font-size: var(--text-sm);
+    color: var(--ez-ink);
+    margin: 0;
+  }
+
+  .hero__badge img {
+    height: 22px;
+    width: auto;
+  }
+
+  .hero__badge-stars {
+    color: var(--ez-orange);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 56rem) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+      padding-block: var(--space-5) var(--space-6);
+    }
+
+    .hero__copy h1 {
+      max-width: none;
+      font-size: clamp(2rem, 1.4rem + 4vw, 2.8rem);
+    }
+
+    .hero__sub {
+      font-size: var(--text-base);
+    }
+
+    .hero__actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+
+    .hero__facts {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__media {
+      margin-top: var(--space-3);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero__photo {
+      aspect-ratio: 16 / 10;
+    }
+  }
+</style>

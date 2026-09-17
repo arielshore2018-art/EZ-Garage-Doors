@@ -1,33 +1,31 @@
 ---
 /**
- * Section heading, film grammar: the heading speaks first; the label
- * is a strip-margin edge-code annotation sitting ON the splice rule
- * AFTER the heading — never a kicker above it (finish-review fix #4).
+ * Section heading: small orange eyebrow above an ink heading, with
+ * a short orange rule beneath. Conventional on purpose.
  */
 interface Props {
   eyebrow?: string;
   title: string;
   center?: boolean;
   level?: "h2" | "h3";
+  intro?: string;
 }
 
-const { eyebrow, title, center = false, level = "h2" } = Astro.props;
+const { eyebrow, title, center = false, level = "h2", intro } = Astro.props;
 const Tag = level;
 ---
 
 <div class:list={["section-heading", { "section-heading--center": center }]}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <Tag>{title}</Tag>
-  <div class="section-heading__margin" aria-hidden={eyebrow ? undefined : "true"}>
-    <span class="section-heading__splice"></span>
-    {eyebrow && <span class="section-heading__code mono">{eyebrow}</span>}
-    <span class="section-heading__rule"></span>
-  </div>
+  <span class="section-heading__rule" aria-hidden="true"></span>
+  {intro && <p class="section-heading__intro">{intro}</p>}
 </div>
 
 <style>
   .section-heading {
     margin-bottom: var(--space-6);
-    max-width: 44rem;
+    max-width: 46rem;
   }
 
   .section-heading--center {
@@ -35,42 +33,26 @@ const Tag = level;
     margin-inline: auto;
   }
 
-  /* the margin line: splice mark, then the edge-code annotation
-     breaking a hairline that runs off the measure */
-  .section-heading__margin {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-3);
-  }
-
-  .section-heading--center .section-heading__margin {
-    justify-content: center;
-  }
-
-  .section-heading__splice {
-    width: 2.6rem;
-    height: 3px;
-    background: var(--flare);
-    flex-shrink: 0;
-  }
-
-  .section-heading__code {
-    font-size: 0.72rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--film-emulsion-dim);
-    white-space: nowrap;
+  .section-heading .eyebrow {
+    margin-bottom: var(--space-2);
   }
 
   .section-heading__rule {
-    flex: 1;
-    max-width: 9rem;
-    height: 1px;
-    background: var(--film-rule);
+    display: block;
+    width: 3.5rem;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--ez-orange);
+    margin-top: var(--space-3);
   }
 
   .section-heading--center .section-heading__rule {
-    max-width: 2.6rem;
+    margin-inline: auto;
+  }
+
+  .section-heading__intro {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
   }
 </style>

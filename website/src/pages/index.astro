@@ -1,46 +1,74 @@
 ---
 /**
- * Homepage v4 — "Orange Editorial Utility" rebuild.
- * Conversion page + router between urgent repair and planned install.
- * Rhythm: photo hero → routing junction → symptom navigator →
- * orange stat band → verified proof → real work → work-order pricing →
- * brand rail → towns → orange closing zone.
- * Repair stays dominant by design; installation is the quiet path.
+ * Homepage — A1-style structure in EZ orange:
+ * hero → proof strip → service grid → why EZ → symptom grid →
+ * track-record band → reviews → finished work → brands → counties →
+ * closing CTA. Repair stays dominant; installation is the second path.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
-import TrackHero from "../components/home/TrackHero.astro";
-import RouteJunction from "../components/home/RouteJunction.astro";
-import SymptomNavigator from "../components/home/SymptomNavigator.astro";
+import HomeHero from "../components/home/HomeHero.astro";
+import ProofColumns from "../components/home/ProofColumns.astro";
+import ServiceGrid from "../components/ServiceGrid.astro";
+import WhyEZ from "../components/WhyEZ.astro";
+import RepairIssueGrid from "../components/RepairIssueGrid.astro";
 import StatBand from "../components/home/StatBand.astro";
 import ProofBand from "../components/ProofBand.astro";
-import RealWorkFeature from "../components/home/RealWorkFeature.astro";
-import WorkOrder from "../components/home/WorkOrder.astro";
-import ContinuousBrandRail from "../components/ContinuousBrandRail.astro";
-import CityGrid from "../components/CityGrid.astro";
+import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
+import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+import CountyGrid from "../components/CountyGrid.astro";
+import PricingLogicBlock from "../components/PricingLogicBlock.astro";
 import CTASection from "../components/CTASection.astro";
+import { COVERAGE } from "../config/business";
+
+import baBefore1 from "../assets/photos/ez-before-dirty-beige-door.png";
+import baAfter1 from "../assets/photos/ez-after-dark-bronze-panel.png";
+import baBefore2 from "../assets/photos/ez-before-old-white-wood-door.png";
+import baAfter2 from "../assets/photos/ez-after-white-long-panel-windows.png";
+
+const symptoms = [
+  { symptom: "Loud bang, door too heavy to lift", meaning: "Usually a snapped torsion spring. Stop using the door.", href: "/broken-spring-repair/" },
+  { symptom: "Opener hums or clicks, door doesn't move", meaning: "Stripped gear, capacitor — or a spring making the door too heavy.", href: "/garage-door-opener-repair/" },
+  { symptom: "Door hangs crooked or jumped the rails", meaning: "Off-track rollers or a slipped cable — don't run the opener.", href: "/garage-door-off-track-repair/" },
+  { symptom: "Door reverses before it closes", meaning: "Safety sensors, travel limits, or something binding in the track.", href: "/garage-door-wont-close/" },
+  { symptom: "Cable hanging loose or off its drum", meaning: "Cable, drum, or roller wear — keep the door still.", href: "/garage-door-cable-repair/" },
+  { symptom: "Grinding, squealing, or rattling", meaning: "Worn rollers, dry hinges, or a failing opener drive. Cheap to fix early.", href: "/noisy-garage-door-repair/" },
+];
 ---
 
 <SiteLayout
-  title="EZ Garage Doors | Garage Door Repair in Connecticut — Springs, Openers, Stuck Doors"
-  description="Garage door won't close? EZ Garage Doors fixes stuck doors, broken springs, opener issues, cables, and off-track doors across Connecticut — written quote before work begins."
+  title="Garage Door Repair & Installation in Massachusetts | EZ Garage Doors"
+  description={`Garage door repair, broken springs, openers, and new doors across all ${COVERAGE.municipalities} Massachusetts cities and towns. Local company, written quote before work begins.`}
 >
-  <TrackHero />
+  <HomeHero />
 
-  <RouteJunction />
+  <ProofColumns />
 
-  <SymptomNavigator />
+  <ServiceGrid
+    heading="Garage door services and products"
+    intro="Repair is what we do most — springs, openers, cables, and stuck doors. New doors, replacements, and maintenance follow the same rule: the price is in writing before work begins."
+  />
+
+  <WhyEZ />
+
+  <RepairIssueGrid heading="What's your door doing?" eyebrow="Find your symptom" issues={symptoms} />
 
   <StatBand />
 
   <ProofBand />
 
-  <RealWorkFeature />
+  <BeforeAfterGallery
+    heading="Recent replacements, before and after"
+    pairs={[
+      { before: baBefore1, after: baAfter1, caption: "Worn beige door replaced with an insulated dark bronze panel door" },
+      { before: baBefore2, after: baAfter2, caption: "Aged wood door replaced with a white long-panel door with windows" },
+    ]}
+  />
 
-  <WorkOrder />
+  <PricingLogicBlock />
 
-  <ContinuousBrandRail />
+  <TrustLogoStrip variant="combined" />
 
-  <CityGrid compact />
+  <CountyGrid alt />
 
   <CTASection
     variant="orange"

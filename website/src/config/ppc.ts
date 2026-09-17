@@ -2,18 +2,22 @@
  * PPC landing-page configuration. These are paid-traffic pages:
  * noindex, excluded from the sitemap, no site navigation, one goal.
  * One renderer consumes this config — pages are NOT hand-duplicated,
- * and content varies by real fields (nearby areas, hero, tracking),
- * not by token-swapping the city name alone.
+ * and content varies by real fields (nearby areas from the public
+ * municipality dataset, hero, tracking), not by token-swapping alone.
  *
  * Honesty rule: localProofLine states coverage and process facts only.
  * No invented per-town job counts or fake local reviews.
+ *
+ * 2026-09-17: Connecticut campaign pages retired (301s in vercel.json);
+ * Google Ads campaigns must be re-pointed to these Massachusetts slugs.
  */
+import { MA_TOWNS, nearbyTowns, townBySlug } from "./ma-towns";
 
 export interface PpcCity {
   slug: string;
   city: string;
-  state: "CT";
-  county?: string;
+  state: "MA";
+  county: string;
   nearbyAreas: string[];
   headline: string;
   subheadline: string;
@@ -25,47 +29,44 @@ export interface PpcCity {
   enabled: boolean;
 }
 
-const SUB = "Fast local help for stuck doors, broken springs, opener problems, cables, and off-track doors.";
+const SUB =
+  "Fast local help for stuck doors, broken springs, opener problems, cables, and off-track doors.";
+const HEROES = ["hero-problem-door", "hero-active-repair", "spring-winding"];
 
-const city = (
-  slug: string,
-  cityName: string,
-  county: string,
-  nearbyAreas: string[],
-  heroImageId: string,
-): PpcCity => ({
-  slug,
-  city: cityName,
-  state: "CT",
-  county,
-  nearbyAreas,
-  headline: `Garage Door Repair in ${cityName}, CT`,
-  subheadline: SUB,
-  localProofLine: `One local Connecticut team serving ${cityName} and nearby ${nearbyAreas.slice(0, 3).join(", ")} — written quote before work begins.`,
-  heroImageId,
-  reviewIds: [],
-  projectIds: [],
-  campaignId: `ppc-gdr-${slug}`,
-  enabled: true,
-});
-
-export const ppcCities: PpcCity[] = [
-  city("middletown-ct", "Middletown", "Middlesex", ["Cromwell", "Portland", "Middlefield", "Durham"], "hero-problem-door"),
-  city("cromwell-ct", "Cromwell", "Middlesex", ["Middletown", "Rocky Hill", "Berlin", "Portland"], "hero-active-repair"),
-  city("rocky-hill-ct", "Rocky Hill", "Hartford", ["Wethersfield", "Cromwell", "Newington", "Glastonbury"], "spring-winding"),
-  city("glastonbury-ct", "Glastonbury", "Hartford", ["East Hartford", "Wethersfield", "Rocky Hill", "Manchester"], "hero-problem-door"),
-  city("west-hartford-ct", "West Hartford", "Hartford", ["Hartford", "Farmington", "Newington", "Bloomfield"], "hero-active-repair"),
-  city("farmington-ct", "Farmington", "Hartford", ["West Hartford", "Avon", "Plainville", "Bristol"], "spring-winding"),
-  city("avon-ct", "Avon", "Hartford", ["Simsbury", "Farmington", "West Hartford", "Canton"], "hero-problem-door"),
-  city("simsbury-ct", "Simsbury", "Hartford", ["Avon", "Bloomfield", "Granby", "Canton"], "hero-active-repair"),
-  city("wethersfield-ct", "Wethersfield", "Hartford", ["Rocky Hill", "Newington", "Hartford", "Glastonbury"], "spring-winding"),
-  city("newington-ct", "Newington", "Hartford", ["Wethersfield", "West Hartford", "Rocky Hill", "Berlin"], "hero-problem-door"),
-  city("berlin-ct", "Berlin", "Hartford", ["Newington", "Cromwell", "Southington", "Meriden"], "hero-active-repair"),
-  city("southington-ct", "Southington", "Hartford", ["Plainville", "Berlin", "Bristol", "Cheshire"], "spring-winding"),
-  city("plainville-ct", "Plainville", "Hartford", ["Southington", "Farmington", "Bristol", "New Britain"], "hero-problem-door"),
-  city("south-windsor-ct", "South Windsor", "Hartford", ["Manchester", "East Hartford", "Vernon", "Windsor"], "hero-active-repair"),
-  city("vernon-ct", "Vernon", "Tolland", ["Manchester", "South Windsor", "Tolland", "Ellington"], "spring-winding"),
-  city("tolland-ct", "Tolland", "Tolland", ["Vernon", "Ellington", "Coventry", "Willington"], "hero-problem-door"),
+/** Metro set chosen to cover every Massachusetts region (owner: full state). */
+const METROS = [
+  "springfield-ma", "chicopee-ma", "holyoke-ma", "westfield-ma", "northampton-ma", "amherst-ma",
+  "pittsfield-ma", "greenfield-ma", "worcester-ma", "leominster-ma", "framingham-ma",
+  "boston-ma", "cambridge-ma", "newton-ma", "quincy-ma", "lowell-ma", "lawrence-ma", "lynn-ma",
+  "brockton-ma", "plymouth-ma", "taunton-ma", "new-bedford-ma", "fall-river-ma", "barnstable-ma",
 ];
 
+export const ppcCities: PpcCity[] = METROS.map((slug, i) => {
+  const t = townBySlug(slug);
+  if (!t) throw new Error(`ppc.ts: unknown municipality slug "${slug}"`);
+  const nearby = nearbyTowns(t, 5).map((n) => n.town.name);
+  return {
+    slug,
+    city: t.name,
+    state: "MA",
+    county: t.county,
+    nearbyAreas: nearby,
+    headline: `Garage Door Repair in ${t.name}, MA`,
+    subheadline: SUB,
+    localProofLine: `One local Massachusetts team serving ${t.name} and nearby ${nearby
+      .slice(0, 3)
+      .join(", ")} — written quote before work begins.`,
+    heroImageId: HEROES[i % HEROES.length],
+    reviewIds: [],
+    projectIds: [],
+    campaignId: `ppc-gdr-${slug}`,
+    enabled: true,
+  };
+});
+
 export const enabledPpcCities = ppcCities.filter((c) => c.enabled);
+
+/** Sanity: the statewide dataset must be complete for coverage claims to hold. */
+if (MA_TOWNS.length !== 351) {
+  throw new Error("ppc.ts: municipality dataset is not the full 351-town set");
+}

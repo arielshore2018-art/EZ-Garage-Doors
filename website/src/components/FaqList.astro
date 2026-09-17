@@ -8,14 +8,17 @@ import SectionHeading from "./SectionHeading.astro";
 interface Props {
   faqs: { question: string; answer: string }[];
   heading?: string;
+  eyebrow?: string;
+  /** Render without the outer section padding (inside a page-grid column). */
+  bare?: boolean;
 }
 
-const { faqs, heading = "Common questions" } = Astro.props;
+const { faqs, heading = "Common questions", eyebrow = "Straight answers", bare = false } = Astro.props;
 ---
 
-<section class="faq section">
-  <div class="wrap wrap--narrow">
-    <SectionHeading eyebrow="Straight answers" title={heading} />
+<section class:list={["faq", { section: !bare, "faq--bare": bare }]}>
+  <div class:list={{ wrap: !bare, "wrap--narrow": !bare }}>
+    <SectionHeading eyebrow={eyebrow} title={heading} />
     <div class="faq__list">
       {
         faqs.map((f) => (
@@ -36,10 +39,14 @@ const { faqs, heading = "Common questions" } = Astro.props;
   }
 
   .faq__item {
-    background: var(--film-panel);
-    border: 1px solid var(--ez-border);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
     border-radius: var(--radius-md);
     padding: 0;
+  }
+
+  .faq__item[open] {
+    border-color: var(--ez-orange);
   }
 
   .faq__item summary {
@@ -47,11 +54,13 @@ const { faqs, heading = "Common questions" } = Astro.props;
     list-style: none;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--space-3);
     padding: var(--space-4) var(--space-5);
     font-family: var(--font-display);
     font-weight: 700;
-    color: var(--ez-charcoal);
+    font-size: 1.15rem;
+    color: var(--ez-ink);
     min-height: 48px;
   }
 
@@ -59,24 +68,21 @@ const { faqs, heading = "Common questions" } = Astro.props;
     display: none;
   }
 
-  .faq__item summary::before {
-    content: "";
-    width: 0.9rem;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--speed-line-gradient);
+  .faq__item summary::after {
+    content: "+";
+    color: var(--ez-orange);
+    font-size: 1.6rem;
+    line-height: 1;
     flex-shrink: 0;
-    transition: transform 120ms ease;
   }
 
-  .faq__item[open] summary::before {
-    transform: rotate(90deg);
+  .faq__item[open] summary::after {
+    content: "–";
   }
 
   .faq__item p {
-    padding: 0 var(--space-5) var(--space-4) calc(var(--space-5) + 0.9rem + var(--space-3));
+    padding: 0 var(--space-5) var(--space-4);
     margin: 0;
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
+    color: var(--color-text);
   }
 </style>

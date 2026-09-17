@@ -1,25 +1,33 @@
 ---
 /**
  * Contact page — short form, call CTA, TCPA consent (in LeadForm).
+ * Service-area business: no street address is published.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import CallButton from "../components/CallButton.astro";
 import LeadForm from "../components/LeadForm.astro";
 import MicroTrustBar from "../components/MicroTrustBar.astro";
-import { BUSINESS, hasPhone } from "../config/business";
+import CountyGrid from "../components/CountyGrid.astro";
+import { hasPhone, COVERAGE } from "../config/business";
+
+const crumbs = [{ label: "Contact" }];
 ---
 
 <SiteLayout
-  title="Contact EZ Garage Doors | Written Estimates in Connecticut"
-  description="Contact EZ Garage Doors for garage door repair, springs, openers, or a new door installation in Connecticut. Request a written estimate — no spam, no pressure."
+  title="Contact EZ Garage Doors | Request Service Anywhere in Massachusetts"
+  description="Contact EZ Garage Doors for garage door repair, springs, openers, or a new door anywhere in Massachusetts. Request service or a written estimate — no spam, no pressure."
+  breadcrumbs={crumbs}
 >
   <section class="contact-hero">
     <div class="wrap contact-hero__grid">
       <div>
+        <Breadcrumbs items={crumbs} class="contact-hero__crumbs" />
+        <p class="eyebrow">Contact · Massachusetts</p>
         <h1>Contact EZ Garage Doors</h1>
         <p class="contact-hero__sub">
           Fastest for urgent doors: call. For estimates and everything else, the short form works
-          — a local garage door specialist will follow up.
+          — a local garage door specialist will follow up. {COVERAGE.line}.
         </p>
         <div class="contact-hero__call">
           <CallButton label="Call EZ Garage Doors" size="lg" />
@@ -35,17 +43,22 @@ import { BUSINESS, hasPhone } from "../config/business";
         <div class="contact-hero__trust">
           <MicroTrustBar />
         </div>
+        <p class="contact-hero__note muted">
+          EZ Garage Doors is a service-area business — we come to you anywhere in Massachusetts.
+        </p>
       </div>
       <div>
-        <LeadForm heading="Request a Written Estimate" context="contact" />
+        <LeadForm heading="Request Service or a Written Estimate" context="contact" />
       </div>
     </div>
   </section>
+
+  <CountyGrid compact alt />
 </SiteLayout>
 
 <style>
   .contact-hero {
-    background: var(--ez-paper);
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
     padding-block: var(--space-7);
   }
 
@@ -56,11 +69,18 @@ import { BUSINESS, hasPhone } from "../config/business";
     align-items: start;
   }
 
+  .contact-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .contact-hero h1 {
+    margin-top: var(--space-2);
+  }
+
   .contact-hero__sub {
     font-size: var(--text-lg);
-    color: var(--color-text-muted);
     margin-top: var(--space-4);
-    max-width: 30rem;
+    max-width: 32rem;
   }
 
   .contact-hero__call {
@@ -70,7 +90,12 @@ import { BUSINESS, hasPhone } from "../config/business";
   .contact-hero__trust {
     margin-top: var(--space-6);
     padding-top: var(--space-4);
-    border-top: 1px solid var(--ez-border);
+    border-top: 1px solid var(--ez-line);
+  }
+
+  .contact-hero__note {
+    margin-top: var(--space-4);
+    font-size: var(--text-sm);
   }
 
   @media (max-width: 62rem) {

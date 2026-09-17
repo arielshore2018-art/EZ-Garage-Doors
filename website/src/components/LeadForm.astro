@@ -5,6 +5,8 @@
  * validation, honeypot, TCPA-conscious consent line. Hidden UTM +
  * landing-page fields are filled by the BaseLayout tracking script.
  *
+ * Field names are a CRM contract — do not rename.
+ *
  * TODO: Set BUSINESS.FORM_ENDPOINT before launch. While it is empty the
  * form redirects to /thank-you/ so UX and conversion tracking are testable,
  * but no lead is delivered — this is a launch blocker, not a live form.
@@ -19,8 +21,8 @@ interface Props {
 }
 
 const {
-  heading = "Request a Written Estimate",
-  submitLabel = "Get My Written Estimate",
+  heading = "Request Service or a Written Estimate",
+  submitLabel = "Request Service",
   showPhotoField = true,
   context = "general",
 } = Astro.props;
@@ -66,7 +68,7 @@ const uid = context.replace(/[^a-z0-9]/gi, "-");
     </div>
 
     <div class="field">
-      <label for={`town-${uid}`}>Town or ZIP</label>
+      <label for={`town-${uid}`}>Town or ZIP (Massachusetts)</label>
       <input type="text" id={`town-${uid}`} name="town" autocomplete="postal-code" required />
       <span class="field-error" data-error-for="town" aria-live="polite"></span>
     </div>
@@ -200,23 +202,11 @@ const uid = context.replace(/[^a-z0-9]/gi, "-");
   .lead-form {
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
-    /* EZ Track top edge: orange run + ghost rail, square corners */
-    border-top: var(--track-stroke) solid var(--ez-orange);
-    border-radius: var(--radius-sm);
+    border-top: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-card);
     padding: clamp(1.25rem, 3vw, 2rem);
-    scroll-margin-top: var(--space-6);
-    position: relative;
-  }
-
-  .lead-form::before {
-    content: "";
-    position: absolute;
-    top: var(--track-gap);
-    left: 0;
-    right: 0;
-    height: var(--track-ghost);
-    background: var(--ez-line);
+    scroll-margin-top: 6rem;
   }
 
   .lead-form h3 {
@@ -244,8 +234,6 @@ const uid = context.replace(/[^a-z0-9]/gi, "-");
 
   .lead-form__optional {
     font-weight: 400;
-    text-transform: none;
-    letter-spacing: 0;
     color: var(--color-text-muted);
   }
 

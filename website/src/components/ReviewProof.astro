@@ -1,10 +1,10 @@
 ---
 /**
  * Review proof module. Renders ONLY verified claims:
- * - The owner-approved aggregate line ("hundreds of 5-star reviews").
- * - Exact ratings/counts appear automatically once filled into
- *   src/config/reviews.ts (needs-verification-before-launch).
- * - Real testimonials render once added to reviews.ts — no fake quotes, ever.
+ * - The owner-approved aggregate line.
+ * - Exact ratings/counts from src/config/reviews.ts (verify before launch).
+ * - Real testimonials render only once verbatim reviews with live links
+ *   are added — no fake quotes, ever.
  */
 import { APPROVED_CLAIMS } from "../config/business";
 import { reviews } from "../config/reviews";
@@ -24,19 +24,16 @@ const platforms = [
       {APPROVED_CLAIMS.reviews}. Ask us for links to our live profiles — read the reviews
       yourself before you book.
     </p>
-
     <ul class="platforms" aria-label="Review platforms">
       {
         platforms.map(({ key, label }) => {
           const p = reviews[key];
           return (
             <li class="platforms__chip">
-              <span class="speed-tick" aria-hidden="true" />
-              {p.url ? <a href={p.url} rel="noopener">{label}</a> : label}
+              <span class="platforms__stars" aria-hidden="true">★★★★★</span>
+              {p.url ? <a href={p.url} rel="noopener">{label}</a> : <span class="platforms__name">{label}</span>}
               {p.rating && p.count ? (
-                <span class="platforms__stat">
-                  {p.rating}★ · {p.count} reviews
-                </span>
+                <span class="platforms__stat">{p.rating} · {p.count}+ reviews</span>
               ) : (
                 <span class="platforms__stat">5-star reviews</span>
               )}
@@ -44,12 +41,7 @@ const platforms = [
           );
         })
       }
-      <li class="platforms__chip">
-        <span class="speed-tick" aria-hidden="true"></span>
-        More platforms
-      </li>
     </ul>
-
     <!--
       On-site quote cards stay OFF until verbatim reviews with live
       platform links are supplied (launch-blocker list). Until then,
@@ -60,56 +52,44 @@ const platforms = [
 
 <style>
   .review-claim {
-    max-width: 44rem;
+    max-width: 46rem;
     margin-bottom: var(--space-5);
   }
 
   .platforms {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
   }
 
   .platforms__chip {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    background: var(--film-panel);
-    border: 1px solid var(--ez-border);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
     border-radius: var(--radius-md);
-    padding: var(--space-3) var(--space-4);
+    padding: 0.7rem 1rem;
+    box-shadow: var(--shadow-card);
+  }
+
+  .platforms__stars {
+    color: var(--ez-orange);
+    letter-spacing: 0.06em;
+  }
+
+  .platforms__name,
+  .platforms__chip a {
     font-family: var(--font-display);
-    font-weight: 650;
-    font-size: var(--text-sm);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ez-ink);
   }
 
   .platforms__stat {
-    color: var(--color-text-muted);
-    font-family: var(--font-body);
-    font-weight: 400;
-  }
-
-  .quotes {
-    list-style: none;
-    padding: 0;
-    margin: var(--space-6) 0 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    gap: var(--space-4);
-  }
-
-  .quotes__card {
-    background: var(--film-panel);
-    border: 1px solid var(--ez-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
-  }
-
-  .quotes__card footer {
-    margin-top: var(--space-3);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
   }

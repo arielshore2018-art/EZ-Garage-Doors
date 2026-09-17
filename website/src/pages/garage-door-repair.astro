@@ -1,56 +1,66 @@
 ---
 /**
- * Main repair page — expanded architecture: full-bleed hero, proof bar,
- * image-led symptoms, causes, process, brands, work gallery, reviews, FAQ.
+ * Main repair hub — A1's /garage-door-repairs/: hero, proof strip,
+ * symptom grid, causes, process, sub-services, brands, gallery,
+ * reviews, FAQ, counties, CTA.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
 import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import RepairIssueGrid from "../components/RepairIssueGrid.astro";
 import ProcessSteps from "../components/ProcessSteps.astro";
+import ServiceGrid from "../components/ServiceGrid.astro";
 import TrustLogoStrip from "../components/TrustLogoStrip.astro";
 import WorkGallery from "../components/WorkGallery.astro";
 import ProofBand from "../components/ProofBand.astro";
 import FaqList from "../components/FaqList.astro";
-import CityGrid from "../components/CityGrid.astro";
+import CountyGrid from "../components/CountyGrid.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import { servicesInGroup } from "../config/services";
 
 const issues = [
-  { symptom: "Door won't open or close", meaning: "Often a spring, opener, or track problem — stop forcing it and have it diagnosed.", href: "/garage-door-opener-repair/" },
+  { symptom: "Door won't open or close", meaning: "Often a spring, opener, or track problem — stop forcing it and have it diagnosed.", href: "/garage-door-wont-open/" },
   { symptom: "Loud bang from the garage", meaning: "The classic sign of a snapped torsion spring. The door will feel very heavy.", href: "/broken-spring-repair/" },
   { symptom: "Door is off its track", meaning: "Rollers or cables have failed or slipped. Keep the door still until it's secured.", href: "/garage-door-off-track-repair/" },
-  { symptom: "Grinding, squealing, or shaking", meaning: "Worn rollers, dry hinges, or a failing opener drive. Cheap to fix early.", href: "/garage-door-cable-repair/" },
+  { symptom: "Grinding, squealing, or shaking", meaning: "Worn rollers, dry hinges, or a failing opener drive. Cheap to fix early.", href: "/noisy-garage-door-repair/" },
+  { symptom: "Door reverses before closing", meaning: "Safety sensors, close-force limit, or a bind in the track.", href: "/garage-door-wont-close/" },
+  { symptom: "One panel dented or cracked", meaning: "Often a single-section replacement instead of a new door.", href: "/garage-door-panel-replacement/" },
 ];
+
+const subServices = servicesInGroup("repair").filter((s) => s.slug !== "garage-door-repair" && s.slug !== "same-day-garage-door-service");
 
 const service = {
   name: "Garage Door Repair",
-  description: "Diagnosis and repair of residential garage doors: springs, cables, rollers, tracks, openers, and stuck doors.",
+  description: "Diagnosis and repair of residential garage doors across Massachusetts: springs, cables, rollers, tracks, openers, panels, and stuck doors.",
   url: "/garage-door-repair/",
 };
 
 const faqs = [
-  { question: "How fast can you get to my door?", answer: "Call and tell us your town and what the door is doing — we dispatch locally across central Connecticut and confirm your arrival window on the phone before anyone drives out." },
+  { question: "How fast can you get to my door?", answer: "Call and tell us your town and what the door is doing — we dispatch across Massachusetts and confirm your arrival window on the phone before anyone drives out. We don't promise windows we can't keep." },
   { question: "Do you charge to come out and look?", answer: "You get the diagnosis explained and the repair price in writing before any work begins — ask about the current service-visit policy when you call, and the quote you approve is the price you pay." },
   { question: "Can I use the door until you arrive?", answer: "If you heard a bang, the door is crooked, or it's off track — no. The door is heavier than it looks and under spring tension. Leave it where it is and keep people and cars clear." },
   { question: "Do you repair doors you didn't install?", answer: "Yes. We service most major door and opener brands regardless of who installed them — see the brands strip on this page." },
   { question: "Repair or replace — how do you decide?", answer: "By the math, in writing. One failed spring on a healthy door is a repair. Rotting panels plus repeated failures usually favor replacement — we show you both numbers and you choose." },
+  { question: "Do you serve my town?", answer: "If it's in Massachusetts, yes — all 351 cities and towns in every county. Find your town on the service-areas page or just call." },
 ];
 ---
 
 <SiteLayout
-  title="Garage Door Repair in Connecticut | EZ Garage Doors"
-  description="Garage door repair in Connecticut: springs, cables, rollers, tracks, openers, and stuck doors. Local company, written quote before work begins."
+  title="Garage Door Repair in Massachusetts | EZ Garage Doors"
+  description="Garage door repair across all of Massachusetts: broken springs, cables, rollers, tracks, openers, panels, and stuck doors. Local company, written quote before work begins."
   service={service}
   faqs={faqs}
+  breadcrumbs={[{ label: "Garage Door Repair" }]}
 >
   <ServiceHero
     imageId="hero-problem-door"
-    eyebrow="Connecticut Garage Door Repair"
-    heading="Garage Door Repair in Connecticut"
-    sub="Springs, cables, rollers, tracks, openers, and stuck doors — repaired by a local team built for fast response."
+    eyebrow="Massachusetts garage door repair"
+    heading="Garage Door Repair in Massachusetts"
+    sub="Springs, cables, rollers, tracks, openers, panels, and stuck doors — repaired by one local Massachusetts team, with the price in writing before work begins."
     callLabel="Call for Repair"
     callTrack="repair_call_click"
+    breadcrumbs={[{ label: "Garage Door Repair" }]}
   />
 
   <ProofColumns />
@@ -60,12 +70,19 @@ const faqs = [
   <section class="section">
     <div class="wrap wrap--narrow">
       <SectionHeading eyebrow="Why it happens" title="What usually causes it" />
-      <p>
-        Garage doors fail at their moving parts: springs lose cycles and snap, cables fray at
-        the bottom brackets, rollers wear flat, and tracks bend when a door runs against
-        resistance. Openers usually get the blame — but half of "opener problems" are really a
-        door that's too heavy or binding. That's why we inspect the whole system before quoting.
-      </p>
+      <div class="prose">
+        <p>
+          Garage doors fail at their moving parts: springs lose cycles and snap, cables fray at
+          the bottom brackets, rollers wear flat, and tracks bend when a door runs against
+          resistance. Openers usually get the blame — but half of "opener problems" are really a
+          door that's too heavy or binding. That's why we inspect the whole system before quoting.
+        </p>
+        <p>
+          Massachusetts adds its own wear: winters that stiffen springs and freeze doors to the
+          slab, salt air along the coast that corrodes hardware, and a housing stock old enough
+          that many garages were added or converted long after the house was built.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -79,24 +96,19 @@ const faqs = [
     ]}
   />
 
+  <ServiceGrid heading="Every repair we do" eyebrow="Repair services" items={subServices} />
+
   <TrustLogoStrip variant="combined" />
 
   {/* Real hardware only — AI technician-model photos never appear in
       proof modules (docs/ez-verified-claims.md). */}
-  <WorkGallery
-    heading="Repair work, up close"
-    imageIds={["broken-spring", "new-springs", "van-front"]}
-  />
+  <WorkGallery heading="Repair work, up close" imageIds={["broken-spring", "new-springs", "van-front"]} />
 
   <ProofBand heading="Rated on the platforms that don't let us edit" />
 
   <FaqList faqs={faqs} heading="Garage door repair questions" />
 
-  <CityGrid compact />
+  <CountyGrid compact alt />
 
-  <CTASection
-    heading="Door acting up today?"
-    sub="Call EZ Garage Doors — get a written quote before work begins."
-    callLabel="Call for Repair"
-  />
+  <CTASection heading="Door acting up today?" sub="Call EZ Garage Doors — get a written quote before work begins." callLabel="Call for Repair" />
 </SiteLayout>

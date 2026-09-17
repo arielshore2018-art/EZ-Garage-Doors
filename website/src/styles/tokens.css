@@ -1,70 +1,105 @@
 /* ============================================================
    EZ Garage Doors — Design Tokens
-   World: "PROJECTED LIGHT" — hand-processed 16mm film.
-   (Replacement world chosen by the owner 2026-08-18, seed 4d6f9491;
-   direction contract lives in BaseLayout's body comment.)
+   World: "ORANGE STANDARD" — the national-brand canon (A1-style
+   structure) rebuilt in EZ orange. Owner decision 2026-09-17:
+   conventional, high-trust contractor register; white ground,
+   warm-gray sections, ink headings, orange as the single action
+   color. Replaces PROJECTED LIGHT (rollback tag
+   v2026.08-projected-light).
 
-   The page is a strip of hand-processed film: near-black leader
-   ground, silver emulsion type, and ORANGE ONLY AS LIGHT — leaks,
-   flares, the projector beam. Every call-to-action is a
-   light-flooded frame plate. Real photos are frames on the strip;
-   verified stats are edge codes. Grain belongs to frames, never
-   smeared across the page.
+   Contrast law (measured):
+     orange #f36a21 on white = 3.05:1 → LARGE text only (≥24px, or
+       ≥18.66px bold). Buttons are pinned at 1.175rem/700 for this.
+     orange-text #b23f0e on white = 6.6:1 → small orange text (eyebrows,
+       accent links, prices) always uses THIS token, never brand orange.
+     ink #1c1c1c on orange = 5.7:1 → small text on orange fields is ink.
+     never orange-on-orange.
    ============================================================ */
 
+/* Metric-matched fallbacks so the font swap doesn't shift layout
+   (measured: Barlow Condensed 700 = 0.908× Arial Narrow, 0.745× Arial;
+   Source Sans 3 = 0.909× Arial). Each face only resolves where the
+   local font exists; the stack moves on otherwise. */
+@font-face {
+  font-family: "Barlow Condensed Fallback Narrow";
+  src: local("Arial Narrow"), local("ArialNarrow");
+  size-adjust: 91%;
+  ascent-override: 95%;
+  descent-override: 25%;
+}
+
+@font-face {
+  font-family: "Barlow Condensed Fallback Arial";
+  src: local("Arial"), local("Helvetica");
+  size-adjust: 74.5%;
+  ascent-override: 95%;
+  descent-override: 25%;
+}
+
+@font-face {
+  font-family: "Source Sans 3 Fallback";
+  src: local("Arial"), local("Helvetica");
+  size-adjust: 91%;
+}
+
 :root {
-  /* ---- Color: the film ---- */
-  --film-leader: #141210;          /* page ground — warm near-black leader */
-  --film-gap: #060505;             /* frame gaps, deepest black */
-  --film-panel: #1d1a16;           /* raised panel on leader (metadata, cards) */
-  --film-panel-2: #262119;         /* second panel step */
-  --film-emulsion: #c9c4bb;        /* silver emulsion — body text (9.8:1 on leader) */
-  --film-emulsion-bright: #efece6; /* bright silver — headings (13.9:1) */
-  --film-emulsion-dim: #98928a;    /* dim silver — secondary text (5.4:1 on leader) */
-  --film-rule: rgb(201 196 187 / 0.16);   /* hairlines */
-  --film-rule-strong: rgb(201 196 187 / 0.34);
+  /* ---- Color: ground ---- */
+  --ez-white: #ffffff;
+  --ez-paper: #ffffff;              /* page ground */
+  --ez-alt: #f4f4f2;                /* warm light-gray section ground */
+  --ez-alt-deep: #e9e9e6;           /* hairline rules, table stripes */
+  --ez-tint: #fff1e8;               /* faint orange wash (callouts) */
+  --ez-line: #dcdcd8;               /* borders */
+  --ez-border: var(--ez-line);
+  --ez-concrete: var(--ez-alt);
 
-  /* ---- Color: the light ---- */
-  --flare: #f36a21;                /* brand orange — the projector light (6.1:1 on leader) */
-  --flare-hot: #ffa15c;            /* flare core — hover/active intensity (9.6:1) */
-  --flare-bright: #ff8b47;        /* orange TEXT on dark when emphasis needed (8.2:1) */
-  --flare-glow: rgb(243 106 33 / 0.35);
-  --flare-wash: rgb(243 106 33 / 0.08);   /* faint leak wash on panels */
-  --stain: #7a5c40;                /* chemical sepia stain — decorative wear only */
-  --err: #ff7a66;                  /* form errors on dark (5.9:1 on panel) */
+  /* ---- Color: ink ---- */
+  --ez-ink: #1c1c1c;                /* headings, dark bands */
+  --ez-ink-2: #2b2b2b;              /* dark band step */
+  --ez-charcoal: #333333;           /* body text (12.6:1) */
+  --ez-steel: #5c5c5c;              /* muted text (6.7:1 on white, 6.1:1 on alt) */
+  --ez-charcoal-deep: #111111;
+  --ez-on-ink: #d6d6d3;             /* text on dark bands (11.7:1) */
+  --ez-on-ink-muted: #b3b3b0;       /* secondary text on dark (8.1:1) */
 
-  /* ---- Legacy role aliases — flip every component into the world.
-     paper/ink INVERT deliberately: old "light ground" components land
-     on leader with emulsion type until each is rebuilt. ---- */
-  --ez-paper: var(--film-leader);
-  --ez-white: var(--film-panel);
-  --ez-ink: var(--film-emulsion-bright);
-  --ez-steel: var(--film-emulsion-dim);
-  --ez-line: var(--film-rule);
-  --ez-orange: var(--flare);
-  --ez-orange-deep: var(--flare-hot);
-  --ez-orange-text: var(--flare-bright);
-  --ez-orange-pale: var(--film-panel-2);
-  --ez-charcoal: var(--film-emulsion-bright);
-  --ez-charcoal-deep: var(--film-gap);
-  --ez-concrete: var(--film-panel);
-  --ez-border: var(--film-rule);
-  --ez-orange-tint: var(--film-panel-2);
+  /* ---- Color: orange ---- */
+  --ez-orange: #f36a21;             /* brand + action color */
+  --ez-orange-deep: #d8551a;        /* hover */
+  --ez-orange-text: #b23f0e;        /* AA-safe orange for small text (6.6:1) */
+  --ez-orange-pale: #ffe3d2;        /* chips, selected states */
+  --ez-orange-tint: var(--ez-tint);
+  --ez-orange-on-ink: #ff8b47;      /* orange text on dark bands (7.3:1) */
+  --err: #b3261e;                   /* form errors on white (6.5:1) */
+  --ok: #1f7a3f;
 
-  --color-bg: var(--film-leader);
-  --color-bg-alt: var(--film-panel);
-  --color-text: var(--film-emulsion);
-  --color-text-muted: var(--film-emulsion-dim);
-  --color-heading: var(--film-emulsion-bright);
-  --color-action: var(--flare);
-  --color-action-hover: var(--flare-hot);
-  --color-inverse: var(--film-leader);
+  /* Role aliases used across components */
+  --color-bg: var(--ez-paper);
+  --color-bg-alt: var(--ez-alt);
+  --color-text: var(--ez-charcoal);
+  --color-text-muted: var(--ez-steel);
+  --color-heading: var(--ez-ink);
+  --color-action: var(--ez-orange);
+  --color-action-hover: var(--ez-orange-deep);
+  --color-inverse: var(--ez-white);
+
+  /* Retired film-world aliases — mapped so any straggler renders sanely
+     as dark-band-on-light (dark surface + light text), never inverted. */
+  --film-leader: var(--ez-ink);
+  --film-gap: var(--ez-charcoal-deep);
+  --film-panel: var(--ez-ink-2);
+  --film-panel-2: #3a3a3a;
+  --film-emulsion: var(--ez-on-ink);
+  --film-emulsion-bright: var(--ez-white);
+  --film-emulsion-dim: var(--ez-on-ink-muted);
+  --film-rule: rgb(255 255 255 / 0.14);
+  --film-rule-strong: rgb(255 255 255 / 0.3);
+  --flare: var(--ez-orange);
+  --flare-hot: var(--ez-orange-deep);
+  --flare-bright: var(--ez-orange-on-ink);
 
   /* ---- Type ---- */
-  /* Stamped caps: Barlow Condensed set wide-tracked uppercase = edge-code stamp voice */
-  --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
-  --font-body: "Source Sans 3 Variable", "Source Sans 3", system-ui, -apple-system, sans-serif;
-  /* Edge codes, frame numerals, metadata: the mono annotation face */
+  --font-display: "Barlow Condensed", "Barlow Condensed Fallback Narrow", "Barlow Condensed Fallback Arial", system-ui, sans-serif;
+  --font-body: "Source Sans 3 Variable", "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
 
   --text-xs: 0.8125rem;
@@ -73,9 +108,9 @@
   --text-lg: 1.1875rem;
   --text-xl: clamp(1.35rem, 1.15rem + 0.9vw, 1.75rem);
   --text-2xl: clamp(1.6rem, 1.25rem + 1.6vw, 2.25rem);
-  --text-3xl: clamp(2rem, 1.4rem + 2.8vw, 3.4rem);
-  --text-hero: clamp(2.8rem, 1.8rem + 5vw, 5.6rem);
-  --text-mega: clamp(3rem, 1.8rem + 6.5vw, 6.5rem);
+  --text-3xl: clamp(1.9rem, 1.4rem + 2.2vw, 2.9rem);
+  --text-hero: clamp(2.4rem, 1.6rem + 3.6vw, 4.2rem);
+  --text-mega: clamp(2.6rem, 1.8rem + 4vw, 4.6rem);
 
   /* ---- Space ---- */
   --space-1: 0.25rem;
@@ -86,40 +121,29 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4.5rem;
-  --space-section: clamp(3.5rem, 2.25rem + 5vw, 7rem);
-  --space-section-tight: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  --space-section: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --space-section-tight: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
 
-  /* ---- Shape: square-cut frames ---- */
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-sprocket: 3px;          /* the one rounded element: sprocket holes */
-  --shadow-card: none;             /* depth = overlap + gaps, not shadows */
-  --shadow-cta: 0 0 24px var(--flare-glow); /* flare glow is light, not depth */
+  /* ---- Shape & depth: conventional, soft ---- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgb(28 28 28 / 0.06), 0 8px 24px rgb(28 28 28 / 0.08);
+  --shadow-card-hover: 0 2px 4px rgb(28 28 28 / 0.08), 0 14px 34px rgb(28 28 28 / 0.14);
+  --shadow-cta: 0 6px 18px rgb(243 106 33 / 0.32);
 
   /* ---- Layout ---- */
-  --content-max: 78rem;
+  --content-max: 76rem;
   --content-narrow: 46rem;
+  --sidebar-w: 20rem;
 
-  /* ---- Signature: THE STRIP ----
-     Sprocket margins, frame bands, and the orange light leak. */
-  --sprocket-w: 2.25rem;           /* sprocket margin width */
-  --sprocket-hole: 0.8rem;         /* hole size */
-  --frame-gap: 0.6rem;             /* black gap between frames */
-  --leak-gradient: linear-gradient(
-    270deg,
-    var(--flare-hot) 0%,
-    var(--flare) 34%,
-    rgb(243 106 33 / 0.42) 62%,
-    transparent 100%
-  );
-
-  /* Legacy signature aliases (retired track device → splice mark) */
-  --track-stroke: 6px;
+  /* Legacy signature aliases (retired track device) — neutralized */
+  --track-stroke: 4px;
   --track-ghost: 1px;
-  --track-gap: 5px;
-  --track-radius: 0px;
-  --track-color: var(--flare);
-  --track-ghost-color: var(--film-rule);
-  --speed-line-gradient: linear-gradient(90deg, var(--flare) 0%, var(--flare) 100%);
+  --track-gap: 4px;
+  --track-radius: 4px;
+  --track-color: var(--ez-orange);
+  --track-ghost-color: var(--ez-line);
+  --speed-line-gradient: linear-gradient(90deg, var(--ez-orange) 0%, var(--ez-orange) 100%);
 }

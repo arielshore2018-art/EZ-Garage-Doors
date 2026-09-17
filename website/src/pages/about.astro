@@ -2,34 +2,36 @@
 /**
  * About page — identity and operating principles. No invented founder
  * story, no fake team bios, no stock "our values" filler. States what
- * is verified: 15 years, local CT, how the company works.
+ * is verified: 15 years, local Massachusetts, how the company works.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
 import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ReviewProof from "../components/ReviewProof.astro";
-import CityGrid from "../components/CityGrid.astro";
+import CountyGrid from "../components/CountyGrid.astro";
 import CTASection from "../components/CTASection.astro";
-import { APPROVED_CLAIMS, BUSINESS } from "../config/business";
+import { APPROVED_CLAIMS, BUSINESS, COVERAGE } from "../config/business";
 
-import vanFront from "../assets/photos/ez-garage-door-service-van-front.jpg";
+const crumbs = [{ label: "About EZ Garage Doors" }];
 ---
 
 <SiteLayout
-  title="About EZ Garage Doors | Local Connecticut Garage Door Company"
-  description="EZ Garage Doors is a local Connecticut garage door company with 15 years in business. Written quotes before work, no bait pricing, repair and installation expertise."
+  title="About EZ Garage Doors | Local Massachusetts Garage Door Company"
+  description="EZ Garage Doors is a local Massachusetts garage door company with 15 years in business, serving all 351 cities and towns. Written quotes before work, no bait pricing."
+  breadcrumbs={crumbs}
 >
   <ServiceHero
     imageId="team-van"
     eyebrow="Fast. Reliable. Local."
     heading="About EZ Garage Doors"
-    sub={`A local ${BUSINESS.state} garage door company. 15 years in business, built on written quotes and straight answers.`}
+    sub={`A local ${BUSINESS.state} garage door company. ${APPROVED_CLAIMS.years.toLowerCase()}, ${COVERAGE.line.toLowerCase()}, built on written quotes and straight answers.`}
     callLabel="Call EZ Garage Doors"
     callTrack="about_call_click"
-    secondaryLabel="Get a Written Estimate"
+    secondaryLabel="Request Service"
     secondaryHref="/contact/#request"
     micro="No pressure. One quote, in writing."
+    breadcrumbs={crumbs}
   />
 
   <ProofColumns />
@@ -40,31 +42,23 @@ import vanFront from "../assets/photos/ez-garage-door-service-van-front.jpg";
       <dl class="about-rules">
         <div>
           <dt>The quote is in writing, first.</dt>
-          <dd>
-            Every repair and every installation starts with a written quote you approve before
-            work begins. That's the whole policy — there's no version of it with asterisks.
-          </dd>
+          <dd>Every repair and every installation starts with a written quote you approve before work begins. That's the whole policy — there's no version of it with asterisks.</dd>
         </div>
         <div>
           <dt>No bait pricing.</dt>
-          <dd>
-            We don't advertise teaser prices that triple at the door. If a number sounds too good
-            on the phone — from anyone — ask for it in writing and watch what happens.
-          </dd>
+          <dd>We don't advertise teaser prices that triple at the door. If a number sounds too good on the phone — from anyone — ask for it in writing and watch what happens.</dd>
         </div>
         <div>
           <dt>Repair when repair is right.</dt>
-          <dd>
-            A broken spring on a healthy door is a repair, not a sales opportunity. We replace
-            doors when replacement is genuinely the better math, and we show you that math.
-          </dd>
+          <dd>A broken spring on a healthy door is a repair, not a sales opportunity. We replace doors when replacement is genuinely the better math, and we show you that math.</dd>
         </div>
         <div>
           <dt>Local, and staying that way.</dt>
-          <dd>
-            {APPROVED_CLAIMS.local} — not a national call center reselling jobs to whoever
-            answers. The person who quotes your door is from the team that fixes it.
-          </dd>
+          <dd>{APPROVED_CLAIMS.local} — not a national call center reselling jobs to whoever answers. The person who quotes your door is from the team that fixes it, anywhere in the state.</dd>
+        </div>
+        <div>
+          <dt>We say what we can prove.</dt>
+          <dd>You won't find claims on this site we can't back up. Review numbers come from live platforms; brands are "brands we service," not "authorized" anything; and if we don't promise an arrival time, it's because we'd rather tell you the truth on the phone.</dd>
         </div>
       </dl>
     </div>
@@ -72,72 +66,29 @@ import vanFront from "../assets/photos/ez-garage-door-service-van-front.jpg";
 
   <ReviewProof />
 
-  <CityGrid />
+  <CountyGrid heading="Where we work" intro={`${COVERAGE.line}, in every county.`} />
 
-  <CTASection
-    heading="Want to see how we quote?"
-    sub="Call about your door or request a written estimate — judge us by the paperwork."
-  />
+  <CTASection heading="Want to see how we quote?" sub="Call about your door or request service — judge us by the paperwork." />
 </SiteLayout>
 
 <style>
-  .about-hero {
-    background: var(--ez-paper);
-    padding-block: var(--space-7);
-    border-bottom: 1px solid var(--ez-border);
-  }
-
-  .about-hero__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-7);
-    align-items: center;
-  }
-
-  .about-hero__sub {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    margin-top: var(--space-4);
-  }
-
-  .about-hero__media img {
-    width: 100%;
-    height: auto;
-  }
-
   .about-rules > div {
     padding-block: var(--space-5);
-    border-bottom: 1px dashed var(--ez-border);
+    border-bottom: 1px solid var(--ez-line);
   }
 
   .about-rules dt {
     font-family: var(--font-display);
-    font-weight: 750;
+    font-weight: 700;
     font-size: var(--text-xl);
-    color: var(--ez-charcoal);
+    color: var(--ez-ink);
     margin-bottom: var(--space-2);
-    display: flex;
-    align-items: center;
-  }
-
-  .about-rules dt::before {
-    content: "";
-    width: 1.1rem;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--speed-line-gradient);
-    margin-right: var(--space-2);
+    padding-left: var(--space-4);
+    border-left: 4px solid var(--ez-orange);
   }
 
   .about-rules dd {
     margin: 0;
-    color: var(--color-text-muted);
-  }
-
-  @media (max-width: 62rem) {
-    .about-hero__grid {
-      grid-template-columns: 1fr;
-      gap: var(--space-5);
-    }
+    color: var(--color-text);
   }
 </style>

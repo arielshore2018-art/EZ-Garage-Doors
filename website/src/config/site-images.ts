@@ -69,7 +69,7 @@ export interface SiteImage {
 export const siteImages: SiteImage[] = [
   // --- heroes / repair scenes ---
   { id: "hero-active-repair", src: heroActiveDesktop, mobileSrc: heroActiveMobile, alt: "EZ Garage Doors technician repairing the torsion system of a residential garage door", category: "repair", orientation: "landscape", focalPointDesktop: "72% 30%", focalPointMobile: "24% 20%", approved: true },
-  { id: "hero-problem-door", src: heroProblemDesktop, mobileSrc: heroProblemMobile, alt: "Worn residential garage door with an uneven bottom edge at a Connecticut home", category: "repair", orientation: "landscape", focalPointDesktop: "28% 55%", focalPointMobile: "40% 60%", approved: true },
+  { id: "hero-problem-door", src: heroProblemDesktop, mobileSrc: heroProblemMobile, alt: "Worn residential garage door with an uneven bottom edge at a Massachusetts home", category: "repair", orientation: "landscape", focalPointDesktop: "28% 55%", focalPointMobile: "40% 60%", approved: true },
   { id: "walkthrough", src: walkthrough, alt: "Technician working at a garage door torsion assembly while the homeowner watches", category: "repair", orientation: "landscape", focalPointDesktop: "70% 30%", approved: true },
   { id: "stuck-repair", src: stuckRepair, alt: "Technician freeing a stuck garage door roller and track", category: "cable-track", orientation: "landscape", focalPointDesktop: "45% 40%", approved: true },
   // --- springs ---
@@ -87,7 +87,7 @@ export const siteImages: SiteImage[] = [
   { id: "quote-tablet", src: quoteTablet, alt: "Technician showing a written garage door repair quote on a tablet to a customer", category: "process", orientation: "landscape", focalPointDesktop: "50% 30%", approved: true },
   { id: "repair-tech-van", src: repairTechVan, alt: "Garage door repair technician with tool bag beside an EZ Garage Doors van", category: "team", orientation: "landscape", focalPointDesktop: "40% 30%", approved: true },
   { id: "tech-arrival", src: techArrival, alt: "Technician stepping out of an EZ Garage Doors service van with a tool bag", category: "team", orientation: "landscape", focalPointDesktop: "45% 35%", approved: true },
-  { id: "van-arrival", src: vanArrival, alt: "EZ Garage Doors service van arriving at a Connecticut home", category: "team", orientation: "landscape", focalPointDesktop: "50% 40%", approved: true },
+  { id: "van-arrival", src: vanArrival, alt: "EZ Garage Doors service van arriving at a Massachusetts home", category: "team", orientation: "landscape", focalPointDesktop: "50% 40%", approved: true },
   { id: "van-front", src: vanFront, alt: "EZ Garage Doors service van with ladder racks", category: "team", orientation: "landscape", approved: true },
   { id: "team-van", src: teamVan, alt: "EZ Garage Doors crew in front of a branded service van", category: "team", orientation: "landscape", focalPointDesktop: "50% 30%", approved: true },
   { id: "carry-panel", src: carryPanel, alt: "Technician carrying a new garage door section during installation", category: "installation", orientation: "landscape", focalPointDesktop: "50% 35%", approved: true },

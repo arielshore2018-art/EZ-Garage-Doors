@@ -1,7 +1,8 @@
 ---
 /**
- * Asymmetric work-image strip: first image large, rest stacked.
- * Consumes the site-images manifest by id — no scattered paths.
+ * Work-image strip: first image large, rest stacked.
+ * Consumes the site-images manifest by id — real, person-free photos
+ * only (claims policy: AI technician-model shots never appear here).
  */
 import { Image } from "astro:assets";
 import SectionHeading from "./SectionHeading.astro";
@@ -50,6 +51,8 @@ const images = imageIds.map((id) => img(id));
     margin: 0;
     border-radius: var(--radius-md);
     overflow: hidden;
+    box-shadow: var(--shadow-card);
+    background: var(--ez-alt-deep);
   }
 
   .wg__item--large {
@@ -60,20 +63,15 @@ const images = imageIds.map((id) => img(id));
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 
-  @media (max-width: 62rem) {
+  @media (max-width: 48rem) {
     .wg__grid {
       grid-template-columns: 1fr;
     }
 
     .wg__item--large {
       grid-row: auto;
-    }
-
-    .wg__item :global(img) {
-      aspect-ratio: 16 / 9;
     }
   }
 </style>

@@ -3,27 +3,25 @@
  * Repair vs. Installation router — sends each visitor mode to the
  * right page instead of one generic services blob.
  */
-import { services } from "../config/services";
+import { servicesInGroup } from "../config/services";
 import SectionHeading from "./SectionHeading.astro";
 
-const repairServices = services.filter((s) => s.urgency === "repair");
-const projectServices = services.filter((s) => s.urgency === "project");
-const commercial = services.find((s) => s.urgency === "commercial");
+const repairServices = servicesInGroup("repair").filter((s) => s.kind === "core" && s.slug !== "same-day-garage-door-service");
+const openerServices = servicesInGroup("opener").filter((s) => s.featured);
+const projectServices = [...servicesInGroup("install").filter((s) => s.featured), ...servicesInGroup("maintenance").filter((s) => s.featured)];
+const commercial = servicesInGroup("commercial").filter((s) => s.kind === "core");
 ---
 
 <section class="section" aria-labelledby="router-heading">
   <div class="wrap">
-    <SectionHeading
-      eyebrow="What do you need?"
-      title="Something broken — or planning a new door?"
-    />
+    <SectionHeading eyebrow="What do you need?" title="Something broken — or planning a new door?" />
     <div class="router">
       <div class="router__col">
         <h3>Fix my door</h3>
         <p class="muted">Broken today, needs a diagnosis, or acting up.</p>
         <ul>
           {
-            repairServices.map((s) => (
+            [...repairServices, ...openerServices].map((s) => (
               <li>
                 <a href={`/${s.slug}/`} class="router__card" data-track={`router_${s.slug}`}>
                   <span class="router__title">{s.title}</span>
@@ -35,11 +33,11 @@ const commercial = services.find((s) => s.urgency === "commercial");
         </ul>
       </div>
       <div class="router__col">
-        <h3>Replace or install</h3>
+        <h3>Replace, install, or maintain</h3>
         <p class="muted">A planned upgrade with a written estimate first.</p>
         <ul>
           {
-            projectServices.map((s) => (
+            [...projectServices, ...commercial].map((s) => (
               <li>
                 <a href={`/${s.slug}/`} class="router__card" data-track={`router_${s.slug}`}>
                   <span class="router__title">{s.title}</span>
@@ -47,16 +45,6 @@ const commercial = services.find((s) => s.urgency === "commercial");
                 </a>
               </li>
             ))
-          }
-          {
-            commercial && (
-              <li>
-                <a href={`/${commercial.slug}/`} class="router__card" data-track={`router_${commercial.slug}`}>
-                  <span class="router__title">{commercial.title}</span>
-                  <span class="router__blurb">{commercial.blurb}</span>
-                </a>
-              </li>
-            )
           }
         </ul>
       </div>
@@ -93,13 +81,14 @@ const commercial = services.find((s) => s.urgency === "commercial");
     padding: var(--space-4) var(--space-5);
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
-    border-top: 3px solid var(--ez-orange);
+    border-left: 4px solid var(--ez-orange);
+    border-radius: var(--radius-md);
     text-decoration: none;
-    transition: border-color 120ms ease, transform 120ms ease;
+    transition: box-shadow 120ms ease, transform 120ms ease;
   }
 
   .router__card:hover {
-    border-color: var(--ez-orange);
+    box-shadow: var(--shadow-card);
     transform: translateX(3px);
   }
 
@@ -108,7 +97,7 @@ const commercial = services.find((s) => s.urgency === "commercial");
     font-family: var(--font-display);
     font-weight: 700;
     font-size: var(--text-lg);
-    color: var(--ez-charcoal);
+    color: var(--ez-ink);
   }
 
   .router__blurb {

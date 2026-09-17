@@ -1,9 +1,8 @@
 ---
 /**
  * Commercial repair — B2B / facilities intent. Industrial tone,
- * downtime framing, no residential family copy. Text-led (the only
- * commercial photo was rejected for third-party branding).
- * COI / emergency-response claims intentionally absent until confirmed.
+ * downtime framing. Text-led. COI / emergency-response claims
+ * intentionally absent until confirmed.
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
 import ServiceHero from "../components/ServiceHero.astro";
@@ -11,7 +10,7 @@ import ProofColumns from "../components/home/ProofColumns.astro";
 import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import LeadForm from "../components/LeadForm.astro";
-import { APPROVED_CLAIMS } from "../config/business";
+import RelatedLinks from "../components/RelatedLinks.astro";
 
 const doorTypes = [
   { type: "Sectional overhead doors", detail: "Warehouse and loading dock doors — panels, tracks, springs, and operators." },
@@ -22,33 +21,37 @@ const doorTypes = [
 
 const service = {
   name: "Commercial Garage Door Repair",
-  description: "Repair and service of commercial overhead doors, rolling steel doors, and door operators for business properties.",
+  description: "Repair and service of commercial overhead doors, rolling steel doors, and door operators for business properties across Massachusetts.",
   url: "/commercial-garage-door-repair/",
 };
+
+const crumbs = [{ label: "Commercial Garage Door Repair" }];
 ---
 
 <SiteLayout
-  title="Commercial Garage Door Repair in Connecticut | EZ Garage Doors"
-  description="Commercial overhead door and rolling door repair in Connecticut for warehouses, loading docks, firehouses, and business properties where downtime matters."
+  title="Commercial Garage Door Repair in Massachusetts | EZ Garage Doors"
+  description="Commercial overhead door and rolling door repair across Massachusetts for warehouses, loading docks, fleet bays, condo garages, and business properties where downtime matters."
   service={service}
+  breadcrumbs={crumbs}
 >
   <ServiceHero
     imageId="van-front"
-    eyebrow="Commercial & Industrial"
-    heading="Commercial Garage Door Repair in Connecticut"
+    eyebrow="Commercial & industrial"
+    heading="Commercial Garage Door Repair in Massachusetts"
     sub="Service for commercial overhead doors, rolling doors, loading areas, and business properties where downtime matters."
     callLabel="Call for Commercial Service"
     callTrack="commercial_call_click"
     secondaryLabel="Request Commercial Service"
     secondaryHref="#request"
+    breadcrumbs={crumbs}
   />
 
   <ProofColumns />
 
   <section class="section">
-    <div class="wrap">
+    <div class="wrap wrap--narrow">
       <SectionHeading eyebrow="Downtime is the real cost" title="A stuck door stops the business" />
-      <p class="comm-downtime">
+      <p>
         A failed dock door doesn't just need a part — it blocks trucks, reroutes staff, and burns
         schedule. Commercial calls are scoped by phone first (door type, size, what failed), so
         the visit fixes the door instead of discovering it.
@@ -60,14 +63,7 @@ const service = {
     <div class="wrap">
       <SectionHeading eyebrow="Equipment we service" title="Commercial door types" />
       <ul class="comm-types">
-        {
-          doorTypes.map((d) => (
-            <li class="comm-types__card">
-              <h3>{d.type}</h3>
-              <p>{d.detail}</p>
-            </li>
-          ))
-        }
+        {doorTypes.map((d) => <li class="comm-types__card card"><h3>{d.type}</h3><p>{d.detail}</p></li>)}
       </ul>
     </div>
   </section>
@@ -78,22 +74,25 @@ const service = {
         <SectionHeading eyebrow="For facilities & property managers" title="Planned maintenance beats emergency calls" />
         <p>
           High-cycle doors fail on schedule — springs and cables have a duty life. If you manage
-          multiple doors or properties, ask about a recurring service arrangement: inspection,
-          lubrication, spring and cable checks, and operator safety tests, documented per door.
+          multiple doors or properties, ask about a <a href="/commercial-garage-door-maintenance/">recurring maintenance program</a>:
+          inspection, lubrication, spring and cable checks, and operator safety tests, documented per door.
         </p>
-        <p class="muted">
-          Documentation for vendor onboarding available on request — ask when you call.
-        </p>
+        <p class="muted">Documentation for vendor onboarding available on request — ask when you call.</p>
       </div>
-      <div class="wrap--narrow comm-form">
-        <LeadForm
-          heading="Request Commercial Service"
-          submitLabel="Request Commercial Service"
-          context="commercial"
-        />
+      <div class="comm-form">
+        <LeadForm heading="Request Commercial Service" submitLabel="Request Commercial Service" context="commercial" />
       </div>
     </div>
   </section>
+
+  <RelatedLinks
+    heading="Commercial services"
+    items={[
+      { label: "Commercial Door Maintenance", href: "/commercial-garage-door-maintenance/" },
+      { label: "Broken Spring Repair", href: "/broken-spring-repair/" },
+      { label: "Amarr Commercial Doors", href: "/brands/amarr/" },
+    ]}
+  />
 
   <CTASection
     heading="Door down at your facility?"
@@ -106,25 +105,18 @@ const service = {
 </SiteLayout>
 
 <style>
-  .comm-downtime {
-    max-width: 46rem;
-    font-size: var(--text-lg);
-  }
-
   .comm-types {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: var(--space-4);
   }
 
   .comm-types__card {
-    background: var(--ez-white);
-    border: 1px solid var(--ez-line);
-    border-left: var(--track-stroke) solid var(--ez-ink);
     padding: var(--space-5);
+    border-top: 4px solid var(--ez-orange);
   }
 
   .comm-types__card h3 {
@@ -145,8 +137,8 @@ const service = {
     align-items: start;
   }
 
-  .comm-agreement p {
-    margin-bottom: var(--space-4);
+  .comm-agreement p + p {
+    margin-top: var(--space-3);
   }
 
   @media (max-width: 62rem) {

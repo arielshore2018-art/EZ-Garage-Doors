@@ -1,6 +1,6 @@
 ---
 /**
- * Emergency PPC landing page. Goal: a phone call in under 30 seconds.
+ * Emergency page. Goal: a phone call in under 30 seconds.
  * Stripped layout, phone dominant, short page, no storytelling,
  * no large form above the fold. "24/7" intentionally absent (unconfirmed).
  */
@@ -9,6 +9,7 @@ import CallButton from "../components/CallButton.astro";
 import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import ProofBand from "../components/ProofBand.astro";
+import Icon from "../components/Icon.astro";
 
 const commonEmergencies = [
   "Door stuck wide open and won't close",
@@ -21,21 +22,21 @@ const commonEmergencies = [
 
 const service = {
   name: "Emergency Garage Door Repair",
-  description: "Urgent garage door repair in Connecticut: stuck doors, snapped springs, off-track doors, and doors that won't close.",
+  description: "Urgent garage door repair across Massachusetts: stuck doors, snapped springs, off-track doors, and doors that won't close.",
   url: "/emergency-garage-door-repair/",
 };
 ---
 
 <LandingLayout
-  title="Emergency Garage Door Repair in Connecticut | EZ Garage Doors"
-  description="Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local emergency garage door repair with a written quote before work begins."
+  title="Emergency Garage Door Repair in Massachusetts | EZ Garage Doors"
+  description="Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local emergency garage door repair anywhere in Massachusetts with a written quote before work begins."
   callLabel="Call Now"
   service={service}
 >
   <ServiceHero
     imageId="spring-safety"
-    eyebrow="Emergency Dispatch"
-    heading="Emergency Garage Door Repair in Connecticut"
+    eyebrow="Urgent repair · Massachusetts"
+    heading="Emergency Garage Door Repair in Massachusetts"
     sub="Door stuck open, off track, or won't close? Call EZ Garage Doors for fast local service and a written quote before work begins."
     callLabel="Call Now"
     callTrack="emergency_call_click"
@@ -44,7 +45,7 @@ const service = {
 
   <ProofColumns />
 
-  <section class="em-steps">
+  <section class="em-steps section--alt">
     <div class="wrap">
       <ol class="em-steps__list">
         <li><strong>Call.</strong> Tell us what the door is doing.</li>
@@ -55,37 +56,28 @@ const service = {
     </div>
   </section>
 
-  <section class="em-issues">
+  <section class="em-issues section">
     <div class="wrap">
       <h2>Common garage door emergencies</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
       <ul class="em-issues__grid">
-        {
-          commonEmergencies.map((issue) => (
-            <li>
-              <span class="speed-tick" aria-hidden="true" />
-              {issue}
-            </li>
-          ))
-        }
+        {commonEmergencies.map((issue) => <li><Icon name="check" size={18} /><span>{issue}</span></li>)}
       </ul>
-      <p class="em-issues__safety">
+      <p class="em-issues__safety callout">
         <strong>If the spring snapped or the door is off track:</strong> don't lift, force, or run
         the opener. The door is heavier than it looks and under tension.
       </p>
     </div>
   </section>
 
-  <section class="em-pricing">
+  <section class="em-pricing section section--alt">
     <div class="wrap wrap--narrow">
       <h2>No bait pricing — even in an emergency</h2>
-      <span class="speed-rail" aria-hidden="true"></span>
       <p>
         Urgency is how bait-and-switch outfits make their money. Our rule doesn't change after
         hours: you get the price <strong>in writing before work begins</strong>, and the quote is
         the price.
       </p>
-      <p class="em-pricing__brands">
+      <p class="em-pricing__brands muted">
         We work on LiftMaster, Chamberlain, Genie, and most major opener and door brands.
       </p>
     </div>
@@ -97,16 +89,15 @@ const service = {
     <div class="wrap em-final__inner">
       <h2>Stuck right now?</h2>
       <p>Call EZ Garage Doors — fast, local help with a written quote first.</p>
-      <CallButton label="Call Now" size="lg" variant="ink" track="emergency_call_click" />
+      <CallButton label="Call Now" size="lg" track="emergency_call_click" />
     </div>
   </section>
 </LandingLayout>
 
 <style>
   .em-steps {
-    background: var(--film-panel);
-    border-block: 1px solid var(--film-rule);
     padding-block: var(--space-5);
+    border-block: 1px solid var(--ez-line);
   }
 
   .em-steps__list {
@@ -116,9 +107,8 @@ const service = {
     list-style: none;
     padding: 0;
     margin: 0;
-    color: var(--film-emulsion-bright);
-    font-size: var(--text-sm);
     counter-reset: emstep;
+    font-size: var(--text-sm);
   }
 
   .em-steps__list li {
@@ -130,20 +120,23 @@ const service = {
 
   .em-steps__list li::before {
     content: counter(emstep);
-    font-family: var(--font-mono);
-    font-weight: 500;
-    font-size: var(--text-sm);
-    letter-spacing: 0.18em;
-    line-height: 1.4;
-    color: var(--flare);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: var(--ez-orange);
+    color: var(--ez-white);
+    font-family: var(--font-display);
+    font-weight: 700;
+    flex-shrink: 0;
+    align-self: center;
   }
 
   .em-steps__list strong {
     font-family: var(--font-display);
-  }
-
-  .em-issues {
-    padding-block: var(--space-7);
+    font-size: 1.05rem;
   }
 
   .em-issues__grid {
@@ -153,40 +146,29 @@ const service = {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     gap: var(--space-3);
-    font-weight: 500;
   }
 
   .em-issues__grid li {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: 0.5rem;
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
+    border-radius: var(--radius-sm);
     padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .em-issues__grid svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
   }
 
   .em-issues__safety {
     margin-top: var(--space-5);
-    padding: var(--space-4) var(--space-5);
-    background: var(--ez-orange-tint);
-    /* track side-rail: orange run + ghost rail */
-    border-left: var(--track-stroke) solid var(--ez-orange);
     max-width: 44rem;
-    position: relative;
-  }
-
-  .em-issues__safety::before {
-    content: "";
-    position: absolute;
-    left: var(--track-gap);
-    top: 0;
-    bottom: 0;
-    width: var(--track-ghost);
-    background: var(--ez-line);
-  }
-
-  .em-pricing {
-    background: var(--ez-concrete);
-    padding-block: var(--space-7);
   }
 
   .em-pricing p {
@@ -196,7 +178,6 @@ const service = {
 
   .em-pricing p.em-pricing__brands {
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
   }
 
   .em-final {
@@ -204,12 +185,8 @@ const service = {
     text-align: center;
   }
 
-  .em-final h2 {
-    color: var(--film-emulsion-bright);
-  }
-
   .em-final p {
     margin-block: var(--space-3) var(--space-5);
-    color: var(--film-emulsion);
+    color: var(--ez-ink);
   }
 </style>

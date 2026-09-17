@@ -1,120 +1,85 @@
 ---
 /**
- * THE RECORD — verified counts as edge-printed counter frames.
- * Each stat is a frame cell on the strip: sprocket separators,
- * the numeral edge-printed in flare (no halo), the label as
- * mono edge-print under the cell. Numbers come from STATS only.
- * (Re-derived per finish-review finding #5: no hero-metric template.)
+ * Track-record band: four verified counts on an ink field.
+ * Numbers come from STATS only (owner-supplied; correction pending —
+ * see STATS_STATUS in business.ts).
  */
 import { STATS, APPROVED_CLAIMS } from "../../config/business";
 
 const stats = [
-  { code: "R-4000", value: STATS.repairs, label: "doors repaired" },
-  { code: "S-0900", value: STATS.springRepairs, label: "springs replaced" },
-  { code: "O-1200", value: STATS.openerServices, label: "openers serviced" },
-  { code: "REV-850", value: STATS.fiveStarReviews, label: "five-star reviews" },
+  { value: STATS.repairs, label: "Doors repaired" },
+  { value: STATS.springRepairs, label: "Springs replaced" },
+  { value: STATS.openerServices, label: "Openers serviced" },
+  { value: STATS.fiveStarReviews, label: "Five-star reviews" },
 ];
 ---
 
-<section class="record" aria-label="Track record">
-  <div class="record__sprockets" aria-hidden="true"></div>
+<section class="record section--dark" aria-label="Track record">
   <div class="wrap record__inner">
-    <p class="record__title mono">{APPROVED_CLAIMS.years} — the record so far</p>
-    <dl class="record__strip">
+    <p class="record__title eyebrow">{APPROVED_CLAIMS.years} — the record so far</p>
+    <dl class="record__grid">
       {
         stats.map((s) => (
           <div class="record__cell">
-            <dd>
-              <span class="record__code mono" aria-hidden="true">{s.code}</span>
-              <span class="record__value display-num">{s.value}</span>
-            </dd>
-            <dt class="mono">{s.label}</dt>
+            <dd class="record__value display-num">{s.value}</dd>
+            <dt>{s.label}</dt>
           </div>
         ))
       }
     </dl>
   </div>
-  <div class="record__sprockets" aria-hidden="true"></div>
 </section>
 
 <style>
-  .record {
-    background: var(--film-gap);
-  }
-
-  .record__sprockets {
-    height: 1.35rem;
-    background: repeating-linear-gradient(
-      to right,
-      transparent 0,
-      transparent 1.1rem,
-      var(--film-leader) 1.1rem,
-      var(--film-leader) calc(1.1rem + var(--sprocket-hole)),
-      transparent calc(1.1rem + var(--sprocket-hole)),
-      transparent calc(2.2rem + var(--sprocket-hole))
-    );
-  }
-
   .record__inner {
-    padding-block: clamp(2.25rem, 4.5vw, 4rem);
+    padding-block: clamp(2.25rem, 4.5vw, 3.5rem);
   }
 
   .record__title {
-    font-size: var(--text-xs);
-    letter-spacing: 0.26em;
-    text-transform: uppercase;
-    color: var(--film-emulsion-dim);
+    text-align: center;
     margin-bottom: var(--space-5);
   }
 
-  /* the counter strip: cells divided by frame gaps, like frames */
-  .record__strip {
+  .record__grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--frame-gap);
+    gap: var(--space-4);
     margin: 0;
-    background: var(--film-leader);
-    border-block: 1px solid var(--film-rule);
   }
 
   .record__cell {
-    background: var(--film-gap);
-    padding: var(--space-4) var(--space-5) var(--space-3);
-    display: grid;
-    align-content: start;
+    text-align: center;
+    padding: var(--space-3);
+    border-left: 1px solid rgb(255 255 255 / 0.14);
   }
 
-  .record__cell dd {
-    margin: 0;
-    display: grid;
-  }
-
-  .record__code {
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
-    color: var(--film-emulsion-dim);
-    margin-bottom: var(--space-2);
+  .record__cell:first-child {
+    border-left: 0;
   }
 
   .record__value {
     font-size: var(--text-mega);
-    line-height: 0.95;
-    color: var(--flare);
+    line-height: 1;
+    color: var(--ez-orange-on-ink);
+    margin: 0;
   }
 
   .record__cell dt {
-    font-size: var(--text-xs);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--film-emulsion);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ez-white);
     margin-top: var(--space-2);
-    border-top: 1px solid var(--film-rule);
-    padding-top: var(--space-2);
   }
 
-  @media (max-width: 56rem) {
-    .record__strip {
+  @media (max-width: 48rem) {
+    .record__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-5) var(--space-2);
+    }
+
+    .record__cell:nth-child(3) {
+      border-left: 0;
     }
   }
 </style>

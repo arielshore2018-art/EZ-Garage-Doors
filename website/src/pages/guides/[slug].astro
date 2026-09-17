@@ -1,0 +1,152 @@
+---
+/**
+ * Guide article template: prose + sticky sidebar, FAQ (with schema),
+ * related links back into the service tree.
+ */
+import type { GetStaticPaths } from "astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import FaqList from "../../components/FaqList.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
+import CTASection from "../../components/CTASection.astro";
+import { GUIDES, GUIDE_CATEGORIES, guidesInCategory, type Guide } from "../../config/guides";
+import { BUSINESS } from "../../config/business";
+
+export const getStaticPaths = (() => {
+  return GUIDES.map((g) => ({ params: { slug: g.slug }, props: { g } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  g: Guide;
+}
+
+const { g } = Astro.props;
+const cat = GUIDE_CATEGORIES.find((c) => c.id === g.category)!;
+const breadcrumbs = [
+  { label: "Guides", href: "/guides/" },
+  { label: cat.name, href: `/guides/category/${cat.id}/` },
+  { label: g.title },
+];
+const more = guidesInCategory(g.category).filter((x) => x.slug !== g.slug).slice(0, 4);
+const serviceLinks = g.related.filter((r) => !r.href.startsWith("/guides/"));
+const guideLinks = g.related.filter((r) => r.href.startsWith("/guides/"));
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: g.title,
+  description: g.description,
+  dateModified: g.updated,
+  author: { "@type": "Organization", name: BUSINESS.name },
+  publisher: { "@type": "Organization", name: BUSINESS.name, url: BUSINESS.SITE_URL },
+  mainEntityOfPage: new URL(`/guides/${g.slug}/`, BUSINESS.SITE_URL).href,
+};
+---
+
+<SiteLayout title={g.title.length > 52 ? g.title : `${g.title} | EZ Garage Doors`} description={g.description} faqs={g.faqs} breadcrumbs={breadcrumbs}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+
+  <section class="guide-hero">
+    <div class="wrap">
+      <Breadcrumbs items={breadcrumbs} class="guide-hero__crumbs" />
+      <p class="eyebrow">{cat.name} · Guide</p>
+      <h1>{g.title}</h1>
+      <p class="guide-hero__lede">{g.intro}</p>
+      <p class="guide-hero__meta muted">By {BUSINESS.name} · Updated {new Date(g.updated + "T12:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap page-grid">
+      <article class="guide-body prose">
+        {
+          g.sections.map((s) => (
+            <>
+              <h2>{s.h}</h2>
+              {s.p.filter(Boolean).map((p) => <p>{p}</p>)}
+              {s.list && (
+                <ul>
+                  {s.list.map((li) => <li>{li}</li>)}
+                </ul>
+              )}
+            </>
+          ))
+        }
+        {g.faqs && g.faqs.length > 0 && <FaqList faqs={g.faqs} heading="Quick answers" bare />}
+        <p class="guide-body__disclaimer muted">
+          General guidance for homeowners. Garage door springs, cables, and bottom brackets are
+          under high tension — leave those to a technician.
+        </p>
+      </article>
+
+      <Sidebar
+        title="Need this handled?"
+        sub="Call, or send a photo and your town — a Massachusetts specialist follows up with a written quote."
+        callLabel="Call EZ Garage Doors"
+        callTrack={`guide_${g.slug}_sidebar_call`}
+        links={serviceLinks}
+        linksHeading="Related services"
+      />
+    </div>
+  </section>
+
+  {
+    (guideLinks.length > 0 || more.length > 0) && (
+      <RelatedLinks
+        heading="Keep reading"
+        eyebrow={`More ${cat.name.toLowerCase()} guides`}
+        items={[
+          ...guideLinks,
+          ...more.filter((m) => !guideLinks.some((l) => l.href === `/guides/${m.slug}/`)).map((m) => ({ label: m.title, href: `/guides/${m.slug}/` })),
+        ].slice(0, 6)}
+      />
+    )
+  }
+
+  <CTASection heading="Rather have a technician look at it?" sub="Call EZ Garage Doors or request service — written quote before work begins, anywhere in Massachusetts." />
+</SiteLayout>
+
+<style>
+  .guide-hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .guide-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .guide-hero h1 {
+    margin-top: var(--space-2);
+    font-size: clamp(1.9rem, 1.4rem + 2.4vw, 3.2rem);
+    max-width: 30ch;
+  }
+
+  .guide-hero__lede {
+    font-size: var(--text-lg);
+    max-width: 46rem;
+    margin-top: var(--space-4);
+  }
+
+  .guide-hero__meta {
+    font-size: var(--text-sm);
+    margin-top: var(--space-3);
+  }
+
+  .guide-body {
+    max-width: 46rem;
+  }
+
+  .guide-body :global(.faq--bare) {
+    margin-top: var(--space-7);
+  }
+
+  .guide-body__disclaimer {
+    font-size: var(--text-xs);
+    margin-top: var(--space-6);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--ez-line);
+  }
+</style>

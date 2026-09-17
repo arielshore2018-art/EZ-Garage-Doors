@@ -11,16 +11,18 @@ import "../styles/tokens.css";
 import "../styles/base.css";
 import Schema from "../components/Schema.astro";
 import { BUSINESS } from "../config/business";
+import type { Crumb } from "../components/Breadcrumbs.astro";
 
 interface Props {
   title: string;
   description: string;
   service?: { name: string; description: string; url: string };
   faqs?: { question: string; answer: string }[];
+  breadcrumbs?: Crumb[];
   noindex?: boolean;
 }
 
-const { title, description, service, faqs, noindex = false } = Astro.props;
+const { title, description, service, faqs, breadcrumbs, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -36,6 +38,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="icon" type="image/png" sizes="32x32" href="/ez-favicon-32x32.png" />
     <link rel="apple-touch-icon" href="/ez-favicon-180x180.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#f36a21" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -44,27 +47,28 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:image" content={new URL("/og-default.png", Astro.site)} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <Schema service={service} faqs={faqs} />
+    <Schema service={service} faqs={faqs} breadcrumbs={breadcrumbs} />
+    <slot name="head" />
   </head>
   <body>
     <!--
-    THESIS: A garage-door company's work record projected as hand-processed 16mm film;
-    refuses the light contractor hero-and-cards template entirely.
-    OWN-WORLD: near-black leader ground; silver emulsion type; orange exists only as
-    LIGHT (leaks, flares, projector beam) - every CTA is a light-flooded frame plate
-    with sprocket tabs; stamped condensed caps; mono edge-code annotations; content
-    banded in frame rows with sprocket margins; grain tied to frames, never smeared.
-    STORY: a stressed CT homeowner sees their problem on the strip, believes the
-    documented record (real frames, verified counts as edge codes), calls via the
-    flared frame.
-    FIRST VIEWPORT: left - eyebrow tick, stamped H1, sub, flared CALL plate, quiet
-    estimate link; right - full-height film strip, two real frames, orange leak
-    bleeding from the right edge; vertical edge-code rail EZ / 15 YRS / CT.
-    FORM: hand-processed 16mm film; candidate 5 of 7 on the ordered grounded list
-    (declined by verdict, adopted by the user on the decision page); seed 4d6f9491,
-    scope direction, mode persuade, source api.
-    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
-    review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
+    THESIS: The category-standard national garage-door brand site (A1-style structure and
+    register) rebuilt for one Massachusetts company in EZ orange — conventional on purpose,
+    because the owner chose recognizability and trust over a signature world.
+    OWN-WORLD: white ground, warm-gray alternating sections, ink Barlow Condensed headings,
+    Source Sans body, orange as the single action color (buttons, rules, icons), soft card
+    shadows and 6-10px radii, breadcrumbs on every inner page, content + sticky sidebar on
+    service pages, a dark footer with the full county index.
+    STORY: a Massachusetts homeowner with a broken door recognizes a serious statewide
+    company in the first second, finds their symptom or town within one click, and calls
+    from the orange button - or requests service from the form.
+    FIRST VIEWPORT: left - eyebrow, ink H1, one paragraph, orange CALL + outline REQUEST,
+    four check-marked trust facts; right - the real branded van in a rounded card with a
+    review badge. Utility bar above the header states the written-quote policy.
+    FORM: canon path (category standard, A1 = craft bar); owner selected 2026-09-17,
+    scope redesign, mode structure-copy in own colors/copy, source owner decision.
+    FINISH: build ends with the finish review, DESIGN.md rewritten from the built world,
+    the QA crawl over every generated page, and provenance on shipping rasters.
     -->
     <a href="#main" class="skip-link">Skip to content</a>
     <slot />

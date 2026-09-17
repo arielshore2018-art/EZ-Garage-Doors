@@ -1,0 +1,149 @@
+---
+/**
+ * Door style page template. Estimate-first; prices never appear.
+ */
+import type { GetStaticPaths } from "astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import ServiceHero from "../../components/ServiceHero.astro";
+import ProofColumns from "../../components/home/ProofColumns.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import FaqList from "../../components/FaqList.astro";
+import RelatedLinks from "../../components/RelatedLinks.astro";
+import LeadForm from "../../components/LeadForm.astro";
+import CTASection from "../../components/CTASection.astro";
+import Icon from "../../components/Icon.astro";
+import { DOOR_STYLES, type DoorStyle } from "../../config/door-styles";
+
+export const getStaticPaths = (() => {
+  return DOOR_STYLES.map((s) => ({ params: { style: s.slug }, props: { s } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  s: DoorStyle;
+}
+
+const { s } = Astro.props;
+const breadcrumbs = [
+  { label: "New Garage Doors", href: "/garage-door-installation/" },
+  { label: "Door Styles", href: "/garage-door-styles/" },
+  { label: s.name },
+];
+const siblings = DOOR_STYLES.filter((x) => x.slug !== s.slug);
+const service = { name: `${s.name} — Installation`, description: `${s.tagline}. Installed across Massachusetts with a written estimate first.`, url: `/garage-door-styles/${s.slug}/` };
+---
+
+<SiteLayout
+  title={`${s.name} in MA | EZ Garage Doors`}
+  description={`${s.tagline}. Installed across Massachusetts — measured and priced in a written estimate before ordering.`}
+  service={service}
+  faqs={s.faqs}
+  breadcrumbs={breadcrumbs}
+>
+  <ServiceHero
+    imageId={s.imageId}
+    eyebrow="Door styles"
+    heading={s.name}
+    sub={s.tagline + ". Measured, itemized, and priced in writing before the door is ordered."}
+    callLabel="Get a Written Estimate"
+    callTrack={`style_${s.slug}_estimate`}
+    primaryMode="estimate"
+    primaryHref="#request"
+    secondaryLabel="See All Styles"
+    secondaryHref="/garage-door-styles/"
+    micro="One estimate, in writing. No pressure."
+    breadcrumbs={breadcrumbs}
+  />
+
+  <ProofColumns />
+
+  <section class="section">
+    <div class="wrap page-grid">
+      <article class="style-main">
+        <div class="prose">
+          {s.intro.map((p) => <p>{p}</p>)}
+        </div>
+
+        <SectionHeading eyebrow="Fit" title="Best for" />
+        <ul class="style-list">
+          {s.bestFor.map((x) => <li><Icon name="check" size={18} /><span>{x}</span></li>)}
+        </ul>
+
+        <SectionHeading eyebrow="Before you order" title="Things to know" />
+        <ul class="style-list style-list--plain">
+          {s.considerations.map((x) => <li><Icon name="arrow" size={18} /><span>{x}</span></li>)}
+        </ul>
+
+        <FaqList faqs={s.faqs} heading={`${s.name} questions`} bare />
+      </article>
+
+      <Sidebar
+        title="Want this door priced?"
+        sub="A written, itemized installation estimate — door, hardware, removal, and opener work if any."
+        callLabel="Call EZ Garage Doors"
+        callTrack={`style_${s.slug}_sidebar_call`}
+        links={[
+          { label: "New Door Installation", href: "/garage-door-installation/" },
+          { label: "What a New Door Costs", href: "/garage-door-replacement-cost/" },
+          { label: "Finished Work", href: "/gallery/" },
+          { label: "Door Brands We Service", href: "/brands/" },
+        ]}
+      />
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap wrap--narrow">
+      <LeadForm heading={`Request an Estimate — ${s.name}`} submitLabel="Request Installation Estimate" context={`style-${s.slug}`} />
+    </div>
+  </section>
+
+  <RelatedLinks heading="Other styles we install" eyebrow="Styles" items={siblings.map((x) => ({ label: x.name, href: `/garage-door-styles/${x.slug}/` }))} alt={false} />
+
+  <CTASection heading="Ready to see the number?" sub="Get a written installation estimate — itemized, honest, and yours to keep." secondaryLabel="Request Installation Estimate" secondaryHref="#request" />
+</SiteLayout>
+
+<style>
+  .style-main :global(.section-heading) {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-4);
+  }
+
+  .style-main :global(.faq--bare) {
+    margin-top: var(--space-6);
+  }
+
+  .style-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .style-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--ez-alt);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .style-list svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .style-list--plain li {
+    background: transparent;
+    font-weight: 400;
+    color: var(--color-text);
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--ez-line);
+    border-radius: 0;
+  }
+</style>

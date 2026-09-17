@@ -1,0 +1,124 @@
+---
+/**
+ * Sticky sidebar for inner pages (A1's right rail): call card, request
+ * link, related links, and the coverage note. Pass `links` for the
+ * related-services list; pass `title` to change the card heading.
+ */
+import CallButton from "./CallButton.astro";
+import Icon from "./Icon.astro";
+import { APPROVED_CLAIMS, COVERAGE } from "../config/business";
+
+interface Props {
+  title?: string;
+  sub?: string;
+  callLabel?: string;
+  callTrack?: string;
+  links?: { label: string; href: string }[];
+  linksHeading?: string;
+}
+
+const {
+  title = "Need help with your door today?",
+  sub = "Call now, or send a photo and the town — a local specialist follows up.",
+  callLabel = "Call EZ Garage Doors",
+  callTrack = "sidebar_call",
+  links = [],
+  linksHeading = "Related services",
+} = Astro.props;
+---
+
+<aside class="sidebar">
+  <div class="sidebar__card card">
+    <h2 class="sidebar__title">{title}</h2>
+    <p class="sidebar__sub">{sub}</p>
+    <CallButton label={callLabel} size="lg" track={callTrack} class="sidebar__btn" />
+    <a href="/contact/#request" class="btn btn--outline sidebar__btn" data-track="sidebar_request">Request Service</a>
+    <ul class="sidebar__facts">
+      <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.writtenQuote}</li>
+      <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.years}</li>
+      <li><Icon name="check" size={18} /> {COVERAGE.short}</li>
+    </ul>
+  </div>
+
+  {
+    links.length > 0 && (
+      <nav class="sidebar__links card" aria-label={linksHeading}>
+        <h3>{linksHeading}</h3>
+        <ul class="link-list">
+          {links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+</aside>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: 5.75rem;
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .sidebar__card {
+    padding: var(--space-5);
+    border-top: 4px solid var(--ez-orange);
+  }
+
+  .sidebar__title {
+    font-size: var(--text-xl);
+  }
+
+  .sidebar__sub {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-block: var(--space-2) var(--space-4);
+  }
+
+  .sidebar :global(.sidebar__btn) {
+    width: 100%;
+    margin-bottom: var(--space-2);
+  }
+
+  .sidebar__facts {
+    list-style: none;
+    padding: var(--space-3) 0 0;
+    margin: var(--space-2) 0 0;
+    border-top: 1px solid var(--ez-line);
+    display: grid;
+    gap: 0.4rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .sidebar__facts li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .sidebar__facts svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+  }
+
+  .sidebar__links {
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .sidebar__links h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  @media (max-width: 62rem) {
+    .sidebar {
+      position: static;
+    }
+  }
+</style>

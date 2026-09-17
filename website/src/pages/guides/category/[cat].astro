@@ -1,0 +1,135 @@
+---
+/**
+ * Guide category hub.
+ */
+import type { GetStaticPaths } from "astro";
+import SiteLayout from "../../../layouts/SiteLayout.astro";
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import CallButton from "../../../components/CallButton.astro";
+import SectionHeading from "../../../components/SectionHeading.astro";
+import RelatedLinks from "../../../components/RelatedLinks.astro";
+import CTASection from "../../../components/CTASection.astro";
+import { GUIDE_CATEGORIES, guidesInCategory, type GuideCategory } from "../../../config/guides";
+
+export const getStaticPaths = (() => {
+  return GUIDE_CATEGORIES.map((c) => ({ params: { cat: c.id }, props: { c } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  c: GuideCategory;
+}
+
+const { c } = Astro.props;
+const list = guidesInCategory(c.id);
+const breadcrumbs = [{ label: "Guides", href: "/guides/" }, { label: c.name }];
+const others = GUIDE_CATEGORIES.filter((x) => x.id !== c.id);
+---
+
+<SiteLayout
+  title={`Garage Door ${c.name} Guides | EZ Garage Doors`}
+  description={`${c.blurb} ${list.length} plain-language guides from a Massachusetts garage door company.`}
+  breadcrumbs={breadcrumbs}
+>
+  <section class="cat-hero">
+    <div class="wrap">
+      <Breadcrumbs items={breadcrumbs} class="cat-hero__crumbs" />
+      <p class="eyebrow">Guides · {c.name}</p>
+      <h1>{c.name} Guides</h1>
+      <p class="cat-hero__sub">{c.blurb}</p>
+      <div class="cat-hero__actions">
+        <CallButton label="Call for Repair" size="lg" track={`guides_${c.id}_call`} />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading eyebrow={`${list.length} guides`} title={`Everything we've written about ${c.name.toLowerCase()}`} />
+      <ul class="guide-list">
+        {
+          list.map((g) => (
+            <li>
+              <a href={`/guides/${g.slug}/`} class="guide-list__item">
+                <span class="guide-list__title">{g.title}</span>
+                <span class="guide-list__desc">{g.description}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <RelatedLinks heading="Other topics" eyebrow="Guides" items={others.map((o) => ({ label: o.name, href: `/guides/category/${o.id}/`, blurb: o.blurb }))} />
+
+  <CTASection heading="Rather have a technician look at it?" sub="Call EZ Garage Doors or request service — written quote before work begins." />
+</SiteLayout>
+
+<style>
+  .cat-hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .cat-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .cat-hero h1 {
+    margin-top: var(--space-2);
+  }
+
+  .cat-hero__sub {
+    font-size: var(--text-lg);
+    max-width: 44rem;
+    margin-top: var(--space-4);
+  }
+
+  .cat-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .guide-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .guide-list__item {
+    display: grid;
+    gap: 0.25rem;
+    padding: var(--space-4) var(--space-5);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  .guide-list__item:hover {
+    border-color: var(--ez-orange);
+    box-shadow: var(--shadow-card);
+  }
+
+  .guide-list__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--ez-ink);
+    line-height: 1.2;
+  }
+
+  .guide-list__desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

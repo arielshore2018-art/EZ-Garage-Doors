@@ -1,39 +1,135 @@
 ---
 /**
- * Service-area hub. Towns render as a grid; only cities with
- * published: true (real local proof) get dedicated pages —
- * no token-swap doorway pages.
+ * Statewide service-area hub: 14 county cards, then every one of the
+ * 351 municipalities grouped by region and county. Every link resolves
+ * to a generated page built from real public data.
  */
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import ServiceHero from "../../components/ServiceHero.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CallButton from "../../components/CallButton.astro";
 import ProofColumns from "../../components/home/ProofColumns.astro";
-import CityGrid from "../../components/CityGrid.astro";
+import CountyGrid from "../../components/CountyGrid.astro";
+import TownList from "../../components/TownList.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
 import CTASection from "../../components/CTASection.astro";
-import { BUSINESS } from "../../config/business";
+import { BUSINESS, COVERAGE, APPROVED_CLAIMS } from "../../config/business";
+import { MA_COUNTIES, townsInCounty, type MaRegion } from "../../config/ma-towns";
+
+const regions: MaRegion[] = [
+  "Western Massachusetts",
+  "Central Massachusetts",
+  "Greater Boston",
+  "North Shore & Merrimack Valley",
+  "South Shore & Southeastern Massachusetts",
+  "Cape Cod & the Islands",
+];
+
+const breadcrumbs = [{ label: "Service Areas" }];
 ---
 
 <SiteLayout
-  title="Service Areas | EZ Garage Doors — Central Connecticut"
-  description="EZ Garage Doors serves central Connecticut towns including Middletown, Cromwell, Glastonbury, West Hartford, Southington, and surrounding communities."
+  title={`Service Areas | All ${COVERAGE.municipalities} MA Cities & Towns | ${BUSINESS.name}`}
+  description={`Garage door repair in every Massachusetts county — Western MA, Central MA, Greater Boston, North Shore, South Shore, Cape Cod & the Islands. Written quote first.`}
+  breadcrumbs={breadcrumbs}
 >
-  <ServiceHero
-    imageId="tech-arrival"
-    eyebrow="Service Area"
-    heading={`Garage Door Service Across Central ${BUSINESS.state}`}
-    sub="One local team covering the towns below for repair, springs, openers, and new door installations. If your town borders this area, call — we can usually help."
-    callLabel="Call EZ Garage Doors"
-    callTrack="areas_call_click"
-    secondaryLabel="Get a Written Estimate"
-    secondaryHref="/contact/#request"
-  />
+  <section class="areas-hero">
+    <div class="wrap">
+      <Breadcrumbs items={breadcrumbs} class="areas-hero__crumbs" />
+      <p class="eyebrow">Service areas · {COVERAGE.short}</p>
+      <h1>Garage Door Service Across All of Massachusetts</h1>
+      <p class="areas-hero__sub">
+        {COVERAGE.line}. One local team for repairs, springs, openers, and new door installations —
+        {APPROVED_CLAIMS.writtenQuote.toLowerCase()}. Pick your county below, or find your town in
+        the index.
+      </p>
+      <div class="areas-hero__actions">
+        <CallButton label="Call EZ Garage Doors" size="lg" track="areas_call_click" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
+      </div>
+    </div>
+  </section>
 
   <ProofColumns />
 
-  <CityGrid heading="Towns we serve" compact />
+  <CountyGrid heading="Pick your county" intro="14 counties, 351 cities and towns. Each county page lists every community with its own page." />
+
+  <section class="section section--alt" id="towns">
+    <div class="wrap">
+      <SectionHeading eyebrow="Town index" title={`Every Massachusetts city and town — all ${COVERAGE.municipalities}`} />
+      {
+        regions.map((region) => (
+          <div class="region">
+            <h3 class="region__name">{region}</h3>
+            {MA_COUNTIES.filter((c) => c.region === region).map((c) => (
+              <div class="region__county">
+                <TownList
+                  towns={townsInCounty(c.name)}
+                  heading={`${c.name} County (${townsInCounty(c.name).length})`}
+                />
+                <p class="region__link">
+                  <a href={`/service-areas/${c.slug}/`}>{c.name} County overview →</a>
+                </p>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </section>
 
   <CTASection
-    heading="In our area and need a hand?"
-    sub="Call EZ Garage Doors or request a written estimate — we'll confirm coverage on the spot."
+    heading="In Massachusetts and need a hand?"
+    sub="Call EZ Garage Doors or request service — we'll confirm coverage and timing on the spot."
   />
 </SiteLayout>
 
+<style>
+  .areas-hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .areas-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .areas-hero h1 {
+    margin-top: var(--space-2);
+    max-width: 22ch;
+  }
+
+  .areas-hero__sub {
+    font-size: var(--text-lg);
+    max-width: 44rem;
+    margin-top: var(--space-4);
+  }
+
+  .areas-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .region + .region {
+    margin-top: var(--space-7);
+  }
+
+  .region__name {
+    font-size: var(--text-2xl);
+    color: var(--ez-ink);
+    padding-bottom: var(--space-2);
+    border-bottom: 3px solid var(--ez-orange);
+    margin-bottom: var(--space-5);
+  }
+
+  .region__county + .region__county {
+    margin-top: var(--space-6);
+  }
+
+  .region__link {
+    margin-top: var(--space-3);
+    font-weight: 600;
+  }
+</style>

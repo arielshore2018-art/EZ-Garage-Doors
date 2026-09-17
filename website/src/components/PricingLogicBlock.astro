@@ -1,8 +1,8 @@
 ---
 /**
- * Pricing honesty module, styled like a clean service ticket.
- * Shows HOW pricing works — never fake exact prices. Any real price
- * ranges must come from the owner (see /garage-door-replacement-cost).
+ * Pricing honesty module. Shows HOW pricing works — never fake exact
+ * prices. Any real price ranges must come from the owner
+ * (see /garage-door-replacement-cost).
  */
 import SectionHeading from "./SectionHeading.astro";
 
@@ -33,8 +33,8 @@ const {
         <a href="/garage-door-replacement-cost/">garage door replacement cost guide</a>.
       </p>
     </div>
-    <div class="pricing__ticket" role="img" aria-label="What determines your quote">
-      <p class="pricing__ticket-head">SERVICE TICKET — WHAT SETS THE PRICE</p>
+    <div class="pricing__ticket card" role="img" aria-label="What determines your quote">
+      <p class="pricing__ticket-head">What sets the price</p>
       <dl>
         {
           factors.map((f) => (
@@ -58,37 +58,20 @@ const {
     align-items: center;
   }
 
-  .pricing__copy p {
-    margin-bottom: var(--space-4);
+  .pricing__copy p + p {
+    margin-top: var(--space-3);
   }
 
   .pricing__ticket {
-    background: var(--ez-white);
-    border: 1px solid var(--ez-line);
-    border-top: var(--track-stroke) solid var(--ez-orange);
-    box-shadow: var(--shadow-card);
-    padding: var(--space-5) var(--space-6);
-    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
-    font-size: var(--text-sm);
-    position: relative;
-  }
-
-  .pricing__ticket::before {
-    content: "";
-    position: absolute;
-    top: var(--track-gap);
-    left: 0;
-    right: 0;
-    height: var(--track-ghost);
-    background: var(--ez-line);
+    padding: var(--space-5);
+    border-top: 4px solid var(--ez-orange);
   }
 
   .pricing__ticket-head {
+    font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--ez-steel);
-    border-bottom: 1px dashed var(--ez-border);
-    padding-bottom: var(--space-3);
+    font-size: var(--text-lg);
+    color: var(--ez-ink);
     margin-bottom: var(--space-3);
   }
 
@@ -98,25 +81,30 @@ const {
 
   .pricing__row {
     display: grid;
-    grid-template-columns: 7.5rem 1fr;
+    grid-template-columns: 7rem minmax(0, 1fr);
     gap: var(--space-3);
-    padding-block: var(--space-2);
-    border-bottom: 1px dashed var(--ez-border);
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--ez-line);
   }
 
   .pricing__row dt {
+    font-family: var(--font-display);
     font-weight: 700;
-    color: var(--ez-charcoal);
+    color: var(--ez-ink);
   }
 
   .pricing__row dd {
     margin: 0;
+    font-size: var(--text-sm);
     color: var(--color-text-muted);
   }
 
   .pricing__ticket-foot {
     margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 2px solid var(--ez-ink);
+    font-family: var(--font-display);
     font-weight: 700;
-    color: var(--ez-orange-deep);
+    color: var(--ez-orange-text);
   }
 </style>

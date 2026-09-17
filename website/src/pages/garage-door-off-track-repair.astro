@@ -1,26 +1,28 @@
 ---
 /**
- * Off-track repair — expanded urgency page: full-bleed hero with
- * safety alert, proof bar, causes, quote promise, gallery, FAQ.
+ * Off-track repair — urgency page with full site nav (organic intent):
+ * hero with safety alert, causes, process, FAQ.
  */
-import LandingLayout from "../layouts/LandingLayout.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import FaqList from "../components/FaqList.astro";
-import CallButton from "../components/CallButton.astro";
+import RelatedLinks from "../components/RelatedLinks.astro";
+import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import Icon from "../components/Icon.astro";
 
 const causes = [
   "A snapped or slipped lift cable on one side",
   "Worn rollers popping out of the track",
   "A bent track from a bump or impact",
-  "Running the opener against a jammed door",
-  "Broken hinge letting a panel fold",
+  "Running the opener against a jammed or frozen door",
+  "A broken hinge letting a panel fold",
 ];
 
 const service = {
   name: "Off-Track Garage Door Repair",
-  description: "Garage door off its track secured, realigned, and rolling straight — with a written quote before work begins.",
+  description: "Garage door off its track secured, realigned, and rolling straight across Massachusetts — with a written quote before work begins.",
   url: "/garage-door-off-track-repair/",
 };
 
@@ -30,23 +32,27 @@ const faqs = [
   { question: "What does the repair involve?", answer: "We secure the door, find what pulled it off (cable, roller, or track), correct that, realign the door, and test full travel. The price is in writing before any of it starts." },
   { question: "My car is stuck behind the crooked door — what now?", answer: "Don't force the door. Call with your town — trapped-car calls are exactly what fast local dispatch is for." },
 ];
+
+const crumbs = [{ label: "Garage Door Repair", href: "/garage-door-repair/" }, { label: "Off-Track Door Repair" }];
 ---
 
-<LandingLayout
-  title="Garage Door Off Track? Repair in Connecticut | EZ Garage Doors"
-  description="Garage door came off its track or hangs crooked? Stop the opener and call EZ Garage Doors — fast local off-track repair with a written quote first."
-  callLabel="Call Now"
+<SiteLayout
+  title="Garage Door Off Track? Repair in Massachusetts | EZ Garage Doors"
+  description="Garage door came off its track or hangs crooked? Stop the opener and call EZ Garage Doors — off-track repair across Massachusetts with a written quote first."
   service={service}
+  faqs={faqs}
+  breadcrumbs={crumbs}
 >
   <ServiceHero
     imageId="before-old-wood"
-    eyebrow="Off-Track Door Service"
+    eyebrow="Off-track door service"
     heading="Garage Door Off Its Track?"
     sub="Stop using the opener right now — every cycle bends the tracks further and can drop the door. We secure it, realign it, and get it rolling straight."
     callLabel="Call Now"
     callTrack="offtrack_call_click"
-    secondaryLabel="Text a Photo of the Door"
+    secondaryLabel="Send a Photo of the Door"
     alert="Keep people, pets, and cars away from an off-track door. It can shift or fall without warning."
+    breadcrumbs={crumbs}
   />
 
   <ProofColumns />
@@ -55,18 +61,11 @@ const faqs = [
     <div class="wrap">
       <SectionHeading eyebrow="Root cause" title="Why doors come off the track" />
       <ul class="ot-causes">
-        {
-          causes.map((cause) => (
-            <li>
-              <span class="speed-tick" aria-hidden="true" />
-              {cause}
-            </li>
-          ))
-        }
+        {causes.map((cause) => <li><Icon name="check" size={18} /><span>{cause}</span></li>)}
       </ul>
-      <p class="ot-note">
-        The fix is rarely just "push it back in" — whatever pulled it off has to be corrected
-        too, or it happens again next week. That's what we inspect for.
+      <p class="ot-note callout">
+        The fix is rarely just "push it back in" — whatever pulled it off has to be corrected too,
+        or it happens again next week. That's what we inspect for.
       </p>
     </div>
   </section>
@@ -82,18 +81,20 @@ const faqs = [
     </div>
   </section>
 
-  {/* Work gallery removed: its images were 2/3 AI technician-models,
-      which the claims policy bars from proof modules. */}
   <FaqList faqs={faqs} heading="Off-track door questions" />
 
-  <section class="ot-final">
-    <div class="wrap ot-final__inner">
-      <h2>Door hanging crooked right now?</h2>
-      <p>Don't force it. Call EZ Garage Doors for fast local off-track repair.</p>
-      <CallButton label="Call Now" size="lg" track="offtrack_call_click" />
-    </div>
-  </section>
-</LandingLayout>
+  <RelatedLinks
+    heading="Related repairs"
+    items={[
+      { label: "Track Repair", href: "/garage-door-track-repair/" },
+      { label: "Roller Replacement", href: "/garage-door-roller-replacement/" },
+      { label: "Cable Repair", href: "/garage-door-cable-repair/" },
+      { label: "Emergency Repair", href: "/emergency-garage-door-repair/" },
+    ]}
+  />
+
+  <CTASection heading="Door hanging crooked right now?" sub="Don't force it. Call EZ Garage Doors for off-track repair anywhere in Massachusetts." callLabel="Call Now" />
+</SiteLayout>
 
 <style>
   .ot-causes {
@@ -103,34 +104,27 @@ const faqs = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
     gap: var(--space-3);
-    font-weight: 500;
   }
 
   .ot-causes li {
     display: flex;
-    align-items: center;
-    background: var(--ez-concrete);
-    border-radius: var(--radius-md);
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: var(--ez-alt);
+    border-radius: var(--radius-sm);
     padding: var(--space-3) var(--space-4);
+    font-weight: 600;
+    color: var(--ez-ink);
+  }
+
+  .ot-causes svg {
+    color: var(--ez-orange);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
   }
 
   .ot-note {
     margin-top: var(--space-5);
     max-width: 44rem;
-  }
-
-  .ot-final {
-    background: var(--film-gap);
-    color: #c9cdd2;
-    padding-block: var(--space-7);
-    text-align: center;
-  }
-
-  .ot-final h2 {
-    color: #fff;
-  }
-
-  .ot-final p {
-    margin-block: var(--space-3) var(--space-5);
   }
 </style>

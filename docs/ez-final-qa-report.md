@@ -95,3 +95,32 @@ Build 37 pages, 0 errors · astro check 0 errors · crawl ALL PASS (metadata uni
 
 ## Rollback ladder
 Film world = this deploy · Orange Editorial Utility = `v2026.07-orange-editorial` · pre-redesign site = `082b8a8`.
+
+---
+
+# Addendum — Massachusetts A1-style architecture, "ORANGE STANDARD" (2026-09-17, branch `rebuild/massachusetts-a1-architecture`, NOT deployed)
+
+Owner brief: copy the structure and design of a1garage.com, focus on Massachusetts, "thousands" of content pages. Owner decisions on the follow-up questions: **A1-style in EZ orange** (structure only — no A1 copy, images, mascot, or red), **500–800 genuine pages** (scaled-content risk explained; doorway thousands declined), **Massachusetts FULL STATE, Connecticut removed entirely**, **no public address**, home base Springfield/Western MA **never published**, phone **not yet**, leads **to be emailed** (inbox + endpoint pending), **"some numbers change"** → corrected STATS pending. Rollback point for the film world: tag `v2026.08-projected-light` (pushed).
+
+## What was built
+- **Data foundation:** `ma-towns.ts` — all 351 MA municipalities merged from the Census 2023 Gazetteer (county, land area, lat/lng) and the 2020/2010 Census populations + type/government/incorporation from the municipality table (351/351 matched). Helpers: nearest towns by distance, density. `ma-counties.ts` — hand-written context for all 14 counties.
+- **Architecture (545 pages, 520 indexable):** home · 12 core service pages (URLs unchanged) · 15 template service pages (`[service].astro` ← `service-pages.ts`) · openers hub · brands hub + 13 · styles hub + 6 · guides hub + 9 categories + 87 original guides · service-areas hub + 14 county hubs + 351 town pages (`[slug].astro`) · about/reviews/gallery/contact/legal · 24 MA PPC metros (noindex). 16 CT PPC URLs → 301 to `/garage-door-repair/` (`website/vercel.json`).
+- **Design:** ORANGE STANDARD — white/alt ground, ink Barlow headings, orange as the single action color with a measured contrast law, sticky header with CSS dropdowns, breadcrumbs + sticky sidebar on inner pages, dark footer with the county index. Contract comment in `BaseLayout` (verified in dist). DESIGN.md / design.json / PRODUCT.md / CLAUDE.md rewritten.
+- **Schema:** LocalBusiness with State + 14-county `areaServed` (no address); Service/FAQPage/BreadcrumbList via props; Article on guides. Still deliberately absent: telephone, aggregateRating, address, license.
+
+## Verification
+- `astro check` 0 errors · build 545 pages (dist 51 MB, 2 sitemap files).
+- Static crawl (scratchpad `qa-crawl.mjs`): unique titles/descriptions, 1 H1 per page, canonicals correct, og:image + JSON-LD on every page, noindex exactly on 24 PPC + thank-you, sitemap 520 = every indexable page, **0 broken internal links across 545 pages**, **0 Connecticut occurrences**, 0 banned claims. Remaining flags: 32 guide `<title>`s over 70 chars (article headlines, accepted) and the home title at 72.
+- Lighthouse mobile on the built preview: **home 100/100/100**, **town page (Worcester) 100/100/100** after adding metric-matched font fallbacks (`size-adjust`) — the first run showed CLS 0.275 from the Barlow swap — **PPC 100 a11y / 100 BP** (SEO 69 = intentional noindex).
+- Visual pass (Chrome DevTools, 1440 and 390): home, town, county, service, guide, PPC; no horizontal overflow anywhere; hero CTA inside the fold on mobile (home 617px, town 586px, PPC 382px); mobile menu (details groups) works; sticky bar shows after scroll with 18.8px buttons; brand logos and before/after images load (full-page-capture blanks were the lazy-load quirk).
+- Form flow on the built preview (Playwright): empty submit blocked with four inline `aria-live` errors and focus on the first field, no event fired; valid submit fires `form_submit` (context `contact`) → `/thank-you/` (noindex) → `lead_thank_you`. Field names unchanged (CRM contract). Leads still NOT delivered (FORM_ENDPOINT empty — owner blocker).
+- Detector hook findings during the build: mobile hero type step and the three fallback font faces → documented in DESIGN.md typography (no suppressions added).
+
+## Still missing from the owner (deploy gate)
+1. **Corrected figures** (years, repairs, springs, openers, review counts/ratings) — nothing deploys before these.
+2. **Lead delivery:** inbox address + a form-service endpoint the owner creates (Formspree/Basin/etc.).
+3. Phone number (when ready), review profile URLs, final domain, license/insurance language, any confirmed availability claims.
+4. **Google Ads:** re-point campaigns from the retired `-ct` PPC slugs to `/ppc/garage-door-repair/<city>-ma/`.
+
+## Rollback ladder
+This branch (undeployed) → PROJECTED LIGHT = production (`v2026.08-projected-light`) → Orange Editorial Utility (`v2026.07-orange-editorial`) → original (`082b8a8`).

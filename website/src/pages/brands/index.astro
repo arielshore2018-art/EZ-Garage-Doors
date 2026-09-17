@@ -1,0 +1,187 @@
+---
+/**
+ * Brands hub — "brands we service". Non-affiliation stated on the page
+ * and inherited by every brand page.
+ */
+import { Image } from "astro:assets";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CallButton from "../../components/CallButton.astro";
+import ProofColumns from "../../components/home/ProofColumns.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import CTASection from "../../components/CTASection.astro";
+import { OPENER_BRANDS, DOOR_BRANDS } from "../../config/brands";
+import { brandLogos } from "../../config/brand-logos";
+
+const logo = (id: string | null) => (id ? brandLogos.find((l) => l.id === id) : undefined);
+const breadcrumbs = [{ label: "Brands We Service" }];
+---
+
+<SiteLayout
+  title="Garage Door & Opener Brands We Service | EZ Garage Doors"
+  description="LiftMaster, Chamberlain, Genie, Craftsman, Linear, SOMMER, Marantec openers and Clopay, Amarr, Haas, Wayne Dalton, Raynor, C.H.I., Hörmann doors — serviced across MA."
+  breadcrumbs={breadcrumbs}
+>
+  <section class="brands-hero">
+    <div class="wrap">
+      <Breadcrumbs items={breadcrumbs} class="brands-hero__crumbs" />
+      <p class="eyebrow">Brands we service</p>
+      <h1>Garage Door &amp; Opener Brands We Service</h1>
+      <p class="brands-hero__sub">
+        We repair and install the major residential opener and door brands regardless of who
+        installed them. EZ Garage Doors is an independent Massachusetts company — we are not an
+        authorized dealer of, affiliated with, or endorsed by any manufacturer listed here.
+      </p>
+      <div class="brands-hero__actions">
+        <CallButton label="Call for Repair" size="lg" track="brands_call_click" />
+        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
+      </div>
+    </div>
+  </section>
+
+  <ProofColumns />
+
+  <section class="section">
+    <div class="wrap">
+      <SectionHeading eyebrow="Openers" title="Garage door opener brands" />
+      <ul class="brand-grid">
+        {
+          OPENER_BRANDS.map((b) => {
+            const l = logo(b.logoId);
+            return (
+              <li>
+                <a href={`/brands/${b.slug}/`} class="brand-card">
+                  <span class="brand-card__logo">
+                    {l ? <Image src={l.src} alt={l.alt} height={l.railHeight} loading="lazy" style={`height:${l.railHeight}px`} /> : <span class="brand-card__text">{b.name}</span>}
+                  </span>
+                  <span class="brand-card__name">{b.name} openers</span>
+                  <span class="brand-card__tag">{b.tagline}</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="wrap">
+      <SectionHeading eyebrow="Doors" title="Garage door brands" />
+      <ul class="brand-grid">
+        {
+          DOOR_BRANDS.map((b) => {
+            const l = logo(b.logoId);
+            return (
+              <li>
+                <a href={`/brands/${b.slug}/`} class="brand-card">
+                  <span class="brand-card__logo">
+                    {l ? <Image src={l.src} alt={l.alt} height={l.railHeight} loading="lazy" style={`height:${l.railHeight}px`} /> : <span class="brand-card__text">{b.name}</span>}
+                  </span>
+                  <span class="brand-card__name">{b.name} doors</span>
+                  <span class="brand-card__tag">{b.tagline}</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+      <p class="muted brands-note">
+        Brand names and logos belong to their respective owners and are shown to identify the
+        products we service. Don't see your brand? We service most major brands — call and ask.
+      </p>
+    </div>
+  </section>
+
+  <CTASection heading="Not sure what brand you have?" sub="Send a photo of the label on the opener or the door's end stile — we'll take it from there." />
+</SiteLayout>
+
+<style>
+  .brands-hero {
+    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    border-bottom: 1px solid var(--ez-line);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .brands-hero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .brands-hero h1 {
+    margin-top: var(--space-2);
+  }
+
+  .brands-hero__sub {
+    font-size: var(--text-lg);
+    max-width: 46rem;
+    margin-top: var(--space-4);
+  }
+
+  .brands-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .brand-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-4);
+  }
+
+  .brand-card {
+    display: grid;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-5);
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .brand-card:hover {
+    border-color: var(--ez-orange);
+  }
+
+  .brand-card__logo {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .brand-card__logo img {
+    width: auto;
+    max-height: 40px;
+  }
+
+  .brand-card__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--ez-ink);
+  }
+
+  .brand-card__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-lg);
+    color: var(--ez-ink);
+  }
+
+  .brand-card__tag {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .brands-note {
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+  }
+</style>
