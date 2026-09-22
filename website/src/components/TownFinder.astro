@@ -1,0 +1,81 @@
+---
+import { MA_TOWNS } from "../config/ma-towns";
+import Icon from "./Icon.astro";
+// Only public names and routes reach the browser, never internal dispatch data.
+const towns = MA_TOWNS.map(({ name, slug, county }) => ({ name, slug, county }));
+---
+<div class="town-finder" data-town-finder data-towns={JSON.stringify(towns)} hidden>
+  <div class="town-finder__heading"><Icon name="pin" size={24} /><label for="town-search">Find service in your town</label></div>
+  <div class="town-finder__field">
+    <input type="search" id="town-search" name="town-search" placeholder="Start typing a Massachusetts town…" autocomplete="off" spellcheck="false" aria-describedby="town-search-status" aria-controls="town-search-results" />
+    <button type="button" data-town-clear hidden>Clear</button>
+  </div>
+  <p id="town-search-status" class="town-finder__status" role="status">Enter at least 2 letters. All Massachusetts cities and towns are covered.</p>
+  <ul id="town-search-results" class="town-finder__results" aria-label="Matching service areas"></ul>
+</div>
+<script>
+  type Town = { name: string; slug: string; county: string };
+  document.querySelectorAll<HTMLElement>("[data-town-finder]").forEach((finder) => {
+    const towns: Town[] = JSON.parse(finder.dataset.towns || "[]");
+    const input = finder.querySelector<HTMLInputElement>("input")!;
+    const clear = finder.querySelector<HTMLButtonElement>("[data-town-clear]")!;
+    const results = finder.querySelector<HTMLUListElement>("ul")!;
+    const status = finder.querySelector<HTMLElement>('[role="status"]')!;
+    const normalize = (value: string) => value.toLowerCase().replace(/[\s-]+/g, "").trim();
+    const render = () => {
+      const query = normalize(input.value);
+      clear.hidden = !input.value;
+      results.replaceChildren();
+      if (query.length < 2) {
+        status.textContent = "Enter at least 2 letters. All Massachusetts cities and towns are covered.";
+        return;
+      }
+      const matches = towns.filter(t => normalize(t.name).includes(query)).sort((a, b) =>
+        Number(normalize(b.name).startsWith(query)) - Number(normalize(a.name).startsWith(query)) || a.name.localeCompare(b.name));
+      status.textContent = matches.length
+        ? `${matches.length} ${matches.length === 1 ? "town found" : "towns found"}${matches.length > 6 ? ". Showing the first 6; keep typing to narrow your search" : ""}. Select your town below.`
+        : "No matching town. Check the spelling or browse the counties below. For a neighborhood, try the city name.";
+      const fragment = document.createDocumentFragment();
+      for (const town of matches.slice(0, 6)) {
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = `/service-areas/${town.slug}/`;
+        link.dataset.track = "town_search_result";
+        const name = document.createElement("strong");
+        name.textContent = town.name;
+        const county = document.createElement("span");
+        county.textContent = `${town.county} County →`;
+        link.append(name, county);
+        li.append(link);
+        fragment.append(li);
+      }
+      results.append(fragment);
+    };
+    finder.hidden = false;
+    input.addEventListener("input", render);
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { input.value = ""; render(); }
+      if (event.key === "Enter") {
+        event.preventDefault();
+        results.querySelector<HTMLAnchorElement>("a")?.focus();
+      }
+    });
+    clear.addEventListener("click", () => { input.value = ""; render(); input.focus(); });
+  });
+</script>
+<style>
+  .town-finder { max-width: 44rem; margin: 0 auto 2rem; background: white; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--ez-line); border-radius: var(--radius-lg); }
+  .town-finder__heading { display: flex; align-items: center; gap: .65rem; margin-bottom: .8rem; }
+  .town-finder__heading :global(svg) { color: var(--ez-orange-text); }
+  .town-finder label { font-weight: 650; color: var(--ez-ink); }
+  .town-finder__field { position: relative; }
+  .town-finder input { width: 100%; min-height: 52px; border: 1px solid var(--ez-field-line); border-radius: var(--radius-sm); background: white; color: var(--ez-ink); padding: .75rem 4rem .75rem .9rem; font-size: 1rem; }
+  .town-finder__field button { position: absolute; top: 4px; right: 4px; min-height: 44px; padding-inline: .65rem; border: none; border-radius: var(--radius-sm); background: var(--ez-alt); color: var(--ez-ink); cursor: pointer; font-size: .85rem; }
+  .town-finder__field button:hover { background: var(--ez-orange-pale); }
+  .town-finder__status { font-size: .875rem; color: var(--ez-steel); margin-top: .6rem; }
+  .town-finder__results { padding: 0; list-style: none; }
+  .town-finder__results:not(:empty) { margin-top: .8rem; border-top: 1px solid var(--ez-line); }
+  .town-finder__results :global(a) { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem 1rem; padding: .85rem .3rem; min-height: 48px; text-decoration: none; border-bottom: 1px solid var(--ez-line); }
+  .town-finder__results :global(a:hover) { background: var(--ez-tint); }
+  .town-finder__results :global(span) { color: var(--ez-steel); font-size: .875rem; }
+</style>

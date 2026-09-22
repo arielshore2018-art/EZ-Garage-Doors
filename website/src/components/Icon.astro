@@ -9,9 +9,12 @@ interface Props {
     | "seal" | "volume" | "building" | "star" | "arrow";
   size?: number;
   class?: string;
+  /* Astro passes the parent's scope attribute (data-astro-cid-*) alongside
+     `class`; it must be forwarded or the parent's scoped CSS never matches. */
+  [key: `data-astro-cid-${string}`]: unknown;
 }
 
-const { name, size = 28, class: className = "" } = Astro.props;
+const { name, size = 28, class: className = "", ...rest } = Astro.props;
 
 const paths: Record<Props["name"], string> = {
   spring: "M4 8h16M4 16h16M6 8c0 2 12 2 12 4s-12 2-12 4",
@@ -48,6 +51,7 @@ const paths: Record<Props["name"], string> = {
   stroke-width="1.8"
   stroke-linecap="round"
   stroke-linejoin="round"
+  {...rest}
 >
   <path d={paths[name]}></path>
 </svg>

@@ -13,6 +13,7 @@ import LeadForm from "../components/LeadForm.astro";
 import TrustLogoStrip from "../components/TrustLogoStrip.astro";
 import FaqList from "../components/FaqList.astro";
 import RelatedLinks from "../components/RelatedLinks.astro";
+import SectionImage from "../components/SectionImage.astro";
 
 /**
  * needs-owner-input: approved price ranges. When the owner provides real,
@@ -37,6 +38,13 @@ const faqs = [
   { question: "What's the cheapest way to replace a garage door?", answer: "A standard-size, single-layer steel door in a stock color with no windows, reusing a healthy opener. We'll tell you honestly if that fits your garage — and where one upgrade (usually insulation) is worth it." },
 ];
 
+/* Illustrative stock photos of the three factors you can see from the street. */
+const factorPhotos = [
+  { imageId: "door-beige-double-house", label: "Size", text: "A double-wide door is roughly twice the material of a single." },
+  { imageId: "door-glass-grid-facade", label: "Windows", text: "Glass sections cost more than solid ones — full-view doors most of all." },
+  { imageId: "door-modern-wood-planks", label: "Design", text: "Plank, carriage, and wood-look faces sit above a standard raised panel." },
+];
+
 const crumbs = [{ label: "New Garage Doors", href: "/garage-door-installation/" }, { label: "What a New Door Costs" }];
 ---
 
@@ -47,7 +55,8 @@ const crumbs = [{ label: "New Garage Doors", href: "/garage-door-installation/" 
   breadcrumbs={crumbs}
 >
   <section class="cost-hero">
-    <div class="wrap wrap--narrow">
+    <div class="wrap hero-split">
+      <div>
       <Breadcrumbs items={crumbs} class="cost-hero__crumbs" />
       <p class="eyebrow">Cost guide</p>
       <h1>What Does a New Garage Door Cost in Massachusetts?</h1>
@@ -60,6 +69,8 @@ const crumbs = [{ label: "New Garage Doors", href: "/garage-door-installation/" 
         <a href="#factors" class="btn btn--outline btn--lg">See Cost Factors</a>
       </div>
       <p class="cta-note">Free, itemized, and yours to keep. No pressure.</p>
+      </div>
+      <SectionImage imageId="clipboard-sketch" ratio="3/2" priority widths={[640, 960, 1280]} sizes="(max-width: 56rem) 92vw, 520px" />
     </div>
   </section>
 
@@ -69,6 +80,19 @@ const crumbs = [{ label: "New Garage Doors", href: "/garage-door-installation/" 
       <ol class="cost-factors">
         {factors.map((f, i) => <li class="cost-factors__item"><span class="cost-factors__num" aria-hidden="true">{i + 1}</span><div><h3>{f.name}</h3><p>{f.detail}</p></div></li>)}
       </ol>
+    </div>
+    <div class="wrap">
+      <ul class="cost-photos" aria-label="Three price factors you can see from the street">
+        {
+          factorPhotos.map((f) => (
+            <li>
+              <SectionImage imageId={f.imageId} ratio="3/2" widths={[420, 640]} sizes="(max-width: 48rem) 92vw, 360px" />
+              <p><strong>{f.label}.</strong> {f.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="cost-photos__note muted">Illustrative photos — not EZ Garage Doors installations. See <a href="/gallery/">finished work</a> for ours.</p>
     </div>
   </section>
 
@@ -100,8 +124,8 @@ const crumbs = [{ label: "New Garage Doors", href: "/garage-door-installation/" 
       <p>
         The garage door industry has a bait-pricing problem: a low number on the phone, then
         "extra" springs, "required" track kits, and disposal fees at the door. Our answer is
-        boring on purpose — we measure the opening, itemize every line, and hand you the total
-        <strong>in writing before anything is ordered</strong>. If you compare quotes, compare
+        boring on purpose — we measure the opening, itemize every line, and hand you
+        the total <strong>in writing before anything is ordered</strong>. If you compare quotes, compare
         the written ones.
       </p>
     </div>
@@ -154,6 +178,25 @@ const crumbs = [{ label: "New Garage Doors", href: "/garage-door-installation/" 
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-5);
+  }
+
+  .cost-photos {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-7) 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-5);
+  }
+
+  .cost-photos p {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .cost-photos__note {
+    margin-top: var(--space-4);
+    font-size: var(--text-xs);
   }
 
   .cost-factors {

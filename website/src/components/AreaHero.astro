@@ -1,0 +1,270 @@
+---
+/**
+ * Full-bleed photo hero for county and town pages (the "city page"
+ * register): the county's regional photo behind an ink gradient, white
+ * copy on the left, and a location chip that names what the photo really
+ * shows. Town pages inherit the county photo — no per-town photos exist
+ * and none are implied; the chip keeps that honest. Under 56rem the photo
+ * becomes a 16:10 strip above an ink copy panel so it is actually visible
+ * on phones instead of hiding behind the overlay.
+ */
+import { Image } from "astro:assets";
+import CallButton from "./CallButton.astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import type { Crumb } from "./Breadcrumbs.astro";
+import Icon from "./Icon.astro";
+import { img, peek } from "../config/site-images";
+import { reviews } from "../config/reviews";
+import { STATS, hasPhone } from "../config/business";
+
+interface Props {
+  imageId: string;
+  eyebrow: string;
+  heading: string;
+  sub: string;
+  /** What the photo actually shows ("Northampton · Hampshire County"). Omit for place-neutral photos. */
+  photoLabel?: string;
+  breadcrumbs: Crumb[];
+  callLabel?: string;
+  callTrack?: string;
+  facts?: string[];
+}
+
+const {
+  imageId,
+  eyebrow,
+  heading,
+  sub,
+  photoLabel,
+  breadcrumbs,
+  callLabel = "Call for Repair",
+  callTrack = "area_call_click",
+  facts = [],
+} = Astro.props;
+
+const image = img(imageId);
+/* peek(): read the source width without pinning the original into dist/. */
+const sourceWidth = peek(image.src).width;
+const widths = [640, 960, 1280, 1600].filter((w) => w < sourceWidth);
+widths.push(sourceWidth);
+---
+
+<section class="ahero">
+  <figure class="ahero__media">
+    <Image
+      src={image.src}
+      alt={image.alt}
+      widths={widths}
+      sizes="100vw"
+      quality={62}
+      loading="eager"
+      fetchpriority="high"
+      decoding="sync"
+      style={`--fp:${image.focalPointDesktop ?? "50% 50%"};--fp-m:${image.focalPointMobile ?? image.focalPointDesktop ?? "50% 50%"};`}
+    />
+    {photoLabel && <figcaption class="ahero__loc"><Icon name="pin" size={15} /> {photoLabel}</figcaption>}
+  </figure>
+
+  <div class="wrap ahero__inner">
+    <Breadcrumbs items={breadcrumbs} tone="dark" class="ahero__crumbs" />
+    <p class="eyebrow ahero__eyebrow">{eyebrow}</p>
+    <h1>{heading}</h1>
+    <p class="ahero__sub">{sub}</p>
+    <div class="ahero__actions">
+      <CallButton label={callLabel} size="lg" track={callTrack} />
+      {hasPhone() && <a href="/contact/#request" class="btn btn--inverse-outline btn--lg" data-track="estimate_click">Request Service</a>}
+    </div>
+    {
+      facts.length > 0 && (
+        <ul class="ahero__facts" aria-label="Company facts">
+          {facts.map((f) => (
+            <li><Icon name="check" size={18} /> {f}</li>
+          ))}
+        </ul>
+      )
+    }
+    <p class="ahero__rating">
+      <span class="ahero__stars" aria-hidden="true">★★★★★</span>
+      <span><strong>{reviews.google.rating}</strong> on Google · {STATS.fiveStarReviews} five-star reviews across platforms</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .ahero {
+    position: relative;
+    isolation: isolate;
+    background: var(--ez-ink);
+    color: var(--ez-on-ink);
+  }
+
+  .ahero__media {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: var(--ez-ink-2);
+  }
+
+  .ahero__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--fp);
+  }
+
+  /* Ink gradient keeps the copy column at least 0.9 opaque over any photo. */
+  .ahero__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg, rgb(28 28 28 / 0.96) 0%, rgb(28 28 28 / 0.9) 36%, rgb(28 28 28 / 0.42) 68%, rgb(28 28 28 / 0.16) 100%),
+      linear-gradient(0deg, rgb(28 28 28 / 0.78) 0%, rgb(28 28 28 / 0) 36%);
+  }
+
+  .ahero__loc {
+    position: absolute;
+    z-index: 2;
+    right: clamp(1rem, 4vw, 2rem);
+    bottom: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-pill);
+    background: rgb(28 28 28 / 0.74);
+    color: var(--ez-white);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .ahero__loc :global(svg) {
+    color: var(--ez-orange-on-ink);
+    flex-shrink: 0;
+  }
+
+  .ahero__inner {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(3rem, 6vw, 6.5rem);
+  }
+
+  .ahero__inner > * {
+    max-width: 44rem;
+  }
+
+  .ahero__crumbs {
+    margin-bottom: var(--space-4);
+  }
+
+  .ahero__eyebrow {
+    color: var(--ez-orange-on-ink);
+  }
+
+  .ahero h1 {
+    color: var(--ez-white);
+    font-size: clamp(2.4rem, 1.6rem + 3vw, 4.2rem);
+    margin-top: var(--space-2);
+    max-width: 20ch;
+    text-wrap: balance;
+  }
+
+  .ahero__sub {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+    color: var(--ez-on-ink);
+    max-width: 38rem;
+  }
+
+  .ahero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .ahero__facts {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-5) 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--ez-white);
+  }
+
+  .ahero__facts li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .ahero__facts :global(svg) {
+    color: var(--ez-orange-on-ink);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .ahero__rating {
+    margin-top: var(--space-3);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--ez-on-ink-muted);
+  }
+
+  .ahero__rating strong {
+    color: var(--ez-white);
+  }
+
+  .ahero__stars {
+    color: var(--ez-orange-on-ink);
+    letter-spacing: 0.08em;
+  }
+
+  @media (max-width: 56rem) {
+    .ahero__media {
+      position: relative;
+      aspect-ratio: 16 / 10;
+    }
+
+    .ahero__media :global(img) {
+      object-position: var(--fp-m);
+    }
+
+    .ahero__media::after {
+      background: linear-gradient(0deg, var(--ez-ink) 0%, rgb(28 28 28 / 0.2) 34%, rgb(28 28 28 / 0) 100%);
+    }
+
+    .ahero__loc {
+      right: auto;
+      left: clamp(1rem, 4vw, 2rem);
+      bottom: 1.4rem;
+    }
+
+    .ahero__inner {
+      padding-block: var(--space-4) var(--space-6);
+    }
+
+    .ahero h1 {
+      font-size: clamp(2rem, 1.4rem + 3.6vw, 2.9rem);
+    }
+
+    .ahero__sub {
+      font-size: var(--text-base);
+    }
+
+    .ahero__actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+  }
+</style>

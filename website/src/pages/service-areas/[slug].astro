@@ -8,19 +8,24 @@
  * token-swap of the town name. Nothing claims per-town job history;
  * coverage is an owner decision (full state), stated as such.
  * Home base is never mentioned.
+ *
+ * Imagery: the county's regional photo (stock, location-verified) is the
+ * full-bleed hero; town pages inherit it — the photo chip names what it
+ * really shows. Service cards are illustrative; the before/after module
+ * is real EZ work captioned by door style, never attributed to the town.
  */
 import type { GetStaticPaths } from "astro";
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import CallButton from "../../components/CallButton.astro";
-import ServiceGrid from "../../components/ServiceGrid.astro";
+import AreaHero from "../../components/AreaHero.astro";
+import ServicePhotoGrid from "../../components/ServicePhotoGrid.astro";
 import ProofColumns from "../../components/home/ProofColumns.astro";
 import FaqList from "../../components/FaqList.astro";
 import TownList from "../../components/TownList.astro";
 import Sidebar from "../../components/Sidebar.astro";
 import CTASection from "../../components/CTASection.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
-import Icon from "../../components/Icon.astro";
+import BeforeAfterGallery from "../../components/BeforeAfterGallery.astro";
+import TrustLogoStrip from "../../components/TrustLogoStrip.astro";
 import { BUSINESS, COVERAGE, APPROVED_CLAIMS } from "../../config/business";
 import {
   MA_COUNTIES,
@@ -34,7 +39,13 @@ import {
   type MaCountyRef,
 } from "../../config/ma-towns";
 import { COUNTY_CONTENT } from "../../config/ma-counties";
-import { featuredServices } from "../../config/services";
+import { townLocal, type TownLocal } from "../../config/ma-local";
+import { services } from "../../config/services";
+import { img } from "../../config/site-images";
+import baBefore1 from "../../assets/photos/ez-before-faded-beige-door.png";
+import baAfter1 from "../../assets/photos/ez-after-black-long-panel-windows.png";
+import baBefore2 from "../../assets/photos/ez-before-worn-single-door.png";
+import baAfter2 from "../../assets/photos/ez-after-white-raised-panel.png";
 
 export const getStaticPaths = (() => {
   const counties = MA_COUNTIES.map((c) => ({ params: { slug: c.slug }, props: { kind: "county", county: c } }));
@@ -60,6 +71,31 @@ const sidebarLinks = [
   { label: "Emergency Repair", href: "/emergency-garage-door-repair/" },
 ];
 
+/* Photo cards: the six highest-intent paths. The rest render as text pills. */
+const PHOTO_SERVICES = [
+  "garage-door-repair",
+  "broken-spring-repair",
+  "garage-door-opener-repair",
+  "garage-door-off-track-repair",
+  "emergency-garage-door-repair",
+  "garage-door-installation",
+];
+const MORE_SERVICES = [
+  "garage-door-wont-close",
+  "garage-door-wont-open",
+  "garage-door-replacement",
+  "garage-door-opener-installation",
+  "garage-door-tune-up",
+  "commercial-garage-door-repair",
+];
+const moreServices = MORE_SERVICES.map((slug) => services.find((s) => s.slug === slug)!);
+
+/* Real EZ replacements — captioned by style only, never town-attributed. */
+const beforeAfter = [
+  { before: baBefore1, after: baAfter1, caption: "Faded panel door → black long-panel door with windows" },
+  { before: baBefore2, after: baAfter2, caption: "Worn single door → white raised-panel door" },
+];
+
 /* ---------- county ---------- */
 const county = kind === "county" ? Astro.props.county! : countyRef(Astro.props.town!.county);
 const content = COUNTY_CONTENT[county.name];
@@ -67,6 +103,13 @@ const countyTowns = townsInCounty(county.name);
 const countyPop = countyTowns.reduce((s, t) => s + (t.population2020 ?? 0), 0);
 const countyLand = Math.round(countyTowns.reduce((s, t) => s + t.landSqmi, 0));
 const largest = [...countyTowns].sort((a, b) => (b.population2020 ?? 0) - (a.population2020 ?? 0)).slice(0, 6);
+
+/* The hero chip names the photo's verified location — never the town being read about. */
+const heroImage = img(content.imageId);
+const photoLabel =
+  heroImage.location && heroImage.location !== "unpublished"
+    ? `${heroImage.location.replace(/,\s*MA$/, "")} · ${county.name} County`
+    : undefined;
 
 /* ---------- town ---------- */
 const town = kind === "town" ? Astro.props.town! : null;
@@ -98,6 +141,17 @@ const housingLine = (t: MaTown): string =>
     ? "A town settled this early carries housing from every era: older homes usually have detached or retrofitted garages with non-standard openings, so measurement comes before any replacement door is ordered."
     : "Most garages here were built with the house, so stock door sizes usually fit — but headroom and side-room still get measured before a new door is ordered.";
 
+/* ---------- town: local knowledge (GENERATED facts from the town's own Wikipedia article; nothing invented) ---------- */
+const local: TownLocal | null = town ? (townLocal(town.slug) ?? null) : null;
+const listOf = (a: string[]): string => (a.length <= 1 ? a.join("") : `${a.slice(0, -1).join(", ")} and ${a[a.length - 1]}`);
+const slugOf = (name: string): string | undefined => MA_TOWNS.find((x) => x.name === name)?.slug;
+/* Salt-air note only in a coastal county AND when the article names salt water — never inferred. */
+const coastalWater = local && county.coastal ? local.waters.find((w) => /(Bay|Harbor|Beach|Sound|Cove)$/.test(w)) : undefined;
+const hasLand = !!local && (local.elevationFt !== null || local.rivers.length > 0 || local.waters.length > 0 || local.hills.length > 0);
+const hasLocal =
+  !!local &&
+  (local.villages.length > 0 || local.routes.length > 0 || local.transit.length > 0 || hasLand || local.historicDistricts.length > 0 || local.landmarks.length > 0 || local.colleges.length > 0 || local.borderedBy.length > 0 || local.zips.length > 0);
+
 const townFaqs = town
   ? [
       {
@@ -112,6 +166,14 @@ const townFaqs = town
         question: "Do I get the price before you start?",
         answer: `Always. ${APPROVED_CLAIMS.writtenQuote} — you see the full repair or installation price in writing and approve it first. The quote you approve is the price you pay.`,
       },
+      ...(local && local.villages.length >= 2
+        ? [
+            {
+              question: `Do you come out to ${listOf(local.villages.slice(0, 3))}?`,
+              answer: `Yes — every part of ${town.name}, ${listOf(local.villages.slice(0, 5))} included. Tell us the neighborhood and the nearest cross street when you call so the crew arrives with the right parts.`,
+            },
+          ]
+        : []),
       ...content.faqs.slice(0, 2),
     ]
   : content.faqs;
@@ -131,36 +193,42 @@ const breadcrumbs = town
       { label: `${town.name}, MA` },
     ]
   : [{ label: "Service Areas", href: "/service-areas/" }, { label: `${county.name} County` }];
+
+const heroEyebrow = town
+  ? `${county.name} County · ${county.region}`
+  : `${county.region} · ${countyTowns.length} ${countyTowns.length === 1 ? "town" : "cities & towns"}`;
+const heroHeading = town
+  ? `Garage Door Repair & Installation in ${town.name}, MA`
+  : `Garage Door Repair & Installation in ${county.name} County, MA`;
+const heroSub = town
+  ? `Broken springs, stuck doors, opener failures, cables, off-track doors, and new door installation for ${town.name} homeowners — from a local Massachusetts company, with a written quote before work begins.`
+  : content.intro[0];
 ---
 
 <SiteLayout title={title} description={description} faqs={townFaqs} breadcrumbs={breadcrumbs}>
-  <section class="area-hero">
-    <div class="wrap">
-      <Breadcrumbs items={breadcrumbs} class="area-hero__crumbs" />
-      <p class="eyebrow">{town ? `${county.name} County · ${county.region}` : `${county.region} · ${countyTowns.length} ${countyTowns.length === 1 ? "town" : "cities & towns"}`}</p>
-      <h1>
-        {town ? `Garage Door Repair & Installation in ${town.name}, MA` : `Garage Door Repair & Installation in ${county.name} County, MA`}
-      </h1>
-      <p class="area-hero__sub">
-        {
-          town
-            ? `Broken springs, stuck doors, opener failures, cables, off-track doors, and new door installation for ${town.name} homeowners — from a local Massachusetts company, with a written quote before work begins.`
-            : content.intro[0]
-        }
-      </p>
-      <div class="area-hero__actions">
-        <CallButton label="Call for Repair" size="lg" track="area_call_click" />
-        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
-      </div>
-      <ul class="area-hero__facts" aria-label="Company facts">
-        <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.writtenQuote}</li>
-        <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.years}</li>
-        <li><Icon name="check" size={18} /> {COVERAGE.line}</li>
-      </ul>
-    </div>
-  </section>
+  <AreaHero
+    imageId={content.imageId}
+    photoLabel={photoLabel}
+    eyebrow={heroEyebrow}
+    heading={heroHeading}
+    sub={heroSub}
+    breadcrumbs={breadcrumbs}
+    callLabel="Call for Repair"
+    callTrack="area_call_click"
+    facts={[APPROVED_CLAIMS.writtenQuote, APPROVED_CLAIMS.years, COVERAGE.line]}
+  />
 
   <ProofColumns />
+
+  <ServicePhotoGrid
+    heading={town ? `What does your ${town.name} garage door need?` : "What does your garage door need?"}
+    eyebrow={town ? `Garage door services in ${town.name}` : `Garage door services across ${county.name} County`}
+    intro="Start with the problem — you don't need to know the name of the part. Every visit ends with a written quote you approve before work begins."
+    slugs={PHOTO_SERVICES}
+    more={moreServices}
+    moreLabel={town ? `More services in ${town.name}` : `More services in ${county.name} County`}
+    alt
+  />
 
   <section class="section">
     <div class="wrap page-grid">
@@ -197,6 +265,70 @@ const breadcrumbs = town
                 <div><dt>Established</dt><dd>{town.established ?? "—"}</dd></div>
               </dl>
               <p class="area-source muted">Municipal data: U.S. Census Bureau (2020 Census, 2023 Gazetteer). Coverage: all {COVERAGE.municipalities} Massachusetts municipalities.</p>
+
+              {
+                hasLocal && local && (
+                  <>
+                    <SectionHeading eyebrow="Know the area" title={`${town.name}, the way people who live here know it`} />
+                    <div class="prose area-local">
+                      {local.villages.length > 0 && (
+                        <p>
+                          <strong>Neighborhoods and villages.</strong> {listOf(local.villages)}. Tell us which one you're in when you call — it helps us route the day.
+                        </p>
+                      )}
+                      {(local.routes.length > 0 || local.transit.length > 0) && (
+                        <p>
+                          <strong>Getting around.</strong>
+                          {local.routes.length > 0 ? ` The main roads through town are ${listOf(local.routes)}.` : ""}
+                          {local.transit.length > 0 ? ` Rail: ${listOf(local.transit)}.` : ""}
+                        </p>
+                      )}
+                      {hasLand && (
+                        <p>
+                          <strong>Lay of the land.</strong>
+                          {local.elevationFt !== null ? ` ${town.name} sits about ${formatNumber(local.elevationFt)} feet above sea level.` : ""}
+                          {local.rivers.length + local.waters.length > 0 ? ` Local water: ${listOf([...local.rivers, ...local.waters])}.` : ""}
+                          {local.hills.length > 0 ? ` High ground: ${listOf(local.hills)}.` : ""}
+                          {local.elevationFt !== null && local.elevationFt >= 900
+                            ? " At this elevation the freeze season runs longer than in the valleys — a door iced to the slab is the classic winter call, and the fix starts at the bottom seal, not the opener."
+                            : ""}
+                          {coastalWater ? ` Salt air off ${coastalWater} reaches garages well inland — galvanized springs and stainless hardware are worth asking about at replacement time.` : ""}
+                        </p>
+                      )}
+                      {local.historicDistricts.length > 0 && (
+                        <p>
+                          <strong>Historic districts.</strong> {listOf(local.historicDistricts)}. Inside a district, a replacement door can need a design review — check the rules before you order, and we'll quote a style that fits.
+                        </p>
+                      )}
+                      {(local.landmarks.length > 0 || local.colleges.length > 0) && (
+                        <p>
+                          <strong>Landmarks.</strong>
+                          {local.landmarks.length > 0 ? ` ${listOf(local.landmarks)}.` : ""}
+                          {local.colleges.length > 0 ? ` Home to ${listOf(local.colleges)}.` : ""}
+                        </p>
+                      )}
+                      {local.borderedBy.length > 0 && (
+                        <p>
+                          <strong>Next door.</strong> {town.name} borders{" "}
+                          {local.borderedBy.map((n, i) => (
+                            <>
+                              {i > 0 ? (i === local.borderedBy.length - 1 ? " and " : ", ") : ""}
+                              {slugOf(n) ? <a href={`/service-areas/${slugOf(n)}/`}>{n}</a> : n}
+                            </>
+                          ))}
+                          {" "}— all on the same schedule, so one call covers the whole area.
+                        </p>
+                      )}
+                      {local.zips.length > 0 && (
+                        <p>
+                          <strong>ZIP codes.</strong> {local.zips.join(", ")}{local.areaCodes.length > 0 ? ` · area code ${local.areaCodes.join(" / ")}` : ""}.
+                        </p>
+                      )}
+                    </div>
+                    <p class="area-source muted">Local facts from the public record: Wikipedia, "{local.title}" (retrieved {local.retrieved}); U.S. Census Bureau. Spot an error? Tell us on the phone and we'll fix it.</p>
+                  </>
+                )
+              }
 
               <SectionHeading eyebrow="Nearby" title={`Towns near ${town.name} we also serve`} />
               <ul class="area-near">
@@ -246,12 +378,13 @@ const breadcrumbs = town
     </div>
   </section>
 
-  <ServiceGrid
-    heading={town ? `Garage door services in ${town.name}` : `Garage door services across ${county.name} County`}
-    eyebrow="What we do"
-    items={featuredServices}
-    alt
+  <BeforeAfterGallery
+    heading="Real doors, before and after"
+    intro="EZ Garage Doors replacements, captioned by door style — the kind of work we put in writing before it starts."
+    pairs={beforeAfter}
   />
+
+  <TrustLogoStrip variant="combined" slim />
 
   <FaqList faqs={townFaqs} heading={town ? `${town.name} garage door questions` : `${county.name} County garage door questions`} />
 
@@ -264,59 +397,6 @@ const breadcrumbs = town
 </SiteLayout>
 
 <style>
-  .area-hero {
-    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
-    border-bottom: 1px solid var(--ez-line);
-    padding-block: clamp(1.75rem, 4vw, 3rem);
-  }
-
-  .area-hero__crumbs {
-    margin-bottom: var(--space-4);
-  }
-
-  .area-hero h1 {
-    margin-top: var(--space-2);
-    font-size: clamp(2rem, 1.5rem + 2.6vw, 3.4rem);
-    max-width: 22ch;
-  }
-
-  .area-hero__sub {
-    font-size: var(--text-lg);
-    max-width: 44rem;
-    margin-top: var(--space-4);
-  }
-
-  .area-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-5);
-  }
-
-  .area-hero__facts {
-    list-style: none;
-    padding: 0;
-    margin: var(--space-4) 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-5);
-    font-weight: 600;
-    font-size: var(--text-sm);
-    color: var(--ez-ink);
-  }
-
-  .area-hero__facts li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.4rem;
-  }
-
-  .area-hero__facts svg {
-    color: var(--ez-orange);
-    flex-shrink: 0;
-    margin-top: 0.2rem;
-  }
-
   .area-main :global(.section-heading) {
     margin-top: var(--space-6);
   }
@@ -336,7 +416,7 @@ const breadcrumbs = town
   .area-data dt {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--ez-orange-text);
@@ -386,11 +466,5 @@ const breadcrumbs = town
     font-size: var(--text-xs);
     color: var(--color-text-muted);
     font-weight: 400;
-  }
-
-  @media (max-width: 36rem) {
-    .area-hero__actions :global(.btn) {
-      flex: 1 1 100%;
-    }
   }
 </style>

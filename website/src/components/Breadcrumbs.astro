@@ -12,12 +12,16 @@ export interface Crumb {
 interface Props {
   items: Crumb[];
   class?: string;
+  /** "dark" for trails on ink grounds (photo heroes). */
+  tone?: "light" | "dark";
+  /* forward the parent's scope attribute so its scoped CSS matches this root */
+  [key: `data-astro-cid-${string}`]: unknown;
 }
 
-const { items, class: className = "" } = Astro.props;
+const { items, class: className = "", tone = "light", ...rest } = Astro.props;
 ---
 
-<nav class:list={["crumbs", className]} aria-label="Breadcrumb">
+<nav class:list={["crumbs", { "crumbs--dark": tone === "dark" }, className]} aria-label="Breadcrumb" {...rest}>
   <ol>
     <li><a href="/">Home</a></li>
     {
@@ -65,5 +69,23 @@ const { items, class: className = "" } = Astro.props;
   .crumbs span {
     color: var(--ez-ink);
     font-weight: 600;
+  }
+
+  /* On ink grounds: muted links, white current page, orange-on-ink separators. */
+  .crumbs--dark ol,
+  .crumbs--dark a {
+    color: var(--ez-on-ink-muted);
+  }
+
+  .crumbs--dark a:hover {
+    color: var(--ez-white);
+  }
+
+  .crumbs--dark span {
+    color: var(--ez-white);
+  }
+
+  .crumbs--dark li + li::before {
+    color: var(--ez-orange-on-ink);
   }
 </style>

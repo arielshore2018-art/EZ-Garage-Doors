@@ -26,7 +26,7 @@ const { heading = "What is your door doing?", eyebrow = "Common problems", issue
 
 <section class:list={[{ section: !bare, "section--alt": alt && !bare }]} aria-labelledby="issues-heading">
   <div class:list={{ wrap: !bare }}>
-    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <SectionHeading id="issues-heading" eyebrow={eyebrow} title={heading} />
     <ul class="issues">
       {
         issues.map((issue) => (
@@ -56,7 +56,7 @@ const { heading = "What is your door doing?", eyebrow = "Common problems", issue
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
     gap: var(--space-4);
   }
 
@@ -85,7 +85,7 @@ const { heading = "What is your door doing?", eyebrow = "Common problems", issue
   }
 
   .issues__card h3 {
-    font-size: var(--text-lg);
+    font-size: 1.55rem;
     margin-bottom: var(--space-1);
   }
 

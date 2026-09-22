@@ -5,6 +5,7 @@
  */
 import SectionHeading from "./SectionHeading.astro";
 import Icon from "./Icon.astro";
+import TownFinder from "./TownFinder.astro";
 import { MA_COUNTIES, townsInCounty } from "../config/ma-towns";
 import { COVERAGE } from "../config/business";
 
@@ -14,6 +15,7 @@ interface Props {
   intro?: string;
   compact?: boolean;
   alt?: boolean;
+  searchable?: boolean;
 }
 
 const {
@@ -22,12 +24,14 @@ const {
   intro = `${COVERAGE.line} — pick your county to find your town.`,
   compact = false,
   alt = false,
+  searchable = false,
 } = Astro.props;
 ---
 
 <section class:list={["section", { "section--alt": alt, "section--tight": compact }]} aria-labelledby="areas-heading">
   <div class="wrap">
-    <SectionHeading eyebrow={eyebrow} title={heading} intro={intro} center />
+    <SectionHeading id="areas-heading" eyebrow={eyebrow} title={heading} intro={intro} center />
+    {searchable && <TownFinder />}
     <ul class="counties">
       {
         MA_COUNTIES.map((c) => {

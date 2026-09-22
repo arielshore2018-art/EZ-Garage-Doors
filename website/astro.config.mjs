@@ -8,6 +8,7 @@ const SITE_URL = "https://ez-garage-doors.vercel.app";
 
 export default defineConfig({
   site: SITE_URL,
+  devToolbar: { enabled: false },
   integrations: [
     sitemap({
       // PPC landing pages are campaign-only: noindex + out of the sitemap.

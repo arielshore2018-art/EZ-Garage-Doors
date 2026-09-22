@@ -6,7 +6,6 @@
 import { Image } from "astro:assets";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import ProofColumns from "../../components/home/ProofColumns.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import TrustLogoStrip from "../../components/TrustLogoStrip.astro";
 import LeadForm from "../../components/LeadForm.astro";
@@ -15,6 +14,7 @@ import { DOOR_STYLES } from "../../config/door-styles";
 import { img } from "../../config/site-images";
 
 const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installation/" }, { label: "Door Styles" }];
+const feature = img("door-carriage");
 ---
 
 <SiteLayout
@@ -25,27 +25,27 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
   <section class="styles-hero">
     <div class="wrap">
       <Breadcrumbs items={breadcrumbs} class="styles-hero__crumbs" />
+      <div class="styles-hero__grid"><div>
       <p class="eyebrow">New garage doors · Styles &amp; materials</p>
-      <h1>Garage Door Styles We Install</h1>
+      <h1>A new door.<br /><span>A whole new welcome.</span></h1>
       <p class="styles-hero__sub">
-        Six directions, all available in insulated construction sized for Massachusetts winters.
-        Every door is measured and priced in an itemized written estimate before it's ordered.
+        The warmth of wood. Clean modern lines. Classic carriage-house character.
+        Find your direction, then get a measured, itemized written estimate before you order.
       </p>
       <div class="styles-hero__actions">
         <a href="#request" class="btn btn--call btn--lg" data-track="estimate_click">Get a Written Estimate</a>
         <a href="/gallery/" class="btn btn--outline btn--lg">See Finished Work</a>
       </div>
+      </div><figure class="styles-hero__photo"><Image src={feature.src} alt={feature.alt} widths={[480, 800, 1100]} sizes="(max-width: 56rem) 92vw, 46vw" loading="eager" fetchpriority="high" /><figcaption>Carriage-house character. Everyday convenience.</figcaption></figure></div>
     </div>
   </section>
 
-  <ProofColumns />
-
   <section class="section">
     <div class="wrap">
-      <SectionHeading eyebrow="Pick a direction" title="Styles and materials" />
+      <SectionHeading eyebrow="Pick your direction" title="Six ways to make it yours." intro="Explore the look you love. Each style guide explains materials, practical considerations, and what to discuss in your estimate." />
       <ul class="style-grid">
         {
-          DOOR_STYLES.map((s) => {
+          DOOR_STYLES.map((s, index) => {
             const im = img(s.imageId);
             return (
               <li class="style-card">
@@ -53,8 +53,10 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
                   <Image src={im.src} alt={im.alt} width={720} widths={[420, 720]} sizes="(max-width: 48rem) 92vw, 360px" loading="lazy" />
                 </a>
                 <div class="style-card__body">
+                  <span class="style-card__number">0{index + 1} / THE COLLECTION</span>
                   <h3><a href={`/garage-door-styles/${s.slug}/`}>{s.name}</a></h3>
                   <p>{s.tagline}</p>
+                  <a class="style-card__link" href={`/garage-door-styles/${s.slug}/`}>Explore this style <span aria-hidden="true">↗</span></a>
                 </div>
               </li>
             );
@@ -77,9 +79,9 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
 
 <style>
   .styles-hero {
-    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    background: var(--ez-alt);
     border-bottom: 1px solid var(--ez-line);
-    padding-block: clamp(1.75rem, 4vw, 3rem);
+    padding-block: clamp(2rem, 4vw, 4rem);
   }
 
   .styles-hero__crumbs {
@@ -88,7 +90,14 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
 
   .styles-hero h1 {
     margin-top: var(--space-2);
+    font-size: clamp(3.1rem, 4.8vw, 5rem);
+    line-height: 1;
   }
+  .styles-hero h1 span { color: var(--ez-orange-text); }
+  .styles-hero__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .styles-hero__photo { margin: 0; }
+  .styles-hero__photo img { width: 100%; aspect-ratio: 1.1; object-fit: cover; border-radius: var(--radius-lg); }
+  .styles-hero__photo figcaption { font-size: .85rem; color: var(--ez-steel); margin-top: .75rem; }
 
   .styles-hero__sub {
     font-size: var(--text-lg);
@@ -108,14 +117,13 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-    gap: var(--space-5);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3.5rem 2rem;
   }
 
   .style-card {
     background: var(--ez-white);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
+    border-radius: 0;
     overflow: hidden;
   }
 
@@ -123,6 +131,8 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
     display: block;
     aspect-ratio: 4 / 3;
     background: var(--ez-alt-deep);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
   }
 
   .style-card__media :global(img) {
@@ -132,7 +142,7 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
   }
 
   .style-card__body {
-    padding: var(--space-4) var(--space-5);
+    padding: 1.4rem 0 0;
   }
 
   .style-card h3 a {
@@ -149,4 +159,9 @@ const breadcrumbs = [{ label: "New Garage Doors", href: "/garage-door-installati
     color: var(--color-text-muted);
     margin-top: var(--space-1);
   }
+  .style-card__number { display: block; color: var(--ez-orange-text); font-size: .72rem; font-weight: 650; letter-spacing: .1em; margin-bottom: .6rem; }
+  .style-card h3 { font-size: 2.1rem; }
+  .style-card__link { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--ez-line); min-height: 48px; margin-top: 1rem; font-weight: 650; text-decoration: none; }
+  @media(max-width: 56rem) { .styles-hero__grid { grid-template-columns: minmax(0, 1fr); gap: 2rem; } .styles-hero__photo img { aspect-ratio: 16/10; } }
+  @media(max-width: 40rem) { .style-grid { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; } }
 </style>

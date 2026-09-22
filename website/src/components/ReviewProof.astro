@@ -5,6 +5,8 @@
  * - Exact ratings/counts from src/config/reviews.ts (verify before launch).
  * - Real testimonials render only once verbatim reviews with live links
  *   are added — no fake quotes, ever.
+ * - Proof module: takes NO image props by design. Never add stock or
+ *   ai-model people here; platform logos only (ProofBand).
  */
 import { APPROVED_CLAIMS } from "../config/business";
 import { reviews } from "../config/reviews";
@@ -19,7 +21,7 @@ const platforms = [
 
 <section class="section section--alt" aria-labelledby="reviews-heading">
   <div class="wrap">
-    <SectionHeading eyebrow="What customers say" title={APPROVED_CLAIMS.reviewsShort} />
+    <SectionHeading id="reviews-heading" eyebrow="What customers say" title={APPROVED_CLAIMS.reviewsShort} />
     <p class="review-claim">
       {APPROVED_CLAIMS.reviews}. Ask us for links to our live profiles — read the reviews
       yourself before you book.

@@ -9,6 +9,7 @@ import ServiceGrid from "../components/ServiceGrid.astro";
 import EmergencyCallBar from "../components/EmergencyCallBar.astro";
 import PricingLogicBlock from "../components/PricingLogicBlock.astro";
 import CTASection from "../components/CTASection.astro";
+import SectionImage from "../components/SectionImage.astro";
 import { services } from "../config/services";
 
 const crumbs = [{ label: "Services" }];
@@ -29,6 +30,9 @@ const all = services.filter((s) => s.slug !== "same-day-garage-door-service");
         Repair, springs, openers, new installations, maintenance, and commercial doors — every job
         starts with a written quote.
       </p>
+    </div>
+    <div class="wrap services-hero__banner">
+      <SectionImage imageId="door-white-double-carriage" variant="banner" priority />
     </div>
   </section>
 
@@ -56,6 +60,10 @@ const all = services.filter((s) => s.slug !== "same-day-garage-door-service");
 
   .services-hero h1 {
     margin-top: var(--space-2);
+  }
+
+  .services-hero__banner {
+    margin-top: var(--space-6);
   }
 
   .services-hero__sub {

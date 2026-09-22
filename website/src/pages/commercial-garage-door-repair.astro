@@ -11,12 +11,13 @@ import CTASection from "../components/CTASection.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import LeadForm from "../components/LeadForm.astro";
 import RelatedLinks from "../components/RelatedLinks.astro";
+import SectionImage from "../components/SectionImage.astro";
 
 const doorTypes = [
-  { type: "Sectional overhead doors", detail: "Warehouse and loading dock doors — panels, tracks, springs, and operators." },
-  { type: "Rolling steel doors", detail: "Coiling service doors and counter shutters — slats, guides, and motor operators." },
-  { type: "High-cycle spring systems", detail: "Commercial doors cycle far more than residential — springs rated for the duty they actually see." },
-  { type: "Commercial operators", detail: "Trolley, jackshaft, and hoist operators, with controls, edges, and photo eyes." },
+  { imageId: "commercial-loading-docks-red", type: "Sectional overhead doors", detail: "Warehouse and loading dock doors — panels, tracks, springs, and operators." },
+  { imageId: "commercial-rolling-steel-gray", type: "Rolling steel doors", detail: "Coiling service doors and counter shutters — slats, guides, and motor operators." },
+  { imageId: "new-springs", type: "High-cycle spring systems", detail: "Commercial doors cycle far more than residential — springs rated for the duty they actually see." },
+  { imageId: "commercial-roller-shutters-numbered", type: "Commercial operators", detail: "Trolley, jackshaft, and hoist operators, with controls, edges, and photo eyes." },
 ];
 
 const service = {
@@ -35,7 +36,7 @@ const crumbs = [{ label: "Commercial Garage Door Repair" }];
   breadcrumbs={crumbs}
 >
   <ServiceHero
-    imageId="van-front"
+    imageId="commercial-loading-docks-blue"
     eyebrow="Commercial & industrial"
     heading="Commercial Garage Door Repair in Massachusetts"
     sub="Service for commercial overhead doors, rolling doors, loading areas, and business properties where downtime matters."
@@ -63,7 +64,17 @@ const crumbs = [{ label: "Commercial Garage Door Repair" }];
     <div class="wrap">
       <SectionHeading eyebrow="Equipment we service" title="Commercial door types" />
       <ul class="comm-types">
-        {doorTypes.map((d) => <li class="comm-types__card card"><h3>{d.type}</h3><p>{d.detail}</p></li>)}
+        {
+          doorTypes.map((d) => (
+            <li class="comm-types__card card">
+              <SectionImage imageId={d.imageId} ratio="3/2" widths={[420, 640]} sizes="(max-width: 48rem) 92vw, 300px" class="comm-types__photo" />
+              <div class="comm-types__body">
+                <h3>{d.type}</h3>
+                <p>{d.detail}</p>
+              </div>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </section>
@@ -115,6 +126,15 @@ const crumbs = [{ label: "Commercial Garage Door Repair" }];
   }
 
   .comm-types__card {
+    overflow: hidden;
+  }
+
+  .comm-types__card :global(.comm-types__photo .simg__frame) {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .comm-types__body {
     padding: var(--space-5);
   }
 

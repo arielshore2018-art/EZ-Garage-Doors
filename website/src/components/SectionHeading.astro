@@ -9,22 +9,23 @@ interface Props {
   center?: boolean;
   level?: "h2" | "h3";
   intro?: string;
+  id?: string;
 }
 
-const { eyebrow, title, center = false, level = "h2", intro } = Astro.props;
+const { eyebrow, title, center = false, level = "h2", intro, id } = Astro.props;
 const Tag = level;
 ---
 
 <div class:list={["section-heading", { "section-heading--center": center }]}>
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-  <Tag>{title}</Tag>
+  <Tag id={id}>{title}</Tag>
   <span class="section-heading__rule" aria-hidden="true"></span>
   {intro && <p class="section-heading__intro">{intro}</p>}
 </div>
 
 <style>
   .section-heading {
-    margin-bottom: var(--space-6);
+    margin-bottom: 2.5rem;
     max-width: 46rem;
   }
 
@@ -39,8 +40,8 @@ const Tag = level;
 
   .section-heading__rule {
     display: block;
-    width: 3.5rem;
-    height: 4px;
+    width: 2.5rem;
+    height: 3px;
     border-radius: 2px;
     background: var(--ez-orange);
     margin-top: var(--space-3);

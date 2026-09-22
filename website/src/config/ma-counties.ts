@@ -14,6 +14,10 @@ export interface CountyContent {
   county: MaCounty;
   /** Short display name used in headings ("Cape Cod", "the Berkshires"). */
   nickname: string;
+  /** site-images id of the county's regional photo (stock, location-verified;
+   *  Hampden uses a place-neutral garage scene until a real Hampden photo exists).
+   *  Town pages inherit it — there are no per-town photos and none may be faked. */
+  imageId: string;
   intro: string[];
   /** Facts about garage doors in this county's housing/climate context. */
   doorNotes: string[];
@@ -26,6 +30,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Barnstable: {
     county: "Barnstable",
     nickname: "Cape Cod",
+    imageId: "county-barnstable-cape-cod-lighthouse",
     intro: [
       "Barnstable County is Cape Cod — all fifteen towns from Bourne and Sandwich at the canal out to Provincetown at the tip. It is the most seasonal county in the state: year-round households share streets with summer cottages that sit closed from October to May, and a garage door that hasn't moved in seven months is one of the most common spring service calls on the Cape.",
       "EZ Garage Doors serves every Cape town for repair, spring and opener work, and new door installation. The Cape's traffic is real — call with your address and we'll tell you honestly what scheduling looks like for your side of the bridges.",
@@ -47,6 +52,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Berkshire: {
     county: "Berkshire",
     nickname: "the Berkshires",
+    imageId: "county-berkshire-autumn-house",
     intro: [
       "Berkshire County is the westernmost county in Massachusetts: 32 cities and towns anchored by Pittsfield, with North Adams and Williamstown to the north and Great Barrington, Lenox, and Lee to the south. It is hill country — long driveways, older housing stock, and a winter that starts earlier and lasts longer than anywhere else in the state.",
       "EZ Garage Doors serves all of Berkshire County. The distances here are real, so we scope calls carefully by phone — door size, what it's doing, and a photo if you can — so the visit fixes the door instead of discovering it.",
@@ -68,6 +74,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Bristol: {
     county: "Bristol",
     nickname: "Bristol County",
+    imageId: "county-bristol-new-bedford-harbor",
     intro: [
       "Bristol County runs from Attleboro and Mansfield on the Rhode Island line down through Taunton (the county seat) to the old mill cities of New Bedford and Fall River and the coastal towns on Buzzards Bay — Westport, Dartmouth, and Fairhaven. Twenty municipalities in all, with some of the densest housing in the state alongside farm country and shoreline.",
       "EZ Garage Doors serves every Bristol County city and town. The three-deckers and post-war neighborhoods here mean a lot of older detached garages and single-car doors, and the coast adds salt air to the mix.",
@@ -88,6 +95,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Dukes: {
     county: "Dukes",
     nickname: "Martha's Vineyard",
+    imageId: "county-dukes-edgartown-lighthouse",
     intro: [
       "Dukes County is Martha's Vineyard — Edgartown (the county seat), Oak Bluffs, Tisbury, West Tisbury, Chilmark, and Aquinnah — plus the town of Gosnold on the Elizabeth Islands. Everything arrives by ferry, including service vans and garage doors, and the island's mix of year-round homes and seasonal houses shapes the work.",
       "EZ Garage Doors serves the Vineyard. Island visits are scheduled around ferry logistics, so we scope the job thoroughly by phone and photo first — the goal is one trip with the right parts on the boat.",
@@ -109,6 +117,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Essex: {
     county: "Essex",
     nickname: "the North Shore & Merrimack Valley",
+    imageId: "county-essex-gloucester-harbor",
     intro: [
       "Essex County covers the North Shore and the Merrimack Valley — 34 municipalities from Lynn, Salem (the county seat), Beverly, and Gloucester on the coast to Lawrence, Haverhill, Andover, and Methuen along the Merrimack River, with Newburyport and the Ipswich marshes to the north. It's one of the most varied counties in the state: dense old cities, Route 128 suburbs, and fishing harbors.",
       "EZ Garage Doors serves all of Essex County for repairs, springs, openers, and new doors.",
@@ -129,6 +138,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Franklin: {
     county: "Franklin",
     nickname: "Franklin County",
+    imageId: "county-franklin-shelburne-falls",
     intro: [
       "Franklin County is the most rural county in Massachusetts: 26 towns across the upper Pioneer Valley and the hill country on both sides of it, with Greenfield as the county seat and Montague, Orange, Deerfield, and Shelburne among the larger towns. Farms, barns, and long private roads are the norm.",
       "EZ Garage Doors serves every Franklin County town. We scope rural calls by phone and photo so the van arrives with the right parts for the door — one trip is the goal.",
@@ -149,6 +159,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Hampden: {
     county: "Hampden",
     nickname: "the Pioneer Valley",
+    imageId: "red-barn-garage-doors",
     intro: [
       "Hampden County is the population center of Western Massachusetts: Springfield (the county seat), Chicopee, Holyoke, Westfield, West Springfield, Agawam, Ludlow, Longmeadow, East Longmeadow, and Wilbraham, out to Palmer and the hill towns of the Wilbraham range and the Westfield River valley. Twenty-three municipalities in all.",
       "EZ Garage Doors serves every Hampden County city and town for repairs, spring and opener work, and new door installation.",
@@ -169,6 +180,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Hampshire: {
     county: "Hampshire",
     nickname: "Hampshire County",
+    imageId: "county-hampshire-northampton-aerial",
     intro: [
       "Hampshire County sits in the heart of the Pioneer Valley: Northampton (the county seat), Amherst, Easthampton, South Hadley, Hadley, and Belchertown in the valley, with hill towns like Williamsburg, Chesterfield, Cummington, and Plainfield to the west and the Quabbin towns to the east. Twenty municipalities, the Five Colleges, and a housing mix that runs from 18th-century farmhouses to 1990s subdivisions.",
       "EZ Garage Doors serves all of Hampshire County.",
@@ -189,6 +201,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Middlesex: {
     county: "Middlesex",
     nickname: "Middlesex County",
+    imageId: "county-middlesex-cambridge-houses",
     intro: [
       "Middlesex County is the most populous county in New England: 54 cities and towns from Cambridge, Somerville, Newton, Medford, and Malden inside Route 128 through Waltham, Lexington, Concord, and Woburn to Framingham, Marlborough, Lowell (the county seat), and the Route 495 towns. Housing runs from Victorian streets with alley garages to 1960s split-levels and new construction.",
       "EZ Garage Doors serves every Middlesex County municipality for repairs, springs, openers, and new doors.",
@@ -209,6 +222,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Nantucket: {
     county: "Nantucket",
     nickname: "Nantucket",
+    imageId: "county-nantucket-harbor",
     intro: [
       "Nantucket County is a single town on a single island, thirty miles out to sea. Everything — vans, parts, and doors — arrives by ferry, and the island's historic district review covers exterior changes island-wide, which shapes what a new garage door can look like.",
       "EZ Garage Doors serves Nantucket. Visits are planned around the ferry and scoped thoroughly by phone and photo first so one trip does the job.",
@@ -229,6 +243,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Norfolk: {
     county: "Norfolk",
     nickname: "Norfolk County",
+    imageId: "county-norfolk-quincy-pier",
     intro: [
       "Norfolk County wraps around Boston's south and west: Quincy, Braintree, Weymouth, and Milton on the South Shore side; Dedham (the county seat), Needham, Wellesley, and Brookline to the west; and Franklin, Bellingham, and Foxborough out toward Route 495. Twenty-eight municipalities, including the exclaves of Brookline and Cohasset.",
       "EZ Garage Doors serves every Norfolk County city and town.",
@@ -249,6 +264,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Plymouth: {
     county: "Plymouth",
     nickname: "the South Shore",
+    imageId: "county-plymouth-mayflower",
     intro: [
       "Plymouth County runs down the South Shore from Hingham, Hull, and Scituate through Marshfield and Duxbury to Plymouth (the county seat), then inland to Brockton — the county's largest city — Bridgewater, Middleborough, and the cranberry country around Wareham and Carver. Twenty-seven municipalities, coast and inland.",
       "EZ Garage Doors serves all of Plymouth County for repairs, springs, openers, and new doors.",
@@ -269,6 +285,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Suffolk: {
     county: "Suffolk",
     nickname: "Boston",
+    imageId: "county-suffolk-boston-skyline",
     intro: [
       "Suffolk County is Boston plus Chelsea, Revere, and Winthrop — the densest housing in the state. Garages here are tucked under townhouses, behind three-deckers off alleys in Dorchester and East Boston, in the parking levels of condo buildings, and behind historic facades where architectural commissions review exterior changes.",
       "EZ Garage Doors serves all four Suffolk County municipalities. City work is scoped by phone and photo — access, headroom, and parking matter as much as the door itself.",
@@ -290,6 +307,7 @@ export const COUNTY_CONTENT: Record<MaCounty, CountyContent> = {
   Worcester: {
     county: "Worcester",
     nickname: "Central Massachusetts",
+    imageId: "county-worcester-downtown-brick",
     intro: [
       "Worcester County is the largest county in Massachusetts by land area and has the most municipalities — 60 — from Worcester (the county seat) and its ring of suburbs (Shrewsbury, Auburn, Holden, Westborough) north to Fitchburg, Leominster, and Gardner, south to Milford, Southbridge, and Webster, and out to the hill towns around Wachusett and the Quabbin.",
       "EZ Garage Doors serves every Worcester County city and town for repairs, springs, openers, and new door installation.",

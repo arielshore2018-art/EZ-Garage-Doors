@@ -11,7 +11,8 @@ import SectionHeading from "../components/SectionHeading.astro";
 import ReviewProof from "../components/ReviewProof.astro";
 import CountyGrid from "../components/CountyGrid.astro";
 import CTASection from "../components/CTASection.astro";
-import { APPROVED_CLAIMS, BUSINESS, COVERAGE } from "../config/business";
+import SectionImage from "../components/SectionImage.astro";
+import { APPROVED_CLAIMS, BUSINESS, COVERAGE, inlineClaim } from "../config/business";
 
 const crumbs = [{ label: "About EZ Garage Doors" }];
 ---
@@ -22,10 +23,10 @@ const crumbs = [{ label: "About EZ Garage Doors" }];
   breadcrumbs={crumbs}
 >
   <ServiceHero
-    imageId="team-van"
+    imageId="door-white-carriage"
     eyebrow="Fast. Reliable. Local."
-    heading="About EZ Garage Doors"
-    sub={`A local ${BUSINESS.state} garage door company. ${APPROVED_CLAIMS.years.toLowerCase()}, ${COVERAGE.line.toLowerCase()}, built on written quotes and straight answers.`}
+    heading="Local expertise. A simpler experience."
+    sub={`We’re EZ Garage Doors, a local ${BUSINESS.state} garage door company with ${inlineClaim(APPROVED_CLAIMS.years)}. Clear advice, a written quote, and a decision that stays in your hands.`}
     callLabel="Call EZ Garage Doors"
     callTrack="about_call_click"
     secondaryLabel="Request Service"
@@ -37,30 +38,33 @@ const crumbs = [{ label: "About EZ Garage Doors" }];
   <ProofColumns />
 
   <section class="section">
-    <div class="wrap wrap--narrow">
-      <SectionHeading eyebrow="How we work" title="The rules we don't bend" />
+    <div class="wrap about-grid">
+      <div>
+      <SectionHeading eyebrow="What you can expect" title="Good service starts with clarity." />
       <dl class="about-rules">
         <div>
           <dt>The quote is in writing, first.</dt>
-          <dd>Every repair and every installation starts with a written quote you approve before work begins. That's the whole policy — there's no version of it with asterisks.</dd>
+          <dd>Understand the scope and the price before the work starts. Your written quote gives you something clear to review and approve.</dd>
         </div>
         <div>
-          <dt>No bait pricing.</dt>
-          <dd>We don't advertise teaser prices that triple at the door. If a number sounds too good on the phone — from anyone — ask for it in writing and watch what happens.</dd>
+          <dt>A price based on your door.</dt>
+          <dd>Door size, condition, hardware, and the parts needed all matter. We explain what goes into your quote so you can make an informed choice.</dd>
         </div>
         <div>
           <dt>Repair when repair is right.</dt>
-          <dd>A broken spring on a healthy door is a repair, not a sales opportunity. We replace doors when replacement is genuinely the better math, and we show you that math.</dd>
+          <dd>A broken part doesn’t automatically call for a new door. We explain the condition of the system and help you compare repair and replacement when it makes sense.</dd>
         </div>
         <div>
-          <dt>Local, and staying that way.</dt>
-          <dd>{APPROVED_CLAIMS.local} — not a national call center reselling jobs to whoever answers. The person who quotes your door is from the team that fixes it, anywhere in the state.</dd>
+          <dt>Massachusetts is our community.</dt>
+          <dd>{COVERAGE.line}. From a stuck door to a planned upgrade, you’re working with a local garage door company.</dd>
         </div>
         <div>
-          <dt>We say what we can prove.</dt>
-          <dd>You won't find claims on this site we can't back up. Review numbers come from live platforms; brands are "brands we service," not "authorized" anything; and if we don't promise an arrival time, it's because we'd rather tell you the truth on the phone.</dd>
+          <dt>Room for your questions.</dt>
+          <dd>Not sure what failed, which style fits, or whether you need an insulated door? You don’t need all the answers before you get in touch.</dd>
         </div>
       </dl>
+      </div>
+      <SectionImage imageId="new-springs" ratio="4/3" widths={[480, 720, 960]} sizes="(max-width: 62rem) 92vw, 420px" class="about-grid__image" />
     </div>
   </section>
 
@@ -68,10 +72,33 @@ const crumbs = [{ label: "About EZ Garage Doors" }];
 
   <CountyGrid heading="Where we work" intro={`${COVERAGE.line}, in every county.`} />
 
-  <CTASection heading="Want to see how we quote?" sub="Call about your door or request service — judge us by the paperwork." />
+  <CTASection heading="Let’s make your next step an easy one." sub="Tell us about your door. Start with a clear conversation and a written quote before work begins." />
 </SiteLayout>
 
 <style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .about-grid :global(.about-grid__image) {
+    position: sticky;
+    top: 6.5rem;
+  }
+
+  @media (max-width: 62rem) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .about-grid :global(.about-grid__image) {
+      position: static;
+    }
+  }
+
   .about-rules > div {
     padding-block: var(--space-5);
     border-bottom: 1px solid var(--ez-line);

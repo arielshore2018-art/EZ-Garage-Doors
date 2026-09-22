@@ -7,6 +7,7 @@
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import SectionHeading from "./SectionHeading.astro";
+import { assertRealMeta } from "../config/site-images";
 
 interface Pair {
   before: ImageMetadata;
@@ -17,14 +18,27 @@ interface Pair {
 interface Props {
   pairs: Pair[];
   heading?: string;
+  intro?: string;
+  alt?: boolean;
 }
 
-const { pairs, heading = "Before and after" } = Astro.props;
+const {
+  pairs,
+  heading = "Before and after",
+  intro = "A fresh look outside. A better everyday experience. Take a closer look at our door replacements.",
+  alt = true,
+} = Astro.props;
+
+/* Proof module: throws at build time for ai-model or stock imagery. */
+for (const p of pairs) {
+  assertRealMeta(p.before, "BeforeAfterGallery");
+  assertRealMeta(p.after, "BeforeAfterGallery");
+}
 ---
 
-<section class="section section--alt" aria-labelledby="before-after-heading">
+<section class:list={["section", { "section--alt": alt }]} aria-labelledby="before-after-heading">
   <div class="wrap">
-    <SectionHeading eyebrow="The difference a door makes" title={heading} />
+    <SectionHeading id="before-after-heading" eyebrow="The difference a door makes" title={heading} intro={intro} />
     <div class="ba-grid">
       {
         pairs.map((pair) => (
@@ -44,13 +58,14 @@ const { pairs, heading = "Before and after" } = Astro.props;
         ))
       }
     </div>
+    <p class="ba-more"><a href="/gallery/" class="btn btn--outline">See more finished doors →</a></p>
   </div>
 </section>
 
 <style>
   .ba-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
     gap: var(--space-5);
   }
 
@@ -106,4 +121,5 @@ const { pairs, heading = "Before and after" } = Astro.props;
     font-size: var(--text-sm);
     color: var(--color-text-muted);
   }
+  .ba-more { margin-top: 2rem; text-align: center; }
 </style>

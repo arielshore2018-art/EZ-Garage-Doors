@@ -31,7 +31,7 @@ const {
 
 <section class:list={["steps-sec", { "section section--alt": !bare }]} aria-labelledby="process-heading">
   <div class:list={{ wrap: !bare }}>
-    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <SectionHeading id="process-heading" eyebrow={eyebrow} title={heading} />
     <ol class="steps">
       {
         steps.map((step, i) => (
@@ -63,11 +63,9 @@ const {
   }
 
   .steps__item {
-    background: var(--ez-white);
-    border: 1px solid var(--ez-line);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
-    box-shadow: var(--shadow-card);
+    background: transparent;
+    border-top: 1px solid var(--ez-line);
+    padding: var(--space-5) var(--space-3) 0 0;
   }
 
   .steps__num {
@@ -76,15 +74,14 @@ const {
     justify-content: center;
     width: 2.6rem;
     height: 2.6rem;
-    border-radius: 50%;
-    background: var(--ez-orange);
-    color: var(--ez-white);
-    font-size: 1.35rem;
+    border-radius: 0;
+    color: var(--ez-orange-text);
+    font-size: var(--text-2xl);
     margin-bottom: var(--space-3);
   }
 
   .steps__title {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
     margin-bottom: var(--space-2);
   }
 

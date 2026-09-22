@@ -8,6 +8,7 @@ import CallButton from "../../components/CallButton.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import CTASection from "../../components/CTASection.astro";
 import Icon from "../../components/Icon.astro";
+import SectionImage from "../../components/SectionImage.astro";
 import { GUIDES, GUIDE_CATEGORIES, guidesInCategory } from "../../config/guides";
 
 const breadcrumbs = [{ label: "Guides" }];
@@ -19,23 +20,24 @@ const breadcrumbs = [{ label: "Guides" }];
   breadcrumbs={breadcrumbs}
 >
   <section class="guides-hero">
-    <div class="wrap">
+    <div class="wrap hero-split">
+      <div>
       <Breadcrumbs items={breadcrumbs} class="guides-hero__crumbs" />
-      <p class="eyebrow">Guides &amp; troubleshooting</p>
-      <h1>Garage Door Guides</h1>
+      <p class="eyebrow">The homeowner’s garage door library</p>
+      <h1>Know your door.<br /><span>Know your next step.</span></h1>
       <p class="guides-hero__sub">
-        {GUIDES.length} plain-language articles on what your door is doing, why, and what to do
-        next — written by the company that fixes them across Massachusetts. No teaser prices, no
-        scare tactics; safety notes where they matter.
+        Straightforward answers to the questions garage doors bring up. Explore {GUIDES.length} guides on everyday problems, maintenance, and choosing your next door.
       </p>
       <div class="guides-hero__actions">
         <CallButton label="Call for Repair" size="lg" track="guides_call_click" />
-        <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
+        <a href="#guide-topics" class="btn btn--outline btn--lg">Find a topic ↓</a>
       </div>
+      </div>
+      <SectionImage imageId="ma-cape-cottage-green-garage" ratio="3/2" priority widths={[640, 960, 1280]} sizes="(max-width: 56rem) 92vw, 520px" />
     </div>
   </section>
 
-  <section class="section section--alt">
+  <section class="section section--alt" id="guide-topics">
     <div class="wrap">
       <SectionHeading eyebrow="Browse" title="Guides by topic" center />
       <ul class="cat-grid">
@@ -84,9 +86,9 @@ const breadcrumbs = [{ label: "Guides" }];
 
 <style>
   .guides-hero {
-    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    background: var(--ez-white);
     border-bottom: 1px solid var(--ez-line);
-    padding-block: clamp(1.75rem, 4vw, 3rem);
+    padding-block: clamp(2.5rem, 5vw, 5rem);
   }
 
   .guides-hero__crumbs {
@@ -95,7 +97,9 @@ const breadcrumbs = [{ label: "Guides" }];
 
   .guides-hero h1 {
     margin-top: var(--space-2);
+    font-size: clamp(3rem, 4.5vw, 4.8rem);
   }
+  .guides-hero h1 span { color: var(--ez-orange-text); }
 
   .guides-hero__sub {
     font-size: var(--text-lg);
@@ -115,7 +119,7 @@ const breadcrumbs = [{ label: "Guides" }];
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
     gap: var(--space-4);
   }
 
@@ -123,7 +127,7 @@ const breadcrumbs = [{ label: "Guides" }];
     display: grid;
     gap: var(--space-2);
     height: 100%;
-    padding: var(--space-5);
+    padding: 2rem;
     background: var(--ez-white);
     border: 1px solid var(--ez-line);
     border-radius: var(--radius-md);
@@ -163,7 +167,7 @@ const breadcrumbs = [{ label: "Guides" }];
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
     gap: var(--space-3);
   }
 
@@ -186,7 +190,7 @@ const breadcrumbs = [{ label: "Guides" }];
   .guide-list__title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 1.5rem;
     color: var(--ez-ink);
     line-height: 1.2;
   }

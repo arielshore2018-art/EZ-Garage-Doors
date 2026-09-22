@@ -15,6 +15,7 @@ interface Props {
 }
 
 const { variant, slim = false } = Astro.props;
+const moving = variant !== "review-platforms";
 
 const pick = (cat: string) => brandLogos.filter((l) => l.enabled && l.category === cat);
 
@@ -31,38 +32,60 @@ const rows: { label: string; logos: typeof brandLogos }[] =
           ];
 ---
 
-<section class:list={["brands", { "brands--slim": slim }]} aria-label="Brands we service">
+<section class:list={["brands", { "brands--slim": slim }]} aria-label={moving ? "Brands we service" : "Review platforms"} data-brand-rail={moving || undefined}>
   <div class="wrap">
     {
       rows.map((row) => (
         <div class="brands__row">
           <p class="brands__label">{row.label}</p>
-          <ul class="brands__logos">
-            {row.logos.map((l) => (
-              <li>
-                <Image src={l.src} alt={l.alt} height={l.railHeight} loading="lazy" style={`height:${l.railHeight}px`} />
-              </li>
-            ))}
-          </ul>
+          <div class="brands__window">
+            <div class="brands__track">
+              {(moving ? [false, true] : [false]).map((duplicate) => (
+                <ul class:list={["brands__logos", { "brands__duplicate": duplicate }]} aria-label={duplicate ? undefined : row.label} aria-hidden={duplicate || undefined}>
+                  {row.logos.map((l) => (
+                    <li>
+                      <Image src={l.src} alt={duplicate ? "" : l.alt} height={l.railHeight} loading="eager" style={`height:${l.railHeight}px`} />
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </div>
         </div>
       ))
     }
+    {moving && <div class="brands__controls"><button type="button" class="brands__pause" aria-pressed="false" hidden>Pause logo motion</button></div>}
     {
       variant !== "review-platforms" && (
         <p class="brands__note">
           We service these brands. We are not affiliated with or endorsed by any of them.
-          <a href="/brands/">See all brands we service →</a>
+          {" "}<a href="/brands/">See all brands we service →</a>
         </p>
       )
     }
   </div>
 </section>
 
+<script>
+  document.querySelectorAll<HTMLElement>("[data-brand-rail]").forEach((rail) => {
+    const button = rail.querySelector<HTMLButtonElement>(".brands__pause")!;
+    button.hidden = false;
+    rail.dataset.motion = "ready";
+    button.addEventListener("click", () => {
+      const paused = rail.dataset.paused !== "true";
+      rail.dataset.paused = String(paused);
+      button.setAttribute("aria-pressed", String(paused));
+      button.textContent = paused ? "Resume logo motion" : "Pause logo motion";
+    });
+  });
+</script>
+
 <style>
   .brands {
     background: var(--ez-white);
     border-block: 1px solid var(--ez-line);
-    padding-block: var(--space-6);
+    padding-block: var(--space-7);
+    overflow: hidden;
   }
 
   .brands--slim {
@@ -70,7 +93,7 @@ const rows: { label: string; logos: typeof brandLogos }[] =
   }
 
   .brands__row + .brands__row {
-    margin-top: var(--space-5);
+    margin-top: var(--space-6);
   }
 
   .brands__label {
@@ -98,14 +121,53 @@ const rows: { label: string; logos: typeof brandLogos }[] =
   .brands__logos img {
     width: auto;
     max-height: 40px;
-    filter: grayscale(1);
-    opacity: 0.8;
-    transition: filter 140ms ease, opacity 140ms ease;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 
-  .brands__logos li:hover img {
-    filter: none;
-    opacity: 1;
+  .brands__logos li { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 60px; }
+  .brands__duplicate { display: none; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-motion="ready"] .brands__window {
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+    }
+    [data-motion="ready"] .brands__track { display: flex; width: 100%; }
+    [data-motion="ready"] .brands__logos {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+      min-width: 100%;
+      gap: 3rem;
+      padding-right: 3rem;
+      animation: brand-scroll 28s linear infinite;
+    }
+    [data-motion="ready"] .brands__row:nth-child(2) .brands__logos { animation-direction: reverse; animation-duration: 32s; }
+    [data-paused="true"] .brands__logos,
+    .brands__row:hover .brands__logos { animation-play-state: paused; }
+  }
+
+  @keyframes brand-scroll {
+    to { transform: translateX(-100%); }
+  }
+
+  .brands__controls { display: flex; justify-content: center; margin-top: .65rem; }
+  .brands__pause {
+    min-height: 44px;
+    padding: .4rem .9rem;
+    background: transparent;
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-pill);
+    color: var(--ez-steel);
+    font: inherit;
+    font-size: .8125rem;
+    cursor: pointer;
+  }
+  .brands__pause:hover { color: var(--ez-ink); border-color: var(--ez-ink); }
+  @media (prefers-reduced-motion: reduce) {
+    .brands__controls { display: none; }
   }
 
   .brands__note {

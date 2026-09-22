@@ -14,6 +14,8 @@ import FaqList from "../../components/FaqList.astro";
 import RelatedLinks from "../../components/RelatedLinks.astro";
 import CTASection from "../../components/CTASection.astro";
 import Icon from "../../components/Icon.astro";
+import SectionImage from "../../components/SectionImage.astro";
+import ServicePhotoGrid from "../../components/ServicePhotoGrid.astro";
 import { ALL_BRANDS, OPENER_BRANDS, DOOR_BRANDS, type BrandPage } from "../../config/brands";
 import { brandLogos } from "../../config/brand-logos";
 
@@ -49,6 +51,15 @@ const sidebarLinks =
         { label: "New Door Installation", href: "/garage-door-installation/" },
         { label: "Door Styles", href: "/garage-door-styles/" },
       ];
+
+/* Photo service cards per brand kind. Opener pages have no honest opener-unit
+   photo yet (shot list item 6), so the rail detail, smart control, and a real
+   door-repair photo carry them; door pages avoid repeating the context figure. */
+const photoServices =
+  b.kind === "opener"
+    ? ["garage-door-opener-repair", "smart-garage-door-opener", "garage-door-repair"]
+    : ["garage-door-repair", "broken-spring-repair", "garage-door-installation"];
+const photoOverrides: Record<string, string> = b.kind === "opener" ? {} : { "garage-door-installation": "carry-panel" };
 
 const service = {
   name: `${b.name} ${noun} — Repair & Service`,
@@ -92,6 +103,19 @@ const service = {
           {b.intro.map((p) => <p>{p}</p>)}
         </div>
 
+        {
+          b.contextImageId && (
+            <SectionImage
+              imageId={b.contextImageId}
+              ratio="3/2"
+              widths={[480, 880, 1320]}
+              sizes="(max-width: 62rem) 92vw, 830px"
+              caption="Example of a finished door in a style this manufacturer offers — not a manufacturer product photo."
+              class="brand-main__context"
+            />
+          )
+        }
+
         <SectionHeading eyebrow="What we see most" title={`Common ${b.name} service calls`} />
         <ul class="brand-list">
           {b.commonCalls.map((c) => <li><Icon name="check" size={18} /><span>{c}</span></li>)}
@@ -108,6 +132,15 @@ const service = {
       <Sidebar title={`${b.name} ${b.kind} help`} callLabel="Call EZ Garage Doors" callTrack={`brand_${b.slug}_sidebar_call`} links={sidebarLinks} />
     </div>
   </section>
+
+  <ServicePhotoGrid
+    heading={`What we do for ${b.name} ${b.kind === "opener" ? "openers" : "doors"}`}
+    eyebrow="Service paths"
+    intro={`Repair when repair is right, replacement when it's the better math — every option for your ${b.name} ${b.kind} priced in writing before work begins.`}
+    slugs={photoServices}
+    images={photoOverrides}
+    alt
+  />
 
   <RelatedLinks
     heading={`Other ${b.kind === "opener" ? "opener" : "door"} brands we service`}
@@ -184,6 +217,10 @@ const service = {
   .brand-main :global(.section-heading) {
     margin-top: var(--space-6);
     margin-bottom: var(--space-4);
+  }
+
+  .brand-main :global(.brand-main__context) {
+    margin-top: var(--space-5);
   }
 
   .brand-main :global(.faq--bare) {

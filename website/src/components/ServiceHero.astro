@@ -9,9 +9,9 @@ import { Image } from "astro:assets";
 import CallButton from "./CallButton.astro";
 import Breadcrumbs from "./Breadcrumbs.astro";
 import type { Crumb } from "./Breadcrumbs.astro";
-import { img } from "../config/site-images";
+import { img, peek } from "../config/site-images";
 import { reviews } from "../config/reviews";
-import { STATS } from "../config/business";
+import { STATS, hasPhone } from "../config/business";
 
 interface Props {
   imageId: string;
@@ -48,6 +48,10 @@ const {
 } = Astro.props;
 
 const image = img(imageId);
+/* Never request a width larger than the source (Astro would upscale). */
+const sourceWidth = peek(image.src).width;
+const heroWidths = [640, 960, 1280, 1600].filter((w) => w <= sourceWidth);
+if (heroWidths.length === 0) heroWidths.push(sourceWidth);
 ---
 
 <section class="shero">
@@ -68,9 +72,9 @@ const image = img(imageId);
             </a>
           )
         }
-        <a href={secondaryHref} class="btn btn--outline btn--lg" data-track="photo_cta_click">
+        {(hasPhone() || primaryMode === "estimate" || !secondaryHref.startsWith("/contact/")) && <a href={secondaryHref} class="btn btn--outline btn--lg" data-track="photo_cta_click">
           {secondaryLabel}
-        </a>
+        </a>}
       </div>
       <p class="shero__micro">
         <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7" /></svg>
@@ -90,12 +94,12 @@ const image = img(imageId);
       <Image
         src={image.src}
         alt={image.alt}
-        widths={[480, 800, 1200]}
-        sizes="(max-width: 56rem) 100vw, 44vw"
+        widths={heroWidths}
+        sizes="(max-width: 62rem) 92vw, 560px"
         loading="eager"
         fetchpriority="high"
         class="shero__img"
-        style={`object-position: ${image.focalPointDesktop ?? "center"};`}
+        style={`--fp:${image.focalPointDesktop ?? "50% 50%"};--fp-m:${image.focalPointMobile ?? image.focalPointDesktop ?? "50% 50%"};`}
       />
     </figure>
   </div>
@@ -103,7 +107,7 @@ const image = img(imageId);
 
 <style>
   .shero {
-    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    background: var(--ez-alt);
     border-bottom: 1px solid var(--ez-line);
   }
 
@@ -112,15 +116,16 @@ const image = img(imageId);
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
     gap: clamp(1.5rem, 4vw, 3.5rem);
     align-items: center;
-    padding-block: clamp(2rem, 4vw, 3.5rem);
+    padding-block: clamp(2.5rem, 5vw, 5rem);
   }
 
   .shero__crumbs {
     margin-bottom: var(--space-4);
   }
+  .shero__copy { min-width: 0; }
 
   .shero__copy h1 {
-    font-size: clamp(2.1rem, 1.5rem + 2.8vw, 3.6rem);
+    font-size: clamp(2.8rem, 1.8rem + 3vw, 4.5rem);
     margin-top: var(--space-2);
   }
 
@@ -160,7 +165,7 @@ const image = img(imageId);
   }
 
   .shero__micro svg {
-    color: var(--ez-orange);
+    color: var(--ez-orange-text);
     flex-shrink: 0;
   }
 
@@ -174,7 +179,7 @@ const image = img(imageId);
   }
 
   .shero__stars {
-    color: var(--ez-orange);
+    color: var(--ez-orange-text);
     letter-spacing: 0.08em;
   }
 
@@ -182,7 +187,7 @@ const image = img(imageId);
     margin: 0;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-card-hover);
+    box-shadow: none;
     aspect-ratio: 5 / 4;
     background: var(--ez-alt-deep);
   }
@@ -191,16 +196,17 @@ const image = img(imageId);
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: var(--fp);
   }
 
   @media (max-width: 56rem) {
     .shero__grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       padding-block: var(--space-5);
     }
 
     .shero__copy h1 {
-      font-size: clamp(1.9rem, 1.4rem + 3.6vw, 2.7rem);
+      font-size: clamp(2.5rem, 1.4rem + 4vw, 3.5rem);
     }
 
     .shero__sub {
@@ -210,11 +216,16 @@ const image = img(imageId);
     .shero__actions :global(.btn) {
       flex: 1 1 100%;
       justify-content: center;
+      white-space: normal;
     }
 
     .shero__media {
       aspect-ratio: 16 / 10;
       order: 2;
+    }
+
+    .shero__img {
+      object-position: var(--fp-m);
     }
   }
 </style>

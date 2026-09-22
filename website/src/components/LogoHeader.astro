@@ -8,7 +8,7 @@
 import { Image } from "astro:assets";
 import logo from "../assets/brand/ez-logo-primary-horizontal.svg";
 import CallButton from "./CallButton.astro";
-import { APPROVED_CLAIMS, COVERAGE } from "../config/business";
+import { APPROVED_CLAIMS } from "../config/business";
 import { MA_COUNTIES } from "../config/ma-towns";
 
 interface NavItem {
@@ -91,7 +91,7 @@ const isActive = (item: NavItem) =>
 
 <div class="utility-strip">
   <div class="wrap utility-strip__inner">
-    <p>{APPROVED_CLAIMS.local} · {COVERAGE.line}</p>
+    <p>Massachusetts, we’ve got your door.</p>
     <p class="utility-strip__right">{APPROVED_CLAIMS.writtenQuote}</p>
   </div>
 </div>
@@ -133,9 +133,6 @@ const isActive = (item: NavItem) =>
     </nav>
 
     <div class="site-header__cta">
-      <a href="/contact/#request" class="btn btn--outline site-header__request" data-track="header_request">
-        Request Service
-      </a>
       <CallButton label="Call for Repair" track="header_call" />
     </div>
 
@@ -148,7 +145,7 @@ const isActive = (item: NavItem) =>
       <nav aria-label="Main mobile">
         <div class="site-header__mobile-cta">
           <CallButton label="Call Now" track="mobile_menu_call" />
-          <a href="/contact/#request" class="btn btn--outline" data-track="mobile_menu_request">Request Service</a>
+          <a href="/services/" class="btn btn--outline" data-track="mobile_menu_services">Our Services</a>
         </div>
         {
           nav.map((item) => (
@@ -174,8 +171,8 @@ const isActive = (item: NavItem) =>
 
 <style>
   .utility-strip {
-    background: var(--ez-ink);
-    color: var(--ez-on-ink);
+    background: var(--ez-alt);
+    color: var(--ez-charcoal);
     font-size: var(--text-xs);
   }
 
@@ -194,7 +191,7 @@ const isActive = (item: NavItem) =>
   }
 
   .utility-strip__right {
-    color: var(--ez-white);
+    color: var(--ez-ink);
     font-weight: 600;
   }
 
@@ -213,14 +210,14 @@ const isActive = (item: NavItem) =>
     position: sticky;
     top: 0;
     z-index: 30;
-    box-shadow: 0 1px 0 var(--ez-line), 0 6px 20px rgb(28 28 28 / 0.06);
+    box-shadow: 0 2px 12px rgb(28 28 28 / 0.04);
   }
 
   .site-header__inner {
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    min-height: 4.75rem;
+    min-height: 5.5rem;
   }
 
   .site-header__logo img {
@@ -248,9 +245,9 @@ const isActive = (item: NavItem) =>
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.12rem;
+    font-family: var(--font-body);
+    font-weight: 650;
+    font-size: .96rem;
     text-decoration: none;
     color: var(--ez-ink);
     padding: 0.55rem 0.7rem;
@@ -327,12 +324,6 @@ const isActive = (item: NavItem) =>
     padding-inline: 1.1rem;
   }
 
-  @media (max-width: 78rem) {
-    .site-header__request {
-      display: none;
-    }
-  }
-
   .site-header__mobile {
     display: none;
     margin-left: auto;
@@ -390,6 +381,7 @@ const isActive = (item: NavItem) =>
   }
 
   .site-header__mobile > nav {
+    overscroll-behavior: contain;
     position: absolute;
     left: 0;
     right: 0;
@@ -479,3 +471,16 @@ const isActive = (item: NavItem) =>
     }
   }
 </style>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>(".site-header__mobile");
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menu?.open) {
+      menu.open = false;
+      menu.querySelector("summary")?.focus();
+    }
+  });
+  document.addEventListener("click", (event) => {
+    if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+  });
+</script>

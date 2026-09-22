@@ -10,6 +10,7 @@ import ServiceHero from "../components/ServiceHero.astro";
 import ProofColumns from "../components/home/ProofColumns.astro";
 import ProofBand from "../components/ProofBand.astro";
 import Icon from "../components/Icon.astro";
+import SectionImage from "../components/SectionImage.astro";
 
 const commonEmergencies = [
   "Door stuck wide open and won't close",
@@ -57,7 +58,8 @@ const service = {
   </section>
 
   <section class="em-issues section">
-    <div class="wrap">
+    <div class="wrap em-issues__layout">
+      <div>
       <h2>Common garage door emergencies</h2>
       <ul class="em-issues__grid">
         {commonEmergencies.map((issue) => <li><Icon name="check" size={18} /><span>{issue}</span></li>)}
@@ -66,6 +68,8 @@ const service = {
         <strong>If the spring snapped or the door is off track:</strong> don't lift, force, or run
         the opener. The door is heavier than it looks and under tension.
       </p>
+      </div>
+      <SectionImage imageId="winter-garage-door-snowfall" ratio="4/3" widths={[480, 720, 960]} sizes="(max-width: 62rem) 92vw, 420px" />
     </div>
   </section>
 
@@ -139,12 +143,26 @@ const service = {
     font-size: 1.05rem;
   }
 
+  .em-issues__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  @media (max-width: 62rem) {
+    .em-issues__layout {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+  }
+
   .em-issues__grid {
     list-style: none;
     padding: 0;
     margin: var(--space-5) 0 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
     gap: var(--space-3);
   }
 

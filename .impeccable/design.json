@@ -22,7 +22,8 @@
       "white": "#ffffff",
       "alt": "#f4f4f2",
       "tint": "#fff1e8",
-      "line": "#dcdcd8"
+      "line": "#dcdcd8",
+      "fieldLine": "#8a8a86"
     },
     "ink": {
       "ink": "#1c1c1c",
@@ -101,6 +102,9 @@
     "Sidebar",
     "RelatedLinks",
     "Breadcrumbs",
+    "SectionImage",
+    "AreaHero",
+    "ServicePhotoGrid",
     "CountyGrid",
     "TownList",
     "LeadForm",
@@ -153,9 +157,13 @@
     ]
   },
   "imagery": {
-    "proofModules": "real, person-free photos only (van-front, hardware, finished doors, before/after)",
-    "illustrative": "technician-model shots allowed only as page heroes, never captioned as the actual team",
+    "provenance": ["real", "ai-model", "stock"],
+    "proofModules": "provenance \"real\" only, person-free (van-front, hardware, finished doors, before/after) — WorkGallery, BeforeAfterGallery and FinishedDoorGallery throw at build time on anything else; the reviews page carries no photography",
+    "illustrative": "ai-model technician shots only as page heroes, never captioned as the actual team; stock photos (places, house styles, winter, commercial doors) only as illustration — alt text describes the scene, never the company, never claims a photo is a specific town; stock door photos near EZ's work are captioned as illustrative",
+    "uniqueness": "one unique primary visual per page; the 351 town pages inherit their county's banner (no per-town photos exist or are implied)",
+    "placement": "ServiceHero / .hero-split photo card for heroes; AreaHero full-bleed photo hero with location chip on county/town pages; ServicePhotoGrid illustrative photo cards; SectionImage (banner 16:6, figure 16:9) everywhere else; no brand logo over a photo",
+    "delivery": "astro:assets responsive widths (hero 640/960/1280/1600, banner 720/1200/1600, figure 480/880/1320), explicit dimensions, lazy below the fold, LCP image eager + fetchpriority high",
     "manifest": "website/src/config/site-images.ts"
   },
-  "typographyRamp": "see DESIGN.md frontmatter (h1, hero-h1, hero-h1-mobile, inner-h1, inner-h1-mobile, area-h1, guide-h1, h2, h3, body, eyebrow, button, button-lg, ui-nav, stat)"
+  "typographyRamp": "see DESIGN.md frontmatter (h1, home-h1, home-h1-mobile, hero-h1, hero-h1-mobile, inner-h1, inner-h1-mobile, area-h1, guide-h1, h2, h3, body, eyebrow, caption, button, button-lg, ui-nav, stat); tokens --text-2xs 0.78rem, xs 0.8125rem, sm 0.9375rem, base 1.0625rem, lg 1.1875rem, xl/2xl/3xl/hero/mega fluid"
 }

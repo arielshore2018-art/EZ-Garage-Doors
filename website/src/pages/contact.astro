@@ -9,7 +9,8 @@ import CallButton from "../components/CallButton.astro";
 import LeadForm from "../components/LeadForm.astro";
 import MicroTrustBar from "../components/MicroTrustBar.astro";
 import CountyGrid from "../components/CountyGrid.astro";
-import { hasPhone, COVERAGE } from "../config/business";
+import SectionImage from "../components/SectionImage.astro";
+import { hasPhone, COVERAGE, BUSINESS } from "../config/business";
 
 const crumbs = [{ label: "Contact" }];
 ---
@@ -24,27 +25,29 @@ const crumbs = [{ label: "Contact" }];
       <div>
         <Breadcrumbs items={crumbs} class="contact-hero__crumbs" />
         <p class="eyebrow">Contact · Massachusetts</p>
-        <h1>Contact EZ Garage Doors</h1>
+        <h1>A working door starts with a conversation.</h1>
         <p class="contact-hero__sub">
-          Fastest for urgent doors: call. For estimates and everything else, the short form works
-          — a local garage door specialist will follow up. {COVERAGE.line}.
+          Tell us what’s happening with your door and where you’re located.
+          We’ll explain the next step and put the quote in writing before work begins.
         </p>
         <div class="contact-hero__call">
-          <CallButton label="Call EZ Garage Doors" size="lg" />
+          {hasPhone() && <CallButton label="Call EZ Garage Doors" size="lg" />}
           {
             !hasPhone() && (
               <p class="cta-note">
                 {/* TODO: remove once PRIMARY_PHONE is final */}
-                Phone line being finalized — use the request form and we'll call you back.
+                {BUSINESS.FORM_ENDPOINT ? "Use the request form to arrange a callback." : "Online booking and our phone line are being finalized. Requests are not being accepted through this preview."}
               </p>
             )
           }
         </div>
+        <ol class="contact-next"><li><strong>Tell us the issue.</strong> No technical knowledge needed.</li><li><strong>Discuss the visit.</strong> Availability is confirmed with you.</li><li><strong>Approve the quote.</strong> Before any work begins.</li></ol>
         <div class="contact-hero__trust">
           <MicroTrustBar />
         </div>
+        <SectionImage imageId="contact-woman-phone" ratio="16/9" widths={[480, 720, 960]} sizes="(max-width: 62rem) 92vw, 540px" class="contact-hero__image" />
         <p class="contact-hero__note muted">
-          EZ Garage Doors is a service-area business — we come to you anywhere in Massachusetts.
+          {COVERAGE.line}. We come to you.
         </p>
       </div>
       <div>
@@ -58,7 +61,7 @@ const crumbs = [{ label: "Contact" }];
 
 <style>
   .contact-hero {
-    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
+    background: var(--ez-alt);
     padding-block: var(--space-7);
   }
 
@@ -93,10 +96,16 @@ const crumbs = [{ label: "Contact" }];
     border-top: 1px solid var(--ez-line);
   }
 
+  .contact-hero :global(.contact-hero__image) {
+    margin-top: var(--space-5);
+  }
+
   .contact-hero__note {
     margin-top: var(--space-4);
     font-size: var(--text-sm);
   }
+  .contact-next { list-style: none; padding: 0; margin-top: 2rem; display: grid; gap: .75rem; }
+  .contact-next li { padding-bottom: .75rem; border-bottom: 1px solid var(--ez-line); }
 
   @media (max-width: 62rem) {
     .contact-hero__grid {

@@ -4,14 +4,17 @@
  * related links back into the service tree.
  */
 import type { GetStaticPaths } from "astro";
+import { getImage } from "astro:assets";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Sidebar from "../../components/Sidebar.astro";
 import FaqList from "../../components/FaqList.astro";
 import RelatedLinks from "../../components/RelatedLinks.astro";
 import CTASection from "../../components/CTASection.astro";
-import { GUIDES, GUIDE_CATEGORIES, guidesInCategory, type Guide } from "../../config/guides";
-import { BUSINESS } from "../../config/business";
+import SectionImage from "../../components/SectionImage.astro";
+import { GUIDES, GUIDE_CATEGORIES, guidesInCategory, guideImageId, type Guide } from "../../config/guides";
+import { img, peek } from "../../config/site-images";
+import { BUSINESS, inlineClaim } from "../../config/business";
 
 export const getStaticPaths = (() => {
   return GUIDES.map((g) => ({ params: { slug: g.slug }, props: { g } }));
@@ -32,12 +35,18 @@ const more = guidesInCategory(g.category).filter((x) => x.slug !== g.slug).slice
 const serviceLinks = g.related.filter((r) => !r.href.startsWith("/guides/"));
 const guideLinks = g.related.filter((r) => r.href.startsWith("/guides/"));
 
+/* The article's illustration (its own override, else the category image). */
+const imageId = guideImageId(g);
+const illustration = img(imageId);
+const schemaImage = await getImage({ src: illustration.src, width: Math.min(1200, peek(illustration.src).width) });
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: g.title,
   description: g.description,
   dateModified: g.updated,
+  image: new URL(schemaImage.src, BUSINESS.SITE_URL).href,
   author: { "@type": "Organization", name: BUSINESS.name },
   publisher: { "@type": "Organization", name: BUSINESS.name, url: BUSINESS.SITE_URL },
   mainEntityOfPage: new URL(`/guides/${g.slug}/`, BUSINESS.SITE_URL).href,
@@ -53,6 +62,7 @@ const articleSchema = {
       <p class="eyebrow">{cat.name} · Guide</p>
       <h1>{g.title}</h1>
       <p class="guide-hero__lede">{g.intro}</p>
+      <SectionImage imageId={imageId} ratio="16/9" priority widths={[480, 880, 1320]} sizes="(max-width: 62rem) 92vw, 880px" class="guide-hero__figure" />
       <p class="guide-hero__meta muted">By {BUSINESS.name} · Updated {new Date(g.updated + "T12:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
     </div>
   </section>
@@ -95,7 +105,7 @@ const articleSchema = {
     (guideLinks.length > 0 || more.length > 0) && (
       <RelatedLinks
         heading="Keep reading"
-        eyebrow={`More ${cat.name.toLowerCase()} guides`}
+        eyebrow={`More ${inlineClaim(cat.name)} guides`}
         items={[
           ...guideLinks,
           ...more.filter((m) => !guideLinks.some((l) => l.href === `/guides/${m.slug}/`)).map((m) => ({ label: m.title, href: `/guides/${m.slug}/` })),
@@ -128,6 +138,11 @@ const articleSchema = {
     font-size: var(--text-lg);
     max-width: 46rem;
     margin-top: var(--space-4);
+  }
+
+  .guide-hero :global(.guide-hero__figure) {
+    max-width: 55rem;
+    margin-top: var(--space-5);
   }
 
   .guide-hero__meta {

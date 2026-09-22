@@ -27,7 +27,7 @@ export const BUSINESS = {
   PRIMARY_PHONE_TEL: "", // e.g. "+14135551234" — leave empty until final number exists
   PHONE_READY: false,
 
-  /** Lead form backend endpoint. Empty = form falls back to thank-you redirect (not live). */
+  /** Lead form backend endpoint. Empty = explicitly labeled preview; no submission or conversion event. */
   FORM_ENDPOINT: "",
 
   /** Vercel production URL. TODO: replace with the final custom domain when it exists. */
@@ -81,6 +81,10 @@ export const APPROVED_CLAIMS = {
   reviewsShort: `${STATS.fiveStarReviews} 5-Star Reviews`,
   coverage: COVERAGE.line,
 } as const;
+
+/** Lowercase a Title Case claim for mid-sentence use without flattening the state name. */
+export const inlineClaim = (s: string): string =>
+  s.toLowerCase().replace(/\bmassachusetts\b/g, "Massachusetts");
 
 /** Opener/door brands the company works with. Phrase as "Brands We Service" only. */
 export const BRANDS_SERVICED = [

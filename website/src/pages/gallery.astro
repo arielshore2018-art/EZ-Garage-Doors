@@ -9,6 +9,9 @@ import FinishedDoorGallery from "../components/FinishedDoorGallery.astro";
 import BeforeAfterGallery from "../components/BeforeAfterGallery.astro";
 import CTASection from "../components/CTASection.astro";
 import TrustLogoStrip from "../components/TrustLogoStrip.astro";
+import { Image } from "astro:assets";
+import { realImg } from "../config/site-images";
+const featured = realImg("door-charcoal", "Gallery hero");
 
 import doorCharcoal from "../assets/photos/ez-garage-door-charcoal-recessed-panel.png";
 import doorCarriage from "../assets/photos/ez-garage-door-carriage-house-cream.png";
@@ -44,18 +47,20 @@ const crumbs = [{ label: "Finished Work" }];
   breadcrumbs={crumbs}
 >
   <section class="gallery-hero">
-    <div class="wrap wrap--narrow">
+    <div class="wrap">
       <Breadcrumbs items={crumbs} class="gallery-hero__crumbs" />
-      <p class="eyebrow">Gallery</p>
-      <h1>Finished Work</h1>
-      <p class="gallery-hero__sub">
-        Door styles we install and the difference a replacement makes. See something close to
-        what you want? Mention it when you request your estimate.
-      </p>
+      <div class="gallery-hero__intro">
+        <div><p class="eyebrow">The EZ Garage Doors gallery</p><h1>Good looks.<br /><span>Great first impressions.</span></h1></div>
+        <div><p class="gallery-hero__sub">A garage door is a big part of your home’s character. Explore finished doors, thoughtful details, and the difference a fresh start makes.</p><nav aria-label="Browse the gallery"><a href="#doors-heading">Explore finished doors ↓</a><a href="#before-after-heading">Before &amp; after ↓</a></nav></div>
+      </div>
+      <figure class="gallery-feature">
+        <Image src={featured.src} alt={featured.alt} widths={[640, 960, 1440]} sizes="(max-width: 48rem) 92vw, 1140px" loading="eager" fetchpriority="high" />
+        <figcaption><div><span class="eyebrow">In the details</span><h2>Classic lines. A modern finish.</h2></div><a href="/garage-door-styles/charcoal-and-dark-finish-garage-doors/">Explore dark-finish doors <span aria-hidden="true">↗</span></a></figcaption>
+      </figure>
     </div>
   </section>
 
-  <FinishedDoorGallery doors={doors} />
+  <FinishedDoorGallery doors={doors} editorial heading="Find the look that feels like home." eyebrow="A closer look" />
 
   <TrustLogoStrip variant="door-brands" />
 
@@ -73,9 +78,8 @@ const crumbs = [{ label: "Finished Work" }];
 
 <style>
   .gallery-hero {
-    background: linear-gradient(180deg, var(--ez-alt) 0%, var(--ez-white) 100%);
-    padding-block: var(--space-7);
-    border-bottom: 1px solid var(--ez-line);
+    background: var(--ez-alt);
+    padding-block: 2rem 3rem;
   }
 
   .gallery-hero__crumbs {
@@ -83,11 +87,24 @@ const crumbs = [{ label: "Finished Work" }];
   }
 
   .gallery-hero h1 {
-    margin-top: var(--space-2);
+    margin-top: 1rem;
+    font-size: clamp(3rem, 5vw, 5.25rem);
+    line-height: 1;
+    text-wrap: initial;
   }
+  .gallery-hero h1 span { color: var(--ez-orange-text); }
 
   .gallery-hero__sub {
     font-size: var(--text-lg);
     margin-top: var(--space-4);
   }
+  .gallery-hero__intro { display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: 3rem; padding-block: 1rem 3rem; }
+  .gallery-hero nav { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.2rem; }
+  .gallery-hero nav a { font-size: .95rem; font-weight: 600; padding-block: .5rem; }
+  .gallery-feature { margin: 0; }
+  .gallery-feature > img { width: 100%; aspect-ratio: 16/8; object-fit: cover; object-position: 50% 58%; border-radius: var(--radius-lg); }
+  .gallery-feature figcaption { display: flex; justify-content: space-between; gap: 1.5rem; align-items: center; padding-top: 1.5rem; }
+  .gallery-feature h2 { font-size: 1.8rem; margin-top: .4rem; }
+  .gallery-feature figcaption a { display: flex; align-items: center; gap: 1.2rem; min-height: 48px; font-weight: 600; }
+  @media(max-width: 48rem) { .gallery-hero__intro { grid-template-columns: 1fr; gap: .75rem; padding-bottom: 2rem; } .gallery-feature > img { aspect-ratio: 4/3; } .gallery-feature figcaption { align-items: start; flex-direction: column; gap: .4rem; } }
 </style>

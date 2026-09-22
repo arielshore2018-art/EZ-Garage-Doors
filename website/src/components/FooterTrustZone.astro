@@ -26,9 +26,9 @@ const install = [...servicesInGroup("install"), ...servicesInGroup("maintenance"
     <div class="footer__identity">
       <Image src={logoWhite} alt="EZ Garage Doors" width={190} loading="lazy" />
       <p class="footer__tagline">{APPROVED_CLAIMS.tagline}</p>
+      <p class="footer__brandline">Garage doors.<br />Made EZ.</p>
       <p>
-        {BUSINESS.legalName} — a local {BUSINESS.state} garage door company.
-        {APPROVED_CLAIMS.years}. {COVERAGE.line}.
+        {`${BUSINESS.legalName} — a local ${BUSINESS.state} garage door company. ${APPROVED_CLAIMS.years}. ${COVERAGE.line}.`}
       </p>
       <p>
         {
@@ -37,7 +37,7 @@ const install = [...servicesInGroup("install"), ...servicesInGroup("maintenance"
               {BUSINESS.PRIMARY_PHONE}
             </a>
           ) : (
-            <span class="footer__phone-soon">{BUSINESS.PRIMARY_PHONE}</span>
+            <span class="footer__phone-soon">Garage door service across Massachusetts</span>
           )
         }
       </p>
@@ -109,21 +109,21 @@ const install = [...servicesInGroup("install"), ...servicesInGroup("maintenance"
 
 <style>
   .footer {
-    background: var(--ez-ink);
+    background: #171717;
     color: var(--ez-on-ink);
     font-size: var(--text-sm);
-    border-top: 5px solid var(--ez-orange);
+    border-top: 1px solid #414141;
   }
 
   .footer__grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr;
     gap: var(--space-6);
-    padding-block: var(--space-7);
+    padding-block: 4rem;
   }
 
   .footer__identity img {
-    width: 170px;
+    width: 190px;
     height: auto;
     margin-bottom: var(--space-3);
   }
@@ -153,9 +153,11 @@ const install = [...servicesInGroup("install"), ...servicesInGroup("maintenance"
   }
 
   .footer h3 {
+    font-family: var(--font-body);
     color: var(--ez-white);
-    font-size: 1.1rem;
-    letter-spacing: 0.02em;
+    font-size: var(--text-xs);
+    letter-spacing: .08em;
+    text-transform: uppercase;
     font-weight: 700;
     margin-bottom: var(--space-3);
   }
@@ -171,6 +173,8 @@ const install = [...servicesInGroup("install"), ...servicesInGroup("maintenance"
     display: grid;
     gap: 0.45rem;
   }
+  .footer__identity .footer__brandline { font-family: var(--font-display); color: white; font-size: var(--text-3xl); line-height: 1.05; margin-block: 1.3rem; }
+  .footer__col a { display: inline-block; padding-block: .15rem; }
 
   .footer a {
     color: var(--ez-on-ink);

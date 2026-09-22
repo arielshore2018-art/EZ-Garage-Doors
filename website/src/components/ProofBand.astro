@@ -18,8 +18,8 @@ interface Props {
 }
 
 const {
-  heading = "Rated by Massachusetts homeowners on the platforms we can't edit",
-  note = "Counts change as new reviews come in — read them on the live platforms.",
+  heading = "A track record you can look into.",
+  note = "Review figures supplied by the business. Live profile links are being finalized.",
 } = Astro.props;
 
 const platforms = [
@@ -31,7 +31,7 @@ const platforms = [
 
 <section class="proof section" aria-labelledby="proof-heading">
   <div class="wrap">
-    <SectionHeading eyebrow="Reviews" title={heading} center intro={REVIEWS_TOTAL_LINE} />
+    <SectionHeading id="proof-heading" eyebrow="Reviews" title={heading} center intro={REVIEWS_TOTAL_LINE} />
 
     <ul class="proof__platforms">
       {

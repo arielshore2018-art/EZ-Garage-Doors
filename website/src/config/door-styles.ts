@@ -7,6 +7,8 @@ export interface DoorStyle {
   slug: string;
   name: string;
   imageId: string;
+  /** Stock "in context" illustration shown beside the copy — never in a proof gallery. */
+  contextImageId?: string;
   tagline: string;
   intro: string[];
   bestFor: string[];
@@ -19,6 +21,7 @@ export const DOOR_STYLES: DoorStyle[] = [
     slug: "insulated-steel-garage-doors",
     name: "Insulated Steel Garage Doors",
     imageId: "door-steel",
+    contextImageId: "door-beige-double-house",
     tagline: "The Massachusetts default: quieter, warmer, stiffer, and built for winter",
     intro: [
       "An insulated steel door is two steel skins bonded to a core of polystyrene or polyurethane foam — the \"sandwich panel\" construction. In Massachusetts, where attached garages share a wall with the house and a New England winter runs five months, it is the door we recommend most often.",
@@ -44,6 +47,7 @@ export const DOOR_STYLES: DoorStyle[] = [
     slug: "carriage-house-garage-doors",
     name: "Carriage House Garage Doors",
     imageId: "door-carriage",
+    contextImageId: "door-white-double-carriage",
     tagline: "The look of swing-out barn doors, built as a modern sectional door",
     intro: [
       "Carriage-house doors mimic the swing-out doors of old carriage barns — vertical planking, cross-bucks or X-braces, decorative hinges and handles — but they are ordinary sectional doors underneath, rolling up on tracks with an opener like any other.",
@@ -68,6 +72,7 @@ export const DOOR_STYLES: DoorStyle[] = [
     slug: "modern-garage-doors",
     name: "Modern & Contemporary Garage Doors",
     imageId: "door-black-windows",
+    contextImageId: "door-modern-house-two-windows",
     tagline: "Flush panels, dark finishes, and vertical or horizontal window stacks",
     intro: [
       "Modern garage doors drop the embossed panels and decorative hardware for clean flush or plank-style faces, dark or bold finishes, and window layouts — a vertical stack of glass, a horizontal row, or full-view panels.",
@@ -91,6 +96,7 @@ export const DOOR_STYLES: DoorStyle[] = [
     slug: "wood-look-garage-doors",
     name: "Wood-Look Garage Doors",
     imageId: "door-wood",
+    contextImageId: "door-modern-wood-planks",
     tagline: "Walnut, cedar, and oak finishes on steel or composite — without the upkeep",
     intro: [
       "Wood-look doors give the warmth of a stained wood door using steel or composite panels with a printed or embossed wood-grain finish. They hold their color for years without the sanding, staining, and sealing a real wood door needs in New England weather.",
@@ -113,6 +119,7 @@ export const DOOR_STYLES: DoorStyle[] = [
     slug: "raised-panel-garage-doors",
     name: "Raised-Panel & Traditional Garage Doors",
     imageId: "after-white-raised",
+    contextImageId: "door-white-windows-top-row",
     tagline: "The classic embossed-panel door in single-layer or insulated construction",
     intro: [
       "The raised-panel door is the most common garage door in Massachusetts: rows of embossed rectangular panels in white, almond, sandstone, or a darker color, with or without a top row of windows. It's available in every construction tier, from single-layer steel to full insulated sandwich panels.",
@@ -135,6 +142,7 @@ export const DOOR_STYLES: DoorStyle[] = [
     slug: "charcoal-and-dark-finish-garage-doors",
     name: "Charcoal & Dark-Finish Garage Doors",
     imageId: "door-charcoal",
+    contextImageId: "door-glass-grid-facade",
     tagline: "Modern color on classic panel lines — the popular middle ground",
     intro: [
       "Charcoal, bronze, and black finishes on traditional recessed or raised panels are the most popular upgrade we install: the door keeps a familiar shape but reads as current, and it pairs with dark windows and trim without a full modern redesign.",

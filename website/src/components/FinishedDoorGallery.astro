@@ -6,6 +6,7 @@
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import SectionHeading from "./SectionHeading.astro";
+import { assertRealMeta } from "../config/site-images";
 
 interface Door {
   image: ImageMetadata;
@@ -18,22 +19,27 @@ interface Props {
   doors: Door[];
   heading?: string;
   eyebrow?: string;
+  editorial?: boolean;
 }
 
-const { doors, heading = "Door styles we install", eyebrow = "Finished work" } = Astro.props;
+const { doors, heading = "Door styles we install", eyebrow = "Finished work", editorial = false } = Astro.props;
+
+/* Proof module: throws at build time for ai-model or stock imagery. */
+for (const d of doors) assertRealMeta(d.image, "FinishedDoorGallery");
 ---
 
 <section class="section" aria-labelledby="doors-heading">
   <div class="wrap">
-    <SectionHeading eyebrow={eyebrow} title={heading} />
-    <ul class="door-grid">
+    <SectionHeading id="doors-heading" eyebrow={eyebrow} title={heading} />
+    <ul class:list={["door-grid", { "door-grid--editorial": editorial }]}>
       {
-        doors.map((door) => (
+        doors.map((door, index) => (
           <li class="door-grid__card">
             <div class="door-grid__media">
               <Image src={door.image} alt={`${door.style} garage door installed by EZ Garage Doors`} width={720} widths={[420, 720]} sizes="(max-width: 48rem) 92vw, 360px" loading="lazy" />
             </div>
             <div class="door-grid__caption">
+              {editorial && <span class="door-grid__number">0{index + 1} / FINISHED DOORS</span>}
               <h3>{door.href ? <a href={door.href}>{door.style}</a> : door.style}</h3>
               <p>{door.detail}</p>
             </div>
@@ -50,7 +56,7 @@ const { doors, heading = "Door styles we install", eyebrow = "Finished work" } =
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
     gap: var(--space-5);
   }
 
@@ -95,4 +101,12 @@ const { doors, heading = "Door styles we install", eyebrow = "Finished work" } =
     color: var(--color-text-muted);
     margin: 0;
   }
+  .door-grid--editorial { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3.5rem 2rem; }
+  .door-grid--editorial .door-grid__card { border-radius: 0; box-shadow: none; }
+  .door-grid--editorial .door-grid__media { border-radius: var(--radius-lg); overflow: hidden; }
+  .door-grid--editorial .door-grid__caption { padding: 1.25rem 0 0; }
+  .door-grid__number { display: block; font-size: .72rem; letter-spacing: .1em; font-weight: 650; color: var(--ez-orange-text); margin-bottom: .6rem; }
+  .door-grid--editorial h3 { font-size: 2rem; }
+  .door-grid--editorial p { font-size: 1rem; }
+  @media(max-width: 48rem) { .door-grid--editorial { grid-template-columns: 1fr; gap: 2.5rem; } }
 </style>

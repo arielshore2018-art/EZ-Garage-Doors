@@ -31,7 +31,7 @@ export interface PpcCity {
 
 const SUB =
   "Fast local help for stuck doors, broken springs, opener problems, cables, and off-track doors.";
-const HEROES = ["hero-problem-door", "hero-active-repair", "spring-winding"];
+const HEROES = ["hero-problem-door", "hero-active-repair", "spring-winding", "door-open-garage-cars", "winter-garage-door-snowfall"];
 
 /** Metro set chosen to cover every Massachusetts region (owner: full state). */
 const METROS = [

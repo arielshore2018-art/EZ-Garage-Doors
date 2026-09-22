@@ -1,0 +1,46 @@
+---
+import { Image } from "astro:assets";
+import { img } from "../../config/site-images";
+import Icon from "../Icon.astro";
+const paths = [
+  { image: "new-springs", number: "01", label: "Get it working again", title: "Garage door repair", text: "Broken springs, stuck doors, worn cables. Start with the problem, and we’ll help you find the fix.", href: "/garage-door-repair/", cta: "Find your repair" },
+  { image: "opener-rail", number: "02", label: "Make every arrival easier", title: "Openers & remotes", text: "An opener that won’t respond? Explore repairs, replacements, and smarter ways to open your door.", href: "/garage-door-openers/", cta: "Explore opener services" },
+  { image: "door-wood", number: "03", label: "Give your home a fresh start", title: "A new garage door", text: "Find a style that feels like home. Compare materials, insulation, and the details that shape your quote.", href: "/garage-door-installation/", cta: "Find your new door" },
+];
+---
+<section class="section paths" aria-labelledby="paths-heading">
+  <div class="wrap">
+    <div class="paths__heading">
+      <div><p class="eyebrow">One team. Every garage door need.</p><h2 id="paths-heading">What can we take<br />off your to-do list?</h2></div>
+      <p>A repair that can’t wait or an upgrade you’ve been planning. Start with what you need.</p>
+    </div>
+    <div class="paths__grid">
+      {paths.map((p) => { const photo = img(p.image); return <a class="path" href={p.href} data-track={`home_service_${p.number}`}>
+        <div class="path__photo"><Image src={photo.src} alt={photo.alt} widths={[400, 640, 800]} sizes="(max-width: 48rem) 92vw, 31vw" loading="lazy" /><span>{p.number}</span></div>
+        <div class="path__body"><p class="path__label">{p.label}</p><h3>{p.title}</h3><p class="path__text">{p.text}</p><span class="path__link">{p.cta}<Icon name="arrow" size={20} /></span></div>
+      </a>; })}
+    </div>
+    <p class="paths__more">Keeping your door in good shape? <a href="/garage-door-tune-up/">Explore maintenance</a><span aria-hidden="true"> · </span><a href="/commercial-garage-door-repair/">Commercial services</a></p>
+  </div>
+</section>
+<style>
+  .paths__heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.5rem; }
+  .paths__heading h2 { margin-top: .8rem; font-size: clamp(2.5rem, 4vw, 3.8rem); }
+  .paths__heading > p { max-width: 23rem; color: var(--ez-steel); font-size: 1.15rem; }
+  .paths__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .path { display: flex; flex-direction: column; background: white; border: 1px solid var(--ez-line); border-radius: var(--radius-lg); overflow: hidden; color: inherit; text-decoration: none; transition: border-color 160ms, box-shadow 160ms; }
+  .path:hover { border-color: var(--ez-orange); box-shadow: var(--shadow-card-hover); }
+  .path__photo { position: relative; overflow: hidden; }
+  .path__photo img { width: 100%; aspect-ratio: 16/11; object-fit: cover; transition: transform 220ms; }
+  .path:hover img { transform: scale(1.025); }
+  .path__photo > span { position: absolute; bottom: 0; left: 0; padding: .4rem 1rem; background: var(--ez-orange); color: var(--ez-ink); font-weight: 700; font-size: .85rem; font-variant-numeric: tabular-nums; }
+  .path__body { padding: 1.7rem; display: flex; flex: 1; flex-direction: column; }
+  .path__label { font-size: .8rem; font-weight: 600; color: var(--ez-orange-text); margin-bottom: .5rem; }
+  .path h3 { font-size: 2rem; }
+  .path__text { color: var(--ez-steel); margin-top: .8rem; }
+  .path__link { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: auto; padding-top: 1.5rem; color: var(--ez-ink); font-weight: 650; }
+  .path__link :global(svg) { color: var(--ez-orange-text); }
+  .paths__more { margin-top: 1.7rem; text-align: center; font-size: .95rem; }
+  .paths__more a { margin-left: .35rem; }
+  @media(max-width: 48rem) { .paths__heading { display: block; } .paths__heading > p { margin-top: 1rem; } .paths__grid { grid-template-columns: 1fr; } .path__photo img { aspect-ratio: 16/9; } .path__body { padding: 1.4rem; } }
+</style>

@@ -5,20 +5,27 @@
  * one tap away on every page.
  */
 import CallButton from "./CallButton.astro";
+import { hasPhone } from "../config/business";
 ---
 
 <div class="sticky-cta" role="region" aria-label="Quick contact" data-sticky-cta>
   <CallButton label="Call Now" class="sticky-cta__btn" />
-  <a href="/contact/#request" class="btn btn--ink sticky-cta__btn" data-track="estimate_click">
-    Request Service
+  <a href={hasPhone() ? "/contact/#request" : "/services/"} class="btn btn--outline sticky-cta__btn" data-track="mobile_secondary">
+    {hasPhone() ? "Request Service" : "Our Services"}
   </a>
 </div>
 
 <script>
   const bar = document.querySelector("[data-sticky-cta]");
   if (bar) {
-    const toggle = () => bar.classList.toggle("is-visible", window.scrollY > 160);
+    const toggle = () => {
+      const visible = window.scrollY > 160 && !document.activeElement?.closest("form[data-lead-form]");
+      bar.classList.toggle("is-visible", visible);
+      bar.toggleAttribute("inert", !visible);
+    };
     window.addEventListener("scroll", toggle, { passive: true });
+    document.addEventListener("focusin", toggle);
+    document.addEventListener("focusout", () => requestAnimationFrame(toggle));
     toggle();
   }
 </script>

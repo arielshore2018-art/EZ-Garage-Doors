@@ -11,6 +11,7 @@ import LandingLayout from "../layouts/LandingLayout.astro";
 import CallButton from "../components/CallButton.astro";
 import MicroTrustBar from "../components/MicroTrustBar.astro";
 import Icon from "../components/Icon.astro";
+import SectionImage from "../components/SectionImage.astro";
 import { APPROVED_CLAIMS } from "../config/business";
 
 const fastFixes = [
@@ -35,7 +36,8 @@ const service = {
   service={service}
 >
   <section class="fast-hero">
-    <div class="wrap fast-hero__inner">
+    <div class="wrap hero-split">
+      <div class="fast-hero__inner">
       <p class="eyebrow">Fast local service · Massachusetts</p>
       <h1>Fast Local Garage Door Service in Massachusetts</h1>
       <p class="fast-hero__sub">
@@ -52,6 +54,8 @@ const service = {
       <div class="fast-hero__trust">
         <MicroTrustBar items={[APPROVED_CLAIMS.years, APPROVED_CLAIMS.local, APPROVED_CLAIMS.writtenQuote]} />
       </div>
+      </div>
+      <SectionImage imageId="tech-arrival" ratio="4/3" priority widths={[640, 960, 1280]} sizes="(max-width: 56rem) 92vw, 520px" />
     </div>
   </section>
 

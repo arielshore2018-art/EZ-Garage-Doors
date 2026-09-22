@@ -1,97 +1,31 @@
 ---
-/**
- * "Why EZ Garage Doors" — four columns of verified reasons only.
- * Every line traces to APPROVED_CLAIMS / STATS / COVERAGE; nothing
- * banned (licensed, 24/7, same-day guarantee) appears here.
- */
 import Icon from "./Icon.astro";
-import SectionHeading from "./SectionHeading.astro";
-import { APPROVED_CLAIMS, STATS, COVERAGE, BUSINESS } from "../config/business";
-
-interface Props {
-  alt?: boolean;
-}
-
+import { BUSINESS, COVERAGE } from "../config/business";
+interface Props { alt?: boolean; }
 const { alt = true } = Astro.props;
-
-const reasons: { icon: "clipboard" | "pin" | "clock" | "star"; title: string; text: string }[] = [
-  {
-    icon: "clipboard",
-    title: APPROVED_CLAIMS.writtenQuote,
-    text: "You see the full price on paper and approve it before any work starts. The quote you approve is the price you pay — no teaser numbers, no surprise line items at the door.",
-  },
-  {
-    icon: "pin",
-    title: "One local Massachusetts team",
-    text: `${COVERAGE.line}. Not a national call center reselling your job — the people who quote your door are the people who fix it.`,
-  },
-  {
-    icon: "clock",
-    title: `${BUSINESS.yearsInBusiness} years of garage doors`,
-    text: `${STATS.repairs} repairs, ${STATS.springRepairs} spring replacements, and ${STATS.openerServices} opener services. Vans are stocked for the common failures so most repairs finish in one trip.`,
-  },
-  {
-    icon: "star",
-    title: APPROVED_CLAIMS.reviewsShort,
-    text: "Across Google, Yelp, Angi, and other platforms we can't edit. Read them at the source before you book.",
-  },
+const reasons = [
+  { title: "Understand what’s wrong.", text: "Start with a diagnosis and an explanation of the work your door needs." },
+  { title: "Know the price before you decide.", text: "Get a written quote before work begins. You stay in control of the decision." },
+  { title: "Work with a local company.", text: `A Massachusetts garage door company with ${BUSINESS.yearsInBusiness} years in business, serving all ${COVERAGE.counties} counties.` },
 ];
 ---
-
-<section class:list={["section", { "section--alt": alt }]} aria-labelledby="why-heading">
-  <div class="wrap">
-    <SectionHeading eyebrow="Why homeowners call EZ" title="A garage door company that puts the price in writing first" center />
-    <ul class="why">
-      {
-        reasons.map((r) => (
-          <li class="why__item">
-            <span class="why__icon"><Icon name={r.icon} size={28} /></span>
-            <h3>{r.title}</h3>
-            <p>{r.text}</p>
-          </li>
-        ))
-      }
-    </ul>
+<section class:list={["section", "why-ez", { "section--alt": alt }]} aria-labelledby="why-heading">
+  <div class="wrap why-ez__grid">
+    <div class="why-ez__intro"><p class="eyebrow">The EZ way</p><h2 id="why-heading">A broken door is stressful.<br /><span>Getting it fixed shouldn’t be.</span></h2><p>You shouldn’t have to become a garage door expert to make a confident decision.</p><a href="/about/">Get to know EZ Garage Doors <Icon name="arrow" size={18} /></a></div>
+    <ol class="why-ez__list">{reasons.map((r, i) => <li><span class="why-ez__number">0{i + 1}</span><div><h3>{r.title}</h3><p>{r.text}</p></div></li>)}</ol>
   </div>
 </section>
-
 <style>
-  .why {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: var(--space-5);
-  }
-
-  .why__item {
-    background: var(--ez-white);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
-    box-shadow: var(--shadow-card);
-  }
-
-  .why__icon {
-    display: inline-flex;
-    width: 3.25rem;
-    height: 3.25rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: var(--ez-orange);
-    color: var(--ez-white);
-    margin-bottom: var(--space-3);
-  }
-
-  .why__item h3 {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-2);
-  }
-
-  .why__item p {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    margin: 0;
-  }
+  .why-ez__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 7vw, 7rem); align-items: center; }
+  .why-ez h2 { margin-top: 1rem; font-size: clamp(2.5rem, 4vw, 3.75rem); }
+  .why-ez h2 span { color: var(--ez-orange-text); }
+  .why-ez__intro > p:not(.eyebrow) { margin-top: 1.5rem; max-width: 27rem; color: var(--ez-steel); font-size: 1.15rem; }
+  .why-ez__intro > a { display: inline-flex; align-items: center; gap: .7rem; margin-top: 1.5rem; font-weight: 650; min-height: 44px; }
+  .why-ez__list { list-style: none; padding: 0; }
+  .why-ez__list li { display: flex; gap: 1.25rem; padding-block: 1.7rem; border-bottom: 1px solid var(--ez-line); }
+  .why-ez__list li:first-child { border-top: 1px solid var(--ez-line); }
+  .why-ez__number { font-family: var(--font-display); font-size: 1.7rem; color: var(--ez-orange-text); }
+  .why-ez__list h3 { font-size: 1.7rem; }
+  .why-ez__list p { margin-top: .65rem; color: var(--ez-steel); }
+  @media(max-width: 48rem) { .why-ez__grid { grid-template-columns: 1fr; } }
 </style>

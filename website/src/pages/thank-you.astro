@@ -5,17 +5,21 @@
  */
 import SiteLayout from "../layouts/SiteLayout.astro";
 import CallButton from "../components/CallButton.astro";
+import { BUSINESS } from "../config/business";
+const ready = Boolean(BUSINESS.FORM_ENDPOINT);
 ---
 
 <SiteLayout
-  title="Request Received | EZ Garage Doors"
-  description="Your request has been received. A local garage door specialist from EZ Garage Doors will follow up."
+  title={ready ? "Request Received | EZ Garage Doors" : "Booking Preview | EZ Garage Doors"}
+  description={ready ? "A local garage door specialist from EZ Garage Doors will follow up." : "Online booking is not available yet. No request has been sent."}
   noindex
 >
   <section class="thanks">
     <div class="wrap wrap--narrow thanks__inner">
-      <p class="eyebrow">Request received</p>
-      <h1>Thanks — we have your request</h1>
+      <p class="eyebrow">{ready ? "Request received" : "Booking preview"}</p>
+      <h1>{ready ? "Thanks — we have your request" : "No request has been sent."}</h1>
+      {!ready && <p class="thanks__sub">Online booking is not available yet. This preview does not deliver service requests.</p>}
+      {ready && <>
       <p class="thanks__sub">
         A local garage door specialist will follow up. If the door situation gets worse in the
         meantime — stuck open, off track, spring snapped — call instead of waiting.
@@ -27,15 +31,12 @@ import CallButton from "../components/CallButton.astro";
       </ol>
       <CallButton label="Call EZ Garage Doors" size="lg" />
       <p class="cta-note">No pressure. One quote, in writing.</p>
+      </>}
       <p class="thanks__back"><a href="/">Back to the homepage</a></p>
     </div>
   </section>
 
-  <script>
-    // Conversion event for the thank-you state.
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: "lead_thank_you", page: location.pathname });
-  </script>
+  {/* A page visit is not proof of a delivered lead. Backend confirmation should own conversion tracking. */}
 </SiteLayout>
 
 <style>

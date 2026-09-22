@@ -52,7 +52,7 @@ h4 {
   color: var(--color-heading);
   line-height: 1.08;
   font-weight: 700;
-  letter-spacing: 0.005em;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -192,6 +192,20 @@ ol {
 
 @media (max-width: 62rem) {
   .page-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Text hero with an illustration on the right (hubs, guides, cost, fast service) */
+.hero-split {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+@media (max-width: 56rem) {
+  .hero-split {
     grid-template-columns: 1fr;
   }
 }
@@ -378,7 +392,7 @@ ol {
   font-size: var(--text-base);
   color: var(--ez-ink);
   background: var(--ez-white);
-  border: 1px solid #9a9a96;
+  border: 1px solid var(--ez-field-line);
   border-radius: var(--radius-sm);
   padding: 0.65rem 0.8rem;
   min-height: 48px;
@@ -496,7 +510,7 @@ ol {
 .link-list a::after {
   content: "›";
   color: var(--ez-orange);
-  font-size: 1.3rem;
+  font-size: var(--text-lg);
   line-height: 1;
 }
 
@@ -525,7 +539,7 @@ ol {
 
 .data-table thead th {
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: var(--text-base);
   color: var(--ez-ink);
   border-bottom: 2px solid var(--ez-ink);
 }
@@ -554,3 +568,23 @@ ol {
   border-color: var(--ez-orange);
   color: var(--ez-orange-text);
 }
+
+
+/* Shared brand rhythm, reading comfort, and accessible targets. */
+html { scroll-padding-top: 7rem; scroll-padding-bottom: 6rem; }
+[id] { scroll-margin-top: 7rem; }
+a, button, summary { touch-action: manipulation; }
+button, input, textarea, select { font: inherit; }
+.btn--call { color: var(--ez-ink); }
+.btn--call:hover { color: white; background: var(--ez-orange-text); }
+.btn--outline { border-width: 1px; }
+.eyebrow { font-family: var(--font-body); font-size: var(--text-2xs); letter-spacing: .13em; }
+.prose { font-size: 1.125rem; line-height: 1.75; }
+.prose h2 { margin-top: 2.7rem; }
+.page-grid > *, .hero-split > * { min-width: 0; }
+@media (max-width: 36rem) {
+  .btn--lg { padding-inline: 1.25rem; }
+  .prose { font-size: 1.0625rem; }
+}
+/* A missing phone routes to the form; don't show the same destination twice. */
+.btn[data-call-fallback="true"] + .btn[href="/contact/#request"] { display: none; }

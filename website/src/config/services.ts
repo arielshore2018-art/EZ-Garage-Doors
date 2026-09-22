@@ -79,4 +79,27 @@ export const emergencyService = {
 export const serviceBySlug = (slug: string): Service | undefined => services.find((s) => s.slug === slug);
 export const servicesInGroup = (group: ServiceGroup): Service[] => services.filter((s) => s.group === group);
 export const featuredServices = services.filter((s) => s.featured);
+
+/**
+ * Illustrative card photos for photo service grids (site-images ids).
+ * Real hardware where it exists; ai-model and stock only in illustrative
+ * positions. Services without an honest photo are deliberately absent —
+ * ServicePhotoGrid throws rather than guessing (see the shot list).
+ */
+export const SERVICE_CARD_IMAGES: Record<string, string> = {
+  "garage-door-repair": "hero-problem-door",
+  "broken-spring-repair": "broken-spring",
+  "garage-door-opener-repair": "opener-rail",
+  "garage-door-off-track-repair": "stuck-repair",
+  "emergency-garage-door-repair": "winter-garage-door-snowfall",
+  "garage-door-installation": "door-carriage",
+  "garage-door-replacement": "door-modern-house-two-windows",
+  "garage-door-wont-close": "door-open-garage-cars",
+  "garage-door-wont-open": "door-rusty-old",
+  "garage-door-cable-repair": "cable-drum-closeup",
+  "garage-door-panel-replacement": "before-worn-single",
+  "garage-door-tune-up": "door-detached-garage-driveway",
+  "smart-garage-door-opener": "smart-lock-phone-app",
+  "commercial-garage-door-repair": "commercial-loading-docks-blue",
+};
 export const dataServices = services.filter((s) => s.kind === "data");

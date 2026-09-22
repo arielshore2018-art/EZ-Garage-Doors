@@ -10,6 +10,9 @@ export interface BrandPage {
   kind: "opener" | "door";
   /** Manifest id in brand-logos.ts, or null when no logo asset exists. */
   logoId: string | null;
+  /** A door STYLE photo shown as context (door brands only). Captioned as a style,
+   *  never as this brand's door; never with a logo on it. */
+  contextImageId?: string;
   tagline: string;
   intro: string[];
   commonCalls: string[];
@@ -206,6 +209,7 @@ export const DOOR_BRANDS: BrandPage[] = [
     name: "Clopay",
     kind: "door",
     logoId: "clopay",
+    contextImageId: "door-carriage",
     tagline: "Residential steel, insulated, carriage-house, and modern doors",
     intro: [
       "Clopay is one of the largest residential garage door manufacturers in North America, with steel raised-panel doors, insulated sandwich-panel doors, carriage-house collections, and modern flush and glass designs. A large share of the doors we service in Massachusetts carry a Clopay label on the end stile.",
@@ -231,6 +235,7 @@ export const DOOR_BRANDS: BrandPage[] = [
     name: "Amarr",
     kind: "door",
     logoId: "amarr",
+    contextImageId: "door-steel",
     tagline: "Steel and insulated residential doors plus a full commercial line",
     intro: [
       "Amarr manufactures residential steel and insulated garage doors — traditional raised-panel, carriage-house, and modern collections — and a broad commercial line of sectional and rolling doors. We see Amarr doors on Massachusetts homes and on commercial buildings alike.",
@@ -254,6 +259,7 @@ export const DOOR_BRANDS: BrandPage[] = [
     name: "Haas Door",
     kind: "door",
     logoId: "haas",
+    contextImageId: "door-charcoal",
     tagline: "Ohio-built residential and commercial doors, including heavy insulated models",
     intro: [
       "Haas Door builds residential and commercial garage doors in Ohio, including well-regarded insulated steel and aluminum doors. Their residential lines cover traditional, carriage-house, and contemporary styles, and their commercial doors are common on service buildings and firehouses.",
@@ -277,6 +283,7 @@ export const DOOR_BRANDS: BrandPage[] = [
     name: "Wayne Dalton",
     kind: "door",
     logoId: "wayne-dalton",
+    contextImageId: "door-white-carriage",
     tagline: "Residential doors with a distinctive TorqueMaster spring system on many models",
     intro: [
       "Wayne Dalton makes residential steel, insulated, carriage-house, and modern garage doors. Many Wayne Dalton doors use the TorqueMaster spring system — springs enclosed inside the torsion tube — which behaves differently from standard exposed torsion springs and needs a technician who knows it.",
@@ -300,6 +307,7 @@ export const DOOR_BRANDS: BrandPage[] = [
     name: "Raynor",
     kind: "door",
     logoId: "raynor",
+    contextImageId: "after-white-raised",
     tagline: "Residential and commercial doors from an Illinois manufacturer with a dealer network",
     intro: [
       "Raynor manufactures residential steel and insulated doors and a full commercial line. Raynor doors in Massachusetts are typically installed through their dealer network; we are not a Raynor dealer, but we service Raynor doors like any other brand.",
@@ -320,6 +328,7 @@ export const DOOR_BRANDS: BrandPage[] = [
     name: "C.H.I. Overhead Doors",
     kind: "door",
     logoId: "chi",
+    contextImageId: "door-wood",
     tagline: "Residential and commercial sectional doors with a wide range of finishes",
     intro: [
       "C.H.I. Overhead Doors makes residential steel, insulated, carriage-house, and modern doors — known for a wide finish range including wood-look — plus commercial sectional and rolling doors.",
@@ -340,6 +349,7 @@ export const DOOR_BRANDS: BrandPage[] = [
     name: "Hörmann",
     kind: "door",
     logoId: "hormann",
+    contextImageId: "door-black-windows",
     tagline: "German manufacturer with residential steel and insulated doors sold in North America",
     intro: [
       "Hörmann is a German door manufacturer with a North American residential line of steel and insulated garage doors, including contemporary and traditional designs.",

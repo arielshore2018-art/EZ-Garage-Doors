@@ -1,46 +1,21 @@
 ---
-/**
- * Short cold-traffic lead form: name, phone, town, issue (+ optional
- * photo & callback time). Single column, real labels, inline
- * validation, honeypot, TCPA-conscious consent line. Hidden UTM +
- * landing-page fields are filled by the BaseLayout tracking script.
- *
- * Field names are a CRM contract — do not rename.
- *
- * TODO: Set BUSINESS.FORM_ENDPOINT before launch. While it is empty the
- * form redirects to /thank-you/ so UX and conversion tracking are testable,
- * but no lead is delivered — this is a launch blocker, not a live form.
- */
-import { BUSINESS } from "../config/business";
-
+import { BUSINESS, hasPhone } from "../config/business";
 interface Props {
   heading?: string;
   submitLabel?: string;
   showPhotoField?: boolean;
   context?: string;
 }
-
-const {
-  heading = "Request Service or a Written Estimate",
-  submitLabel = "Request Service",
-  showPhotoField = true,
-  context = "general",
-} = Astro.props;
-
+const { heading = "Tell us about your door", submitLabel = "Request Service", showPhotoField = true, context = "general" } = Astro.props;
 const uid = context.replace(/[^a-z0-9]/gi, "-");
+const ready = Boolean(BUSINESS.FORM_ENDPOINT);
 ---
-
 <div class="lead-form" id="request">
+  <p class="eyebrow">Your next step</p>
   <h3>{heading}</h3>
-  <p class="lead-form__note">No spam. No pressure. One quote, in writing.</p>
-  <form
-    method="POST"
-    action={BUSINESS.FORM_ENDPOINT || "/thank-you/"}
-    enctype={showPhotoField ? "multipart/form-data" : undefined}
-    data-lead-form
-    data-form-context={context}
-    novalidate
-  >
+  <p class="lead-form__note">A few details now. A clear conversation next.</p>
+  {!ready && <p class="lead-form__preview">Online requests are not available yet. This form is a preview and does not send your details.{hasPhone() && <> Please <a href={`tel:${BUSINESS.PRIMARY_PHONE_TEL}`}>call us for service</a>.</>}</p>}
+  <form method="POST" action={BUSINESS.FORM_ENDPOINT || "#request"} enctype={showPhotoField ? "multipart/form-data" : undefined} data-lead-form data-form-context={context} data-form-ready={String(ready)}>
     <input type="hidden" name="form_context" value={context} />
     <input type="hidden" name="landing_page" data-landing-page />
     <input type="hidden" name="utm_source" data-utm="utm_source" />
@@ -48,206 +23,120 @@ const uid = context.replace(/[^a-z0-9]/gi, "-");
     <input type="hidden" name="utm_campaign" data-utm="utm_campaign" />
     <input type="hidden" name="utm_term" data-utm="utm_term" />
     <input type="hidden" name="utm_content" data-utm="utm_content" />
-
-    <!-- honeypot: humans never see it; bots fill it -->
-    <p class="lead-form__hp" aria-hidden="true">
-      <label for={`hp-${uid}`}>Company</label>
-      <input type="text" id={`hp-${uid}`} name="company" tabindex="-1" autocomplete="off" />
-    </p>
-
-    <div class="field">
-      <label for={`name-${uid}`}>Name</label>
-      <input type="text" id={`name-${uid}`} name="name" autocomplete="name" required />
-      <span class="field-error" data-error-for="name" aria-live="polite"></span>
+    <p class="lead-form__hp" aria-hidden="true"><label for={`hp-${uid}`}>Company</label><input type="text" id={`hp-${uid}`} name="company" tabindex="-1" autocomplete="off" /></p>
+    <div class="lead-form__row">
+      <div class="field">
+        <label for={`name-${uid}`}>Your name</label>
+        <input type="text" id={`name-${uid}`} name="name" autocomplete="name" required aria-describedby={`name-error-${uid}`} />
+        <span class="field-error" id={`name-error-${uid}`} data-error-for="name" aria-live="polite"></span>
+      </div>
+      <div class="field">
+        <label for={`phone-${uid}`}>Phone number</label>
+        <input type="tel" id={`phone-${uid}`} name="phone" autocomplete="tel" inputmode="tel" required aria-describedby={`phone-error-${uid}`} />
+        <span class="field-error" id={`phone-error-${uid}`} data-error-for="phone" aria-live="polite"></span>
+      </div>
     </div>
-
     <div class="field">
-      <label for={`phone-${uid}`}>Phone</label>
-      <input type="tel" id={`phone-${uid}`} name="phone" autocomplete="tel" inputmode="tel" required />
-      <span class="field-error" data-error-for="phone" aria-live="polite"></span>
+      <label for={`town-${uid}`}>Massachusetts town or ZIP</label>
+      <input type="text" id={`town-${uid}`} name="town" autocomplete="address-level2" required aria-describedby={`town-error-${uid}`} />
+      <span class="field-error" id={`town-error-${uid}`} data-error-for="town" aria-live="polite"></span>
     </div>
-
     <div class="field">
-      <label for={`town-${uid}`}>Town or ZIP (Massachusetts)</label>
-      <input type="text" id={`town-${uid}`} name="town" autocomplete="postal-code" required />
-      <span class="field-error" data-error-for="town" aria-live="polite"></span>
+      <label for={`issue-${uid}`}>What can we help with?</label>
+      <textarea id={`issue-${uid}`} name="issue" rows="3" required placeholder="For example, my door won’t close…" aria-describedby={`issue-error-${uid}`}></textarea>
+      <span class="field-error" id={`issue-error-${uid}`} data-error-for="issue" aria-live="polite"></span>
     </div>
-
-    <div class="field">
-      <label for={`issue-${uid}`}>What do you need help with?</label>
-      <textarea
-        id={`issue-${uid}`}
-        name="issue"
-        rows="3"
-        required
-        placeholder="e.g. Door won't close / loud bang, door feels heavy / want a new door"></textarea>
-      <span class="field-error" data-error-for="issue" aria-live="polite"></span>
-    </div>
-
-    <div class="field">
-      <label for={`callback-${uid}`}>
-        Preferred callback time <span class="lead-form__optional">(optional)</span>
-      </label>
-      <input type="text" id={`callback-${uid}`} name="callback_time" placeholder="e.g. after 4pm" />
-    </div>
-
-    {
-      showPhotoField && (
-        <div class="field">
-          <label for={`photo-${uid}`}>
-            Photo of the door or opener{" "}
-            <span class="lead-form__optional">(optional, speeds up your quote)</span>
-          </label>
-          <input type="file" id={`photo-${uid}`} name="photo" accept="image/*" />
-        </div>
-      )
-    }
-
-    <button type="submit" class="btn btn--call btn--lg lead-form__submit" data-track="form_submit_click">
-      {submitLabel}
-    </button>
-
-    <p class="lead-form__consent">
-      By submitting, you agree that {BUSINESS.name} may contact you about your request.
-      Message/data rates may apply. Consent is not required to purchase. See our
-      <a href="/privacy-policy/">Privacy Policy</a>.
-    </p>
+    <details class="lead-form__extras">
+      <summary>Add {showPhotoField ? "a photo or " : ""}a preferred callback time <span>(optional)</span></summary>
+      <div class="field"><label for={`callback-${uid}`}>Preferred callback time</label><input type="text" id={`callback-${uid}`} name="callback_time" placeholder="For example, after 4 pm…" /></div>
+      {showPhotoField && <div class="field"><label for={`photo-${uid}`}>Photo of the door or opener</label><input type="file" id={`photo-${uid}`} name="photo" accept="image/*" /></div>}
+    </details>
+    <button type={ready ? "submit" : "button"} class="btn btn--call btn--lg lead-form__submit" data-track="form_submit_click">{ready ? submitLabel : "Preview request"} <span aria-hidden="true">→</span></button>
+    <p class="lead-form__status" data-form-status role="status" tabindex="-1"></p>
+    <p class="lead-form__consent">By submitting, you agree that {BUSINESS.name} may contact you about your request. Message/data rates may apply. Consent is not required to purchase. <a href="/privacy-policy/">Privacy Policy</a>.</p>
   </form>
 </div>
-
 <script>
-  /**
-   * Inline validation + duplicate-submit guard + honeypot.
-   * Bound on document in the CAPTURE phase so an invalid submit is
-   * stopped before the global tracking/fallback handlers see it.
-   */
-  const MESSAGES: Record<string, string> = {
-    name: "Please tell us your name.",
-    phone: "We need a phone number to call you back.",
-    town: "Tell us the town or ZIP so we know you're in our area.",
-    issue: "A few words about the problem helps us come prepared.",
+  const messages: Record<string, string> = {
+    name: "Please enter your name.",
+    phone: "Enter a valid phone number, including the area code.",
+    town: "Enter your Massachusetts town or ZIP.",
+    issue: "Tell us a little about what you need.",
   };
-
-  const validate = (form: HTMLFormElement): boolean => {
-    let firstBad: HTMLElement | null = null;
-    for (const nameAttr of Object.keys(MESSAGES)) {
-      const input = form.elements.namedItem(nameAttr) as HTMLInputElement | HTMLTextAreaElement | null;
-      const errorEl = form.querySelector<HTMLElement>(`[data-error-for="${nameAttr}"]`);
-      if (!input || !errorEl) continue;
-      const bad = input.hasAttribute("required") && input.value.trim().length === 0;
-      input.setAttribute("aria-invalid", bad ? "true" : "false");
-      errorEl.textContent = bad ? MESSAGES[nameAttr] : "";
-      if (bad && !firstBad) firstBad = input as HTMLElement;
+  const invalid = (input: HTMLInputElement | HTMLTextAreaElement) => {
+    const value = input.value.trim();
+    if (!value) return true;
+    if (input.name === "phone") {
+      const digits = value.replace(/\D/g, "");
+      return digits.length < 10 || digits.length > 15 || !/^[+\d\s().-]+$/.test(value);
     }
-    if (firstBad) firstBad.focus();
-    return !firstBad;
+    return false;
   };
-
-  document.addEventListener(
-    "submit",
-    (e) => {
-      const form = e.target as HTMLFormElement;
-      if (!form.matches("form[data-lead-form]")) return;
-
-      // honeypot: silently drop bot submissions
-      const hp = form.elements.namedItem("company") as HTMLInputElement | null;
-      if (hp && hp.value) {
-        e.preventDefault();
-        e.stopPropagation();
+  document.querySelectorAll<HTMLFormElement>("form[data-lead-form]").forEach((form) => {
+    form.noValidate = true;
+    const button = form.querySelector<HTMLButtonElement>(".lead-form__submit")!;
+    button.type = "submit";
+    const originalLabel = button.innerHTML;
+    const status = form.querySelector<HTMLElement>("[data-form-status]")!;
+    const landing = form.elements.namedItem("landing_page") as HTMLInputElement;
+    landing.value = location.pathname;
+    form.addEventListener("submit", (event) => {
+      const hp = form.elements.namedItem("company") as HTMLInputElement;
+      if (hp.value || button.dataset.submitting === "1") { event.preventDefault(); return; }
+      let firstBad: HTMLInputElement | HTMLTextAreaElement | null = null;
+      for (const name of Object.keys(messages)) {
+        const field = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
+        const bad = invalid(field);
+        field.setAttribute("aria-invalid", String(bad));
+        form.querySelector<HTMLElement>(`[data-error-for="${name}"]`)!.textContent = bad ? messages[name] : "";
+        if (bad && !firstBad) firstBad = field;
+      }
+      if (firstBad) { event.preventDefault(); firstBad.focus(); return; }
+      if (form.dataset.formReady !== "true") {
+        event.preventDefault();
+        status.textContent = "Preview only — your request has not been sent. Online booking is not available yet.";
+        status.focus();
         return;
       }
-
-      if (!validate(form)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return;
+      button.dataset.submitting = "1";
+      button.disabled = true;
+      button.textContent = "Sending…";
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "form_submit", context: form.dataset.formContext, page: location.pathname });
+    });
+    form.addEventListener("input", (event) => {
+      const field = event.target;
+      if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) return;
+      if (field.getAttribute("aria-invalid") === "true" && !invalid(field)) {
+        field.setAttribute("aria-invalid", "false");
+        const error = form.querySelector<HTMLElement>(`[data-error-for="${field.name}"]`);
+        if (error) error.textContent = "";
       }
-
-      // duplicate-submit guard
-      const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      if (btn) {
-        if (btn.dataset.submitting === "1") {
-          e.preventDefault();
-          e.stopPropagation();
-          return;
-        }
-        btn.dataset.submitting = "1";
-        btn.setAttribute("aria-disabled", "true");
-        btn.textContent = "Sending…";
-      }
-    },
-    true
-  );
-
-  // clear an error as soon as the visitor fixes the field
-  document.addEventListener("input", (e) => {
-    const input = e.target as HTMLInputElement;
-    if (!input.name || !input.closest("form[data-lead-form]")) return;
-    if (input.getAttribute("aria-invalid") === "true" && input.value.trim()) {
-      input.setAttribute("aria-invalid", "false");
-      const err = input
-        .closest("form")
-        ?.querySelector<HTMLElement>(`[data-error-for="${input.name}"]`);
-      if (err) err.textContent = "";
-    }
-  });
-
-  // landing-page identifier for the lead record
-  document.querySelectorAll<HTMLInputElement>("input[data-landing-page]").forEach((i) => {
-    i.value = location.pathname;
+    });
+    window.addEventListener("pageshow", () => {
+      delete button.dataset.submitting;
+      button.disabled = false;
+      button.innerHTML = originalLabel;
+    });
   });
 </script>
-
 <style>
-  .lead-form {
-    background: var(--ez-white);
-    border: 1px solid var(--ez-line);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
-    padding: clamp(1.25rem, 3vw, 2rem);
-    scroll-margin-top: 6rem;
-  }
-
-  .lead-form h3 {
-    margin-bottom: var(--space-1);
-  }
-
-  .lead-form__note {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-4);
-  }
-
-  .lead-form form > .field {
-    margin-bottom: var(--space-3);
-  }
-
-  .lead-form__hp {
-    position: absolute;
-    left: -9999px;
-    top: auto;
-    height: 1px;
-    overflow: hidden;
-    margin: 0;
-  }
-
-  .lead-form__optional {
-    font-weight: 400;
-    color: var(--color-text-muted);
-  }
-
-  input[type="file"] {
-    padding: 0.5rem;
-  }
-
-  .lead-form__submit {
-    width: 100%;
-    margin-top: var(--space-2);
-  }
-
-  .lead-form__consent {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    margin-top: var(--space-3);
-  }
+  .lead-form { background: white; color: var(--ez-charcoal); border: 1px solid var(--ez-line); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: clamp(1.4rem, 3vw, 2.4rem); }
+  .lead-form h3 { font-size: var(--text-2xl); margin-top: .5rem; }
+  .lead-form__note { color: var(--ez-steel); margin: .5rem 0 1.5rem; }
+  .lead-form__preview { background: var(--ez-alt); border: 1px solid var(--ez-line); font-size: var(--text-sm); padding: .75rem 1rem; margin-bottom: 1.3rem; border-radius: var(--radius-sm); }
+  .lead-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .lead-form form > .field, .lead-form__row { margin-bottom: .8rem; }
+  .field > label { font-family: var(--font-body); font-size: var(--text-sm); font-weight: 650; }
+  .field-error:empty { display: none; }
+  .lead-form__extras { padding-block: .5rem 1rem; }
+  .lead-form__extras summary { cursor: pointer; min-height: 44px; font-size: var(--text-sm); font-weight: 600; color: var(--ez-charcoal); }
+  .lead-form__extras summary span { font-weight: 400; }
+  .lead-form__extras .field { margin: .65rem 0; }
+  .lead-form__hp { position: absolute; left: -9999px; height: 1px; overflow: hidden; margin: 0; }
+  .lead-form__submit { width: 100%; justify-content: space-between; }
+  .lead-form__submit:disabled { cursor: wait; opacity: .7; }
+  .lead-form__status:not(:empty) { margin-top: 1rem; padding: .8rem; background: var(--ez-tint); font-size: var(--text-sm); }
+  .lead-form__consent { font-size: var(--text-2xs); line-height: 1.5; color: var(--ez-steel); margin-top: 1rem; }
+  @media(max-width: 36rem) { .lead-form__row { grid-template-columns: 1fr; gap: .8rem; } }
 </style>

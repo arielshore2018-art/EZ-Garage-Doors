@@ -19,7 +19,7 @@ const { heading = "Related pages", eyebrow = "Keep reading", items, alt = true }
 
 <section class:list={["section section--tight", { "section--alt": alt }]} aria-labelledby="related-heading">
   <div class="wrap">
-    <SectionHeading eyebrow={eyebrow} title={heading} />
+    <SectionHeading id="related-heading" eyebrow={eyebrow} title={heading} />
     <ul class="related">
       {
         items.map((i) => (

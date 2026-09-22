@@ -1,0 +1,107 @@
+---
+/**
+ * One image, one way: a rounded figure fed by the site-images manifest.
+ * Used for county/town banners, guide illustrations, hub banners, and
+ * in-section illustrations. Lazy by default; pass `priority` only when
+ * the image is the page's LCP element.
+ *
+ * This component is for ILLUSTRATION. Proof modules (WorkGallery,
+ * BeforeAfterGallery, FinishedDoorGallery) have their own components
+ * and accept provenance "real" only.
+ */
+import { Image } from "astro:assets";
+import { img, peek } from "../config/site-images";
+
+interface Props {
+  imageId: string;
+  /** CSS aspect-ratio of the frame. */
+  ratio?: "16/9" | "16/6" | "3/2" | "4/3" | "1/1";
+  /** "banner" = wide strip (16:6 default); "figure" = content illustration. */
+  variant?: "figure" | "banner";
+  priority?: boolean;
+  caption?: string;
+  /** Override the manifest alt (rare — keep it a scene description). */
+  alt?: string;
+  widths?: number[];
+  sizes?: string;
+  class?: string;
+  /* forward the parent's scope attribute so its scoped CSS matches this root */
+  [key: `data-astro-cid-${string}`]: unknown;
+}
+
+const {
+  imageId,
+  variant = "figure",
+  ratio = variant === "banner" ? "16/6" : "16/9",
+  priority = false,
+  caption,
+  alt,
+  widths = variant === "banner" ? [720, 1200, 1600] : [480, 880, 1320],
+  sizes = variant === "banner" ? "(max-width: 62rem) 92vw, 1150px" : "(max-width: 62rem) 92vw, 880px",
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const image = img(imageId);
+/* peek(): read the source width without pinning the original into dist/. */
+const sourceWidth = peek(image.src).width;
+const usable = widths.filter((w) => w <= sourceWidth);
+const finalWidths = usable.length > 0 ? usable : [sourceWidth];
+---
+
+<figure
+  class:list={["simg", `simg--${variant}`, className]}
+  {...rest}
+  style={`--simg-ratio:${ratio};--simg-fp:${image.focalPointDesktop ?? "50% 50%"};--simg-fp-m:${image.focalPointMobile ?? image.focalPointDesktop ?? "50% 50%"};`}
+>
+  <div class="simg__frame">
+    <Image
+      src={image.src}
+      alt={alt ?? image.alt}
+      widths={finalWidths}
+      sizes={sizes}
+      loading={priority ? "eager" : "lazy"}
+      fetchpriority={priority ? "high" : undefined}
+      decoding={priority ? "sync" : "async"}
+    />
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .simg {
+    margin: 0;
+  }
+
+  .simg__frame {
+    aspect-ratio: var(--simg-ratio);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--ez-alt-deep);
+    box-shadow: var(--shadow-card);
+  }
+
+  .simg__frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--simg-fp);
+  }
+
+  .simg figcaption {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 48rem) {
+    .simg--banner .simg__frame {
+      aspect-ratio: 16 / 8;
+      border-radius: var(--radius-md);
+    }
+
+    .simg__frame :global(img) {
+      object-position: var(--simg-fp-m);
+    }
+  }
+</style>

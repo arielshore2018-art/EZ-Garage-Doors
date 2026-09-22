@@ -6,6 +6,7 @@
  *                    orange-on-orange ever renders.
  */
 import CallButton from "./CallButton.astro";
+import { hasPhone } from "../config/business";
 
 interface Props {
   heading?: string;
@@ -37,9 +38,9 @@ const {
     <p class="cta-final__sub">{sub}</p>
     <div class="cta-final__actions">
       <CallButton label={callLabel} size="lg" />
-      <a href={secondaryHref} class="btn btn--inverse-outline btn--lg" data-track="estimate_click">
+      {(hasPhone() || !secondaryHref.startsWith("/contact/")) && <a href={secondaryHref} class="btn btn--inverse-outline btn--lg" data-track="estimate_click">
         {secondaryLabel}
-      </a>
+      </a>}
     </div>
     <p class="cta-note">{note}</p>
   </div>

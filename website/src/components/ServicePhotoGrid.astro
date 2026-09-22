@@ -1,0 +1,202 @@
+---
+/**
+ * Photo service cards — the "what does your garage door need?" grid.
+ * ILLUSTRATIVE only: real hardware photos where they exist, ai-model or
+ * stock imagery in illustrative positions. Never a proof module.
+ * Card photos come from SERVICE_CARD_IMAGES (services.ts) unless a page
+ * passes an override, e.g. to avoid repeating a photo already on the page.
+ */
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { img } from "../config/site-images";
+import { services, SERVICE_CARD_IMAGES, type Service } from "../config/services";
+
+interface Props {
+  heading: string;
+  eyebrow?: string;
+  intro?: string;
+  /** Service slugs, in display order. */
+  slugs: string[];
+  /** slug → manifest image id overrides. */
+  images?: Record<string, string>;
+  /** Text-only links rendered as pills under the grid. */
+  more?: Service[];
+  moreLabel?: string;
+  alt?: boolean;
+  id?: string;
+}
+
+const {
+  heading,
+  eyebrow = "What we do",
+  intro,
+  slugs,
+  images = {},
+  more = [],
+  moreLabel = "Also available",
+  alt = false,
+  id = "photo-services-heading",
+} = Astro.props;
+
+const cards = slugs.map((slug) => {
+  const s = services.find((x) => x.slug === slug);
+  if (!s) throw new Error(`ServicePhotoGrid: unknown service slug "${slug}"`);
+  const imageId = images[slug] ?? SERVICE_CARD_IMAGES[slug];
+  if (!imageId) throw new Error(`ServicePhotoGrid: no card image for "${slug}"`);
+  return { s, image: img(imageId) };
+});
+---
+
+<section class:list={["section", { "section--alt": alt }]} aria-labelledby={id}>
+  <div class="wrap">
+    <SectionHeading id={id} eyebrow={eyebrow} title={heading} intro={intro} />
+    <ul class="spg">
+      {
+        cards.map(({ s, image }) => (
+          <li>
+            <a href={`/${s.slug}/`} class="spg__card" data-track={`svc_photo_${s.slug}`}>
+              <span class="spg__photo">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  widths={[420, 640, 860]}
+                  sizes="(max-width: 48rem) 92vw, (max-width: 62rem) 46vw, 380px"
+                  loading="lazy"
+                  style={`--fp:${image.focalPointDesktop ?? "50% 50%"}`}
+                />
+              </span>
+              <span class="spg__body">
+                <span class="spg__title">{s.title}</span>
+                <span class="spg__blurb">{s.blurb}</span>
+                <span class="spg__go">Learn about {s.short.toLowerCase()} <Icon name="arrow" size={16} /></span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    {
+      more.length > 0 && (
+        <nav class="spg__more" aria-label={moreLabel}>
+          <span class="spg__more-label">{moreLabel}:</span>
+          {more.map((s) => (
+            <a href={`/${s.slug}/`} data-track={`svc_more_${s.slug}`}>{s.title}</a>
+          ))}
+        </nav>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .spg {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: var(--space-4);
+  }
+
+  .spg__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--ez-white);
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .spg__card:hover {
+    border-color: var(--ez-orange);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .spg__photo {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--ez-alt-deep);
+  }
+
+  .spg__photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--fp);
+    transition: transform 220ms ease;
+  }
+
+  .spg__card:hover :global(img) {
+    transform: scale(1.025);
+  }
+
+  .spg__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 1.4rem 1.5rem 1.5rem;
+    flex: 1;
+  }
+
+  .spg__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-xl);
+    color: var(--ez-ink);
+    line-height: 1.15;
+  }
+
+  .spg__blurb {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .spg__go {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ez-orange-text);
+  }
+
+  .spg__more {
+    margin-top: var(--space-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .spg__more-label {
+    font-weight: 700;
+    color: var(--ez-ink);
+  }
+
+  .spg__more a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--ez-line);
+    border-radius: var(--radius-pill);
+    background: var(--ez-white);
+    color: var(--ez-ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .spg__more a:hover {
+    border-color: var(--ez-orange);
+    color: var(--ez-orange-text);
+  }
+</style>

@@ -124,3 +124,64 @@ Owner brief: copy the structure and design of a1garage.com, focus on Massachuset
 
 ## Rollback ladder
 This branch (undeployed) → PROJECTED LIGHT = production (`v2026.08-projected-light`) → Orange Editorial Utility (`v2026.07-orange-editorial`) → original (`082b8a8`).
+
+---
+
+# Addendum — Site imagery pass (2026-09-17, branch `feat/site-imagery`, NOT committed, NOT deployed)
+Source brief: `docs/ez-image-implementation-brief.md`. Branch is cut from `rebuild/massachusetts-a1-architecture`; the deploy gate above is unchanged and nothing here authorizes a deploy.
+
+## What changed
+- **Manifest:** `site-images.ts` 30 → 75 entries; every entry carries `provenance` (`real` 18 · `ai-model` 12 · `stock` 45). `realImg()` / `assertRealMeta()` make `WorkGallery`, `BeforeAfterGallery` and `FinishedDoorGallery` **throw at build time** on any non-real image. `ReviewProof` takes no image props by design.
+- **New component:** `SectionImage.astro` (banner 16:6 / figure 16:9, manifest-id only, lazy unless `priority`, responsive widths filtered to the source width). `.hero-split` added to `base.css` for hub/company heroes.
+- **Coverage:** 14 county pages get 14 distinct banners; all 351 town pages inherit their county's banner; 87 guides get a lede figure (category default + 22 per-article overrides) and `image` in Article JSON-LD; 9 guide categories, guides hub, service-areas hub, services hub, contact, about, cost guide, same-day, emergency, commercial (hero + 4 door-type cards), 6 style pages and 7 door-brand pages get illustrations; data-service heroes de-duplicated.
+- **Stock vetting:** 5 of the 50 supplied photos were not used (third-party logos; three "Massachusetts" photos that are actually CT, NH and Québec; one verified spare). Several manifest labels were wrong (e.g. the "Hampden" photo is Shelburne Falls, Franklin County) — corrected facts are in `docs/ez-asset-inventory.md`. **Hampden County has no verified photo** and runs on a place-neutral interim image.
+- **Bugs found and fixed along the way:** (1) `Icon`, `Breadcrumbs` (and the new `SectionImage`) did not forward Astro's `data-astro-cid-*` scope attribute, so parents' scoped CSS never matched them — this was the cause of a 423px layout at 390px on every page with `CountyGrid`; (2) reading any field of an imported `ImageMetadata` pins the full-size original into `dist/` (51 → 157 MB) — fixed with `peek()` (`.clone`), dist back to 88 MB; (3) HTML compression ate the space before an expression: "company.15 Years" in the footer (519 pages) and "© 2026EZ" in the landing footer (26 pages), "See ourPrivacy Policy" in the lead-form consent line, and three "the⟨link/bold⟩" joins on the install, cost-guide and pricing blocks — all fixed, and a `dist/` scan for glued words now returns only brand names (LiftMaster, TorqueMaster, HomeLink); (4) `.toLowerCase()` flattened "Massachusetts" on About and the Massachusetts guide category — `inlineClaim()` in `business.ts`; (5) a copy of the brief in `website/public/` would have been published — removed; (6) design-detector triage on `base.css`: form-control border `#9a9a96` measured 2.82:1 on white (under the 3:1 WCAG 1.4.11 minimum) → new token `--ez-field-line: #8a8a86` (3.47:1 on white, 3.15:1 on alt), and two off-ramp font sizes snapped to `--text-lg` / `--text-base`. Detector: 0 findings, no suppressions added.
+
+## Verification
+- `npm run build` → **545 pages**; `npx astro check` → **0 errors, 0 warnings**; `dist/` 88 MB.
+- `npm run qa:images` (new, `website/scripts/qa-images.mjs`) → PASS: 0 disallowed imageless pages (12 imageless by design: reviews, legal ×2, thank-you, brands hub, 7 opener-brand pages); 14/14 distinct county banners; 351/351 towns inherit; 0 stock in proof modules; 0 images missing alt or dimensions; PPC 640w hero candidates 16–42 KB. One documented interim duplicate: `opener-rail` on the openers hub, opener repair and sensor repair (shot list items 6–7).
+- Static crawl: 545 pages, 520 indexable, sitemap 520 (unchanged), 0 broken internal links, 0 H1 problems, 0 Connecticut references; the 33 metadata notes are the previously accepted long titles.
+- Responsive: 24 URLs × 390/430/768/1024 = 96 overflow checks, 0 problems (measured `scrollWidth` vs `clientWidth` — under mobile emulation `innerWidth` expands with the layout and hides overflow). Playwright sweep of 22 changed URLs × 390/768/1440: 0 console errors, 0 failed requests, 0 broken images; all lazy images load on scroll.
+- Visual pass at 390/768/1440: barnstable-county, boston-ma, frozen-shut guide, commercial, contact (brief's five) plus cost guide, about, carriage-house style, Clopay, services, same-day, emergency.
+- Performance (Chrome DevTools trace, mobile 390×844 @3x, 4× CPU, Fast 4G, built preview): **county page LCP 1,834 ms, CLS 0.00** (target ≤2.5 s); **PPC page LCP 1,130 ms, CLS 0.00** (target ≤2.0 s).
+
+## Not done
+- Brief §4 hardware images (roller, hinge, track, sensor, remote, weather seal, opener unit) were **not generated** — no image-generation key is available in this environment. Those pages keep honest interim heroes; prompts stay in the brief, real-photo equivalents are on the shot list.
+- No commit, push or deploy (per the brief).
+
+---
+
+# Addendum — Area-page imagery, U1-style (2026-09-21, branch `feat/site-imagery`, NOT committed, NOT deployed)
+Owner report: `/service-areas/hampshire-county/` "has no images, and it's like that on the other pages — not like u1garagedoors.com." Cause: county/town pages carried one lazy regional banner after a long text opening. Fix applied at template level so it reaches all 365 county/town pages and all 14 brand pages.
+
+## What changed
+- **`AreaHero.astro`** (new): the county's location-verified photo as a full-bleed hero behind an ink gradient, white H1, dark breadcrumbs (`Breadcrumbs tone="dark"`), CTA, fact row, rating line, and a photo chip naming the photo's real location + county ("Northampton · Hampshire County"), omitted for the place-neutral Hampden image. Under 56rem the photo is a 16:10 strip above the ink copy panel. Eager + `fetchpriority="high"`, `sizes="100vw"`, quality 62, srcset 640/960/1280/1600/source.
+- **`ServicePhotoGrid.astro`** (new) + `SERVICE_CARD_IMAGES` in `services.ts`: six photo service cards (repair, springs, opener repair, off-track, emergency, new door) plus text pills for six more on every county/town page; three cards on every brand page (opener brands finally have photography — they were logo-card-only).
+- **County/town template order:** AreaHero → ProofColumns → ServicePhotoGrid → local context + sidebar → BeforeAfterGallery (2 real pairs, captioned by style, intro says "captioned by door style", never town-attributed) → TrustLogoStrip → FAQ → orange CTA. `BeforeAfterGallery` gained an `intro` prop.
+- `scripts/qa-images.mjs`: county coverage now reads the `AreaHero` image; opener-brand pages removed from the imageless allowlist. `.claude/launch.json`: `ez-website-preview-4322` (built-site preview on :4322 while the dev server holds :4321).
+
+## Verification
+- `npm run build` 545 pages · `npx astro check` 0 errors · `npm run qa:images` PASS (14/14 distinct county heroes, 351/351 towns inherit, imageless-by-design 12 → 5, 0 stock in proof modules, all images alt + dimensions) · crawl 545/520/sitemap 520/0 broken links · design detector 0 · glued-word scan: brand names only.
+- Browser (Playwright, dev server): hampshire-county at 390/768/1440, boston-ma at 390/1440, hampden-county 1440, liftmaster 390/1440 — 0 console errors, 0 broken images, 0 horizontal overflow; chips read "Northampton · Hampshire County" / "Boston · Suffolk County"; none on Hampden.
+- Performance (DevTools trace, built preview on :4322, 390×844 @3x, 4× CPU, Fast 4G) on the heaviest hero (Hampshire aerial, 1280w = 250 KB): **LCP 1,245 ms, CLS 0.00** — better than the previous 1,834 ms because the hero image is now in the initial HTML with high priority.
+
+## Notes
+- Hero photos are the existing 45 licensed stock images — no new downloads were needed; the supplied set covers every county except Hampden (interim barn, shot list item 15).
+- Not committed, pushed, or deployed. Deploy gate unchanged (corrected figures, form endpoint, phone).
+
+---
+
+# Addendum — Per-town "Know the area" local facts (2026-09-21, branch `feat/site-imagery`, NOT committed, NOT deployed)
+Owner ask: every town page needs content only a local would recognize, for SEO. Constraint honored: nothing written from memory — every fact comes from the town's own Wikipedia article and is cited on the page.
+
+## What changed
+- **`src/config/ma-local.ts`** (GENERATED, 351/351 towns): villages/neighborhoods, main roads, rail lines/stations, elevation, rivers/ponds/bays, hills, historic districts, colleges, landmarks, bordering towns (validated against the dataset), ZIPs and area codes — extracted from each municipality's Wikipedia article (Action API, wikitext cached in the scratchpad `wiki/` folder; `fetch-wiki.mjs` → `gen-ma-local.mjs`). Coverage: villages 108, routes 262, rivers 249, waters 200, hills 174, historic districts 94, colleges 133, landmarks 125, bordering towns 238, ZIPs 348, elevation 349.
+- **Town template:** new "Know the area" block (renders only present facts; bordering towns link to their own pages — 1,000+ new internal links), an extra FAQ "Do you come out to {villages}?" when ≥ 2 villages exist, and two fact-gated door tie-ins: the freeze/bottom-seal note at ≥ 900 ft elevation; the salt-air/galvanized-hardware note only in a coastal county when the article names salt water. Source line on every page: Wikipedia title + retrieval date + Census.
+- Filters: no Connecticut/Hartford/New Haven strings (site rule), no country clubs/organizations as "landmarks", place-name sanity checks.
+
+## Verification
+- Build 545 · `astro check` 0 errors · `qa:images` PASS · crawl 545/520/0 broken links, 0 Connecticut references (the "Hartford Line" rail mention on three Pioneer Valley pages was caught by the crawl's banned list and filtered) · detector 0.
+- Browser (dev server): Amherst (villages, colleges, hills, 6 bordering-town links, FAQ), Pittsfield (1,039 ft → freeze note), Chatham (Pleasant Bay → salt-air note, 3 villages), Boston (8 neighborhoods, historic district), Natick — 0 console errors, 0 overflow at 1440/390.
+
+## Not done / owner options
+- Census ACS housing-age statistics per town (share of homes built before 1980 — the most door-relevant local fact) need a free Census API key (`api.census.gov/data/key_signup.html`); the API now refuses keyless requests. Supply one and the same generator can add it.

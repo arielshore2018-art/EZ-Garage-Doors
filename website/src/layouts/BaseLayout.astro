@@ -51,25 +51,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <slot name="head" />
   </head>
   <body>
-    <!--
-    THESIS: The category-standard national garage-door brand site (A1-style structure and
-    register) rebuilt for one Massachusetts company in EZ orange — conventional on purpose,
-    because the owner chose recognizability and trust over a signature world.
-    OWN-WORLD: white ground, warm-gray alternating sections, ink Barlow Condensed headings,
-    Source Sans body, orange as the single action color (buttons, rules, icons), soft card
-    shadows and 6-10px radii, breadcrumbs on every inner page, content + sticky sidebar on
-    service pages, a dark footer with the full county index.
-    STORY: a Massachusetts homeowner with a broken door recognizes a serious statewide
-    company in the first second, finds their symptom or town within one click, and calls
-    from the orange button - or requests service from the form.
-    FIRST VIEWPORT: left - eyebrow, ink H1, one paragraph, orange CALL + outline REQUEST,
-    four check-marked trust facts; right - the real branded van in a rounded card with a
-    review badge. Utility bar above the header states the written-quote policy.
-    FORM: canon path (category standard, A1 = craft bar); owner selected 2026-09-17,
-    scope redesign, mode structure-copy in own colors/copy, source owner decision.
-    FINISH: build ends with the finish review, DESIGN.md rewritten from the built world,
-    the QA crawl over every generated page, and provenance on shipping rasters.
-    -->
+    <!-- EZ brand: calm clarity, local expertise, written-price control. -->
     <a href="#main" class="skip-link">Skip to content</a>
     <slot />
 
@@ -119,19 +101,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         if (target) push("cta_click", { cta: target.dataset.track });
       });
 
-      // --- Lead form tracking + demo-mode fallback ---
-      document.querySelectorAll<HTMLFormElement>("form[data-lead-form]").forEach((form) => {
-        form.addEventListener("submit", (e) => {
-          push("form_submit", { context: form.dataset.formContext });
-          // TODO: remove this fallback once BUSINESS.FORM_ENDPOINT is set.
-          // Without an endpoint the form must not pretend to deliver leads.
-          if (form.action.endsWith("/thank-you/")) {
-            e.preventDefault();
-            console.warn("EZ Garage Doors: FORM_ENDPOINT not configured — lead NOT delivered.");
-            location.assign("/thank-you/");
-          }
-        });
-      });
     </script>
   </body>
 </html>

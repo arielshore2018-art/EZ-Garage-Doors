@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "qa:images": "node scripts/qa-images.mjs",
     "astro": "astro"
   },
   "dependencies": {

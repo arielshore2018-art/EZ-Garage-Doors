@@ -6,7 +6,7 @@
  */
 import CallButton from "./CallButton.astro";
 import Icon from "./Icon.astro";
-import { APPROVED_CLAIMS, COVERAGE } from "../config/business";
+import { APPROVED_CLAIMS, COVERAGE, hasPhone } from "../config/business";
 
 interface Props {
   title?: string;
@@ -19,7 +19,7 @@ interface Props {
 
 const {
   title = "Need help with your door today?",
-  sub = "Call now, or send a photo and the town — a local specialist follows up.",
+  sub = "Tell us what’s happening. Get a clear explanation and approve the price before work begins.",
   callLabel = "Call EZ Garage Doors",
   callTrack = "sidebar_call",
   links = [],
@@ -29,10 +29,11 @@ const {
 
 <aside class="sidebar">
   <div class="sidebar__card card">
+    <p class="eyebrow">Let’s make it EZ</p>
     <h2 class="sidebar__title">{title}</h2>
     <p class="sidebar__sub">{sub}</p>
     <CallButton label={callLabel} size="lg" track={callTrack} class="sidebar__btn" />
-    <a href="/contact/#request" class="btn btn--outline sidebar__btn" data-track="sidebar_request">Request Service</a>
+    {hasPhone() && <a href="/contact/#request" class="btn btn--outline sidebar__btn" data-track="sidebar_request">Request Service</a>}
     <ul class="sidebar__facts">
       <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.writtenQuote}</li>
       <li><Icon name="check" size={18} /> {APPROVED_CLAIMS.years}</li>
@@ -59,17 +60,19 @@ const {
 <style>
   .sidebar {
     position: sticky;
-    top: 5.75rem;
+    top: 6.5rem;
     display: grid;
     gap: var(--space-4);
   }
 
   .sidebar__card {
     padding: var(--space-5);
+    background: var(--ez-alt);
   }
 
   .sidebar__title {
-    font-size: var(--text-xl);
+    font-size: 2rem;
+    margin-top: .7rem;
   }
 
   .sidebar__sub {

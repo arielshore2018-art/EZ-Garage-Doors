@@ -13,6 +13,7 @@ import RelatedLinks from "../../components/RelatedLinks.astro";
 import LeadForm from "../../components/LeadForm.astro";
 import CTASection from "../../components/CTASection.astro";
 import Icon from "../../components/Icon.astro";
+import SectionImage from "../../components/SectionImage.astro";
 import { DOOR_STYLES, type DoorStyle } from "../../config/door-styles";
 
 export const getStaticPaths = (() => {
@@ -64,6 +65,19 @@ const service = { name: `${s.name} — Installation`, description: `${s.tagline}
           {s.intro.map((p) => <p>{p}</p>)}
         </div>
 
+        {
+          s.contextImageId && (
+            <SectionImage
+              imageId={s.contextImageId}
+              ratio="3/2"
+              widths={[480, 880, 1320]}
+              sizes="(max-width: 62rem) 92vw, 830px"
+              caption="A similar style in context — illustrative photo, not an EZ Garage Doors installation."
+              class="style-main__context"
+            />
+          )
+        }
+
         <SectionHeading eyebrow="Fit" title="Best for" />
         <ul class="style-list">
           {s.bestFor.map((x) => <li><Icon name="check" size={18} /><span>{x}</span></li>)}
@@ -107,6 +121,10 @@ const service = { name: `${s.name} — Installation`, description: `${s.tagline}
   .style-main :global(.section-heading) {
     margin-top: var(--space-6);
     margin-bottom: var(--space-4);
+  }
+
+  .style-main :global(.style-main__context) {
+    margin-top: var(--space-5);
   }
 
   .style-main :global(.faq--bare) {

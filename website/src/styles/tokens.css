@@ -46,10 +46,11 @@
   /* ---- Color: ground ---- */
   --ez-white: #ffffff;
   --ez-paper: #ffffff;              /* page ground */
-  --ez-alt: #f4f4f2;                /* warm light-gray section ground */
-  --ez-alt-deep: #e9e9e6;           /* hairline rules, table stripes */
+  --ez-alt: #f5f5f5;                /* neutral light-gray section ground */
+  --ez-alt-deep: #e9e9e9;           /* hairline rules, table stripes */
   --ez-tint: #fff1e8;               /* faint orange wash (callouts) */
-  --ez-line: #dcdcd8;               /* borders */
+  --ez-line: #dedede;               /* borders */
+  --ez-field-line: #888888;         /* form-control borders (3.5:1 on white, 3.1:1 on alt — WCAG 1.4.11) */
   --ez-border: var(--ez-line);
   --ez-concrete: var(--ez-alt);
 
@@ -59,8 +60,8 @@
   --ez-charcoal: #333333;           /* body text (12.6:1) */
   --ez-steel: #5c5c5c;              /* muted text (6.7:1 on white, 6.1:1 on alt) */
   --ez-charcoal-deep: #111111;
-  --ez-on-ink: #d6d6d3;             /* text on dark bands (11.7:1) */
-  --ez-on-ink-muted: #b3b3b0;       /* secondary text on dark (8.1:1) */
+  --ez-on-ink: #d6d6d6;             /* text on dark bands (11.7:1) */
+  --ez-on-ink-muted: #b3b3b3;       /* secondary text on dark (8.1:1) */
 
   /* ---- Color: orange ---- */
   --ez-orange: #f36a21;             /* brand + action color */
@@ -102,13 +103,14 @@
   --font-body: "Source Sans 3 Variable", "Source Sans 3", "Source Sans 3 Fallback", system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
 
+  --text-2xs: 0.78rem;               /* captions, eyebrows, consent lines (2026-09-21 refresh) */
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
   --text-base: 1.0625rem;
   --text-lg: 1.1875rem;
   --text-xl: clamp(1.35rem, 1.15rem + 0.9vw, 1.75rem);
   --text-2xl: clamp(1.6rem, 1.25rem + 1.6vw, 2.25rem);
-  --text-3xl: clamp(1.9rem, 1.4rem + 2.2vw, 2.9rem);
+  --text-3xl: clamp(2.2rem, 1.4rem + 2.5vw, 3.4rem);
   --text-hero: clamp(2.4rem, 1.6rem + 3.6vw, 4.2rem);
   --text-mega: clamp(2.6rem, 1.8rem + 4vw, 4.6rem);
 
@@ -121,17 +123,17 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --space-8: 4.5rem;
-  --space-section: clamp(3rem, 2rem + 4vw, 5.5rem);
+  --space-section: clamp(3.5rem, 2rem + 5vw, 6.5rem);
   --space-section-tight: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
 
   /* ---- Shape & depth: conventional, soft ---- */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
   --radius-pill: 999px;
-  --shadow-card: 0 1px 2px rgb(28 28 28 / 0.06), 0 8px 24px rgb(28 28 28 / 0.08);
+  --shadow-card: 0 2px 8px rgb(28 28 28 / 0.035);
   --shadow-card-hover: 0 2px 4px rgb(28 28 28 / 0.08), 0 14px 34px rgb(28 28 28 / 0.14);
-  --shadow-cta: 0 6px 18px rgb(243 106 33 / 0.32);
+  --shadow-cta: 0 3px 8px rgb(28 28 28 / 0.08);
 
   /* ---- Layout ---- */
   --content-max: 76rem;

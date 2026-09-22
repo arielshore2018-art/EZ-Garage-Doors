@@ -12,6 +12,7 @@ import CountyGrid from "../../components/CountyGrid.astro";
 import TownList from "../../components/TownList.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import CTASection from "../../components/CTASection.astro";
+import SectionImage from "../../components/SectionImage.astro";
 import { BUSINESS, COVERAGE, APPROVED_CLAIMS } from "../../config/business";
 import { MA_COUNTIES, townsInCounty, type MaRegion } from "../../config/ma-towns";
 
@@ -33,7 +34,8 @@ const breadcrumbs = [{ label: "Service Areas" }];
   breadcrumbs={breadcrumbs}
 >
   <section class="areas-hero">
-    <div class="wrap">
+    <div class="wrap hero-split">
+      <div>
       <Breadcrumbs items={breadcrumbs} class="areas-hero__crumbs" />
       <p class="eyebrow">Service areas · {COVERAGE.short}</p>
       <h1>Garage Door Service Across All of Massachusetts</h1>
@@ -46,12 +48,14 @@ const breadcrumbs = [{ label: "Service Areas" }];
         <CallButton label="Call EZ Garage Doors" size="lg" track="areas_call_click" />
         <a href="/contact/#request" class="btn btn--outline btn--lg" data-track="estimate_click">Request Service</a>
       </div>
+      </div>
+      <SectionImage imageId="ma-colonial-garage-autumn" ratio="3/2" priority widths={[640, 960, 1280]} sizes="(max-width: 56rem) 92vw, 520px" />
     </div>
   </section>
 
   <ProofColumns />
 
-  <CountyGrid heading="Pick your county" intro="14 counties, 351 cities and towns. Each county page lists every community with its own page." />
+  <CountyGrid searchable heading="Find garage door service near you." intro="Search your town or choose a county. We serve all 351 cities and towns in Massachusetts." />
 
   <section class="section section--alt" id="towns">
     <div class="wrap">

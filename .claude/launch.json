@@ -4,15 +4,34 @@
     {
       "name": "ez-website",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 4321,
       "cwd": "C:\\Users\\ariel\\OneDrive\\Services Business\\EZ Garage Doors\\website"
     },
     {
       "name": "ez-website-preview",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "preview"],
+      "runtimeArgs": [
+        "run",
+        "preview"
+      ],
       "port": 4321,
+      "cwd": "C:\\Users\\ariel\\OneDrive\\Services Business\\EZ Garage Doors\\website"
+    },
+    {
+      "name": "ez-website-preview-4322",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "preview",
+        "--",
+        "--port",
+        "4322"
+      ],
+      "port": 4322,
       "cwd": "C:\\Users\\ariel\\OneDrive\\Services Business\\EZ Garage Doors\\website"
     }
   ]
