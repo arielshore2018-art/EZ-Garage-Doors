@@ -185,3 +185,12 @@ Owner ask: every town page needs content only a local would recognize, for SEO. 
 
 ## Not done / owner options
 - Census ACS housing-age statistics per town (share of homes built before 1980 — the most door-relevant local fact) need a free Census API key (`api.census.gov/data/key_signup.html`); the API now refuses keyless requests. Supply one and the same generator can add it.
+
+---
+
+# Deployment — Massachusetts launch (2026-09-21, owner instruction: "urgent, push to production")
+- Commit `5007236` on `main` (fast-forward from `feat/site-imagery`), tag `v2026.09-massachusetts-launch`, pushed to GitHub.
+- `npx vercel deploy --prod` → deployment `ez-garage-doors-jmpjp22nl-ariels-projects-aa4d4e41.vercel.app`, aliased to **https://ez-garage-doors.vercel.app** (remote build ≈ 1 min).
+- Live verification: home / county / town / brand pages 200; home shows the new hero; county page carries `AreaHero`; Amherst carries "Know the area"; `sitemap-0.xml` 520 URLs; `robots.txt` 200; retired CT PPC URL → 308 to `/garage-door-repair/`; old `/service-areas/middletown-ct/` → 404; 0 "Connecticut" on the home page; browser: 39/39 images load on home and county pages, 0 console errors, 0 overflow at 390.
+- **Rollback:** `npx vercel rollback` (or promote deployment `ez-garage-doors-j5l4wgj80` = the 2026-08-19 film-world site) and `git checkout v2026.08-projected-light`.
+- **Known gaps that went live by owner decision:** company figures still the July values (owner correction pending); no phone number (all calls route to the request form); `FORM_ENDPOINT` empty, so the form is an honest preview and **no leads are delivered**; review profile links absent; final domain not set (`SITE_URL` = vercel.app). Google Ads campaigns pointed at the retired `-ct` slugs now 308 to the repair hub — re-point them to `/ppc/garage-door-repair/<city>-ma/`.

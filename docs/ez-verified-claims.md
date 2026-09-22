@@ -1,7 +1,7 @@
 # EZ Garage Doors — Verified Claims Register
 **Rule:** Nothing ships as a factual claim unless it appears here as VERIFIED, OWNER-DECISION, or TRUTHFUL-GENERAL. Anything REQUIRES-CONFIRMATION is omitted from copy until the owner supplies proof. Single source of truth in code: `website/src/config/business.ts` (`APPROVED_CLAIMS`, `STATS`, `COVERAGE`, `BRANDS_SERVICED`).
 
-**2026-09-17 status:** the business is Massachusetts-only. Every Connecticut reference was removed (config, copy, alt text, PPC pages — the 16 CT PPC URLs 301 to `/garage-door-repair/`). The owner said "some numbers change" about the July figures below — **corrected STATS are pending and the site must not deploy until they arrive** (`STATS_STATUS` in `business.ts`).
+**2026-09-17 status:** the business is Massachusetts-only. Every Connecticut reference was removed (config, copy, alt text, PPC pages — the 16 CT PPC URLs 301 to `/garage-door-repair/`). The owner said "some numbers change" about the July figures below — corrected STATS are still pending (`STATS_STATUS` in `business.ts`). **2026-09-21: the owner ordered the launch anyway** ("urgent, push to production"), so the live site carries the July figures until corrected ones arrive — swap them immediately when they do.
 
 ## VERIFIED (owner-supplied 2026-07-03; **flagged for correction 2026-09-17**; re-verify at launch)
 | Claim | Exact approved wording | Source |
